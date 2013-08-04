@@ -21,17 +21,19 @@ public class CategoryServiceImpl implements CategoryServiceInf {
 
     @Override
     public int removeCategory(long categoryId) {
-	return categoryDAL.removeCategoryById(categoryId); 
+	return categoryDAL.removeCategoryById(categoryId);
     }
 
     @Override
     public Category newCategory(Category c, Long parentCategoryId) {
-	if(parentCategoryId!=null){
+	if (parentCategoryId != null) {
 	    Category parent = categoryDAL.find(Category.class, parentCategoryId);
-	    if(parent != null){
+	    if (parent != null) {
 		c.setParent(parent);
+	    }else{
+		return null;
 	    }
-	} 
+	}
 	return categoryDAL.merge(c);
     }
 

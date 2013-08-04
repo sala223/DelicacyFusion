@@ -10,6 +10,6 @@ public interface CategoryServiceInf {
 
     int removeCategory(long categoryId);
 
-    Category newCategory(Category c, long parentCategoryId);
+    Category newCategory(Category c, Long parentCategoryId);
 
 }
