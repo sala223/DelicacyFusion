@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.df.masterdata.dal.CategoryDAL;
 import com.df.masterdata.entity.Category;
+import com.df.masterdata.exception.CategoryException;
 import com.df.masterdata.service.inf.CategoryServiceInf;
 
 public class CategoryServiceImpl implements CategoryServiceInf {
@@ -31,7 +32,7 @@ public class CategoryServiceImpl implements CategoryServiceInf {
 	    if (parent != null) {
 		c.setParent(parent);
 	    }else{
-		return null;
+		throw CategoryException.parentCategoryNotFound(parentCategoryId);
 	    }
 	}
 	return categoryDAL.merge(c);

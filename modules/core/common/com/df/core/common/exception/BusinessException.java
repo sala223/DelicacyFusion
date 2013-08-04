@@ -12,17 +12,17 @@ public class BusinessException extends RuntimeException {
 	super(cause);
     }
 
-    public BusinessException(Throwable cause, int errorCode, String realm) {
+    public BusinessException(Throwable throwable, String messageFormat, Object... args) {
+	super(String.format(messageFormat, args), throwable);
+    }
+
+    public BusinessException(Throwable cause, String realm, int errorCode) {
 	this(cause);
 	this.errorCode = errorCode;
 	this.realm = realm;
     }
 
-    public BusinessException(Throwable throwable, String messageFormat, Object... args) {
-	super(String.format(messageFormat, args), throwable);
-    }
-
-    public BusinessException(Throwable throwable, int errorCode, String realm, String messageFormat, Object... args) {
+    public BusinessException(Throwable throwable, String realm, int errorCode, String messageFormat, Object... args) {
 	super(String.format(messageFormat, args), throwable);
 	this.errorCode = errorCode;
 	this.realm = realm;
