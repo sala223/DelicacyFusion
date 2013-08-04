@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="common"/>
+	<classpathentry kind="src" path="image"/>
+	<classpathentry kind="src" path="entity"/>
+	<classpathentry kind="src" path="persist"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/eclipselink.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/build"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

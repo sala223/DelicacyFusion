@@ -3,7 +3,6 @@
 #################
 
 *.pydevproject
-.project
 .metadata
 bin/
 tmp/
@@ -12,8 +11,6 @@ tmp/
 *.swp
 *~.nib
 local.properties
-.classpath
-.settings/
 .loadpath
 
 # External tool builders
@@ -46,7 +43,6 @@ local.properties
 [Dd]ebug/
 [Rr]elease/
 x64/
-build/
 [Bb]in/
 [Oo]bj/
 
@@ -193,7 +189,6 @@ $RECYCLE.BIN/
 *.egg
 *.egg-info
 dist/
-build/
 eggs/
 parts/
 var/
@@ -213,3 +208,9 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+#############
+## Delicacy specific
+#############
+intermidiate/
+build/jboss-as-7.1.1.Final
