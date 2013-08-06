@@ -3,6 +3,8 @@ package com.df.android.ui;
 import java.util.LinkedList;
 import java.util.Vector;
 
+import com.df.android.R;
+
 import signaturesdk.acquisition.AuthenticationListener;
 import signaturesdk.acquisition.SignatureAndroidView;
 import signaturesdk.beans.AcquisitionSignWord;
