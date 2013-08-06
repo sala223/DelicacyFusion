@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="rel-build" default="package">
+	<import file="build-env.xml" />
+	<property name="modules.dir" value="../modules" />
+	<target name="package">
+		<var name="module.name" value="core" />
+		<echo message="Run build for module ${module.name}" />
+		<ant antfile="build.xml" target="package" dir="${modules.dir}/${module.name}" inheritall="false" inheritrefs="false" useNativeBasedir="true" />
+		<var name="module.name" value="master-data" />
+		<echo message="Run build for module ${module.name}" />
+		<ant antfile="build.xml" target="package" dir="${modules.dir}/${module.name}" inheritall="false" inheritrefs="false" useNativeBasedir="true" />
+	</target>
+</project>
+

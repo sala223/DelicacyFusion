@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="df-core" basedir="" default="jar">
+	<import file="../../build/build-base-jar.xml" />
+	<target name="compile" depends="before-compile">
+		<var name="build.sourceDirectory" value="${basedir}"/>
+		<javac encoding="iso-8859-1" includeantruntime="true" nowarn="${compile.nowarn}" debug="${compile.debug}" deprecation="${compile.deprecation}" source="${compile.jdk-version.source}" target="${compile.jdk-version.target}" optimize="${compile.optimize}" srcdir="${build.sourceDirectory}/common" destdir="${build.outputDirectory}">
+			<classpath refid="compile.classpath" />
+		</javac>
+		<javac encoding="iso-8859-1" includeantruntime="true" nowarn="${compile.nowarn}" debug="${compile.debug}" deprecation="${compile.deprecation}" source="${compile.jdk-version.source}" target="${compile.jdk-version.target}" optimize="${compile.optimize}" srcdir="${build.sourceDirectory}/image" destdir="${build.outputDirectory}">
+			<classpath refid="compile.classpath" />
+		</javac>
+		<javac encoding="iso-8859-1" includeantruntime="true" nowarn="${compile.nowarn}" debug="${compile.debug}" deprecation="${compile.deprecation}" source="${compile.jdk-version.source}" target="${compile.jdk-version.target}" optimize="${compile.optimize}" srcdir="${build.sourceDirectory}/entity" destdir="${build.outputDirectory}">
+			<classpath refid="compile.classpath" />
+		</javac>
+		<javac encoding="iso-8859-1" includeantruntime="true" nowarn="${compile.nowarn}" debug="${compile.debug}" deprecation="${compile.deprecation}" source="${compile.jdk-version.source}" target="${compile.jdk-version.target}" optimize="${compile.optimize}" srcdir="${build.sourceDirectory}/persist" destdir="${build.outputDirectory}">
+			<classpath refid="compile.classpath" />
+		</javac>
+		<copy todir="${build.outputDirectory}">
+			<fileset dir="${build.sourceDirectory}" excludes="**/*.java" />
+		</copy>
+	</target>
+</project>
+
