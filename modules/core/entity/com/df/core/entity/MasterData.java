@@ -1,4 +1,4 @@
-package core.df.core.entity;
+package com.df.core.entity;
 
 import java.util.Date;
 import javax.persistence.Column;

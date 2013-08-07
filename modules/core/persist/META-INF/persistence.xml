@@ -4,12 +4,12 @@
 	<persistence-unit name="delicacy-fusion" transaction-type="RESOURCE_LOCAL">
 		<description>persist unit for DelicacyFusio application</description>
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<non-jta-data-source>java:jboss/datasources/df</non-jta-data-source>
 		<mapping-file>META-INF/master-orm.xml</mapping-file>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<validation-mode>NONE</validation-mode>
 		<properties>
-			<property name="javax.persistence.nonJtaDataSource" value="java:jboss/datasources/df" />
-			<property name="eclipselink.logging.level" value="FINE" />
+			<property name="eclipselink.logging.level" value="CONFIG" />
 			<property name="eclipselink.logging.thread" value="false" />
 			<property name="eclipselink.logging.session" value="false" />
 			<property name="eclipselink.logging.timestamp" value="false" />
@@ -19,7 +19,7 @@
 			<property name="eclipselink.jdbc.sequence-connection-pool.min" value="2" />
 			<property name="eclipselink.jdbc.exclusive-connection.mode" value="Always" />
 			<property name="eclipselink.jdbc.batch-writing" value="JDBC" />
-			<property name="eclipselink.weaving" value="true" />
+			<property name="eclipselink.weaving" value="static" />
 			<property name="eclipselink.weaving.internal" value="true" />
 			<property name="eclipselink.weaving.lazy" value="true" />
 			<property name="eclipselink.weaving.fetchgroups" value="true" />

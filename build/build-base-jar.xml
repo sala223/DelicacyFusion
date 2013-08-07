@@ -3,6 +3,7 @@
 	<import file="build-env.xml" />
 	<property name="build.sourceDirectory" value="${basedir}/src" />
 	<property name="build.outputDirectory" value="${basedir}/bin" />
+	<property name="build.outputDirectory.classes" value="${build.outputDirectory}/classes" />
 	<path id="dependent.module.classpath" />
 	<target name="clean">
 		<delete dir="${build.outputDirectory}" failonerror="true" />
@@ -18,25 +19,35 @@
 				<mkdir dir="${build.outputDirectory}" />
 			</else>
 		</if>
+		<if>
+			<available file="${build.outputDirectory.classes}" type="dir" />
+			<then>
+				<echo message="${build.outputDirectory.classes} directory exist, ignore create it" />
+			</then>
+			<else>
+				<echo message="Creating directory: ${build.outputDirectory.classes}" />
+				<mkdir dir="${build.outputDirectory.classes}" />
+			</else>
+		</if>
 	</target>
 	<target name="before-compile" depends="init" />
 	<target name="before-jar" />
 	<target name="compile" depends="before-compile">
-		<javac encoding="iso-8859-1" includeantruntime="true" nowarn="${compile.nowarn}" debug="${compile.debug}" deprecation="${compile.deprecation}" source="${compile.jdk-version.source}" target="${compile.jdk-version.target}" optimize="${compile.optimize}" srcdir="${build.sourceDirectory}" destdir="${build.outputDirectory}">
+		<javac encoding="iso-8859-1" includeantruntime="true" nowarn="${compile.nowarn}" debug="${compile.debug}" deprecation="${compile.deprecation}" source="${compile.jdk-version.source}" target="${compile.jdk-version.target}" optimize="${compile.optimize}" srcdir="${build.sourceDirectory}" destdir="${build.outputDirectory.classes}">
 			<classpath refid="compile.classpath" />
 			<classpath refid="dependent.module.classpath" />
 		</javac>
-		<copy todir="${build.outputDirectory}">
+		<copy todir="${build.outputDirectory.classes}">
 			<fileset dir="${build.sourceDirectory}" excludes="**/*.java" />
 		</copy>
 	</target>
 	<target name="jar" depends="compile,before-jar">
-		<jar basedir="${build.outputDirectory}" jarfile="${ant.project.name}-${build.version}">
+		<jar basedir="${build.outputDirectory.classes}" jarfile="${build.outputDirectory}/${ant.project.name}-${build.version}.jar">
 			<exclude name="test/**" />
 		</jar>
 	</target>
 	<target name="package">
-		<antcall target="jar"/>
+		<antcall target="jar" />
 	</target>
 </project>
 

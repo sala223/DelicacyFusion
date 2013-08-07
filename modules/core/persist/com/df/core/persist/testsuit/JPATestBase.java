@@ -1,7 +1,7 @@
 package com.df.core.persist.testsuit;
 
 import org.junit.runner.RunWith;
-import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -9,7 +9,11 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
-@ContextConfiguration(locations = { "classpath:/META-INF/datasource.xml" })
-@Profile(value={"test"})
+@ContextConfiguration(locations = { "classpath:META-INF/datasource.xml" })
+@ActiveProfiles(value={"test"})
 public abstract class JPATestBase {
+    
+    public static void main(String args[]){
+	System.out.print(""); 
+    }
 }

@@ -2,12 +2,13 @@
 <project name="df-master-data" default="jar">
 	<import file="../../build/build-base-jar.xml" />
 	<path id="dependent.module.classpath">
-		<pathelement location="../core/bin" />
+		<pathelement location="../core/bin/classes" />
 	</path>
 	<target name="before-jar" description="perform weaving for master data entity">
 		<echo message="Start eclipselink static weaving for entities" />
-		<weave source="${build.sourceDirectory}" target="${build.outputDirectory}" persistenceinfo="${basedir}/../core/persist">
+		<weave loglevel="FINEST" source="${build.outputDirectory.classes}" target="${build.outputDirectory.classes}" persistenceinfo="${basedir}/../core/persist">
 			<classpath refid="compile.classpath" />
+			<classpath refid="dependent.module.classpath" />
 		</weave>
 		<echo message="Done static weaving." />
 	</target>

@@ -6,5 +6,5 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
-	<import resource="classpath:datasource.xml" />
+	<import resource="classpath:META-INF/datasource.xml" />
 </beans>

@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 
 import org.eclipse.persistence.annotations.Cache;
 
-import core.df.core.entity.MasterData;
+import com.df.core.entity.MasterData;
 
 @Cache
 @Entity(name = "ITEM")

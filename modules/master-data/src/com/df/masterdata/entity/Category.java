@@ -17,7 +17,7 @@ import org.eclipse.persistence.annotations.Cache;
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.config.CacheIsolationType;
 
-import core.df.core.entity.MasterData;
+import com.df.core.entity.MasterData;
 
 @Entity
 @Cache(isolation = CacheIsolationType.SHARED)
