@@ -10,8 +10,11 @@
 
 	<Button 
 		android:id="@+id/openClose"
+		android:textColor="#FFFFFF"
 		android:text="@string/myOrder" 
-		android:layout_height="fill_parent" 
+		android:layout_gravity="center_vertical"
+		android:layout_height="wrap_content" 
+		android:background="@drawable/clip"
 		android:layout_width="20dp">
 	</Button>
 	    

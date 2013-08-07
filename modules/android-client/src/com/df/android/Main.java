@@ -9,14 +9,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ScrollView;
 
 public class Main extends Activity { 
 	
     @Override 
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) { 
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.main);
 
@@ -24,7 +23,7 @@ public class Main extends Activity {
         List<MenuItem> menus = new ArrayList<MenuItem>();  
 		try { 
 	        String imageFiles[] = this.getAssets().list("cache/image");
-	        for (int i = 0; i < imageFiles.length; ++i) {
+	        for (int i = 0; i < imageFiles.length; ++i) { 
 	        	Log.i("Main", "found " + imageFiles[i]);
 	            menus.add(new MenuItem("清蒸鲈鱼", "cache/image/" + imageFiles[i]));
 	        }
