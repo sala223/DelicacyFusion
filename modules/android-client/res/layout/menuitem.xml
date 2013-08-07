@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout 
+    android:id="@+id/relativeLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="5dp">
+     
+    <ImageView
+        android:id="@+id/menuItemImage"
+        android:contentDescription="Double click to order"
+        android:layout_height="200dp"
+        android:layout_width="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+    </ImageView>
+     
+    <TextView
+        android:layout_height="wrap_content"
+        android:id="@+id/menuItemInfo"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/menuItemImage"
+        android:layout_marginTop="2dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="24sp"
+        android:ellipsize="marquee">
+    </TextView>
+</RelativeLayout>
