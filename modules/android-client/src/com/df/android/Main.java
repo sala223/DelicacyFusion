@@ -18,7 +18,6 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.df.android.MenuItem.MenuItemType;
 
@@ -39,7 +38,7 @@ public class Main extends Activity implements OrderChangeListener {
 			public void onItemClick(AdapterView<?> arg0, View view, int index,
 					long arg3) {
 				MenuItem item = (MenuItem)menuAdapter.getItem(index);
-				Toast.makeText(view.getContext(), "You selected item " + item.getName(), Toast.LENGTH_SHORT).show();
+//				Toast.makeText(view.getContext(), "You selected item " + item.getName(), Toast.LENGTH_SHORT).show();
 				Order.currentOrder().add(item);
 			} 
 			
@@ -111,16 +110,16 @@ public class Main extends Activity implements OrderChangeListener {
 		return menu;
     }
 
-
-    
     @Override
 	public void onMenuItemAdded(MenuItem item) {
+    	((OrderAdapter)((ListView)findViewById(R.id.lstOrder)).getAdapter()).notifyDataSetChanged();
     	((TextView)findViewById(R.id.orderCount)).setText("" + Order.currentOrder().getCount());
-	}
+    }
     
 
 	@Override
 	public void onMenuItemRemoved(MenuItem item) {
+    	((OrderAdapter)((ListView)findViewById(R.id.lstOrder)).getAdapter()).notifyDataSetChanged();
     	((TextView)findViewById(R.id.orderCount)).setText("" + Order.currentOrder().getCount());
 	}
 }
