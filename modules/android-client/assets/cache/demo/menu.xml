@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<menu>
+	<item name="皮蛋豆腐" type="0" price="10.00" image="image/1.jpg"/>
+	<item name="清蒸鲈鱼" type="1" price=">38.00" image="image/2.jpg"/>
+	<item name="双味鱼头" type="1" price="48.00" image="image/3.jpg"/>
+	<item name="生菜" type="1" price="12.00" image="image/4.jpg"/>
+	<item name="番茄蛋汤" type="2" price="10.00" image="image/5.jpg"/>
+	<item name="五谷丰登" type="3" price="38.00" image="image/6.jpg"/>
+	<item name="养生鸡汤" type="2" price="68.00" image="image/7.jpg"/>
+	<item name="手撕包菜" type="1" price="16.00" image="image/8.jpg"/>
+	<item name="干锅羊肉" type="1" price="58.00" image="image/9.jpg"/>
+</menu>

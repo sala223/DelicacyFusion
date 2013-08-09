@@ -1,12 +1,18 @@
 package com.df.android;
 
-import android.database.DataSetObserver;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
 
-public class OrderAdapter implements ListAdapter {
+public class OrderAdapter extends BaseAdapter {
+	Context cxt;
 	Order order;
+	
+	public OrderAdapter(Context cxt) {
+		this.cxt = cxt;
+	}
 	
 	public void setOrder(Order order) {
 		this.order = order;
@@ -14,75 +20,28 @@ public class OrderAdapter implements ListAdapter {
 	
 	@Override
 	public int getCount() {
-		return 0;
+		return order.getCount();
 	}
 
 	@Override
-	public Object getItem(int arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object getItem(int index) {
+		return order.getItem(index);
 	}
 
 	@Override
-	public long getItemId(int arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getItemViewType(int arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public View getView(int arg0, View arg1, ViewGroup arg2) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getViewTypeCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean hasStableIds() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void registerDataSetObserver(DataSetObserver arg0) {
-		// TODO Auto-generated method stub
+	public View getView(int index, View arg1, ViewGroup arg2) {
+		Order.MenuItemOrder item = (Order.MenuItemOrder)getItem(index);
 		
-	}
-
-	@Override
-	public void unregisterDataSetObserver(DataSetObserver arg0) {
-		// TODO Auto-generated method stub
+		TextView tv = new TextView(cxt);
+		tv.setText(item.getItem().getName());
 		
+		return tv;
 	}
 
 	@Override
-	public boolean areAllItemsEnabled() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isEnabled(int arg0) {
-		// TODO Auto-generated method stub
-		return false;
+	public long getItemId(int index) {
+		return index;
 	}
 
 }
 
-//
