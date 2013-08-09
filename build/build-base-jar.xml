@@ -40,7 +40,7 @@
 		</copy>
 	</target>
 	<target name="jar" depends="compile,before-jar">
-		<jar basedir="${build.outputDirectory.classes}" jarfile="${build.outputDirectory}/${ant.project.name}-${build.version}.jar">
+		<jar index="true" basedir="${build.outputDirectory.classes}" jarfile="${build.outputDirectory}/${ant.project.name}-${build.version}.jar">
 			<exclude name="test/**" />
 		</jar>
 	</target>

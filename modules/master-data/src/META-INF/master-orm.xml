@@ -7,6 +7,4 @@
 	<entity class="com.df.masterdata.entity.Category" />
 	<entity class="com.df.masterdata.entity.Item"/>
 	<mapped-superclass class="com.df.masterdata.entity.MasterData"/>
-	<mapped-superclass class="com.df.core.entity.MultiTenantSupport"/>
-	<mapped-superclass class="com.df.core.entity.MultiTenantSupport"/>
 </entity-mappings>

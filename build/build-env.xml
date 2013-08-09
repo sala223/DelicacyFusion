@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="DelicacyFusion-Env" basedir="">
 	<property environment="env" />
-	<dirname property="full.build.dir" file="${ant.file.DelicacyFusion-Env}" />
+	<dirname property="release.build.directory" file="${ant.file.DelicacyFusion-Env}" />
 	<property name="build.version" value="1.0" />
 	<property file="env.properties" />
-	<property name="JBOSS_HOME" value="${full.build.dir}/jboss-as-7.1.1.Final" />
+	<property name="JBOSS_HOME" value="${release.build.directory}/jboss-as-7.1.1.Final" />
 	<!-- -Java compilier options-->
 	<property name="compile.debug" value="true" />
 	<property name="compile.deprecation" value="off" />
@@ -14,7 +14,7 @@
 	<property name="compile.nowarn" value="on" />
 	<path id="compile.dependent.path" />
 	<path id="compile.classpath">
-		<fileset dir="${full.build.dir}/third-lib">
+		<fileset dir="${release.build.directory}/third-lib">
 			<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${JBOSS_HOME}/modules">
@@ -23,13 +23,13 @@
 		<path refid="compile.dependent.path" />
 	</path>
 	<path id="build.classpath">
-		<fileset dir="${full.build.dir}/third-lib">
+		<fileset dir="${release.build.directory}/third-lib">
 			<include name="eclipselink.jar" />
 		</fileset>
 		<fileset dir="${JBOSS_HOME}/modules">
 			<include name="**/*jpa*.jar" />
 		</fileset>
-		<fileset dir="${full.build.dir}/ext">
+		<fileset dir="${release.build.directory}/ext">
 			<include name="antcontrib.jar" />
 		</fileset>
 	</path>

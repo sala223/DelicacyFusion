@@ -2,12 +2,11 @@ package com.df.http.masterdata.resources;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.df.masterdata.entity.Category;
 import com.df.masterdata.entity.Item;
@@ -17,7 +16,7 @@ import com.df.masterdata.service.inf.CategoryServiceInf;
 @Produces("application/json")
 public class CategoryResource {
 
-    @Autowired
+    @Inject
     private CategoryServiceInf categoryService;
 
     @GET

@@ -22,6 +22,9 @@
 		<copy todir="${build.outputDirectory.war}/WEB-INF/classes">
 			<fileset dir="${build.outputDirectory.classes}" includes="**/*" />
 		</copy>
+		<war destfile="${build.outputDirectory}/${ant.project.name}-${build.version}.war" webxml="${build.outputDirectory.war}/WEB-INF/web.xml" update="true">
+			<fileset dir="${build.outputDirectory.war}"/>
+		</war>
 	</target>
 	<target name="after-war" depends="war" />
 	<target name="package" depends="after-war" />
