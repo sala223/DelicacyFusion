@@ -25,14 +25,35 @@ public class Order {
 			return; 
 		
     	Log.d(getClass().getName(), "Adding item " + item.getName());
-		for(int i = 0; i < MenuItem.dishTypes.length; i ++)
+    	
+    	boolean exists = false;
+		for(int i = 0; i < MenuItem.dishTypes.length; i ++) {
 			if(MenuItem.dishTypes[i] == item.getType()) {
-				items[i].add(new MenuItemOrder(item));
+				for(MenuItemOrder mio : items[i]) {
+					if(item.equals(mio.getItem())) {
+						mio.setCopies(mio.getCopies()+1);
+						exists = true;
+					}
+				}
+
+				if(!exists)
+					items[i].add(new MenuItemOrder(item));
+				
 				onMenuItemAdded(item);
 			}
+		}
 	}
 	
 	public int getCount() {
+		int count = 0;
+		for(int i = 0; i < MenuItem.dishTypes.length; i ++)
+			for(MenuItemOrder item : items[i])
+				count += item.getCopies();
+		
+		return count;
+	}
+	
+	public int getDistinctCount() {
 		int count = 0;
 		for(int i = 0; i < MenuItem.dishTypes.length; i ++)
 			count += items[i].size();
@@ -83,6 +104,10 @@ public class Order {
 			return item;
 		}
 
+    	public void setCopies(int copies) {
+    		this.copies = copies;
+    	}
+    	
 		public int getCopies() {
 			return copies;
 		}
