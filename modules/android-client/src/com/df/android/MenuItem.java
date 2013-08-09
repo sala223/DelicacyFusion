@@ -1,5 +1,7 @@
 package com.df.android;
 
+
+
 public class MenuItem {
 	public static enum MenuItemType {
 		MIT_COLDDISH,
@@ -35,5 +37,10 @@ public class MenuItem {
 		return name;
 	}
 	
-	
+	public boolean equals(MenuItem o) {
+		if(o == null)
+			return false;
+		
+		return name.equals(o.getName()) && type == o.getType() && image.equals(o.getImage());
+	}
 }

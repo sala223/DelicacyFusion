@@ -1,6 +1,7 @@
 package com.df.android;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -20,7 +21,7 @@ public class OrderAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
-		return order.getCount();
+		return order.getDistinctCount();
 	}
 
 	@Override
@@ -29,14 +30,18 @@ public class OrderAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int index, View arg1, ViewGroup arg2) {
-		Order.MenuItemOrder item = (Order.MenuItemOrder)getItem(index);
+    public View getView(int position, View convertView, ViewGroup parent) {
+		Order.MenuItemOrder item = (Order.MenuItemOrder)getItem(position);
 		
-		TextView tv = new TextView(cxt);
-		tv.setText(item.getItem().getName());
-		
-		return tv;
-	}
+        if(convertView != null)
+        	convertView = null;
+ 
+        View view = new TextView(cxt);
+        view.setBackgroundColor(Color.WHITE);
+        ((TextView)view).setText(item.getItem().getName() + "(" + item.getItem().getType() + ")" + item.getCopies());
+        
+        return view;
+    }
 
 	@Override
 	public long getItemId(int index) {
