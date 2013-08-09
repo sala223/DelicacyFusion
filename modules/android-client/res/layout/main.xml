@@ -8,15 +8,33 @@
     android:animateLayoutChanges="true"
     android:background="#0099cc">
 
-	<Button 
-		android:id="@+id/openClose"
-		android:textColor="#FFFFFF"
-		android:text="@string/myOrder" 
+    <FrameLayout
 		android:layout_gravity="center_vertical"
-		android:layout_height="wrap_content" 
-		android:background="@drawable/clip"
-		android:layout_width="20dp">
-	</Button>
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content">
+        <Button 
+			android:id="@+id/openClose"
+			android:textColor="#FFFFFF"
+			android:text="@string/myOrder" 
+			android:layout_height="wrap_content" 
+			android:background="@drawable/clip"
+			android:paddingTop="10dp"
+			android:layout_marginTop="20dp"
+			android:paddingBottom="10dp"
+			android:layout_width="20dp">
+		</Button>
+		<TextView 
+			android:id="@+id/orderCount"
+			android:textColor="#FFFFFF"
+			android:textSize="20dp"
+			android:text="0" 
+			android:layout_width="40dp" 
+			android:layout_height="40dp" 
+			android:gravity="center"
+			android:layout_gravity="top|right"
+			android:background="@drawable/notification_circle"
+		    />
+	</FrameLayout>
 	    
     <LinearLayout
         android:id="@+id/leftPane"

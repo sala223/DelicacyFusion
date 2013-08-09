@@ -17,17 +17,19 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.df.android.MenuItem.MenuItemType;
 
-public class Main extends Activity { 
+public class Main extends Activity implements OrderChangeListener { 
 	
-    @Override 
+    @Override  
     protected void onCreate(Bundle savedInstanceState) { 
         super.onCreate(savedInstanceState); 
-        setContentView(R.layout.main);
+        setContentView(R.layout.main);  
 
-        Shop shop = initShop("demo");
+        Shop shop = initShop("demo"); 
         
         GridView gvMenu = (GridView) findViewById(R.id.gvMenu); 
 		final MenuAdapter menuAdapter = new MenuAdapter(this, shop);
@@ -36,17 +38,19 @@ public class Main extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view, int index,
 					long arg3) {
-				// Toast.makeText(view.getContext(), "You selected item " + index, Toast.LENGTH_SHORT).show();
 				MenuItem item = (MenuItem)menuAdapter.getItem(index);
+				Toast.makeText(view.getContext(), "You selected item " + item.getName(), Toast.LENGTH_SHORT).show();
 				Order.currentOrder().add(item);
-			}
+			} 
 			
 		});
         gvMenu.setAdapter(menuAdapter);
         
         ListView lstOrder = (ListView)findViewById(R.id.lstOrder);
         OrderAdapter orderAdapter = new OrderAdapter(this);
-        orderAdapter.setOrder(new Order());
+        Order order = new Order();
+        order.registerChangeListener(this);
+        orderAdapter.setOrder(order);
         lstOrder.setAdapter(orderAdapter);
         
         findViewById(R.id.openClose).setOnClickListener(new OnClickListener()
@@ -62,6 +66,7 @@ public class Main extends Activity {
 				}
 			}
         });
+        
     }
     
     private Shop initShop(String shopId) {
@@ -105,6 +110,19 @@ public class Main extends Activity {
 		
 		return menu;
     }
+
+
+    
+    @Override
+	public void onMenuItemAdded(MenuItem item) {
+    	((TextView)findViewById(R.id.orderCount)).setText("" + Order.currentOrder().getCount());
+	}
+    
+
+	@Override
+	public void onMenuItemRemoved(MenuItem item) {
+    	((TextView)findViewById(R.id.orderCount)).setText("" + Order.currentOrder().getCount());
+	}
 }
 
 
