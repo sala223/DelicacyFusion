@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build-base-war" basedir="" default="package">
+	<import file="build-env.xml" />
+	<import file="build-base-jar.xml" />
+	<property name="build.sourceDirectory.webapp" value="${basedir}/webapp" />
+	<property name="build.outputDirectory.classes" value="${build.outputDirectory}/classes" />
+	<property name="build.outputDirectory.war" value="${build.outputDirectory}/war" />
+	<path id="dependent.module.classpath" />
+	<target name="jar"/>
+	<target name="before-war" />
+	<target name="war" depends="compile,before-war">
+		<copy todir="${build.outputDirectory.war}">
+			<fileset dir="${build.sourceDirectory.webapp}" includes="**/*" />
+		</copy>
+		<if>
+			<available file="${build.outputDirectory.war}/WEB-INF/classes" type="dir" />
+			<else>
+				<mkdir dir="${build.outputDirectory.war}/WEB-INF/classes" />
+			</else>
+		</if>
+		<echo message="Copy classes to WEB-INF/class" />
+		<copy todir="${build.outputDirectory.war}/WEB-INF/classes">
+			<fileset dir="${build.outputDirectory.classes}" includes="**/*" />
+		</copy>
+	</target>
+	<target name="after-war" depends="war" />
+	<target name="package" depends="after-war" />
+</project>
+

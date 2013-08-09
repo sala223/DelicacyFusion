@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="df-core" basedir="" default="jar">
+<project name="df-core" basedir="" default="package">
 	<import file="../../build/build-base-jar.xml" />
 	<target name="compile" depends="before-compile">
 		<var name="build.sourceDirectory" value="${basedir}" />
@@ -17,13 +17,6 @@
 		<copy todir="${build.outputDirectory.classes}">
 			<fileset dir="${build.sourceDirectory}/${subSourceDirectory}" excludes="**/*.java" />
 		</copy>
-		<var name="subSourceDirectory" value="entity" />
-		<javac encoding="iso-8859-1" includeantruntime="true" nowarn="${compile.nowarn}" debug="${compile.debug}" deprecation="${compile.deprecation}" source="${compile.jdk-version.source}" target="${compile.jdk-version.target}" optimize="${compile.optimize}" srcdir="${build.sourceDirectory}/${subSourceDirectory}" destdir="${build.outputDirectory.classes}">
-			<classpath refid="compile.classpath" />
-		</javac>
-		<copy todir="${build.outputDirectory.classes}">
-			<fileset dir="${build.sourceDirectory}/${subSourceDirectory}" excludes="**/*.java" />
-		</copy>
 		<var name="subSourceDirectory" value="persist" />
 		<javac encoding="iso-8859-1" includeantruntime="true" nowarn="${compile.nowarn}" debug="${compile.debug}" deprecation="${compile.deprecation}" source="${compile.jdk-version.source}" target="${compile.jdk-version.target}" optimize="${compile.optimize}" srcdir="${build.sourceDirectory}/${subSourceDirectory}" destdir="${build.outputDirectory.classes}">
 			<classpath refid="compile.classpath" />
@@ -34,6 +27,13 @@
 		<var name="subSourceDirectory" value="resources" />
 		<copy todir="${build.outputDirectory.classes}">
 			<fileset dir="${build.sourceDirectory}/${subSourceDirectory}" includes="**/*" />
+		</copy>
+		<var name="subSourceDirectory" value="web" />
+		<javac encoding="iso-8859-1" includeantruntime="true" nowarn="${compile.nowarn}" debug="${compile.debug}" deprecation="${compile.deprecation}" source="${compile.jdk-version.source}" target="${compile.jdk-version.target}" optimize="${compile.optimize}" srcdir="${build.sourceDirectory}/${subSourceDirectory}" destdir="${build.outputDirectory.classes}">
+			<classpath refid="compile.classpath" />
+		</javac>
+		<copy todir="${build.outputDirectory.classes}">
+			<fileset dir="${build.sourceDirectory}/${subSourceDirectory}" excludes="**/*.java" />
 		</copy>
 	</target>
 </project>

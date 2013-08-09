@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="build-base-jar" basedir="" default="jar">
+<project name="build-base-jar" basedir="" default="package">
 	<import file="build-env.xml" />
 	<property name="build.sourceDirectory" value="${basedir}/src" />
 	<property name="build.outputDirectory" value="${basedir}/bin" />
 	<property name="build.outputDirectory.classes" value="${build.outputDirectory}/classes" />
-	<path id="dependent.module.classpath" />
 	<target name="clean">
 		<delete dir="${build.outputDirectory}" failonerror="true" />
 	</target>
-	<target name="init">
+	<target name="init" depends="clean">
 		<if>
 			<available file="${build.outputDirectory}" type="dir" />
 			<then>
@@ -35,7 +34,6 @@
 	<target name="compile" depends="before-compile">
 		<javac encoding="iso-8859-1" includeantruntime="true" nowarn="${compile.nowarn}" debug="${compile.debug}" deprecation="${compile.deprecation}" source="${compile.jdk-version.source}" target="${compile.jdk-version.target}" optimize="${compile.optimize}" srcdir="${build.sourceDirectory}" destdir="${build.outputDirectory.classes}">
 			<classpath refid="compile.classpath" />
-			<classpath refid="dependent.module.classpath" />
 		</javac>
 		<copy todir="${build.outputDirectory.classes}">
 			<fileset dir="${build.sourceDirectory}" excludes="**/*.java" />
@@ -46,8 +44,7 @@
 			<exclude name="test/**" />
 		</jar>
 	</target>
-	<target name="package">
-		<antcall target="jar" />
-	</target>
+	<target name="after-jar" depends="jar" />
+	<target name="package" depends="after-jar" />
 </project>
 

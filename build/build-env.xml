@@ -12,14 +12,15 @@
 	<property name="compile.jdk-version.target" value="1.6" />
 	<property name="compile.optimize" value="true" />
 	<property name="compile.nowarn" value="on" />
-
+	<path id="compile.dependent.path" />
 	<path id="compile.classpath">
 		<fileset dir="${full.build.dir}/third-lib">
-			<include name="*.jar" />
+			<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${JBOSS_HOME}/modules">
 			<include name="**/*.jar" />
 		</fileset>
+		<path refid="compile.dependent.path" />
 	</path>
 	<path id="build.classpath">
 		<fileset dir="${full.build.dir}/third-lib">
@@ -28,7 +29,7 @@
 		<fileset dir="${JBOSS_HOME}/modules">
 			<include name="**/*jpa*.jar" />
 		</fileset>
-		<fileset dir="${full.build.dir}">
+		<fileset dir="${full.build.dir}/ext">
 			<include name="antcontrib.jar" />
 		</fileset>
 	</path>

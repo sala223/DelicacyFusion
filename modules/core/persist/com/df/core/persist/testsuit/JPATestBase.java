@@ -8,12 +8,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+	TenantContextInjectionTestExecutionListener.class})
 @ContextConfiguration(locations = { "classpath:META-INF/datasource.xml" })
-@ActiveProfiles(value={"test"})
+@ActiveProfiles(value = { "test" })
 public abstract class JPATestBase {
-    
-    public static void main(String args[]){
-	System.out.print(""); 
+
+    public static void main(String args[]) {
+	System.out.print("");
     }
 }

@@ -9,6 +9,9 @@
 		<var name="module.name" value="master-data" />
 		<echo message="Run build for module ${module.name}" />
 		<ant antfile="build.xml" target="package" dir="${modules.dir}/${module.name}" inheritall="false" inheritrefs="false" useNativeBasedir="true" />
+		<var name="module.name" value="http-master-data" />
+		<echo message="Run build for module ${module.name}" />
+		<ant antfile="build.xml" target="package" dir="${modules.dir}/${module.name}" inheritall="false" inheritrefs="false" useNativeBasedir="true" />
 	</target>
 </project>
 

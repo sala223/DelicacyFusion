@@ -13,15 +13,13 @@ import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.BatchFetch;
 import org.eclipse.persistence.annotations.BatchFetchType;
-import org.eclipse.persistence.annotations.Cache;
 import org.eclipse.persistence.annotations.Index;
-import org.eclipse.persistence.config.CacheIsolationType;
 
-import com.df.core.entity.MasterData;
+import com.df.core.common.entity.MultiTenantSupport;
 
 @Entity
-@Cache(isolation = CacheIsolationType.SHARED)
 @Table(name = Constants.CATEGORY.ENTITY_TABLE)
+@Index(name = "UNIQUE_INDEX", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
 public class Category extends MasterData {
     @Column(length = 64)
     @Index

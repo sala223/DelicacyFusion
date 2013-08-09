@@ -43,6 +43,7 @@ public class JPADataAccessFoundation {
     public void insert(Object object) {
 	EntityManager em = getEntityManager();
 	em.persist(object);
+	em.flush();
     }
 
     public void update(Object object) {

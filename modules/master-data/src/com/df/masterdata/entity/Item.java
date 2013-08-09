@@ -11,11 +11,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
 import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.annotations.Index;
 
-import com.df.core.entity.MasterData;
+import com.df.core.common.entity.MultiTenantSupport;
 
 @Cache
 @Entity(name = "ITEM")
+@Index(name = "UNIQUE_INDEX", unique = true, columnNames = { "code", MultiTenantSupport.TENANT_COLUMN })
 public class Item extends MasterData {
 
     @Column(length = 16)
