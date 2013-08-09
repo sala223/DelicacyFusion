@@ -4,5 +4,6 @@
     <string name="app_name">DelicacyFusion</string>
     <string name="menu_settings">Settings</string>
     <string name="login">Login</string>
-
+    <string name="myOrder">我的菜单</string>
+    
 </resources>

@@ -1,7 +1,6 @@
 package com.df.android;
 
 import java.io.IOException;
-import java.util.List;
 
 import android.app.Activity;
 import android.graphics.BitmapFactory;
@@ -15,23 +14,23 @@ import android.widget.TextView;
 
 public class MenuAdapter extends BaseAdapter
 {
-    private List<MenuItem> menuItems;
+    private Shop shop;
     private Activity activity;
  
-    public MenuAdapter(Activity activity, List<MenuItem> menuItems) {
+    public MenuAdapter(Activity activity, Shop shop) {
         super();
-        this.menuItems = menuItems;
+        this.shop = shop;
         this.activity = activity;
     }
  
     @Override
     public int getCount() {
-        return menuItems.size();
+        return shop.getMenu().getItems().size();
     }
  
     @Override
     public MenuItem getItem(int position) {
-        return menuItems.get(position);
+        return shop.getMenu().getItems().get(position);
     }
  
     @Override
@@ -55,8 +54,8 @@ public class MenuAdapter extends BaseAdapter
             view = new ViewHolder();
             convertView = inflator.inflate(R.layout.menuitem, null);
  
-            view.menuItemInfo = (TextView) convertView.findViewById(R.id.menuItemInfo);
             view.menuItemImage = (ImageView) convertView.findViewById(R.id.menuItemImage);
+            view.menuItemInfo = (TextView) convertView.findViewById(R.id.menuItemInfo);
  
             convertView.setTag(view);
         }
@@ -65,10 +64,10 @@ public class MenuAdapter extends BaseAdapter
             view = (ViewHolder) convertView.getTag();
         }
  
-        view.menuItemInfo.setText(menuItems.get(position).getName());
-        String imageFile = menuItems.get(position).getImage();
+        view.menuItemInfo.setText(shop.getMenu().getItems().get(position).getName());
+        String imageFile = shop.getMenu().getItems().get(position).getImage();
         try {
-			view.menuItemImage.setImageBitmap(BitmapFactory.decodeStream(activity.getAssets().open(imageFile)));
+			view.menuItemImage.setImageBitmap(BitmapFactory.decodeStream(activity.getAssets().open("cache/" + shop.getId() + "/" + imageFile)));
 		} catch (IOException e) {
 			Log.e("MenuAdapter", "Fail to load image file '" + imageFile + "'");
 		}

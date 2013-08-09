@@ -1,91 +1,128 @@
 package com.df.android;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.widget.SlidingPaneLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class Main extends Activity { 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+import com.df.android.MenuItem.MenuItemType;
+
+public class Main extends Activity implements OrderChangeListener { 
+	
+    @Override  
+    protected void onCreate(Bundle savedInstanceState) { 
         super.onCreate(savedInstanceState); 
-//        getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        setContentView(R.layout.main);
+        setContentView(R.layout.main);  
 
-        final SlidingPaneLayout spl = (SlidingPaneLayout)findViewById(R.id.sliding_pane_layout);
-        ((TextView)findViewById(R.id.lstOrder)).setOnClickListener(new OnClickListener() {
+        Shop shop = initShop("demo"); 
+        
+        GridView gvMenu = (GridView) findViewById(R.id.gvMenu); 
+		final MenuAdapter menuAdapter = new MenuAdapter(this, shop);
+		gvMenu.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onClick(View arg0) { 
-				Log.i("Main", "Panel clicked");
-				spl.smoothSlideClosed();
+			public void onItemClick(AdapterView<?> arg0, View view, int index,
+					long arg3) {
+				MenuItem item = (MenuItem)menuAdapter.getItem(index);
+				Toast.makeText(view.getContext(), "You selected item " + item.getName(), Toast.LENGTH_SHORT).show();
+				Order.currentOrder().add(item);
 			} 
-        	
+			
+		});
+        gvMenu.setAdapter(menuAdapter);
+        
+        ListView lstOrder = (ListView)findViewById(R.id.lstOrder);
+        OrderAdapter orderAdapter = new OrderAdapter(this);
+        Order order = new Order();
+        order.registerChangeListener(this);
+        orderAdapter.setOrder(order);
+        lstOrder.setAdapter(orderAdapter);
+        
+        findViewById(R.id.openClose).setOnClickListener(new OnClickListener()
+        {  
+			@Override
+			public void onClick(View arg0) {
+            	LinearLayout leftPane = (LinearLayout)findViewById(R.id.leftPane);
+            	
+				if(leftPane.getVisibility() == View.VISIBLE) {
+					leftPane.setVisibility(View.GONE);
+				}else {
+					leftPane.setVisibility(View.VISIBLE);
+				}
+			}
         });
-        spl.openPane();
         
-        GridView gvMenu = (GridView) findViewById(R.id.gvMenu);
-        List<MenuItem> menus = new ArrayList<MenuItem>();
-		try {
-	        String imageFiles[] = this.getAssets().list("cache/image");
-	        for (int i = 0; i < imageFiles.length; ++i) {
-	        	Log.i("Main", "found " + imageFiles[i]);
-	            menus.add(new MenuItem("清蒸鲈鱼", "cache/image/" + imageFiles[i]));
-	        }
-		} catch (IOException e) { 
-			e.printStackTrace();
-		}
-        gvMenu.setAdapter(new MenuAdapter(this, menus));
-        
-        gvMenu.setOnItemClickListener(new OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-//                Toast.makeText(Main.this, mAdapter.getItem(position), Toast.LENGTH_SHORT).show();
-            }
-        });
-        
-//        
-//        SlidingUpPanelLayout layout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
-////        layout.setShadowDrawable(getResources().getDrawable(R.drawable.above_shadow));
-//        layout.setPanelSlideListener(new PanelSlideListener() {
-//
-//            @Override
-//            public void onPanelSlide(View panel, float slideOffset) {
-//                if (slideOffset < 0.2) {
-//                    if (getActionBar().isShowing()) {
-//                        getActionBar().hide();
-//                    }
-//                } else {
-//                    if (!getActionBar().isShowing()) {
-//                        getActionBar().show();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onPanelExpanded(View panel) {
-//
-//
-//            }
-//
-//            @Override
-//            public void onPanelCollapsed(View panel) {
-//
-//
-//            }
-//        });
-////        TextView t = (TextView) findViewById(R.id.brought_by);
-////        t.setMovementMethod(LinkMovementMethod.getInstance());
     }
+    
+    private Shop initShop(String shopId) {
+    	Shop shop = new Shop(shopId, shopId);
+    	
+        String menuMetaFile = "cache/" + shopId + "/menu.xml";
+        Menu menu = buildMenuFromMetaFile(menuMetaFile);
+	        
+        shop.setMenu(menu);
+		
+		return shop;
+    }
+    
+    private Menu buildMenuFromMetaFile(String metaFile) {
+    	Menu menu = new Menu();
+    	
+    	Log.i(getClass().getName(), "Building menu from " + metaFile);
+    	
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document dom = builder.parse(this.getAssets().open(metaFile));
+	        Element root = dom.getDocumentElement();
+            NodeList xmlItems = root.getElementsByTagName("item");
+
+        	Log.d(getClass().getName(), "Found " + xmlItems.getLength() + " items");
+            
+            for (int i=0; i<xmlItems.getLength(); i++){
+            	Element xmlItem = (Element)xmlItems.item(i);
+            	String name = xmlItem.getAttribute("name");
+            	MenuItemType type = MenuItem.dishTypes[Integer.parseInt(xmlItem.getAttribute("type"))];
+            	String image = xmlItem.getAttribute("image");
+            	Log.i(getClass().getName(), "Found item: name=" + name + ", type=" + type + ", image=" + image);
+            	
+            	MenuItem item = new MenuItem(name, type, image);
+            	menu.addItem(item);
+            }
+		} catch (Exception e) {
+			Log.e(getClass().getName(), "Fail to load menu from meta file due to " + e);
+		}
+		
+		return menu;
+    }
+
+
+    
+    @Override
+	public void onMenuItemAdded(MenuItem item) {
+    	((TextView)findViewById(R.id.orderCount)).setText("" + Order.currentOrder().getCount());
+	}
+    
+
+	@Override
+	public void onMenuItemRemoved(MenuItem item) {
+    	((TextView)findViewById(R.id.orderCount)).setText("" + Order.currentOrder().getCount());
+	}
 }
+
+
