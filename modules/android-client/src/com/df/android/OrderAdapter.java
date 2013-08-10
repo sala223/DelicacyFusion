@@ -1,18 +1,23 @@
 package com.df.android;
 
-import android.content.Context;
-import android.graphics.Color;
+import android.app.Activity;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class OrderAdapter extends BaseAdapter {
-	Context cxt;
+	Activity activity;
 	Order order;
 	
-	public OrderAdapter(Context cxt) {
-		this.cxt = cxt;
+	public OrderAdapter(Activity activity) {
+		this.activity = activity;
 	}
 	
 	public void setOrder(Order order) {
@@ -31,14 +36,43 @@ public class OrderAdapter extends BaseAdapter {
 
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
-		Order.MenuItemOrder item = (Order.MenuItemOrder)getItem(position);
-		
-        if(convertView != null)
-        	convertView = null;
+        LayoutInflater inflator = activity.getLayoutInflater();
+        
+        View view = convertView; 
+        if(view == null)
+            view = inflator.inflate(R.layout.orderitem, null);
+        
+        final TextView tvName = (TextView) view.findViewById(R.id.menuItemName);
+        final TextView tvPrice = (TextView) view.findViewById(R.id.menuItemPrice);
+        final TextView tvCopies = (TextView) view.findViewById(R.id.menuItemCopies);
+        view.findViewById(R.id.menuItemRemove).setVisibility(View.INVISIBLE);
+
+		final Order.MenuItemOrder item = (Order.MenuItemOrder)getItem(position);
+        
+        tvName.setText(item.getItem().getName());
+        tvPrice.setText("" + item.getItem().getPrice());
+        tvCopies.setText("x" + item.getCopies()); 
  
-        View view = new TextView(cxt);
-        view.setBackgroundColor(Color.WHITE);
-        ((TextView)view).setText(item.getItem().getName() + "(" + item.getItem().getType() + ")" + item.getCopies());
+        view.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View view, MotionEvent event) {
+//				if(event.getAction() == MotionEvent.ACTION_MOVE) {
+					ImageButton btnDelete = (ImageButton)view.findViewById(R.id.menuItemRemove); 
+					btnDelete.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View view) {
+							order.remove(item);
+						}
+						
+					});
+					btnDelete.setVisibility(View.VISIBLE);
+					
+//				}
+					
+				return false;
+			}
+        	
+        });
         
         return view;
     }

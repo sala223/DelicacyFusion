@@ -20,26 +20,52 @@ public class Order {
 		setCurrentOrder(this);
 	}
 	
-	public void add(MenuItem item) {
+	public void add(MenuItemOrder item) {
 		if(item == null) 
 			return; 
 		
-    	Log.d(getClass().getName(), "Adding item " + item.getName());
+    	Log.d(getClass().getName(), "Adding item " + item.getItem().getName());
     	
     	boolean exists = false;
 		for(int i = 0; i < MenuItem.dishTypes.length; i ++) {
-			if(MenuItem.dishTypes[i] == item.getType()) {
+			if(MenuItem.dishTypes[i] == item.getItem().getType()) {
 				for(MenuItemOrder mio : items[i]) {
-					if(item.equals(mio.getItem())) {
+					if(item.equals(mio)) {
 						mio.setCopies(mio.getCopies()+1);
 						exists = true;
 					}
 				}
 
 				if(!exists)
-					items[i].add(new MenuItemOrder(item));
+					items[i].add(item);
 				
 				onMenuItemAdded(item);
+			}
+		}
+	}
+
+	public void remove(MenuItemOrder item) {
+		if(item == null) 
+			return; 
+		
+    	Log.d(getClass().getName(), "Removing item " + item.getItem().getName());
+    	
+    	boolean exists = false;
+		for(int i = 0; i < MenuItem.dishTypes.length; i ++) {
+			if(MenuItem.dishTypes[i] == item.getItem().getType()) {
+				for(MenuItemOrder mio : items[i]) {
+					if(item.equals(mio)) {
+						if(mio.getCopies() > 1)
+							mio.setCopies(mio.getCopies()-1);
+						else
+							exists = true;
+					}
+				}
+
+				if(exists)
+					items[i].remove(item);
+				
+				onMenuItemRemoved(item);
 			}
 		}
 	}
@@ -85,16 +111,15 @@ public class Order {
 		changeListeners.add(listener);
 	}
 	
-	private void onMenuItemAdded(MenuItem item) {
-    	Log.d(getClass().getName(), "Item " + item.getName() + " added");
+	private void onMenuItemAdded(MenuItemOrder item) {
 		for(OrderChangeListener listener : changeListeners) {
-			listener.onMenuItemAdded(item);
+			listener.onMenuItemAdded(item.getItem());
 		}
 	}
 	
-	private void onMenuItemRemoved(MenuItem item) {
+	private void onMenuItemRemoved(MenuItemOrder item) {
 		for(OrderChangeListener listener : changeListeners) {
-			listener.onMenuItemRemoved(item);
+			listener.onMenuItemRemoved(item.getItem());
 		}
 	}
 	
@@ -121,6 +146,13 @@ public class Order {
     	
     	public MenuItemOrder(MenuItem item) {
     		this.item = item;
+    	}
+    	
+    	public boolean equals(MenuItemOrder o) {
+    		if(o == null)
+    			return false;
+    		
+    		return item.equals(o.getItem());
     	}
     }
 }

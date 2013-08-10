@@ -5,8 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="horizontal"
     android:baselineAligned="false"
-    android:animateLayoutChanges="true"
-    android:background="#0099cc">
+    android:animateLayoutChanges="true">
 
     <FrameLayout
 		android:layout_gravity="center_vertical"
@@ -26,7 +25,7 @@
 		<TextView 
 			android:id="@+id/orderCount"
 			android:textColor="#FFFFFF"
-			android:textSize="20dp"
+			android:textSize="20sp"
 			android:text="0" 
 			android:layout_width="40dp" 
 			android:layout_height="40dp" 
@@ -38,32 +37,82 @@
 	    
     <LinearLayout
         android:id="@+id/leftPane"
-        android:background="#009900"
-	    android:layout_width="200dp"
+	    android:layout_width="300dp"
 	    android:layout_height="match_parent"
 	    android:orientation="vertical"
 	    android:visibility="gone">
-	    <TextView 
-			android:text="@string/myOrder" 
-			android:layout_gravity="left" 
-			android:layout_height="wrap_content" 
-			android:layout_width="200dp">
-	    </TextView>
+
 	    <ListView 
 	        android:id="@+id/lstOrder"
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"/>
+	    
     </LinearLayout>
 
-	<GridView 
-	    android:id="@+id/gvMenu"
-	    android:numColumns="auto_fit"
-	    android:columnWidth="200dp"
-	    android:gravity="center"
-	    android:stretchMode="columnWidth"
+    <FrameLayout
+        android:id="@+id/menuContainer"
 	    android:layout_weight="1"
 	    android:layout_width="0dp"
-	    android:layout_height="match_parent" >
-	</GridView>
-	    
+	    android:background="#888888"
+	    android:layout_height="match_parent">
+    	<GridView 
+		    android:id="@+id/gvMenu"
+		    android:numColumns="auto_fit"
+		    android:columnWidth="200dp"
+		    android:gravity="center"
+		    android:background="#FFFFFF"
+		    android:stretchMode="columnWidth"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent" />
+ 		<LinearLayout
+			android:id="@+id/menuItemDetail"
+			android:layout_width="match_parent" 
+			android:layout_height="match_parent"
+			android:background="#FFFFFF"
+			android:orientation="horizontal" 
+			android:visibility="invisible" >
+	 		<ImageView 
+				android:id="@+id/enlargedImage"
+				android:layout_width="match_parent" 
+				android:layout_height="match_parent" 
+				android:layout_weight="1"
+				android:gravity="center" />
+	 		
+	 		<LinearLayout
+				android:layout_width="wrap_content" 
+				android:layout_height="match_parent"
+				android:gravity="center"
+				android:orientation="vertical" >
+		 		<TextView 
+			        android:id="@+id/tvMenuItemDetailName"
+					android:textSize="30sp"
+					android:layout_marginTop="10dp"
+					android:layout_height="wrap_content" 
+					android:layout_width="match_parent"/>
+		 		<TextView 
+			        android:id="@+id/tvMenuItemDetailPrice"
+					android:textSize="64sp"
+					android:layout_marginTop="10dp"
+					android:textColor="#FF0000" 
+					android:layout_height="wrap_content" 
+					android:layout_width="match_parent"/>
+		 		<TextView 
+					android:layout_marginTop="10dp"
+					android:layout_weight="1"
+					android:layout_height="0dp" 
+					android:layout_width="match_parent"/>
+		 		<Button 
+		 		    android:id="@+id/btnMenuItemDetailOrder"
+					android:layout_margin="10dp"
+					android:padding="10dp"
+					android:background="#FF0000"
+					android:textColor="#FFFFFF"
+					android:textSize="30sp"
+					android:text="@string/order"
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"/>
+ 			</LinearLayout>
+ 		</LinearLayout>
+	 </FrameLayout>
+				    
 </LinearLayout>

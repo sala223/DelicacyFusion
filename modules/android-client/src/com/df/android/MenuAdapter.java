@@ -38,40 +38,27 @@ public class MenuAdapter extends BaseAdapter
         return 0;
     }
  
-    public static class ViewHolder
-    {
-        public ImageView menuItemImage;
-        public TextView menuItemInfo;
-    }
- 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder view;
         LayoutInflater inflator = activity.getLayoutInflater();
  
-        if(convertView==null)
-        {
-            view = new ViewHolder();
-            convertView = inflator.inflate(R.layout.menuitem, null);
- 
-            view.menuItemImage = (ImageView) convertView.findViewById(R.id.menuItemImage);
-            view.menuItemInfo = (TextView) convertView.findViewById(R.id.menuItemInfo);
- 
-            convertView.setTag(view);
-        }
-        else
-        {
-            view = (ViewHolder) convertView.getTag();
-        }
- 
-        view.menuItemInfo.setText(shop.getMenu().getItems().get(position).getName());
+        View view = convertView; 
+        if(view == null)
+            view = inflator.inflate(R.layout.menuitem, null);
+        
+        final TextView tvName = (TextView) view.findViewById(R.id.menuItemName);
+        final ImageView ivImage = (ImageView) view.findViewById(R.id.menuItemImage);
+        final TextView tvPrice = (TextView) view.findViewById(R.id.menuItemPrice);
+        
+        tvName.setText(shop.getMenu().getItems().get(position).getName());
+        tvPrice.setText("" + shop.getMenu().getItems().get(position).getPrice());
         String imageFile = shop.getMenu().getItems().get(position).getImage();
         try {
-			view.menuItemImage.setImageBitmap(BitmapFactory.decodeStream(activity.getAssets().open("cache/" + shop.getId() + "/" + imageFile)));
+        	ivImage.setImageBitmap(BitmapFactory.decodeStream(activity.getAssets().open("cache/" + shop.getId() + "/" + imageFile)));
 		} catch (IOException e) {
-			Log.e("MenuAdapter", "Fail to load image file '" + imageFile + "'");
+			Log.e(getClass().getName(), "Fail to load image file '" + imageFile + "'");
 		}
  
-        return convertView;
+        return view;
     }
 }
