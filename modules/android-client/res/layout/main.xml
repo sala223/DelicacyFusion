@@ -5,8 +5,7 @@
     android:layout_height="fill_parent"
     android:orientation="horizontal"
     android:baselineAligned="false"
-    android:animateLayoutChanges="true"
-    android:background="#0099cc">
+    android:animateLayoutChanges="true">
 
     <FrameLayout
 		android:layout_gravity="center_vertical"
