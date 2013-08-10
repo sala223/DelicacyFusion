@@ -69,7 +69,7 @@ public class MenuAdapter extends BaseAdapter
         try {
 			view.menuItemImage.setImageBitmap(BitmapFactory.decodeStream(activity.getAssets().open("cache/" + shop.getId() + "/" + imageFile)));
 		} catch (IOException e) {
-			Log.e("MenuAdapter", "Fail to load image file '" + imageFile + "'");
+			Log.e(getClass().getName(), "Fail to load image file '" + imageFile + "'");
 		}
  
         return convertView;
