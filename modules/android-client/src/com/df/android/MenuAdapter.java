@@ -42,7 +42,7 @@ public class MenuAdapter extends BaseAdapter
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflator = activity.getLayoutInflater();
  
-        View view = convertView;
+        View view = convertView; 
         if(view == null)
             view = inflator.inflate(R.layout.menuitem, null);
         

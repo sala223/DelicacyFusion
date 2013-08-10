@@ -160,7 +160,7 @@ public class Main extends Activity implements OrderChangeListener {
 
 			@Override
 			public void onClick(View view) {
-				Order.currentOrder().add(item);
+				Order.currentOrder().add(new Order.MenuItemOrder(item));
 			}
 	    	
 	    });
