@@ -27,7 +27,7 @@ public class MenuItem {
 	
 	public String getImage() {
 		return image;
-	}
+	} 
 	
 	public MenuItemType getType() {
 		return type;
