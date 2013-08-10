@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.df.core.persist.testsuit.JPATestBase;
-import com.df.masterdata.dal.CategoryDAL;
 import com.df.masterdata.entity.Category;
 import com.df.masterdata.service.inf.CategoryServiceInf;
 
