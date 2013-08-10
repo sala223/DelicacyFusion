@@ -1,7 +1,5 @@
 package com.df.android;
 
-
-
 public class MenuItem {
 	public static enum MenuItemType {
 		MIT_COLDDISH,
@@ -18,10 +16,16 @@ public class MenuItem {
 	private String name;
 	private String image;
 	private MenuItemType type;
+	private float price;
 	
 	public MenuItem(String name, MenuItemType type, String image) {
+		this(name, type, 0.00f, image);
+	}
+	
+	public MenuItem(String name, MenuItemType type, float price, String image) {
 		this.name = name;
 		this.type = type;
+		this.price = price;
 		this.image = image;
 	}
 	
@@ -35,6 +39,10 @@ public class MenuItem {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public float getPrice() {
+		return price;
 	}
 	
 	public boolean equals(MenuItem o) {

@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,7 +40,7 @@ public class Main extends Activity implements OrderChangeListener {
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.main);  
 
-        shop = initShop("demo"); 
+        shop = initShop("demo");  
         
         GridView gvMenu = (GridView) findViewById(R.id.gvMenu); 
 		final MenuAdapter menuAdapter = new MenuAdapter(this, shop);
@@ -49,8 +50,6 @@ public class Main extends Activity implements OrderChangeListener {
 			public void onItemClick(AdapterView<?> arg0, View view, int index,
 					long arg3) { 
 				MenuItem item = (MenuItem)menuAdapter.getItem(index);
-//				Toast.makeText(view.getContext(), "You selected item " + item.getName(), Toast.LENGTH_SHORT).show();
-//				Order.currentOrder().add(item);
 				showMenuItemDetail(view, item);
 			} 
 			
@@ -110,9 +109,10 @@ public class Main extends Activity implements OrderChangeListener {
             	String name = xmlItem.getAttribute("name");
             	MenuItemType type = MenuItem.dishTypes[Integer.parseInt(xmlItem.getAttribute("type"))];
             	String image = xmlItem.getAttribute("image");
+            	float price = Float.parseFloat(xmlItem.getAttribute("price"));
             	Log.i(getClass().getName(), "Found item: name=" + name + ", type=" + type + ", image=" + image);
             	
-            	MenuItem item = new MenuItem(name, type, image);
+            	MenuItem item = new MenuItem(name, type, price, image);
             	menu.addItem(item);
             }
 		} catch (Exception e) {
@@ -126,7 +126,7 @@ public class Main extends Activity implements OrderChangeListener {
 	public void onMenuItemAdded(MenuItem item) {
     	((OrderAdapter)((ListView)findViewById(R.id.lstOrder)).getAdapter()).notifyDataSetChanged();
     	((TextView)findViewById(R.id.orderCount)).setText("" + Order.currentOrder().getCount());
-    }
+    } 
     
 
 	@Override
@@ -143,16 +143,27 @@ public class Main extends Activity implements OrderChangeListener {
 	    if (mCurrentAnimator != null) {
 	        mCurrentAnimator.cancel();
 	    }
-
-	    // Load the high-resolution "zoomed-in" image.
-	    final ImageView expandedImageView = (ImageView) findViewById(
+	    
+	    ((TextView)findViewById(R.id.tvMenuItemDetailName)).setText(item.getName());
+	    ((TextView)findViewById(R.id.tvMenuItemDetailPrice)).setText("" + item.getPrice());
+	    final LinearLayout expandedView = (LinearLayout) findViewById(
 	            R.id.menuItemDetail);
+	    final ImageView expandedImageView = (ImageView) findViewById(
+	            R.id.enlargedImage); 
 	    String imageFile = "cache/" + shop.getId() + "/" + item.getImage();
         try {
         	expandedImageView.setImageBitmap(BitmapFactory.decodeStream(getAssets().open(imageFile)));
 		} catch (IOException e) {
 			Log.e(getClass().getName(), "Fail to load image file '" + imageFile + "'");
-		}
+		} 
+	    ((Button)findViewById(R.id.btnMenuItemDetailOrder)).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				Order.currentOrder().add(item);
+			}
+	    	
+	    });
 
 	    // Calculate the starting and ending bounds for the zoomed-in image.
 	    // This step involves lots of math. Yay, math.
@@ -190,30 +201,30 @@ public class Main extends Activity implements OrderChangeListener {
 	        float deltaHeight = (startHeight - startBounds.height()) / 2;
 	        startBounds.top -= deltaHeight;
 	        startBounds.bottom += deltaHeight;
-	    }
+	    } 
 
 	    // Hide the thumbnail and show the zoomed-in view. When the animation
 	    // begins, it will position the zoomed-in view in the place of the
 	    // thumbnail.
 	    srcView.setAlpha(0f);
-	    expandedImageView.setVisibility(View.VISIBLE);
+	    expandedView.setVisibility(View.VISIBLE);
 
 	    // Set the pivot point for SCALE_X and SCALE_Y transformations
 	    // to the top-left corner of the zoomed-in view (the default
 	    // is the center of the view).
-	    expandedImageView.setPivotX(0f);
-	    expandedImageView.setPivotY(0f);
+	    expandedView.setPivotX(0f);
+	    expandedView.setPivotY(0f);
 
 	    // Construct and run the parallel animation of the four translation and
 	    // scale properties (X, Y, SCALE_X, and SCALE_Y).
 	    AnimatorSet set = new AnimatorSet();
 	    set
-	            .play(ObjectAnimator.ofFloat(expandedImageView, View.X,
+	            .play(ObjectAnimator.ofFloat(expandedView, View.X,
 	                    startBounds.left, finalBounds.left))
-	            .with(ObjectAnimator.ofFloat(expandedImageView, View.Y,
+	            .with(ObjectAnimator.ofFloat(expandedView, View.Y,
 	                    startBounds.top, finalBounds.top))
-	            .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X,
-	            startScale, 1f)).with(ObjectAnimator.ofFloat(expandedImageView,
+	            .with(ObjectAnimator.ofFloat(expandedView, View.SCALE_X,
+	            startScale, 1f)).with(ObjectAnimator.ofFloat(expandedView,
 	                    View.SCALE_Y, startScale, 1f));
 	    set.setDuration(mShortAnimationDuration);
 	    set.setInterpolator(new DecelerateInterpolator());
@@ -235,7 +246,7 @@ public class Main extends Activity implements OrderChangeListener {
 	    // to the original bounds and show the thumbnail instead of
 	    // the expanded image.
 	    final float startScaleFinal = startScale;
-	    expandedImageView.setOnClickListener(new View.OnClickListener() {
+	    expandedView.setOnClickListener(new View.OnClickListener() {
 	        @Override
 	        public void onClick(View view) {
 	            if (mCurrentAnimator != null) {
@@ -246,15 +257,15 @@ public class Main extends Activity implements OrderChangeListener {
 	            // back to their original values.
 	            AnimatorSet set = new AnimatorSet();
 	            set.play(ObjectAnimator
-	                        .ofFloat(expandedImageView, View.X, startBounds.left))
+	                        .ofFloat(expandedView, View.X, startBounds.left))
 	                        .with(ObjectAnimator
-	                                .ofFloat(expandedImageView, 
+	                                .ofFloat(expandedView, 
 	                                        View.Y,startBounds.top))
 	                        .with(ObjectAnimator
-	                                .ofFloat(expandedImageView, 
+	                                .ofFloat(expandedView, 
 	                                        View.SCALE_X, startScaleFinal))
 	                        .with(ObjectAnimator
-	                                .ofFloat(expandedImageView, 
+	                                .ofFloat(expandedView, 
 	                                        View.SCALE_Y, startScaleFinal));
 	            set.setDuration(mShortAnimationDuration);
 	            set.setInterpolator(new DecelerateInterpolator());
@@ -262,14 +273,14 @@ public class Main extends Activity implements OrderChangeListener {
 	                @Override
 	                public void onAnimationEnd(Animator animation) {
 	                    srcView.setAlpha(1f);
-	                    expandedImageView.setVisibility(View.GONE);
+	                    expandedView.setVisibility(View.GONE);
 	                    mCurrentAnimator = null;
 	                }
 
 	                @Override
 	                public void onAnimationCancel(Animator animation) {
 	                	srcView.setAlpha(1f);
-	                    expandedImageView.setVisibility(View.GONE);
+	                    expandedView.setVisibility(View.GONE);
 	                    mCurrentAnimator = null;
 	                }
 	            });
