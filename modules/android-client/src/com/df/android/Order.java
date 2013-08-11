@@ -13,11 +13,17 @@ public class Order {
 	private static Order currentOrder;
 	private List<OrderChangeListener> changeListeners = new ArrayList<OrderChangeListener>();
 	
-	public Order() {
+	public Order(String id) {
+		this.id = id;
+		
 		for(int i = 0; i < MenuItem.dishTypes.length; i ++)
 			items[i] = new ArrayList<MenuItemOrder>();
 		
 		setCurrentOrder(this);
+	}
+	
+	public String getId() {
+		return id;
 	}
 	
 	public void add(MenuItemOrder item) {

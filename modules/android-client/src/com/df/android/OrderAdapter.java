@@ -1,7 +1,6 @@
 package com.df.android;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -66,7 +65,6 @@ public class OrderAdapter extends BaseAdapter {
 						
 					});
 					btnDelete.setVisibility(View.VISIBLE);
-					
 //				}
 					
 				return false;

@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.df.android.MenuItem.MenuItemType;
 
@@ -56,12 +57,23 @@ public class Main extends Activity implements OrderChangeListener {
 		});
         gvMenu.setAdapter(menuAdapter);
         
-        ListView lstOrder = (ListView)findViewById(R.id.lstOrder);
-        OrderAdapter orderAdapter = new OrderAdapter(this);
-        Order order = new Order();
-        order.registerChangeListener(this);
-        orderAdapter.setOrder(order);
-        lstOrder.setAdapter(orderAdapter);
+        
+        ((Button) findViewById(R.id.btnCreateOrder)).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+		        Order order = new Order("Table 1");
+		        order.registerChangeListener(Main.this);
+
+		        final ListView lstOrder = (ListView)findViewById(R.id.lstOrder);
+		        OrderAdapter orderAdapter = new OrderAdapter(Main.this);
+		        orderAdapter.setOrder(order);
+		        lstOrder.setAdapter(orderAdapter);
+		        
+		        ((TextView)findViewById(R.id.orderId)).setText(order.getId());
+			}
+        	
+        });
         
         findViewById(R.id.openClose).setOnClickListener(new OnClickListener()
         {  
@@ -130,7 +142,7 @@ public class Main extends Activity implements OrderChangeListener {
     
 
 	@Override
-	public void onMenuItemRemoved(MenuItem item) {
+	public void onMenuItemRemoved(MenuItem item) { 
     	((OrderAdapter)((ListView)findViewById(R.id.lstOrder)).getAdapter()).notifyDataSetChanged();
     	((TextView)findViewById(R.id.orderCount)).setText("" + Order.currentOrder().getCount());
 	}
@@ -160,6 +172,12 @@ public class Main extends Activity implements OrderChangeListener {
 
 			@Override
 			public void onClick(View view) {
+				if(Order.currentOrder() == null) {
+					// Toast.makeText(view.getContext(), Resources.getSystem().getString(R.string.create_before_ordering), Toast.LENGTH_LONG).show();
+					Toast.makeText(view.getContext(), "点菜前必须先开单", Toast.LENGTH_LONG).show();
+					return;
+				}
+				
 				Order.currentOrder().add(new Order.MenuItemOrder(item));
 			}
 	    	
