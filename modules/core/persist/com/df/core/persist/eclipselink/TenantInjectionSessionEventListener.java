@@ -11,7 +11,6 @@ import org.springframework.util.StringUtils;
 
 import com.df.core.common.context.TenantContext;
 import com.df.core.common.context.TenantContextHolder;
-import com.df.core.common.entity.MultiTenantSupport; 
 
 public class TenantInjectionSessionEventListener extends SessionEventAdapter {
 

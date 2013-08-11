@@ -1,4 +1,4 @@
-package com.df.core.common.entity;
+package crm.df.crm.tenant;
 
 import java.io.Serializable;
 
@@ -10,22 +10,22 @@ public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(nullable = false, length = 128)
+    @Column(name = "country", nullable = false, length = 128)
     private String country;
-    
-    @Column(nullable = false, length = 128)
+
+    @Column(name = "province", nullable = false, length = 128)
     private String province;
-    
-    @Column(nullable = false, length = 128)
+
+    @Column(name = "city", nullable = false, length = 128)
     private String city;
-    
-    @Column(nullable = false, length = 128)
+
+    @Column(name = "county", nullable = false, length = 128)
     private String county;
-    
-    @Column(nullable = false, length = 128)
+
+    @Column(name = "town", nullable = false, length = 128)
     private String town;
-    
-    @Column(nullable = false, length = 512)
+
+    @Column(name = "address", nullable = false, length = 512)
     private String address;
 
     public String getCountry() {

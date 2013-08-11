@@ -10,6 +10,6 @@
 	<bean id="categoryDAL" class="com.df.masterdata.dal.CategoryDAL" autowire="default"/>
 	<bean id="storeDAL" class="com.df.masterdata.dal.StoreDAL" autowire="default"/>
 	<bean id="categoryServive" class="com.df.masterdata.service.impl.CategoryServiceImpl" autowire="default"/>
-	<bean id="storeServive" class="com.df.masterdata.service.impl.StoreServiceImpl" autowire="true"/>
-	<tx:annotation-driven/>
+	<bean id="storeServive" class="com.df.masterdata.service.impl.StoreServiceImpl" autowire="default"/>
+	<tx:annotation-driven/> 
 </beans>

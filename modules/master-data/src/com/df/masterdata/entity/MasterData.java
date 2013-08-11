@@ -14,7 +14,7 @@ import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.MultitenantType;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 
-import com.df.core.common.entity.MultiTenantSupport;
+import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @MappedSuperclass
 @Multitenant(MultitenantType.SINGLE_TABLE)

@@ -14,8 +14,6 @@ import javax.persistence.Lob;
 import javax.persistence.SecondaryTable;
 import javax.persistence.PrimaryKeyJoinColumn;
 
-import com.df.core.common.entity.Address;
-
 @Entity
 @SecondaryTable(name = "TENANT_ADDRESS", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ADDRESS_ID"))
 public class Tenant implements Serializable {
@@ -44,6 +42,6 @@ public class Tenant implements Serializable {
 	    @AttributeOverride(name = "county", column = @Column(table = "TENANT_ADDRESS")),
 	    @AttributeOverride(name = "town", column = @Column(table = "TENANT_ADDRESS")),
 	    @AttributeOverride(name = "address", column = @Column(table = "TENANT_ADDRESS")) })
-    private Address address;
+    private String address;
 
 }

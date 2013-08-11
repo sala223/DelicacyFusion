@@ -8,14 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
+import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.Index;
 
 @Entity
-@SecondaryTable(name = "STORE_ADDRESS", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ADDRESS_ID"))
+@Table
+@SecondaryTable(name = "store_address", pkJoinColumns = @PrimaryKeyJoinColumn(name = "address_id"))
 public class Store extends MasterData {
 
-    @Column(nullable = false, length = 256)
+    @Column(nullable = false, length = 255)
     @Index
     private String name;
 
@@ -24,12 +26,13 @@ public class Store extends MasterData {
     private String description;
 
     @Embedded
-    @AttributeOverrides({ @AttributeOverride(name = "country", column = @Column(table = "STORE_ADDRESS")),
-	    @AttributeOverride(name = "province", column = @Column(table = "STORE_ADDRESS")),
-	    @AttributeOverride(name = "city", column = @Column(table = "STORE_ADDRESS")),
-	    @AttributeOverride(name = "county", column = @Column(table = "STORE_ADDRESS")),
-	    @AttributeOverride(name = "town", column = @Column(table = "STORE_ADDRESS")),
-	    @AttributeOverride(name = "address", column = @Column(table = "STORE_ADDRESS")) })
+    @AttributeOverrides({
+	    @AttributeOverride(name = "country", column = @Column(name = "COUNTRY", table = "store_address")),
+	    @AttributeOverride(name = "province", column = @Column(name = "PROVINCE", table = "store_address")),
+	    @AttributeOverride(name = "city", column = @Column(name = "CITY", table = "store_address")),
+	    @AttributeOverride(name = "county", column = @Column(name = "COUNTY", table = "store_address")),
+	    @AttributeOverride(name = "town", column = @Column(name = "TOWN", table = "store_address")),
+	    @AttributeOverride(name = "address", column = @Column(name = "ADDRESS", table = "store_address")) })
     private Address address;
 
     @Column(length = 32, nullable = false)

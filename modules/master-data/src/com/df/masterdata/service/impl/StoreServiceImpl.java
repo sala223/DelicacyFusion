@@ -2,8 +2,8 @@ package com.df.masterdata.service.impl;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.df.masterdata.dal.StoreDAL;
@@ -11,13 +11,13 @@ import com.df.masterdata.entity.Store;
 import com.df.masterdata.exception.StoreException;
 import com.df.masterdata.service.inf.StoreServiceInf;
 
+@Transactional(isolation = Isolation.DEFAULT)
 public class StoreServiceImpl implements StoreServiceInf {
 
-    @Inject
+    @Autowired
     private StoreDAL storeDAL;
 
     @Override
-    @Transactional
     public void newStore(Store store) {
 	if (storeDAL.getStoreByName(store.getName()) != null) {
 	    throw StoreException.storeWithNameAlreadyExist(store.getName());

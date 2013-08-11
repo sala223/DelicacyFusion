@@ -6,7 +6,7 @@ public interface Constants {
 
 	public static final String ENTITY_NAME = "Category";
 
-	public static final String ENTITY_TABLE = "CATEGORY";
+	public static final String ENTITY_TABLE = "Category";
 
 	public static final String NAME_PROPERTY = "name";
 

@@ -1,4 +1,4 @@
-package com.df.core.common.entity;
+package com.df.core.persist.eclipselink;
 
 public abstract class MultiTenantSupport {
 

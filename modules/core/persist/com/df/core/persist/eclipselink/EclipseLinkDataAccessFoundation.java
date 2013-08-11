@@ -6,7 +6,9 @@ import java.util.Vector;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.eclipse.persistence.config.QueryHints;
 import org.eclipse.persistence.descriptors.ClassDescriptor;
@@ -16,12 +18,14 @@ import org.eclipse.persistence.sessions.Session;
 import com.df.core.persist.exception.DataAccessException;
 import com.df.core.persist.jpa.JPADataAccessFoundation;
 
-@SuppressWarnings("unchecked")
 public class EclipseLinkDataAccessFoundation extends JPADataAccessFoundation {
 
     public <T> List<T> all(Class<T> entityType) {
-	Session session = getSession();
-	return session.readAllObjects(entityType);
+	CriteriaBuilder builder = createQueryBuilder();
+	CriteriaQuery<T> query = builder.createQuery(entityType);
+	query.from(entityType);
+	TypedQuery<T> typeQuery = this.getEntityManager().createQuery(query);
+	return typeQuery.getResultList();
     }
 
     public void bulkInsert(List<?> objects) {

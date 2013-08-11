@@ -14,7 +14,4 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 @ActiveProfiles(value = { "test" })
 public abstract class JPATestBase {
 
-    public static void main(String args[]) {
-	System.out.print("");
-    }
 }

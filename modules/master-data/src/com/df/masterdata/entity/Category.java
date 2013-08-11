@@ -15,7 +15,7 @@ import org.eclipse.persistence.annotations.BatchFetch;
 import org.eclipse.persistence.annotations.BatchFetchType;
 import org.eclipse.persistence.annotations.Index;
 
-import com.df.core.common.entity.MultiTenantSupport;
+import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @Entity
 @Table(name = Constants.CATEGORY.ENTITY_TABLE)
@@ -33,7 +33,7 @@ public class Category extends MasterData {
     private Category parent;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "CATEGORY", joinColumns = { @JoinColumn(name = "PARENT") }, inverseJoinColumns = { @JoinColumn(name = "ID") })
+    @JoinTable(name = Constants.CATEGORY.ENTITY_TABLE, joinColumns = { @JoinColumn(name = "PARENT") }, inverseJoinColumns = { @JoinColumn(name = "ID") })
     @BatchFetch(BatchFetchType.JOIN)
     private List<Category> children;
 

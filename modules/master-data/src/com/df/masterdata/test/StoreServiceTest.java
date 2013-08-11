@@ -7,19 +7,19 @@ import junit.framework.TestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.df.core.common.entity.Address;
-import com.df.core.persist.testsuit.JPATestBase;
+import com.df.masterdata.entity.Address;
 import com.df.masterdata.entity.Store;
 import com.df.masterdata.service.inf.StoreServiceInf;
 
-public class StoreServiceTest extends JPATestBase {
+public class StoreServiceTest extends MasterDataBaseTest {
 
     @Autowired
     private StoreServiceInf storeService;
 
     @Test
-    public void testNewStore() {
+    public void newStoreTest() {
 	Store store = new Store();
+	store.fillDefaultValue();
 	store.setName("DanceQueue");
 	store.setTelephone1("0731-34343433");
 	store.setBusinessHourFrom(8);
@@ -30,6 +30,7 @@ public class StoreServiceTest extends JPATestBase {
 	address.setCity("Changsha");
 	address.setCounty("HuRong District");
 	address.setAddress("Mawang dui");
+	store.setAddress(address); 
 	storeService.newStore(store);
 	List<Store> stores = storeService.getStoreList();
 	boolean hasFound = false;

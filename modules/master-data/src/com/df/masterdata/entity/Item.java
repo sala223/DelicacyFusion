@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import org.eclipse.persistence.annotations.Cache;
 import org.eclipse.persistence.annotations.Index;
 
-import com.df.core.common.entity.MultiTenantSupport;
+import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @Cache
 @Entity(name = "ITEM")
