@@ -5,6 +5,9 @@
     <string name="menu_settings">Settings</string>
     <string name="login">Login</string>
     <string name="myOrder">我的菜单</string>
-    <string name="order">加入定单</string>
+    <string name="order">我要点</string>
+    <string name="create_order">开单</string>
+    <string name="send_order">落单</string>
+    <string name="create_before_ordering">点菜前必须先开单</string>
     
 </resources>
