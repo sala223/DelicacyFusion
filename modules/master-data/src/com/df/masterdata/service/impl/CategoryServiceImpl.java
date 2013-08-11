@@ -11,6 +11,7 @@ import com.df.masterdata.entity.Category;
 import com.df.masterdata.exception.CategoryException;
 import com.df.masterdata.service.inf.CategoryServiceInf;
 
+@Transactional
 public class CategoryServiceImpl implements CategoryServiceInf {
 
     @Autowired

@@ -13,7 +13,8 @@ import com.df.masterdata.entity.Constants.CATEGORY;
 public class CategoryDAL extends MasterDataAccessFoundation {
 
     public List<Category> getRootCategories() {
-	String eql = String.format("SELECT c FROM %s c WHERE c.parent IS NULL", CATEGORY.ENTITY_NAME);
+	String entityName = this.getClassDescrptor(Category.class).getAlias();
+	String eql = String.format("SELECT c FROM %s c WHERE c.parent IS NULL", entityName);
 	TypedQuery<Category> query = this.getEntityManager().createQuery(eql, Category.class);
 	return query.getResultList();
     }
