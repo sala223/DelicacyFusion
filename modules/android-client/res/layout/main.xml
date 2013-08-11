@@ -42,10 +42,40 @@
 	    android:orientation="vertical"
 	    android:visibility="gone">
 
+	    <LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnCreateOrder"
+                android:drawableLeft="@drawable/create_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:text="@string/create_order" 
+                android:textColor="#FFFFFF"
+                android:paddingLeft="10dip" 
+                android:paddingRight="10dip" /> 
+            <Button
+                android:id="@+id/btnSendOrder"
+                android:drawableLeft="@drawable/send_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:text="@string/send_order" 
+                android:textColor="#FFFFFF"
+                android:paddingLeft="10dip" 
+                android:paddingRight="10dip" 
+                android:layout_gravity="right"/> 
+   		</LinearLayout>
+		<TextView 
+			android:id="@+id/orderId"
+			android:layout_width="match_parent" 
+			android:layout_height="wrap_content" />
+		
 	    <ListView 
 	        android:id="@+id/lstOrder"
+	        android:layout_weight="1"
 		    android:layout_width="match_parent"
-		    android:layout_height="match_parent"/>
+		    android:layout_height="0dp"/>
 	    
     </LinearLayout>
 
