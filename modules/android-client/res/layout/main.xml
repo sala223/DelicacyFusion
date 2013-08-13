@@ -74,6 +74,7 @@
 	    <ListView 
 	        android:id="@+id/lstOrder"
 	        android:layout_weight="1"
+	        android:animateLayoutChanges="true"
 		    android:layout_width="match_parent"
 		    android:layout_height="0dp"/>
 	    
@@ -83,17 +84,12 @@
         android:id="@+id/menuContainer"
 	    android:layout_weight="1"
 	    android:layout_width="0dp"
-	    android:background="#888888"
 	    android:layout_height="match_parent">
-    	<GridView 
-		    android:id="@+id/gvMenu"
-		    android:numColumns="auto_fit"
-		    android:columnWidth="200dp"
-		    android:gravity="center"
-		    android:background="#FFFFFF"
-		    android:stretchMode="columnWidth"
-		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent" />
+
+	    <android.support.v4.view.ViewPager
+	        android:id="@+id/menuPager"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" />
  		<LinearLayout
 			android:id="@+id/menuItemDetail"
 			android:layout_width="match_parent" 
@@ -103,7 +99,7 @@
 			android:visibility="invisible" >
 	 		<ImageView 
 				android:id="@+id/enlargedImage"
-				android:layout_width="match_parent" 
+				android:layout_width="0dp" 
 				android:layout_height="match_parent" 
 				android:layout_weight="1"
 				android:gravity="center" />

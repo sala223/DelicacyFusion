@@ -2,6 +2,7 @@ package com.df.android;
 
 public class MenuItem {
 	public static enum MenuItemType {
+		MIT_ALL,
 		MIT_COLDDISH,
 		MIT_HOTDISH,
 		MIT_DRINK,
