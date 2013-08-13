@@ -12,13 +12,15 @@ import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.Index;
 
+import com.df.core.persist.eclipselink.MultiTenantSupport;
+
 @Entity
 @Table
 @SecondaryTable(name = "store_address", pkJoinColumns = @PrimaryKeyJoinColumn(name = "address_id"))
+@Index(name = "store_name_index", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
 public class Store extends MasterData {
 
     @Column(nullable = false, length = 255)
-    @Index
     private String name;
 
     @Lob

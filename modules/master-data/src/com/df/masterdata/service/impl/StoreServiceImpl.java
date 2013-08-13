@@ -2,7 +2,8 @@ package com.df.masterdata.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +15,7 @@ import com.df.masterdata.service.inf.StoreServiceInf;
 @Transactional(isolation = Isolation.DEFAULT)
 public class StoreServiceImpl implements StoreServiceInf {
 
-    @Autowired
+    @Inject
     private StoreDAL storeDAL;
 
     @Override

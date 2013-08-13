@@ -66,9 +66,8 @@ public class EclipseLinkDataAccessFoundation extends JPADataAccessFoundation {
 	return tq.getResultList();
     }
 
-    protected ClassDescriptor getClassDescrptor(String entity) {
-	Session session = getSession();
-	return session.getClassDescriptorForAlias(entity);
+    protected String getEntityName(Class<?> entityClass) {
+	return getClassDescrptor(entityClass).getAlias();
     }
 
     protected ClassDescriptor getClassDescrptor(Class<?> entityClass) {
@@ -79,5 +78,23 @@ public class EclipseLinkDataAccessFoundation extends JPADataAccessFoundation {
     protected Session getSession() {
 	EntityManager em = getEntityManager();
 	return em.unwrap(Session.class);
+    }
+    
+
+    public <T> T findSingleEntityByProperty(Class<T> entityClass, String property, Object propertyValue) {
+	CriteriaBuilder builder = createQueryBuilder();
+	CriteriaQuery<T> query = builder.createQuery(entityClass);
+	Root<T> root = query.from(entityClass);
+	query.where(builder.equal(root.get(property), propertyValue));
+	return executeSingleQuery(query);
+    }
+
+    public <T> List<T> findEntityListByProperty(Class<T> entityClass, String property, Object propertyValue) {
+	CriteriaBuilder builder = createQueryBuilder();
+	CriteriaQuery<T> query = builder.createQuery(entityClass);
+	Root<T> root = query.from(entityClass);
+	query.where(builder.equal(root.get(property), propertyValue));
+	EntityManager em = getEntityManager();
+	return em.createQuery(query).getResultList();
     }
 }
