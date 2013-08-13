@@ -1,10 +1,13 @@
 package com.df.android;
 
+import java.util.List;
+
 public class Shop {
 	private String id;
 	private String name;
 	private String address;
 	private Menu menu;
+	private List<Table> tables; 
 	
 	public Shop(String id, String name) {
 		this(id, name, "");
@@ -20,6 +23,10 @@ public class Shop {
 		this.menu = menu;
 	}
 	
+	public void setTables(List<Table> tables) {
+		this.tables = tables;
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -32,5 +39,9 @@ public class Shop {
 	}
 	public Menu getMenu() {
 		return menu;
+	}
+	
+	public List<Table> getTables() {
+		return tables;
 	}
 }
