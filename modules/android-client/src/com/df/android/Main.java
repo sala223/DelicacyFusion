@@ -14,17 +14,21 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnDragListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.df.android.MenuItem.MenuItemType;
+import com.df.android.Order.MenuItemOrder;
 
 public class Main extends Activity implements OrderChangeListener {
 	@Override
@@ -61,6 +65,32 @@ public class Main extends Activity implements OrderChangeListener {
 										OrderAdapter orderAdapter = new OrderAdapter(Main.this);
 										orderAdapter.setOrder(order);
 										lstOrder.setAdapter(orderAdapter);
+										lstOrder.setOnDragListener(new OnDragListener() {
+											@Override
+											public boolean onDrag(View v, DragEvent event) {
+												switch (event.getAction()) {
+												case DragEvent.ACTION_DRAG_STARTED:
+													break;
+												case DragEvent.ACTION_DRAG_ENTERED:
+													v.setBackgroundColor(Color.LTGRAY);
+													break;
+												case DragEvent.ACTION_DRAG_EXITED:
+													v.setBackgroundColor(Color.WHITE);
+													break;
+												case DragEvent.ACTION_DROP:
+													break;
+												case DragEvent.ACTION_DRAG_ENDED:
+													v.setBackgroundColor(Color.WHITE);
+													 View srcView = (View) event.getLocalState();
+													 MenuItem item = (MenuItem)srcView.getTag();
+													 Order.currentOrder().add(new MenuItemOrder(item));
+												default:
+													break;
+												}
+												return true;
+											}
+										});
+
 				
 										((TextView) findViewById(R.id.orderId)).setText(order.getId());
 									}

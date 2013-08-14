@@ -48,6 +48,7 @@
 		    android:orientation="horizontal">
             <Button
                 android:id="@+id/btnCreateOrder"
+                style="?android:attr/borderlessButtonStyle"
                 android:drawableLeft="@drawable/create_order"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" 
@@ -57,6 +58,7 @@
                 android:paddingRight="10dip" /> 
             <Button
                 android:id="@+id/btnSendOrder"
+                style="?android:attr/borderlessButtonStyle"
                 android:drawableLeft="@drawable/send_order"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" 
@@ -137,7 +139,7 @@
 					android:text="@string/order"
 					android:layout_height="wrap_content"
 					android:layout_width="match_parent"/>
- 			</LinearLayout>
+		 	</LinearLayout>
  		</LinearLayout>
 	 </FrameLayout>
 				    

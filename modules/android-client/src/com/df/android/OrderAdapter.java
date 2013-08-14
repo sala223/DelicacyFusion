@@ -14,15 +14,15 @@ import android.widget.TextView;
 public class OrderAdapter extends BaseAdapter {
 	Activity activity;
 	Order order;
-	
+
 	public OrderAdapter(Activity activity) {
 		this.activity = activity;
 	}
-	
+
 	public void setOrder(Order order) {
 		this.order = order;
 	}
-	
+
 	@Override
 	public int getCount() {
 		return order.getDistinctCount();
@@ -34,46 +34,49 @@ public class OrderAdapter extends BaseAdapter {
 	}
 
 	@Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflator = activity.getLayoutInflater();
-        
-        View view = convertView; 
-        if(view == null)
-            view = inflator.inflate(R.layout.orderitem, null);
-        
-        final TextView tvName = (TextView) view.findViewById(R.id.menuItemName);
-        final TextView tvPrice = (TextView) view.findViewById(R.id.menuItemPrice);
-        final TextView tvCopies = (TextView) view.findViewById(R.id.menuItemCopies);
-        view.findViewById(R.id.menuItemRemove).setVisibility(View.INVISIBLE);
+	public View getView(int position, View convertView, ViewGroup parent) {
+		LayoutInflater inflator = activity.getLayoutInflater();
 
-		final Order.MenuItemOrder item = (Order.MenuItemOrder)getItem(position);
-        
-        tvName.setText(item.getItem().getName());
-        tvPrice.setText("" + item.getItem().getPrice());
-        tvCopies.setText("x" + item.getCopies()); 
- 
-        view.setOnTouchListener(new OnTouchListener() {
+		View view = convertView;
+		if (view == null)
+			view = inflator.inflate(R.layout.orderitem, null);
+
+		final TextView tvName = (TextView) view.findViewById(R.id.menuItemName);
+		final TextView tvPrice = (TextView) view
+				.findViewById(R.id.menuItemPrice);
+		final TextView tvCopies = (TextView) view
+				.findViewById(R.id.menuItemCopies);
+		view.findViewById(R.id.menuItemRemove).setVisibility(View.INVISIBLE);
+
+		final Order.MenuItemOrder item = (Order.MenuItemOrder) getItem(position);
+
+		tvName.setText(item.getItem().getName());
+		tvPrice.setText("" + item.getItem().getPrice());
+		tvCopies.setText("x" + item.getCopies());
+
+		view.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View view, MotionEvent event) {
-//				if(event.getAction() == MotionEvent.ACTION_MOVE) {
-					ImageButton btnDelete = (ImageButton)view.findViewById(R.id.menuItemRemove); 
-					btnDelete.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							order.remove(item);
-						}
-						
-					});
-					btnDelete.setVisibility(View.VISIBLE);
-//				}
-					
+				// if(event.getAction() == MotionEvent.ACTION_MOVE) {
+				ImageButton btnDelete = (ImageButton) view
+						.findViewById(R.id.menuItemRemove);
+				btnDelete.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						order.remove(item);
+					}
+
+				});
+				btnDelete.setVisibility(View.VISIBLE);
+				// }
+
 				return false;
 			}
-        	
-        });
-        
-        return view;
-    }
+
+		});
+
+		return view;
+	}
 
 	@Override
 	public long getItemId(int index) {
@@ -81,4 +84,3 @@ public class OrderAdapter extends BaseAdapter {
 	}
 
 }
-
