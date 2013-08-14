@@ -42,7 +42,13 @@
 	    android:orientation="vertical"
 	    android:visibility="gone">
 
-	    <LinearLayout
+		<TextView 
+			android:id="@+id/tvNetworkStatus"
+			android:background="#FF0000"
+			android:textColor="#FFFFFF"
+			android:layout_width="match_parent" 
+			android:layout_height="wrap_content" />
+   	    <LinearLayout
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:orientation="horizontal">
@@ -53,7 +59,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" 
                 android:text="@string/create_order" 
+                android:background="#008800"
                 android:textColor="#FFFFFF"
+                android:layout_marginLeft="10dip" 
+                android:layout_marginRight="10dip" 
                 android:paddingLeft="10dip" 
                 android:paddingRight="10dip" /> 
             <Button
@@ -63,9 +72,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" 
                 android:text="@string/send_order" 
+                android:background="#008800"
                 android:textColor="#FFFFFF"
                 android:paddingLeft="10dip" 
                 android:paddingRight="10dip" 
+                android:layout_marginLeft="10dip" 
+                android:layout_marginRight="10dip" 
                 android:layout_gravity="right"/> 
    		</LinearLayout>
 		<TextView 

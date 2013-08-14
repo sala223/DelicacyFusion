@@ -14,7 +14,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -29,8 +32,10 @@ import android.widget.TextView;
 
 import com.df.android.MenuItem.MenuItemType;
 import com.df.android.Order.MenuItemOrder;
+import com.df.android.network.NetworkStatusChangeListener;
+import com.df.android.network.NetworkStatusMonitor;
 
-public class Main extends Activity implements OrderChangeListener {
+public class Main extends Activity implements OrderChangeListener, NetworkStatusChangeListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -115,6 +120,9 @@ public class Main extends Activity implements OrderChangeListener {
 			}
 		});
 
+		NetworkStatusMonitor networkMonitor = new NetworkStatusMonitor();
+		networkMonitor.registerListener(this);
+		this.registerReceiver(networkMonitor, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 	}
 
 	private Shop initShop(String shopId) {
@@ -206,5 +214,35 @@ public class Main extends Activity implements OrderChangeListener {
 				.notifyDataSetChanged();
 		((TextView) findViewById(R.id.orderCount)).setText(""
 				+ Order.currentOrder().getCount());
+	}
+
+	private void showNetworkStatus() {
+		TextView tvNetworkStatus = (TextView)findViewById(R.id.tvNetworkStatus);
+		Button btnSendOrder = (Button)findViewById(R.id.btnSendOrder);
+		if(isOnline()) {
+			tvNetworkStatus.setVisibility(View.GONE);
+			btnSendOrder.setVisibility(View.VISIBLE);
+		}else { 
+			tvNetworkStatus.setText("当前没有网络连接，落单功能将不可用"); 
+			tvNetworkStatus.setVisibility(View.VISIBLE);
+			btnSendOrder.setVisibility(View.INVISIBLE);
+		}
+			
+	}
+	
+	private boolean isOnline() {
+		ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		if(cm != null) {
+			NetworkInfo netInfo = cm.getActiveNetworkInfo();
+			return netInfo != null && netInfo.isConnectedOrConnecting();
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public void onNetworkStatusChange() {
+		showNetworkStatus();
 	}
 }
