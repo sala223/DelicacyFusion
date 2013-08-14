@@ -2,7 +2,7 @@ package com.df.masterdata.service.inf;
 
 import java.io.InputStream;
 
-import com.df.core.image.ImageLocator;
+import com.df.core.image.ImageId;
 import com.df.masterdata.entity.Item;
 
 public interface ItenServiceInf {
@@ -11,5 +11,5 @@ public interface ItenServiceInf {
 
     int updateItem(Item item);
 
-    ImageLocator uploadImageForFood(long itemId, InputStream imageStream);
+    ImageId uploadImageForFood(long itemId, InputStream imageStream);
 }

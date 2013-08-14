@@ -2,7 +2,7 @@
 <project name="DelicacyFusion-Env" basedir="">
 	<property environment="env" />
 	<dirname property="release.build.directory" file="${ant.file.DelicacyFusion-Env}" />
-	<property file="env.properties" />
+	<property file="${release.build.directory}/env.properties" />
 	<property name="JBOSS_HOME" value="${release.build.directory}/jboss-as-7.1.1.Final" />
 	<!-- -Java compilier options-->
 	<property name="compile.debug" value="true" />

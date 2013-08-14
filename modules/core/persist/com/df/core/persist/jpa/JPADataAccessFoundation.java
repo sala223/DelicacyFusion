@@ -123,16 +123,7 @@ public class JPADataAccessFoundation {
 	return null;
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T executeSingleQuery(Query query) {
-	List<?> results = query.getResultList();
-	if (results != null && results.size() > 0) {
-	    return (T) results.get(0);
-	}
-	return null;
-    }
-
-    public <T> CriteriaBuilder createQueryBuilder() {
+    protected <T> CriteriaBuilder createQueryBuilder() {
 	EntityManager em = getEntityManager();
 	return em.getCriteriaBuilder();
     }
@@ -187,7 +178,7 @@ public class JPADataAccessFoundation {
 			query.setParameter(index, obj);
 			index++;
 		    }
-		}else if (parameterValue instanceof Collection) {
+		} else if (parameterValue instanceof Collection) {
 		    Object[] objs = ((Collection<?>) parameterValue).toArray();
 		    int size = objs.length;
 		    for (int j = 0; j < size; ++j) {
