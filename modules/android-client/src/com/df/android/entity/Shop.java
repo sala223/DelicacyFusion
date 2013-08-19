@@ -1,6 +1,8 @@
-package com.df.android;
+package com.df.android.entity;
 
 import java.util.List;
+
+import com.df.android.menu.Menu;
 
 public class Shop {
 	private String id;

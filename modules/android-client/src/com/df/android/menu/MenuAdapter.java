@@ -1,4 +1,4 @@
-package com.df.android;
+package com.df.android.menu;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,29 +28,38 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.df.android.R;
+import com.df.android.entity.Item;
+import com.df.android.entity.ItemCategory;
+import com.df.android.entity.Shop;
+import com.df.android.entity.Table;
+import com.df.android.order.OnsiteOrderLine;
+import com.df.android.order.Order;
+
+
 public class MenuAdapter extends BaseAdapter {
 	private Shop shop;
 	private Context context;
-	private List<MenuItem> items = new ArrayList<MenuItem>();
-	private MenuItem.MenuItemType menuItemType;
+	private List<Item> items = new ArrayList<Item>();
+	private ItemCategory itemCategory;
 
-	public MenuAdapter(Context context, Shop shop, MenuItem.MenuItemType type) {
+	public MenuAdapter(Context context, Shop shop, ItemCategory category) {
 		super();
 		this.shop = shop;
 		this.context = context;
-		this.menuItemType = type;
+		this.itemCategory = category;
 
-		if (type == MenuItem.MenuItemType.MIT_ALL)
+		if (category == ItemCategory.All)
 			items = shop.getMenu().getItems();
 		else {
-			for (MenuItem item : shop.getMenu().getItems())
-				if (item.getType() == type)
+			for (Item item : shop.getMenu().getItems())
+				if (item.getCategories().contains(category))
 					items.add(item);
 		}
 	}
 
-	public MenuItem.MenuItemType getMenuItemType() {
-		return menuItemType;
+	public ItemCategory getMenuItemType() {
+		return itemCategory;
 	}
 
 	@Override
@@ -59,7 +68,7 @@ public class MenuAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public MenuItem getItem(int position) {
+	public Item getItem(int position) {
 		return items.get(position);
 	}
 
@@ -83,7 +92,7 @@ public class MenuAdapter extends BaseAdapter {
 		final TextView tvPrice = (TextView) view
 				.findViewById(R.id.menuItemPrice);
 
-		final MenuItem item = items.get(position);
+		final Item item = items.get(position);
 		tvName.setText(item.getName());
 		tvPrice.setText("" + item.getPrice());
 		String imageFile = item.getImage();
@@ -122,7 +131,7 @@ public class MenuAdapter extends BaseAdapter {
 	
 	private Animator mCurrentAnimator;
 	private int mShortAnimationDuration = 200;
-	private void showMenuItemDetail(final View srcView, final MenuItem item) {
+	private void showMenuItemDetail(final View srcView, final Item item) {
 	    // If there's an animation in progress, cancel it
 	    // immediately and proceed with this one.
 	    if (mCurrentAnimator != null) {
@@ -152,7 +161,8 @@ public class MenuAdapter extends BaseAdapter {
 					return;
 				}
 				
-				Order.currentOrder().add(new Order.MenuItemOrder(item));
+				Order.currentOrder().addLine(new OnsiteOrderLine(item, Table.getCurrentTable()));
+				
 			}
 	    	
 	    });

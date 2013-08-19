@@ -1,4 +1,4 @@
-package com.df.android;
+package com.df.android.menu;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -11,9 +11,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.df.android.R;
+import com.df.android.entity.ItemCategory;
+import com.df.android.entity.Shop;
+
 public class MenuPagerAdapter extends PagerAdapter {
     Context context;
     Shop shop;
+    
+    private static final ItemCategory dishTypes[] = {
+    	ItemCategory.CoolDish,
+    	ItemCategory.HotDish,
+    	ItemCategory.Soup,
+    	ItemCategory.Desert
+    };
  
     public MenuPagerAdapter(Context context, Shop shop) {
         this.context = context;
@@ -22,7 +33,7 @@ public class MenuPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return MenuItem.dishTypes.length + 1; // First one is all
+        return dishTypes.length + 1; // First one is all
     }
  
     @Override
@@ -38,16 +49,16 @@ public class MenuPagerAdapter extends PagerAdapter {
         View itemView = inflator.inflate(R.layout.menupage, container, false);
  
         GridView gvMenu = (GridView)itemView.findViewById(R.id.gvMenu);
-		MenuItem.MenuItemType menuItemType = MenuItem.MenuItemType.MIT_ALL; 
+        ItemCategory menuItemType = ItemCategory.All; 
 		if(position > 0)  
-			menuItemType = MenuItem.dishTypes[position-1];
+			menuItemType = dishTypes[position-1];
 
         gvMenu.setAdapter(new MenuAdapter(context, shop, menuItemType));
         
         TextView tvPrevCategory = (TextView)itemView.findViewById(R.id.tvPrevCategory);
         ImageView imgPrevCategory = (ImageView)itemView.findViewById(R.id.imgPrevCategory);
         if(position > 0) {
-        	String prev = getMenuItemTypeName(position == 1 ? MenuItem.MenuItemType.MIT_ALL : MenuItem.dishTypes[position-2]);
+        	String prev = getMenuItemTypeName(position == 1 ? ItemCategory.All : dishTypes[position-2]);
         	tvPrevCategory.setText(prev);
         	tvPrevCategory.setVisibility(View.VISIBLE);
         	imgPrevCategory.setVisibility(View.VISIBLE);
@@ -62,7 +73,7 @@ public class MenuPagerAdapter extends PagerAdapter {
         TextView tvNextCategory = (TextView)itemView.findViewById(R.id.tvNextCategory);
         ImageView imgNextCategory = (ImageView)itemView.findViewById(R.id.imgNextCategory);
         if(position < getCount() - 1) {
-        	String next = getMenuItemTypeName(MenuItem.dishTypes[position]);
+        	String next = getMenuItemTypeName(dishTypes[position]);
         	tvNextCategory.setText(next); 
         	tvNextCategory.setVisibility(View.VISIBLE);
         	imgNextCategory.setVisibility(View.VISIBLE);
@@ -83,25 +94,27 @@ public class MenuPagerAdapter extends PagerAdapter {
  
     }
     
-    private String getMenuItemTypeName(MenuItem.MenuItemType type) {
+    private String getMenuItemTypeName(ItemCategory type) {
     	String name = "";
     	
     	switch(type) {
-    	case MIT_ALL:
+    	case All:
     		name = "全部";
     		break;
-    	case MIT_COLDDISH:
+    	case CoolDish:
     		name = "凉菜";
     		break;
-    	case MIT_HOTDISH:
+    	case HotDish:
     		name = "热菜";
     		break;
-    	case MIT_DRINK:
-    		name = "酒水饮料";
+    	case Soup:
+    		name = "汤";
     		break;
-    	case MIT_DESERT:
-    		name = "甜点";
+    	case Desert:
+    		name = "点心";
     		break;
+    	default:
+    		name = "其它";
 		}
     	
     	return name;

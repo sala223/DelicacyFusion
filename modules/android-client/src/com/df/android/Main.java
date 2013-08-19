@@ -30,12 +30,23 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.df.android.MenuItem.MenuItemType;
-import com.df.android.Order.MenuItemOrder;
+import com.df.android.entity.Dish;
+import com.df.android.entity.Item;
+import com.df.android.entity.Shop;
+import com.df.android.entity.Table;
+import com.df.android.menu.Menu;
+import com.df.android.menu.MenuPagerAdapter;
 import com.df.android.network.NetworkStatusChangeListener;
 import com.df.android.network.NetworkStatusMonitor;
+import com.df.android.order.OnsiteOrderLine;
+import com.df.android.order.Order;
+import com.df.android.order.OrderChangeListener;
+import com.df.android.order.OrderLine;
+import com.df.android.order.SalesOrder;
+import com.df.android.ui.OrderListViewAdapter;
 
-public class Main extends Activity implements OrderChangeListener, NetworkStatusChangeListener {
+public class Main extends Activity implements OrderChangeListener,
+		NetworkStatusChangeListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,52 +63,20 @@ public class Main extends Activity implements OrderChangeListener, NetworkStatus
 					@Override
 					public void onClick(View view) {
 						final Context cxt = view.getContext();
-						final String[] tables = new String[shop.getTables().size()];
-						
+						final String[] tables = new String[shop.getTables()
+								.size()];
+
 						int i = 0;
-						for(Table table : shop.getTables())
+						for (Table table : shop.getTables())
 							tables[i++] = table.getId();
-						
-						AlertDialog.Builder builder = new AlertDialog.Builder(cxt);
-						builder.setTitle(R.string.chooseTable).setItems(
-								tables,	new DialogInterface.OnClickListener() {
+
+						AlertDialog.Builder builder = new AlertDialog.Builder(
+								cxt);
+						builder.setTitle(R.string.chooseTable).setItems(tables,
+								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int which) {
-										Order order = new Order(tables[which]);
-										order.registerChangeListener(Main.this);
-				
-										final ListView lstOrder = (ListView) findViewById(R.id.lstOrder);
-										OrderAdapter orderAdapter = new OrderAdapter(Main.this);
-										orderAdapter.setOrder(order);
-										lstOrder.setAdapter(orderAdapter);
-										lstOrder.setOnDragListener(new OnDragListener() {
-											@Override
-											public boolean onDrag(View v, DragEvent event) {
-												switch (event.getAction()) {
-												case DragEvent.ACTION_DRAG_STARTED:
-													break;
-												case DragEvent.ACTION_DRAG_ENTERED:
-													v.setBackgroundColor(Color.LTGRAY);
-													break;
-												case DragEvent.ACTION_DRAG_EXITED:
-													v.setBackgroundColor(Color.WHITE);
-													break;
-												case DragEvent.ACTION_DROP:
-													break;
-												case DragEvent.ACTION_DRAG_ENDED:
-													v.setBackgroundColor(Color.WHITE);
-													 View srcView = (View) event.getLocalState();
-													 MenuItem item = (MenuItem)srcView.getTag();
-													 Order.currentOrder().add(new MenuItemOrder(item));
-												default:
-													break;
-												}
-												return true;
-											}
-										});
-
-				
-										((TextView) findViewById(R.id.orderId)).setText(order.getId());
+										createOrder(tables[which]);
 									}
 								});
 
@@ -122,19 +101,61 @@ public class Main extends Activity implements OrderChangeListener, NetworkStatus
 
 		NetworkStatusMonitor networkMonitor = new NetworkStatusMonitor();
 		networkMonitor.registerListener(this);
-		this.registerReceiver(networkMonitor, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+		this.registerReceiver(networkMonitor, new IntentFilter(
+				ConnectivityManager.CONNECTIVITY_ACTION));
 	}
 
 	private Shop initShop(String shopId) {
 		Shop shop = new Shop(shopId, shopId);
 
 		Menu menu = buildMenuFromMetaFile("cache/" + shopId + "/menu.xml");
-		List<Table> tables = buildTablesFromMetaFile("cache/" + shopId + "/tables.xml");
+		List<Table> tables = buildTablesFromMetaFile("cache/" + shopId
+				+ "/tables.xml");
 
 		shop.setMenu(menu);
 		shop.setTables(tables);
 
 		return shop;
+	}
+
+	private void createOrder(final String table) {
+		new Table(table);
+		Order order = new SalesOrder(table, Order.OrderType.Onsite);
+		order.registerChangeListener(this);
+
+		final ListView lstOrder = (ListView) findViewById(R.id.lstOrder);
+		OrderListViewAdapter orderAdapter = new OrderListViewAdapter(this,
+				order);
+		order.registerChangeListener(orderAdapter);
+		// orderAdapter.setOrder(order);
+		lstOrder.setAdapter(orderAdapter);
+		lstOrder.setOnDragListener(new OnDragListener() {
+			@Override
+			public boolean onDrag(View v, DragEvent event) {
+				switch (event.getAction()) {
+				case DragEvent.ACTION_DRAG_STARTED:
+					break;
+				case DragEvent.ACTION_DRAG_ENTERED:
+					v.setBackgroundColor(Color.LTGRAY);
+					break;
+				case DragEvent.ACTION_DRAG_EXITED:
+					v.setBackgroundColor(Color.WHITE);
+					break;
+				case DragEvent.ACTION_DROP:
+					break;
+				case DragEvent.ACTION_DRAG_ENDED:
+					v.setBackgroundColor(Color.WHITE);
+					View srcView = (View) event.getLocalState();
+					Item item = (Item) srcView.getTag();
+					Order.currentOrder().addLine(new OnsiteOrderLine(item, Table.getCurrentTable()));
+				default:
+					break;
+				}
+				return true;
+			}
+		});
+
+		((TextView) findViewById(R.id.orderId)).setText(order.getId());
 	}
 
 	private Menu buildMenuFromMetaFile(String metaFile) {
@@ -155,12 +176,15 @@ public class Main extends Activity implements OrderChangeListener, NetworkStatus
 			for (int i = 0; i < xmlItems.getLength(); i++) {
 				Element xmlItem = (Element) xmlItems.item(i);
 				String name = xmlItem.getAttribute("name");
-				MenuItemType type = MenuItem.dishTypes[Integer.parseInt(xmlItem
-						.getAttribute("type"))];
+				// ItemCategory type =
+				// MenuItem.dishTypes[Integer.parseInt(xmlItem
+				// .getAttribute("type"))];
 				String image = xmlItem.getAttribute("image");
 				float price = Float.parseFloat(xmlItem.getAttribute("price"));
-
-				MenuItem item = new MenuItem(name, type, price, image);
+				//
+				Item item = new Dish(name, name);
+				item.setPrice(price);
+				item.setImage(image);
 				menu.addItem(item);
 			}
 		} catch (Exception e) {
@@ -199,50 +223,62 @@ public class Main extends Activity implements OrderChangeListener, NetworkStatus
 
 		return tables;
 	}
-	
-	@Override
-	public void onMenuItemAdded(MenuItem item) {
-		((OrderAdapter) ((ListView) findViewById(R.id.lstOrder)).getAdapter())
-				.notifyDataSetChanged();
-		((TextView) findViewById(R.id.orderCount)).setText(""
-				+ Order.currentOrder().getCount());
-	}
 
-	@Override
-	public void onMenuItemRemoved(MenuItem item) {
-		((OrderAdapter) ((ListView) findViewById(R.id.lstOrder)).getAdapter())
-				.notifyDataSetChanged();
-		((TextView) findViewById(R.id.orderCount)).setText(""
-				+ Order.currentOrder().getCount());
-	}
+	// @Override
+	// public void onMenuItemAdded(MenuItem item) {
+	// ((OrderAdapter) ((ListView) findViewById(R.id.lstOrder)).getAdapter())
+	// .notifyDataSetChanged();
+	// ((TextView) findViewById(R.id.orderCount)).setText(""
+	// + Order.currentOrder().getCount());
+	// }
+	//
+	// @Override
+	// public void onMenuItemRemoved(MenuItem item) {
+	// ((OrderAdapter) ((ListView) findViewById(R.id.lstOrder)).getAdapter())
+	// .notifyDataSetChanged();
+	// ((TextView) findViewById(R.id.orderCount)).setText(""
+	// + Order.currentOrder().getCount());
+	// }
 
 	private void showNetworkStatus() {
-		TextView tvNetworkStatus = (TextView)findViewById(R.id.tvNetworkStatus);
-		Button btnSendOrder = (Button)findViewById(R.id.btnSendOrder);
-		if(isOnline()) {
+		TextView tvNetworkStatus = (TextView) findViewById(R.id.tvNetworkStatus);
+		Button btnSendOrder = (Button) findViewById(R.id.btnSendOrder);
+		if (isOnline()) {
 			tvNetworkStatus.setVisibility(View.GONE);
 			btnSendOrder.setVisibility(View.VISIBLE);
-		}else { 
-			tvNetworkStatus.setText("当前没有网络连接，落单功能将不可用"); 
+		} else {
+			tvNetworkStatus.setText("当前没有网络连接，落单功能将不可用");
 			tvNetworkStatus.setVisibility(View.VISIBLE);
 			btnSendOrder.setVisibility(View.INVISIBLE);
 		}
-			
+
 	}
-	
+
 	private boolean isOnline() {
-		ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-		
-		if(cm != null) {
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		if (cm != null) {
 			NetworkInfo netInfo = cm.getActiveNetworkInfo();
 			return netInfo != null && netInfo.isConnectedOrConnecting();
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public void onNetworkStatusChange() {
 		showNetworkStatus();
+	}
+
+	@Override
+	public void onLineAdded(OrderLine line) {
+		((TextView) findViewById(R.id.orderCount)).setText(""
+				+ Order.currentOrder().getItemCount());
+	}
+
+	@Override
+	public void onLineRemoved(OrderLine line) {
+		((TextView) findViewById(R.id.orderCount)).setText(""
+				+ Order.currentOrder().getItemCount());
 	}
 }

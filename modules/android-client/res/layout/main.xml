@@ -84,14 +84,13 @@
 			android:id="@+id/orderId"
 			android:layout_width="match_parent" 
 			android:layout_height="wrap_content" />
-		
+
 	    <ListView 
 	        android:id="@+id/lstOrder"
 	        android:layout_weight="1"
 	        android:animateLayoutChanges="true"
 		    android:layout_width="match_parent"
 		    android:layout_height="0dp"/>
-	    
     </LinearLayout>
 
     <FrameLayout
