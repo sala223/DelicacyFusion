@@ -32,5 +32,7 @@
 	<classpathentry exported="true" kind="lib" path="jboss-as-7.1.1.Final/modules/org/codehaus/jackson/jackson-jaxrs/main/jackson-jaxrs-1.9.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="jboss-as-7.1.1.Final/modules/org/codehaus/jackson/jackson-mapper-asl/main/jackson-mapper-asl-1.9.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="jboss-as-7.1.1.Final/modules/javax/inject/api/main/javax.inject-1.jar"/>
+	<classpathentry exported="true" kind="lib" path="hadoop-1.2.1/hadoop-core-1.2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="third-lib/metadata-extractor-2.6.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

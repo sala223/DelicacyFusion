@@ -12,7 +12,7 @@ import org.eclipse.persistence.annotations.Index;
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @Entity
-public class Room extends MasterData {
+public class Room extends StoreMasterData {
 
     @Column(nullable = false)
     @Index(name = "room_name_index", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })

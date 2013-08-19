@@ -8,14 +8,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.df.masterdata.dal.CategoryDAL;
 import com.df.masterdata.entity.Category;
+import com.df.masterdata.entity.Item;
 import com.df.masterdata.exception.CategoryException;
 import com.df.masterdata.service.inf.CategoryServiceInf;
+import com.df.masterdata.service.inf.ItemServiceInf;
 
 @Transactional
 public class CategoryServiceImpl implements CategoryServiceInf {
 
     @Autowired
     private CategoryDAL categoryDAL;
+    
+    @Autowired
+    private ItemServiceInf itemService;
 
     public void setCategoryDAL(CategoryDAL categoryDAL) {
 	this.categoryDAL = categoryDAL;
@@ -28,6 +33,10 @@ public class CategoryServiceImpl implements CategoryServiceInf {
 
     @Override
     public int removeCategory(long categoryId) {
+	List<Item> items = itemService.getItemsByCategory(categoryId); 
+	if(items.size()>0){
+	    throw CategoryException.itemListNotEmpty(categoryId);
+	}
 	return categoryDAL.removeCategoryById(categoryId);
     }
 

@@ -6,6 +6,12 @@ public interface Constants {
 	public static final String IS_ENABLED_PROPERTY = "isEnabled";
     }
 
+    public static interface STOREMASTERDATA {
+	public static final String STORE_PROPERTY = "store";
+	public static final String STORE_ID_PROPERTY = "store.id";
+
+    }
+
     public static interface CATEGORY {
 	public static final String ENTITY_TABLE = "Category";
 	public static final String NAME_PROPERTY = "name";
@@ -26,7 +32,8 @@ public interface Constants {
 	public static final String NUMBER_PROPERTY = "number";
 	public static final String BAR_CODE_PROPERTY = "barCode";
     }
+
     public static interface ROOM {
-   	public static final String NAME_PROPERTY = "name";
-       }
+	public static final String NAME_PROPERTY = "name";
+    }
 }

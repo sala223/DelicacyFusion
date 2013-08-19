@@ -22,14 +22,11 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @Cache
 @Entity
-@Index(name = "item_code_index", unique = true, columnNames = { "code", MultiTenantSupport.TENANT_COLUMN })
-public class Item extends StoreMasterData {
-
-    @Column(length = 16)
-    private String code;
+@Index(name = "item_template_name_index", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
+public class ItemTemplate extends MasterData {
 
     @Column(length = 128)
-    @Index(name = "item_name_index", unique = false, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
+    @Index(name = "item_template_name_index", unique = false, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
     private String name;
 
     @Column(length = 64)
@@ -47,14 +44,6 @@ public class Item extends StoreMasterData {
 
     @Lob
     private String description;
-
-    public String getCode() {
-	return code;
-    }
-
-    public void setCode(String code) {
-	this.code = code;
-    }
 
     public String getName() {
 	return name;
