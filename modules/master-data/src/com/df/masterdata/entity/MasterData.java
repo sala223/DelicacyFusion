@@ -103,7 +103,7 @@ public abstract class MasterData {
     }
 
     @PrePersist
-    public void fillDefaultValue() {
+    protected void fillDefaultValue() {
 	if (this.createdTime == null) {
 	    this.setCreatedTime(new Date());
 	}

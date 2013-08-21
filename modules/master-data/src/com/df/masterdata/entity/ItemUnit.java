@@ -1,5 +1,5 @@
 package com.df.masterdata.entity;
 
 public enum ItemUnit {
-    DISK, JIN
+    DISK, JIN, KILOGRAM
 }

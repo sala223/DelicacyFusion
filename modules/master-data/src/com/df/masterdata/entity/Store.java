@@ -20,6 +20,10 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
 @Index(name = "store_name_index", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
 public class Store extends MasterData {
 
+    @Column
+    @Index(name = "store_code_index", unique = true, columnNames = { "code", MultiTenantSupport.TENANT_COLUMN })
+    private String code;
+
     @Column(nullable = false, length = 255)
     private String name;
 
@@ -115,4 +119,13 @@ public class Store extends MasterData {
     public void setTrafficInfo(String trafficInfo) {
 	this.trafficInfo = trafficInfo;
     }
+
+    public String getCode() {
+	return code;
+    }
+
+    public void setCode(String code) {
+	this.code = code;
+    }
+
 }

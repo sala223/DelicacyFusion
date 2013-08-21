@@ -6,28 +6,29 @@ public interface Constants {
 	public static final String IS_ENABLED_PROPERTY = "isEnabled";
     }
 
-    public static interface STOREMASTERDATA {
+    public static interface STOREMASTERDATA extends MASTERDATA {
 	public static final String STORE_PROPERTY = "store";
 	public static final String STORE_ID_PROPERTY = "store.id";
 
     }
 
-    public static interface CATEGORY {
+    public static interface CATEGORY extends MASTERDATA {
 	public static final String ENTITY_TABLE = "Category";
 	public static final String NAME_PROPERTY = "name";
 	public static final String ID_PROPERTY = "id";
 	public static final String PARENT_ID_PROPERTY = "parent.id";
     }
 
-    public static interface STORE {
+    public static interface STORE extends MASTERDATA {
 	public static final String NAME_PROPERTY = "name";
+	public static final String CODE_PROPERTY = "code";
     }
 
-    public static interface ITEM_TEMPLATE {
+    public static interface ITEM_TEMPLATE extends MASTERDATA {
 	public static final String TABLE_NAME = "item_template";
 	public static final String CODE_PROPERTY = "code";
 	public static final String NAME_PROPERTY = "name";
-	public static final String CATEGORIES_PROPERTY = "Categories";
+	public static final String CATEGORIES_PROPERTY = "categories";
     }
 
     public static interface ITEM {

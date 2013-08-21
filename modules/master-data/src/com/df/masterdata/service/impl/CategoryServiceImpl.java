@@ -43,15 +43,7 @@ public class CategoryServiceImpl implements CategoryServiceInf {
     @Override
     @Transactional(isolation = Isolation.DEFAULT)
     public void newCategory(Category c, Long parentCategoryId) {
-	if (parentCategoryId != null) {
-	    Category parent = categoryDAL.find(Category.class, parentCategoryId);
-	    if (parent != null) {
-		c.setParent(parent);
-	    } else {
-		throw CategoryException.parentCategoryNotFound(parentCategoryId);
-	    }
-	}
-	categoryDAL.insert(c);
+	categoryDAL.newCategory(c, parentCategoryId);
     }
 
 }

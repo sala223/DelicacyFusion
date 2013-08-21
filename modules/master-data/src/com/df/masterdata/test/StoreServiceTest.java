@@ -19,7 +19,6 @@ public class StoreServiceTest extends MasterDataJPABaseTest {
     @Test
     public void newStoreTest() {
 	Store store = new Store();
-	store.fillDefaultValue();
 	store.setName("DanceQueue");
 	store.setTelephone1("0731-34343433");
 	store.setBusinessHourFrom(8);
@@ -30,7 +29,7 @@ public class StoreServiceTest extends MasterDataJPABaseTest {
 	address.setCity("Changsha");
 	address.setCounty("HuRong District");
 	address.setAddress("Mawang dui");
-	store.setAddress(address); 
+	store.setAddress(address);
 	storeService.newStore(store);
 	List<Store> stores = storeService.getStoreList();
 	boolean hasFound = false;

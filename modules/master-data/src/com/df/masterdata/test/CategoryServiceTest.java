@@ -17,8 +17,7 @@ import com.df.masterdata.service.inf.CategoryServiceInf;
     @Test
     public void testNewCategory() {
 	Category newCategory = new Category();
-	newCategory.fillDefaultValue();
-	newCategory.setName("sweet");
+ 	newCategory.setName("sweet");
 	newCategory.setId(123l);
 	categoryService.newCategory(newCategory, null);
 	List<Category> categories = categoryService.getRootCategories();

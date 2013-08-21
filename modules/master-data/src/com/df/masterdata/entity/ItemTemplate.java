@@ -1,5 +1,7 @@
 package com.df.masterdata.entity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -41,7 +43,7 @@ public class ItemTemplate extends MasterData {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "item_template_category")
-    private List<Category> Categories;
+    private List<Category> categories;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "item_template_pictures", joinColumns = @JoinColumn(name = "ITEM_ID"))
@@ -79,11 +81,11 @@ public class ItemTemplate extends MasterData {
     }
 
     public List<Category> getCategories() {
-	return Categories;
+	return categories;
     }
 
     public void setCategories(List<Category> categories) {
-	Categories = categories;
+	this.categories = categories;
     }
 
     public ItemType getType() {
@@ -134,4 +136,31 @@ public class ItemTemplate extends MasterData {
 	this.itemUnit = itemUnit;
     }
 
+    @Override
+    protected void fillDefaultValue() {
+	super.fillDefaultValue();
+	if (this.type == null) {
+	    this.type = ItemType.Food;
+	}
+	if (this.itemUnit == null) {
+	    this.itemUnit = ItemUnit.DISK;
+	}
+    }
+
+    public void setCategories(Category... categories) {
+	if (categories != null) {
+	    this.categories = Arrays.asList(categories);
+	}
+    }
+
+    public void addCategories(Category... categories) {
+	if (this.categories != null) {
+	    this.categories = new ArrayList<Category>();
+	}
+	if (categories != null) {
+	    for (Category c : categories) {
+		this.categories.add(c);
+	    }
+	}
+    }
 }
