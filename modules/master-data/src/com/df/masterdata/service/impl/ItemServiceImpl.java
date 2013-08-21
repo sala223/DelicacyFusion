@@ -36,12 +36,12 @@ public class ItemServiceImpl implements ItemServiceInf {
 
     @Override
     public List<Item> getItemsByCategory(long categoryId) {
-	return itemDAL.getItemsByCategory(categoryId);
+	return itemDAL.getItemsByCategory(categoryId, null);
     }
 
     @Override
     public List<Item> getAvaliableItems(int fromResult, int maxResult) {
-	return itemDAL.all(Item.class, fromResult, maxResult, false);
+	return itemDAL.all((Long) null, Item.class, fromResult, maxResult, false);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ItemServiceImpl implements ItemServiceInf {
 
     @Override
     public Map<Long, Long> getItemCountGroupByCategory() {
-	return itemDAL.getItemCountGroupByCategory();
+	return itemDAL.getItemCountGroupByCategory(null);
     }
 
     @Override
@@ -66,6 +66,26 @@ public class ItemServiceImpl implements ItemServiceInf {
     @Override
     public void updateItem(Item item) {
 	itemDAL.update(item);
+    }
+
+    @Override
+    public List<Item> getItemsByCategory(long storeId, long categoryId) {
+	return itemDAL.getItemsByCategory(categoryId, storeId);
+    }
+
+    @Override
+    public List<Item> getAvaliableItems(long storeId, int fromResult, int maxResult) {
+	return itemDAL.all(storeId, Item.class, fromResult, maxResult, false);
+    }
+
+    @Override
+    public long getAvaliableItemCount(long storeId) {
+	return itemDAL.allCount(storeId, Item.class, false);
+    }
+
+    @Override
+    public Map<Long, Long> getItemCountGroupByCategory(long storeId) {
+	return itemDAL.getItemCountGroupByCategory(storeId);
     }
 
 }

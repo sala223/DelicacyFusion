@@ -14,11 +14,19 @@ public interface ItemServiceInf {
 
     List<Item> getItemsByCategory(long categoryId);
 
-    List<Item> getAvaliableItems(int pageSize, int pageNo);
+    List<Item> getItemsByCategory(long storeId, long categoryId);
+
+    List<Item> getAvaliableItems(int fromResult, int maxResult);
+
+    List<Item> getAvaliableItems(long storeId, int fromResult, int maxResult);
 
     long getAvaliableItemCount();
 
+    long getAvaliableItemCount(long storeId);
+
     Map<Long, Long> getItemCountGroupByCategory();
+
+    Map<Long, Long> getItemCountGroupByCategory(long storeId);
 
     void uploadItemPicture(InputStream stream, String comment);
 

@@ -2,7 +2,7 @@ package com.df.masterdata.service.inf;
 
 import com.df.masterdata.entity.Room;
 
-public interface RoomServiceInf {
+public interface RoomServiceInf{
 
     int getGuestCapacity(long roomId);
 
