@@ -5,10 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 public abstract class Order {
-	public static enum OrderType {
-		Onsite, Offsite,
-	}
-
 	protected String id;
 
 	public String getId() {
@@ -20,9 +16,8 @@ public abstract class Order {
 	}
 
 	protected Date createTime;
-	protected OrderType type;
 	protected List<OrderLine> lines = new ArrayList<OrderLine>();
-	private static Order currentOrder;
+	private static Order currentOrder = null;
 
 	public Order(String id) {
 		this.id = id;
@@ -88,10 +83,6 @@ public abstract class Order {
 		return lines;
 	}
 
-	public OrderType getType() {
-		return type;
-	}
-
 	private List<OrderChangeListener> changeListeners = new ArrayList<OrderChangeListener>();
 
 	public void registerChangeListener(OrderChangeListener listener) {
@@ -114,7 +105,6 @@ public abstract class Order {
 		String ret = "Order{";
 
 		ret += "id:" + id + ",";
-		ret += "type:" + type + ",";
 		ret += "lines:" + "{";
 		for (OrderLine line : lines)
 			ret += line;

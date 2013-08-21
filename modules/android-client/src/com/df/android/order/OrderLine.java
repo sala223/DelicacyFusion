@@ -1,12 +1,14 @@
 package com.df.android.order;
 
 import com.df.android.entity.Item;
+import com.df.android.entity.Table;
 
 public class OrderLine {
 	private Item item;
-	private float price;
+	private float price = 0.0f;
 	private int quantity = 1;
 	private String comments;
+	private Table table; 
 	
 	public OrderLine(Item item) {
 		this(item, item.getActualPrice());
@@ -27,6 +29,9 @@ public class OrderLine {
 	}
 
 	public float getPrice() {
+		if(price <= 0) 
+			return item.getPrice();
+		
 		return price;
 	}
 
@@ -43,19 +48,32 @@ public class OrderLine {
 	}
 	
 	public float getTotal() {
-		return price*quantity;
+		return getPrice()*quantity;
+	}
+	
+	public void setTable(Table table) {
+		this.table = table;
+	}
+	public Table getTable() {
+		return table;
+	}
+	
+	public int compare(OrderLine another) {
+		int ret = table.getId().compareToIgnoreCase(another.getTable().getId());
+		
+		return ret;
 	}
 	
 	@Override
 	public boolean equals(Object o) {
-		return o != null && item.equals(((OrderLine)o).getItem());
+		return o != null && table.equals(((OrderLine)o).getTable()) && item.equals(((OrderLine)o).getItem());
 	}
 	
 	public String toString() {
 		String ret = "Line{";
 		
 		ret += "item:" + item + ",";
-		ret += "price:" + price + ",";
+		ret += "price:" + getPrice() + ",";
 		ret += "quantity:" + quantity + ",";
 		
 		return ret;

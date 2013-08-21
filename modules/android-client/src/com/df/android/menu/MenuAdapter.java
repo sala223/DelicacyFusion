@@ -33,8 +33,8 @@ import com.df.android.entity.Item;
 import com.df.android.entity.ItemCategory;
 import com.df.android.entity.Shop;
 import com.df.android.entity.Table;
-import com.df.android.order.OnsiteOrderLine;
 import com.df.android.order.Order;
+import com.df.android.order.OrderLine;
 
 
 public class MenuAdapter extends BaseAdapter {
@@ -156,12 +156,13 @@ public class MenuAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View view) {
 				if(Order.currentOrder() == null) {
-					// Toast.makeText(view.getContext(), Resources.getSystem().getString(R.string.create_before_ordering), Toast.LENGTH_LONG).show();
 					Toast.makeText(view.getContext(), "点菜前必须先开单", Toast.LENGTH_LONG).show();
 					return;
 				}
 				
-				Order.currentOrder().addLine(new OnsiteOrderLine(item, Table.getCurrentTable()));
+				OrderLine line = new OrderLine(item);
+				line.setTable(Table.getCurrentTable());
+				Order.currentOrder().addLine(line);
 				
 			}
 	    	

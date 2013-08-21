@@ -2,42 +2,36 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:gravity="center"
-    android:padding="5dp">
+    android:gravity="center">
      
     <TextView
         android:id="@+id/menuItemName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="20sp"
-        android:ellipsize="marquee"/>
+        android:layout_weight="1"/>
     
     <TextView
         android:id="@+id/menuItemPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        android:textColor="#FF0000"
-        android:textSize="20sp"
-        android:ellipsize="marquee"/>
+        android:textColor="#FF0000"/>
 
     <TextView
         android:id="@+id/menuItemCopies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:ellipsize="marquee"/>
+        android:gravity="center"/>
  
     <ImageButton
         android:id="@+id/menuItemRemove"
-        android:src="@drawable/delete"
-        android:paddingLeft="20dp"
-        android:layout_height="wrap_content"
+        android:src="@drawable/delete" 
+        style="?android:attr/borderlessButtonStyle"
+        android:paddingLeft="10dp"
+        android:layout_height="30dp"
         android:layout_width="wrap_content"
         android:visibility="invisible"/>
     
