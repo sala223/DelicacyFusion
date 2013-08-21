@@ -17,7 +17,7 @@ public abstract class Order {
 
 	protected Date createTime;
 	protected List<OrderLine> lines = new ArrayList<OrderLine>();
-	private static Order currentOrder;
+	private static Order currentOrder = null;
 
 	public Order(String id) {
 		this.id = id;

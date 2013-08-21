@@ -12,7 +12,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content">
         <Button 
-			android:id="@+id/openClose"
+			android:id="@+id/showHideOrder"
 			android:textColor="#FFFFFF"
 			android:text="@string/myOrder" 
 			android:layout_height="wrap_content" 
@@ -75,15 +75,6 @@
 					android:layout_height="wrap_content" />
 			</LinearLayout>
    			
-		    <Button
-                android:id="@+id/btnCreateOrder"
-                android:drawableLeft="@drawable/create_order"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" 
-                android:text="@string/create_order" 
-                android:layout_marginLeft="10dip" 
-                android:layout_marginRight="10dip" 
-                android:padding="5dip" /> 
             <Button
                 android:id="@+id/btnSendOrder"
                 style="?android:attr/borderlessButtonStyle"

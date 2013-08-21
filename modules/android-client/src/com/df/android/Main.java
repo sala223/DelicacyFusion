@@ -11,9 +11,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -43,6 +41,7 @@ import com.df.android.order.OnsiteOrder;
 import com.df.android.order.Order;
 import com.df.android.order.OrderChangeListener;
 import com.df.android.order.OrderLine;
+import com.df.android.ui.CreateOrderDialog;
 import com.df.android.ui.OrderListViewAdapter;
 
 public class Main extends Activity implements OrderChangeListener,
@@ -57,52 +56,31 @@ public class Main extends Activity implements OrderChangeListener,
 		ViewPager viewPager = (ViewPager) findViewById(R.id.menuPager);
 		viewPager.setAdapter(new MenuPagerAdapter(this, shop));
 
-		((Button) findViewById(R.id.btnCreateOrder))
-				.setOnClickListener(new OnClickListener() {
-
+		findViewById(R.id.showHideOrder).setOnClickListener(
+				new OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						final Context cxt = view.getContext();
-						final String[] tables = new String[shop.getTables()
-								.size()];
+						LinearLayout leftPane = (LinearLayout) findViewById(R.id.leftPane);
 
-						int i = 0;
-						for (Table table : shop.getTables())
-							tables[i++] = table.getId();
+						if (leftPane.getVisibility() == View.VISIBLE) {
+							leftPane.setVisibility(View.GONE);
+						} else {
+							if (Order.currentOrder() == null)
+								chooseTable(view.getContext(), shop);
 
-						AlertDialog.Builder builder = new AlertDialog.Builder(
-								cxt);
-						builder.setTitle(R.string.chooseTable).setItems(tables,
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int which) {
-										createOrder(tables[which]);
-									}
-								});
-
-						builder.create().show();
-
+							leftPane.setVisibility(View.VISIBLE);
+						}
 					}
-
 				});
-
-		findViewById(R.id.openClose).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				LinearLayout leftPane = (LinearLayout) findViewById(R.id.leftPane);
-
-				if (leftPane.getVisibility() == View.VISIBLE) {
-					leftPane.setVisibility(View.GONE);
-				} else {
-					leftPane.setVisibility(View.VISIBLE);
-				}
-			}
-		});
 
 		NetworkStatusMonitor networkMonitor = new NetworkStatusMonitor();
 		networkMonitor.registerListener(this);
 		this.registerReceiver(networkMonitor, new IntentFilter(
 				ConnectivityManager.CONNECTIVITY_ACTION));
+	}
+
+	private void chooseTable(Context cxt, final Shop shop) {
+		new CreateOrderDialog(cxt, shop).show();
 	}
 
 	private Shop initShop(String shopId) {
@@ -118,9 +96,8 @@ public class Main extends Activity implements OrderChangeListener,
 		return shop;
 	}
 
-	private void createOrder(final String table) {
-		new Table(table);
-		Order order = new OnsiteOrder(table);
+	private void createOrder(final Table table) {
+		Order order = new OnsiteOrder("order id");
 		order.registerChangeListener(this);
 
 		final ListView lstOrder = (ListView) findViewById(R.id.lstOrder);
@@ -147,7 +124,7 @@ public class Main extends Activity implements OrderChangeListener,
 					v.setBackgroundColor(Color.WHITE);
 					View srcView = (View) event.getLocalState();
 					Item item = (Item) srcView.getTag();
-					
+
 					OrderLine line = new OrderLine(item);
 					line.setTable(Table.getCurrentTable());
 					Order.currentOrder().addLine(line);
@@ -181,17 +158,19 @@ public class Main extends Activity implements OrderChangeListener,
 				String id = xmlItem.getAttribute("id");
 				String name = xmlItem.getAttribute("name");
 				Item item = new Dish(id, name);
-				
+
 				String image = xmlItem.getAttribute("image");
 				float price = Float.parseFloat(xmlItem.getAttribute("price"));
 				item.setPrice(price);
 				item.setImage(image);
-				
-				NodeList xmlCategories = xmlItem.getElementsByTagName("category");
-				for(int j = 0; j < xmlCategories.getLength(); j ++) {
-					item.addCategory(ItemCategory.valueOf(xmlCategories.item(j).getTextContent()));
+
+				NodeList xmlCategories = xmlItem
+						.getElementsByTagName("category");
+				for (int j = 0; j < xmlCategories.getLength(); j++) {
+					item.addCategory(ItemCategory.valueOf(xmlCategories.item(j)
+							.getTextContent()));
 				}
-				
+
 				menu.addItem(item);
 			}
 		} catch (Exception e) {
@@ -220,8 +199,9 @@ public class Main extends Activity implements OrderChangeListener,
 			for (int i = 0; i < xmlItems.getLength(); i++) {
 				Element xmlItem = (Element) xmlItems.item(i);
 				String id = xmlItem.getAttribute("id");
+				int capacity = Integer.parseInt(xmlItem.getAttribute("capacity"));
 
-				tables.add(new Table(id));
+				tables.add(new Table(id, capacity));
 			}
 		} catch (Exception e) {
 			Log.e(getClass().getName(),
@@ -238,7 +218,7 @@ public class Main extends Activity implements OrderChangeListener,
 			tvNetworkStatus.setVisibility(View.GONE);
 			btnSendOrder.setVisibility(View.VISIBLE);
 		} else {
-			tvNetworkStatus.setText("当前没有网络连接，落单功能将不可用");
+			tvNetworkStatus.setText(R.string.network_unavailable);
 			tvNetworkStatus.setVisibility(View.VISIBLE);
 			btnSendOrder.setVisibility(View.INVISIBLE);
 		}

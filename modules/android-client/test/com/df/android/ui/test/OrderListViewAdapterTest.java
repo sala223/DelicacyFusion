@@ -16,7 +16,7 @@ public class OrderListViewAdapterTest extends TestCase {
 	public void testCreate() {
 		Order order = new OnsiteOrder("001");
 		
-		Table table = new Table("T001");
+		Table table = new Table("T001", 4);
 		for(int i = 0; i < 10; i ++) {
 			Item item = new Dish("" + i, "Dish " + i);
 			item.addCategory(ItemCategory.HotDish);
