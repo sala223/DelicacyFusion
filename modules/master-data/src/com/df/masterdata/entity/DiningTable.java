@@ -5,12 +5,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.Index;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @Entity
+@Table(name="dining_table")
 public class DiningTable extends MasterData {
 
     @Column(nullable = false, length = 32)

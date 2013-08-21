@@ -40,7 +40,7 @@ public class StoreServiceImpl implements StoreServiceInf {
 
     @Override
     public List<Store> getStoreList() {
-	return storeDAL.all(Store.class);
+	return storeDAL.all(Store.class, 0, Integer.MAX_VALUE, false);
     }
 
     @Override

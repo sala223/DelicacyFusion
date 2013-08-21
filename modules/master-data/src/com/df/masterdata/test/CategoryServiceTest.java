@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.df.masterdata.entity.Category;
 import com.df.masterdata.service.inf.CategoryServiceInf;
 
- public class CategoryPersistenceTest extends MasterDataBaseTest {
+ public class CategoryServiceTest extends MasterDataJPABaseTest {
 
     @Autowired
     private CategoryServiceInf categoryService;

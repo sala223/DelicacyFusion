@@ -13,37 +13,62 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.Cache;
 import org.eclipse.persistence.annotations.Index;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
+import com.df.masterdata.entity.Constants.ITEM_TEMPLATE;
 
 @Cache
 @Entity
-@Index(name = "item_template_name_index", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
+@Index(name = "item_code_index", unique = true, columnNames = { "code", MultiTenantSupport.TENANT_COLUMN })
+@Table(name = ITEM_TEMPLATE.TABLE_NAME)
 public class ItemTemplate extends MasterData {
 
+    @Column(length = 16)
+    private String code;
+
     @Column(length = 128)
-    @Index(name = "item_template_name_index", unique = false, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
+    @Index(name = "item_name_index", unique = false, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
     private String name;
 
     @Column(length = 64)
     @Enumerated(EnumType.STRING)
     private ItemType type;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "item_category")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "item_template_category")
     private List<Category> Categories;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "item_pictures", joinColumns = @JoinColumn(name = "ITEM_ID"))
+    @CollectionTable(name = "item_template_pictures", joinColumns = @JoinColumn(name = "ITEM_ID"))
     @Column
     private Set<PictureRef> pictureSet;
 
     @Lob
     private String description;
+
+    @Column(precision = 2)
+    private float price;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private PriceUnit priceUnit;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private ItemUnit itemUnit;
+
+    public String getCode() {
+	return code;
+    }
+
+    public void setCode(String code) {
+	this.code = code;
+    }
 
     public String getName() {
 	return name;
@@ -83,6 +108,30 @@ public class ItemTemplate extends MasterData {
 
     public void setDescription(String description) {
 	this.description = description;
+    }
+
+    public float getPrice() {
+	return price;
+    }
+
+    public void setPrice(float price) {
+	this.price = price;
+    }
+
+    public PriceUnit getPriceUnit() {
+	return priceUnit;
+    }
+
+    public void setPriceUnit(PriceUnit priceUnit) {
+	this.priceUnit = priceUnit;
+    }
+
+    public ItemUnit getItemUnit() {
+	return itemUnit;
+    }
+
+    public void setItemUnit(ItemUnit itemUnit) {
+	this.itemUnit = itemUnit;
     }
 
 }

@@ -10,7 +10,7 @@ import org.apache.hadoop.io.Writable;
 
 import com.df.core.common.utils.ByteUtils;
 
-public class Image implements Writable, RawComparator<BinaryComparable> {
+public   class Image implements Writable, RawComparator<BinaryComparable> {
     public static final int RGB2GRAY = 0x01;
     private int width;
     private int height;
@@ -130,6 +130,31 @@ public class Image implements Writable, RawComparator<BinaryComparable> {
 	    result.append("\n");
 	}
 	return result.toString();
+    }
+
+    @Override
+    public int compare(BinaryComparable o1, BinaryComparable o2) {
+	// TODO Auto-generated method stub
+	return 0;
+    }
+
+    @Override
+    public int compare(byte[] paramArrayOfByte1, int paramInt1, int paramInt2, byte[] paramArrayOfByte2, int paramInt3,
+	    int paramInt4) {
+	// TODO Auto-generated method stub
+	return 0;
+    }
+
+    @Override
+    public void write(DataOutput paramDataOutput) throws IOException {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
+    public void readFields(DataInput paramDataInput) throws IOException {
+	// TODO Auto-generated method stub
+	
     }
 
 }

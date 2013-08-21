@@ -8,7 +8,7 @@ public interface CategoryServiceInf {
 
     List<Category> getRootCategories();
 
-    int removeCategory(long categoryId);
+    void removeCategory(long categoryId);
 
     void newCategory(Category c, Long parentCategoryId);
 

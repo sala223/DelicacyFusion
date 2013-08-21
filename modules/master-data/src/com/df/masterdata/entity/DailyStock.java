@@ -1,11 +1,13 @@
 package com.df.masterdata.entity;
 
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
 
-@MappedSuperclass
-public abstract class StoreMasterData extends MasterData {
+import com.df.core.persist.eclipselink.MultiTenantSupport;
+
+@Entity
+public class DailyStock extends MultiTenantSupport {
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Store store;

@@ -22,7 +22,7 @@ public class ItemDAL extends StoreMasterDataAccessFoundation {
     }
 
     public Map<Long, Long> getItemCountGroupByCategory(Long storeId) {
-	String eql = "SELECT i.Categories.id, COUNT(i) FROM Item i group by i.Categories.id having i.store is null ";
+	String eql = "SELECT i.itemTemplate.categories.id, COUNT(i) FROM Item i group by i.Categories.id having i.store is null ";
 	if (storeId != null) {
 	    eql += " and i.store.id=:STORE_ID";
 	}

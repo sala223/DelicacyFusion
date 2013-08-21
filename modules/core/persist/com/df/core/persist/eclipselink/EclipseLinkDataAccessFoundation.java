@@ -20,7 +20,7 @@ import com.df.core.persist.jpa.JPADataAccessFoundation;
 
 public class EclipseLinkDataAccessFoundation extends JPADataAccessFoundation {
 
-    public <T> List<T> all(Class<T> entityType) {
+    protected <T> List<T> all(Class<T> entityType) {
 	CriteriaBuilder builder = createQueryBuilder();
 	CriteriaQuery<T> query = builder.createQuery(entityType);
 	query.from(entityType);
@@ -79,9 +79,8 @@ public class EclipseLinkDataAccessFoundation extends JPADataAccessFoundation {
 	EntityManager em = getEntityManager();
 	return em.unwrap(Session.class);
     }
-    
 
-    public <T> T findSingleEntityByProperty(Class<T> entityClass, String property, Object propertyValue) {
+    protected <T> T findSingleEntityByProperty(Class<T> entityClass, String property, Object propertyValue) {
 	CriteriaBuilder builder = createQueryBuilder();
 	CriteriaQuery<T> query = builder.createQuery(entityClass);
 	Root<T> root = query.from(entityClass);
@@ -89,7 +88,7 @@ public class EclipseLinkDataAccessFoundation extends JPADataAccessFoundation {
 	return executeSingleQuery(query);
     }
 
-    public <T> List<T> findEntityListByProperty(Class<T> entityClass, String property, Object propertyValue) {
+    protected <T> List<T> findEntityListByProperty(Class<T> entityClass, String property, Object propertyValue) {
 	CriteriaBuilder builder = createQueryBuilder();
 	CriteriaQuery<T> query = builder.createQuery(entityClass);
 	Root<T> root = query.from(entityClass);

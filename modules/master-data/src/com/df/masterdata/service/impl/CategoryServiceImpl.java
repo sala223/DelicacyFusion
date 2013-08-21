@@ -18,7 +18,7 @@ public class CategoryServiceImpl implements CategoryServiceInf {
 
     @Autowired
     private CategoryDAL categoryDAL;
-    
+
     @Autowired
     private ItemServiceInf itemService;
 
@@ -32,12 +32,12 @@ public class CategoryServiceImpl implements CategoryServiceInf {
     }
 
     @Override
-    public int removeCategory(long categoryId) {
-	List<Item> items = itemService.getItemsByCategory(categoryId); 
-	if(items.size()>0){
+    public void removeCategory(long categoryId) {
+	List<Item> items = itemService.getItemsByCategory(categoryId);
+	if (items.size() > 0) {
 	    throw CategoryException.itemListNotEmpty(categoryId);
 	}
-	return categoryDAL.removeCategoryById(categoryId);
+	categoryDAL.removeCategoryById(categoryId);
     }
 
     @Override

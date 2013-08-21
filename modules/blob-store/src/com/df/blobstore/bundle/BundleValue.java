@@ -4,7 +4,7 @@ import org.apache.hadoop.io.BinaryComparable;
 import org.apache.hadoop.io.RawComparator;
 import org.apache.hadoop.io.Writable;
 
-public interface BundleValue extends Writable, RawComparator<BinaryComparable>{
+public interface BundleValue extends Writable, RawComparator<BinaryComparable> {
 
     boolean isMarkedAsDeleted();
 

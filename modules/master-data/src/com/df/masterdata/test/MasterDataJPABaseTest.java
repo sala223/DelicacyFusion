@@ -5,5 +5,5 @@ import org.springframework.test.context.ContextConfiguration;
 import com.df.core.persist.testsuit.JPATestBase;
 
 @ContextConfiguration(locations = { "classpath:META-INF/master-data-beans.xml" })
-public class MasterDataBaseTest extends JPATestBase{
+public class MasterDataJPABaseTest extends JPATestBase{
 }

@@ -8,8 +8,13 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 	<bean id="categoryDAL" class="com.df.masterdata.dal.CategoryDAL" autowire="default"/>
+	<bean id="itemTemplateDAL" class="com.df.masterdata.dal.ItemTemplateDAL" autowire="default"/>
+	<bean id="roomDAL" class="com.df.masterdata.dal.RoomDAL" autowire="default"/>
+	<bean id="diningTableDAL" class="com.df.masterdata.dal.DiningTableDAL" autowire="default"/>
 	<bean id="storeDAL" class="com.df.masterdata.dal.StoreDAL" autowire="default"/>
+	<bean id="itemDAL" class="com.df.masterdata.dal.ItemDAL" autowire="default"/>
 	<bean id="categoryServive" class="com.df.masterdata.service.impl.CategoryServiceImpl" autowire="default"/>
 	<bean id="storeServive" class="com.df.masterdata.service.impl.StoreServiceImpl" autowire="default"/>
-	<tx:annotation-driven/> 
+	<bean id="itemServive" class="com.df.masterdata.service.impl.ItemServiceImpl" autowire="default"/>
+	<tx:annotation-driven/>
 </beans>

@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -101,6 +102,7 @@ public abstract class MasterData {
 	this.isEnabled = isEnabled;
     }
 
+    @PrePersist
     public void fillDefaultValue() {
 	if (this.createdTime == null) {
 	    this.setCreatedTime(new Date());

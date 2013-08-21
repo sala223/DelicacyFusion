@@ -18,17 +18,9 @@ import com.df.masterdata.entity.MasterData;
 
 public class MasterDataAccessFoundation extends EclipseLinkDataAccessFoundation {
 
-    public int removeMasterDataById(Class<?> masterDataType, long id) {
-	String eql = "DELETE FROM %s AS c WHERE c.id=:ID";
-	ClassDescriptor cd = this.getClassDescrptor(masterDataType);
-	if (cd != null) {
-	    Query query = this.getEntityManager().createQuery(String.format(eql, cd.getAlias()));
-	    query.setParameter("ID", id);
-	    return query.executeUpdate();
-	} else {
-	    String msg = "%s is not a entity type.";
-	    throw new DataAccessException(msg, masterDataType.getName());
-	}
+    protected void removeMasterDataById(MasterData obj, long id) {
+	obj.setId(id);
+	this.remove(obj);
     }
 
     public void disableMasterData(MasterData masterData) {
@@ -47,11 +39,6 @@ public class MasterDataAccessFoundation extends EclipseLinkDataAccessFoundation 
 	    String msg = "%s is not a entity type.";
 	    throw new DataAccessException(msg, masterDataType.getName());
 	}
-    }
-
-    @Override
-    public <T> List<T> all(Class<T> entityType) {
-	return all(entityType, 0, Integer.MAX_VALUE, false);
     }
 
     public <T> int allCount(Class<T> entityType, boolean includeDisabled) {

@@ -1,99 +1,46 @@
 package com.df.masterdata.entity;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
-import org.eclipse.persistence.annotations.Cache;
-import org.eclipse.persistence.annotations.Index;
-
-import com.df.core.persist.eclipselink.MultiTenantSupport;
-
-@Cache
 @Entity
-@Index(name = "item_code_index", unique = true, columnNames = { "code", MultiTenantSupport.TENANT_COLUMN })
 public class Item extends StoreMasterData {
 
-    @Column(length = 16)
-    private String code;
+    @OneToOne
+    private ItemTemplate itemTemplate;
 
-    @Column(length = 128)
-    @Index(name = "item_name_index", unique = false, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
-    private String name;
-
-    @Column(length = 64)
-    @Enumerated(EnumType.STRING)
-    private ItemType type;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "item_category")
-    private List<Category> Categories;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "item_pictures", joinColumns = @JoinColumn(name = "ITEM_ID"))
     @Column
-    private Set<PictureRef> pictureSet;
+    private Float price;
 
-    @Lob
-    private String description;
+    @Column
+    private String promotionRule;
 
-    public String getCode() {
-	return code;
+    public float getPrice() {
+	if (this.price == null) {
+	    return itemTemplate.getPrice();
+	}
+	return price;
     }
 
-    public void setCode(String code) {
-	this.code = code;
+    public void setPrice(Float price) {
+	this.price = price;
     }
 
-    public String getName() {
-	return name;
+    public String getPromotionRule() {
+	return promotionRule;
     }
 
-    public void setName(String name) {
-	this.name = name;
+    public void setPromotionRule(String promotionRule) {
+	this.promotionRule = promotionRule;
     }
 
-    public List<Category> getCategories() {
-	return Categories;
+    public ItemTemplate getItemTemplate() {
+	return itemTemplate;
     }
 
-    public void setCategories(List<Category> categories) {
-	Categories = categories;
-    }
-
-    public ItemType getType() {
-	return type;
-    }
-
-    public void setType(ItemType type) {
-	this.type = type;
-    }
-
-    public Set<PictureRef> getPictureSet() {
-	return pictureSet;
-    }
-
-    public void setPictureSet(Set<PictureRef> pictureSet) {
-	this.pictureSet = pictureSet;
-    }
-
-    public String getDescription() {
-	return description;
-    }
-
-    public void setDescription(String description) {
-	this.description = description;
+    public void setItemTemplate(ItemTemplate itemTemplate) {
+	this.itemTemplate = itemTemplate;
     }
 
 }

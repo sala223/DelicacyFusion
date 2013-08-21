@@ -11,7 +11,7 @@ import com.df.masterdata.entity.Address;
 import com.df.masterdata.entity.Store;
 import com.df.masterdata.service.inf.StoreServiceInf;
 
-public class StoreServiceTest extends MasterDataBaseTest {
+public class StoreServiceTest extends MasterDataJPABaseTest {
 
     @Autowired
     private StoreServiceInf storeService;

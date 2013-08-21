@@ -15,12 +15,19 @@ public interface Constants {
     public static interface CATEGORY {
 	public static final String ENTITY_TABLE = "Category";
 	public static final String NAME_PROPERTY = "name";
+	public static final String ID_PROPERTY = "id";
 	public static final String PARENT_ID_PROPERTY = "parent.id";
-
     }
 
     public static interface STORE {
 	public static final String NAME_PROPERTY = "name";
+    }
+
+    public static interface ITEM_TEMPLATE {
+	public static final String TABLE_NAME = "item_template";
+	public static final String CODE_PROPERTY = "code";
+	public static final String NAME_PROPERTY = "name";
+	public static final String CATEGORIES_PROPERTY = "Categories";
     }
 
     public static interface ITEM {
