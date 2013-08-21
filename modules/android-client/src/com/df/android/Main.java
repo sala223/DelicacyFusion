@@ -32,17 +32,17 @@ import android.widget.TextView;
 
 import com.df.android.entity.Dish;
 import com.df.android.entity.Item;
+import com.df.android.entity.ItemCategory;
 import com.df.android.entity.Shop;
 import com.df.android.entity.Table;
 import com.df.android.menu.Menu;
 import com.df.android.menu.MenuPagerAdapter;
 import com.df.android.network.NetworkStatusChangeListener;
 import com.df.android.network.NetworkStatusMonitor;
-import com.df.android.order.OnsiteOrderLine;
+import com.df.android.order.OnsiteOrder;
 import com.df.android.order.Order;
 import com.df.android.order.OrderChangeListener;
 import com.df.android.order.OrderLine;
-import com.df.android.order.SalesOrder;
 import com.df.android.ui.OrderListViewAdapter;
 
 public class Main extends Activity implements OrderChangeListener,
@@ -120,7 +120,7 @@ public class Main extends Activity implements OrderChangeListener,
 
 	private void createOrder(final String table) {
 		new Table(table);
-		Order order = new SalesOrder(table, Order.OrderType.Onsite);
+		Order order = new OnsiteOrder(table);
 		order.registerChangeListener(this);
 
 		final ListView lstOrder = (ListView) findViewById(R.id.lstOrder);
@@ -147,7 +147,10 @@ public class Main extends Activity implements OrderChangeListener,
 					v.setBackgroundColor(Color.WHITE);
 					View srcView = (View) event.getLocalState();
 					Item item = (Item) srcView.getTag();
-					Order.currentOrder().addLine(new OnsiteOrderLine(item, Table.getCurrentTable()));
+					
+					OrderLine line = new OrderLine(item);
+					line.setTable(Table.getCurrentTable());
+					Order.currentOrder().addLine(line);
 				default:
 					break;
 				}
@@ -161,7 +164,7 @@ public class Main extends Activity implements OrderChangeListener,
 	private Menu buildMenuFromMetaFile(String metaFile) {
 		Menu menu = new Menu();
 
-		Log.i(getClass().getName(), "Building menu from " + metaFile);
+		Log.d(getClass().getName(), "Building menu from " + metaFile);
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
@@ -175,16 +178,20 @@ public class Main extends Activity implements OrderChangeListener,
 
 			for (int i = 0; i < xmlItems.getLength(); i++) {
 				Element xmlItem = (Element) xmlItems.item(i);
+				String id = xmlItem.getAttribute("id");
 				String name = xmlItem.getAttribute("name");
-				// ItemCategory type =
-				// MenuItem.dishTypes[Integer.parseInt(xmlItem
-				// .getAttribute("type"))];
+				Item item = new Dish(id, name);
+				
 				String image = xmlItem.getAttribute("image");
 				float price = Float.parseFloat(xmlItem.getAttribute("price"));
-				//
-				Item item = new Dish(name, name);
 				item.setPrice(price);
 				item.setImage(image);
+				
+				NodeList xmlCategories = xmlItem.getElementsByTagName("category");
+				for(int j = 0; j < xmlCategories.getLength(); j ++) {
+					item.addCategory(ItemCategory.valueOf(xmlCategories.item(j).getTextContent()));
+				}
+				
 				menu.addItem(item);
 			}
 		} catch (Exception e) {
@@ -224,22 +231,6 @@ public class Main extends Activity implements OrderChangeListener,
 		return tables;
 	}
 
-	// @Override
-	// public void onMenuItemAdded(MenuItem item) {
-	// ((OrderAdapter) ((ListView) findViewById(R.id.lstOrder)).getAdapter())
-	// .notifyDataSetChanged();
-	// ((TextView) findViewById(R.id.orderCount)).setText(""
-	// + Order.currentOrder().getCount());
-	// }
-	//
-	// @Override
-	// public void onMenuItemRemoved(MenuItem item) {
-	// ((OrderAdapter) ((ListView) findViewById(R.id.lstOrder)).getAdapter())
-	// .notifyDataSetChanged();
-	// ((TextView) findViewById(R.id.orderCount)).setText(""
-	// + Order.currentOrder().getCount());
-	// }
-
 	private void showNetworkStatus() {
 		TextView tvNetworkStatus = (TextView) findViewById(R.id.tvNetworkStatus);
 		Button btnSendOrder = (Button) findViewById(R.id.btnSendOrder);
@@ -274,11 +265,15 @@ public class Main extends Activity implements OrderChangeListener,
 	public void onLineAdded(OrderLine line) {
 		((TextView) findViewById(R.id.orderCount)).setText(""
 				+ Order.currentOrder().getItemCount());
+		((TextView) findViewById(R.id.orderTotal)).setText(""
+				+ Order.currentOrder().getTotal());
 	}
 
 	@Override
 	public void onLineRemoved(OrderLine line) {
 		((TextView) findViewById(R.id.orderCount)).setText(""
 				+ Order.currentOrder().getItemCount());
+		((TextView) findViewById(R.id.orderTotal)).setText(""
+				+ Order.currentOrder().getTotal());
 	}
 }

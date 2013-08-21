@@ -95,6 +95,7 @@ public abstract class Item {
 		
 		ret += "code:" + code + ",";
 		ret += "name:" + name + ",";
+		ret += "price:" + price + ",";
 		ret += "type:" + type;
 		
 		ret += "}";
