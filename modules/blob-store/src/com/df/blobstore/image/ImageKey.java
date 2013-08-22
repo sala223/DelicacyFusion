@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * A unique key to represents a image which is stored by blob store.
  */
-public class ImageKey implements Serializable {
+public final class ImageKey implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
