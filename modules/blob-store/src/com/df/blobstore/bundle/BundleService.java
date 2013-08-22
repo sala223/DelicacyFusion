@@ -4,10 +4,12 @@ public interface BundleService {
 
     void addBlob(Blob blob);
 
-    BundleValue fetchBlob(BundleKey key);
+    byte[] fetchBlob(BundleKey key);
 
     void updateBlob(Blob blob);
 
     void deleteBlob(BundleKey key);
+
+    boolean hasBlob(BundleKey key);
 
 }

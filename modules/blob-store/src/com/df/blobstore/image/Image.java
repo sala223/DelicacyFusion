@@ -13,27 +13,24 @@ public class Image implements Blob {
 
     private float[] pels;
 
-    public Image() {
-    }
-
     public Image(ImageMetadata imageMetadata, float[] pels) {
 	this.imageMetadata = imageMetadata;
 	this.pels = pels;
     }
 
-    public Image(ImageMetadata imageMetadata) {
+    Image(ImageMetadata imageMetadata) {
 	this.imageMetadata = imageMetadata;
 	this.pels = new float[imageMetadata.getWidth() * imageMetadata.getHeigth() * imageMetadata.getBitDepth()];
     }
 
     @Override
     public BundleKey getBundleKey() {
-	return null;
+	return new ImageBundleKey();
     }
 
     @Override
     public BundleValue getBundleValue() {
-	return null;
+	return new ImageBundleValue();
     }
 
     public ImageMetadata getImageMetadata() {
@@ -49,12 +46,18 @@ public class Image implements Blob {
 	    key += "." + imageMetadata.getFormat().shortName();
 	    return key;
 	}
+
     }
 
     class ImageBundleValue implements BundleValue {
 	@Override
 	public byte[] getDataInBundle() {
 	    return ByteUtils.FloatArraytoByteArray(pels);
+	}
+
+	@Override
+	public int getSize() {
+	    return pels.length * 4;
 	}
     }
 }

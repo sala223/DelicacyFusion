@@ -2,7 +2,7 @@ package com.df.blobstore.image;
 
 import com.df.blobstore.bundle.BundleService;
 
-public interface ImageServiceRoute {
+public interface ImageServiceRoute extends ImageMetadataResolver {
 
     BundleService getBundleService(ImageKey imageKey);
 
