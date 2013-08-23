@@ -16,9 +16,9 @@ public final class ImageMetadata implements Serializable {
 
     private ImageFormat format;
 
-    private Map<String, String> extraInformation = new HashMap<String, String>();
+    private String owner;
 
-    public static final String OWNER = "com.df.blobstore.image.owner";
+    private Map<String, String> extraInformation = new HashMap<String, String>();
 
     public static final String REALM = "com.df.blobstore.image.realm";
 
@@ -66,7 +66,11 @@ public final class ImageMetadata implements Serializable {
     }
 
     public String getOwner() {
-	return extraInformation.get(OWNER);
+	return owner;
+    }
+
+    public void setOwner(String owner) {
+	this.owner = owner;
     }
 
     public String getRealm() {
@@ -83,5 +87,9 @@ public final class ImageMetadata implements Serializable {
 
     public String getExtraInformation(String key) {
 	return extraInformation.get(key);
+    }
+
+    public String[] getExtraInformationKeys() {
+	return extraInformation.keySet().toArray(new String[0]);
     }
 }

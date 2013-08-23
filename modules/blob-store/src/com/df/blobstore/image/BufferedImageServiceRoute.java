@@ -3,6 +3,7 @@ package com.df.blobstore.image;
 import java.lang.ref.SoftReference;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.df.blobstore.bundle.BundleKey;
 import com.df.blobstore.bundle.BundleService;
 
 public class BufferedImageServiceRoute implements ImageServiceRoute {
@@ -50,5 +51,10 @@ public class BufferedImageServiceRoute implements ImageServiceRoute {
     @Override
     public ImageKey hash(ImageMetadata imageMetadata) {
 	return serviceRoute.hash(imageMetadata);
+    }
+
+    @Override
+    public BundleKey resolveBundleKey(ImageKey imageKey) {
+	return serviceRoute.resolveBundleKey(imageKey);
     }
 }

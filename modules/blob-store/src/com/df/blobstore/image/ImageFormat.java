@@ -2,24 +2,24 @@ package com.df.blobstore.image;
 
 public enum ImageFormat {
 
-    JPEG("jpg"), PNG("png"), TIF("tif"), GIF("gif");
+    JPEG(1), PNG(2), TIF(3), GIF(4);
 
-    private String shortName;
+    private int intValue;
 
-    private ImageFormat(String shortName) {
-	this.shortName = shortName;
+    private ImageFormat(int intValue) {
+	this.intValue = intValue;
     }
 
-    public static ImageFormat fromShortName(String shortName) {
+    public static ImageFormat fromIntValue(int intValue) {
 	for (ImageFormat type : values()) {
-	    if (type.shortName == shortName) {
+	    if (type.intValue == intValue) {
 		return type;
 	    }
 	}
 	return null;
     }
 
-    public String shortName() {
-	return shortName;
+    public int intValue() {
+	return intValue;
     }
 }

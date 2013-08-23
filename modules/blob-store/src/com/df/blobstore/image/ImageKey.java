@@ -18,4 +18,29 @@ public final class ImageKey implements Serializable {
     public String getKey() {
 	return key;
     }
+
+    @Override
+    public String toString() {
+	return getKey();
+    }
+
+    @Override
+    public int hashCode() {
+	return key.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null || getClass() != obj.getClass())
+	    return false;
+	ImageKey other = (ImageKey) obj;
+	if (key == null) {
+	    return other.key == null;
+	} else {
+	    return key.equals(other.key);
+	}
+    }
+
 }

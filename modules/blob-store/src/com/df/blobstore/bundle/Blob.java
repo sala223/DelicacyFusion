@@ -1,8 +1,15 @@
 package com.df.blobstore.bundle;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public interface Blob {
 
-    public BundleKey getBundleKey();
+    BundleKey getBundleKey();
 
-    public BundleValue getBundleValue();
+    BundleValue getBundleValue();
+
+    void readBundleValue(InputStream input) throws IOException;
+
+    void readBundleKey(String key) throws IOException;
 }

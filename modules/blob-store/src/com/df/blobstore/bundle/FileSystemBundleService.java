@@ -1,9 +1,14 @@
 package com.df.blobstore.bundle;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class FileSystemBundleService implements BundleService {
 
@@ -24,12 +29,18 @@ public class FileSystemBundleService implements BundleService {
 	String fileName = blob.getBundleKey().getKeyInBundle();
 	File file = new File(directory, fileName);
 	try {
-	    FileOutputStream stream = new FileOutputStream(file);
+	    OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+	    InputStream input = blob.getBundleValue().getDataInBundle();
 	    try {
-		stream.write(blob.getBundleValue().getDataInBundle());
+		byte[] buffer = new byte[1024];
+		int size = 0;
+		while ((size = input.read(buffer)) > 0) {
+		    out.write(buffer, 0, size - 1);
+		}
 	    } finally {
-		stream.flush();
-		stream.close();
+		out.flush();
+		out.close();
+		input.close();
 	    }
 	} catch (IOException ex) {
 	    String msg = "Add blob %s error";
@@ -38,17 +49,25 @@ public class FileSystemBundleService implements BundleService {
     }
 
     @Override
-    public byte[] fetchBlob(BundleKey key) {
+    public boolean fetchBlob(Blob blob, BundleKey key) {
 	String fileName = key.getKeyInBundle();
-	File file = new File(directory, fileName);
-	if (!file.exists()) {
-	    return new byte[0];
-	}
+	InputStream in = null;
 	try {
-	    return Files.readAllBytes(file.toPath());
+	    in = new BufferedInputStream(new FileInputStream(new File(directory, fileName)));
+	    blob.readBundleValue(in);
+	    return true;
+	} catch (FileNotFoundException ex) {
+	    return false;
 	} catch (IOException ex) {
 	    String msg = "get blob %s error";
 	    throw new BlobStoreException(ex, msg, fileName);
+	} finally {
+	    try {
+		if (in != null) {
+		    in.close();
+		}
+	    } catch (IOException ex) {
+	    }
 	}
     }
 

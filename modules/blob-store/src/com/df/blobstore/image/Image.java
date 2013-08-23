@@ -1,5 +1,10 @@
 package com.df.blobstore.image;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import com.df.blobstore.bundle.Blob;
 import com.df.blobstore.bundle.BundleKey;
 import com.df.blobstore.bundle.BundleValue;
@@ -25,7 +30,7 @@ public class Image implements Blob {
 
     @Override
     public BundleKey getBundleKey() {
-	return new ImageBundleKey();
+	return new ImageBundleKey(imageMetadata);
     }
 
     @Override
@@ -37,27 +42,27 @@ public class Image implements Blob {
 	return imageMetadata;
     }
 
-    class ImageBundleKey implements BundleKey {
-
-	@Override
-	public String getKeyInBundle() {
-	    String key = imageMetadata.getRandomValue();
-	    key += imageMetadata.getWidth() + "_" + imageMetadata.getHeigth();
-	    key += "." + imageMetadata.getFormat().shortName();
-	    return key;
-	}
-
-    }
-
     class ImageBundleValue implements BundleValue {
 	@Override
-	public byte[] getDataInBundle() {
-	    return ByteUtils.FloatArraytoByteArray(pels);
+	public InputStream getDataInBundle() {
+	    return new DataInputStream(new ByteArrayInputStream(ByteUtils.FloatArraytoByteArray(pels)));
 	}
 
 	@Override
 	public int getSize() {
 	    return pels.length * 4;
 	}
+    }
+
+    @Override
+    public void readBundleKey(String key) throws IOException {
+	// TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void readBundleValue(InputStream input) throws IOException {
+	// TODO Auto-generated method stub
+
     }
 }
