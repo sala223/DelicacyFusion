@@ -4,9 +4,9 @@ import com.df.blobstore.bundle.BundleKey;
 
 public interface ImageKeyResolver {
 
-    ImageMetadata resolveImageMetadata(ImageKey imageKey);
+    ImageAttributes resolveImageAttributes(ImageKey imageKey);
 
-    ImageKey hash(ImageMetadata imageMetadata);
+    ImageKey hash(ImageAttributes attributes);
 
     BundleKey resolveBundleKey(ImageKey imageKey);
 }

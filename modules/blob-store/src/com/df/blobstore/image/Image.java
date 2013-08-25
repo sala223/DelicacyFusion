@@ -8,29 +8,27 @@ import java.io.InputStream;
 import com.df.blobstore.bundle.Blob;
 import com.df.blobstore.bundle.BundleKey;
 import com.df.blobstore.bundle.BundleValue;
-import com.df.core.common.utils.ByteUtils;
 
 public class Image implements Blob {
 
     public static final int RGB2GRAY = 0x01;
 
-    private ImageMetadata imageMetadata;
+    private ImageAttributes imageAttributes;
 
-    private float[] pels;
+    private byte[] rawData;
 
-    public Image(ImageMetadata imageMetadata, float[] pels) {
-	this.imageMetadata = imageMetadata;
-	this.pels = pels;
+    public Image(ImageAttributes imageMetadata) {
+	this.imageAttributes = imageMetadata;
     }
 
-    Image(ImageMetadata imageMetadata) {
-	this.imageMetadata = imageMetadata;
-	this.pels = new float[imageMetadata.getWidth() * imageMetadata.getHeigth() * imageMetadata.getBitDepth()];
+    public Image(ImageAttributes imageMetadata, byte[] rawData) {
+	this.imageAttributes = imageMetadata;
+	this.rawData = rawData;
     }
 
     @Override
     public BundleKey getBundleKey() {
-	return new ImageBundleKey(imageMetadata);
+	return new ImageBundleKey(imageAttributes);
     }
 
     @Override
@@ -38,31 +36,25 @@ public class Image implements Blob {
 	return new ImageBundleValue();
     }
 
-    public ImageMetadata getImageMetadata() {
-	return imageMetadata;
+    public ImageAttributes getImageMetadata() {
+	return imageAttributes;
     }
 
     class ImageBundleValue implements BundleValue {
 	@Override
 	public InputStream getDataInBundle() {
-	    return new DataInputStream(new ByteArrayInputStream(ByteUtils.FloatArraytoByteArray(pels)));
+	    return new DataInputStream(new ByteArrayInputStream(rawData));
 	}
 
 	@Override
 	public int getSize() {
-	    return pels.length * 4;
+	    return rawData.length;
 	}
     }
 
     @Override
-    public void readBundleKey(String key) throws IOException {
-	// TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void readBundleValue(InputStream input) throws IOException {
-	// TODO Auto-generated method stub
-
+	this.rawData = new byte[input.available()];
+	input.read(rawData);
     }
 }

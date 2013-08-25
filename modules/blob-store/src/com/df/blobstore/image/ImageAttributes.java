@@ -1,10 +1,9 @@
 package com.df.blobstore.image;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.UUID;
 
-public final class ImageMetadata implements Serializable {
+public final class ImageAttributes implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,19 +17,17 @@ public final class ImageMetadata implements Serializable {
 
     private String owner;
 
-    private Map<String, String> extraInformation = new HashMap<String, String>();
+    private String uniqueId;
 
-    public static final String REALM = "com.df.blobstore.image.realm";
-
-    public static final String RANDOM_VALUE = "com.df.blobstore.image.random_value";
-
-    public ImageMetadata() {
+    public ImageAttributes() {
+	this.uniqueId = UUID.randomUUID().toString();
     }
 
-    public ImageMetadata(int width, int heigth, ImageFormat format) {
+    public ImageAttributes(int width, int heigth, ImageFormat format) {
 	this.width = width;
 	this.heigth = heigth;
 	this.format = format;
+	this.uniqueId = UUID.randomUUID().toString();
     }
 
     public int getWidth() {
@@ -66,30 +63,19 @@ public final class ImageMetadata implements Serializable {
     }
 
     public String getOwner() {
-	return owner;
+	return this.owner;
     }
 
     public void setOwner(String owner) {
 	this.owner = owner;
     }
 
-    public String getRealm() {
-	return extraInformation.get(REALM);
+    public void setUniqueId(String uniqueId) {
+	this.uniqueId = uniqueId;
     }
 
-    public String getRandomValue() {
-	return extraInformation.get(RANDOM_VALUE);
+    public String getUniqueId() {
+	return this.uniqueId;
     }
 
-    public void addExtraInformation(String key, String value) {
-	extraInformation.put(key, value);
-    }
-
-    public String getExtraInformation(String key) {
-	return extraInformation.get(key);
-    }
-
-    public String[] getExtraInformationKeys() {
-	return extraInformation.keySet().toArray(new String[0]);
-    }
 }

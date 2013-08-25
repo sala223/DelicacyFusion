@@ -7,97 +7,78 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 import com.df.blobstore.bundle.BundleKey;
+import com.df.core.common.utils.ByteUtils;
 
 public class DefaultImageKeyResolver implements ImageKeyResolver {
 
     private static Charset charset = Charset.forName("utf-8");
 
     @Override
-    public ImageMetadata resolveImageMetadata(ImageKey imageKey) {
-	byte[] bytes = imageKey.getKey().getBytes(charset);
+    public ImageAttributes resolveImageAttributes(ImageKey imageKey) {
+	byte[] bytes = ByteUtils.hexStringToBytes(imageKey.getKey());
 	DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes));
 	try {
 	    int width = in.readInt();
 	    int heigth = in.readInt();
-	    int bitDepth = in.readInt();
-	    int formatIntValue = in.readInt();
+	    int bitDepth = in.readShort();
+	    int formatIntValue = in.readShort();
 	    ImageFormat format = ImageFormat.fromIntValue(formatIntValue);
 	    if (format == null) {
 		throw new ImageStoreException("unknow or invalid image format:%s", formatIntValue);
 	    }
-	    ImageMetadata metadata = new ImageMetadata(width, heigth, format);
-	    metadata.setBitDepth(bitDepth);
+	    ImageAttributes attributes = new ImageAttributes(width, heigth, format);
+	    attributes.setBitDepth(bitDepth);
 	    int nextLength = in.readInt();
+	    if (nextLength == 0) {
+		throw new ImageStoreException("image uniqueId is not specified in the key");
+	    }
+	    byte[] uniqueId = new byte[nextLength];
+	    in.readFully(uniqueId);
+	    attributes.setUniqueId(new String(uniqueId, charset));
+	    nextLength = in.readInt();
 	    if (nextLength == 0) {
 		throw new ImageStoreException("image owner is not specified in the key");
 	    }
 	    byte[] owner = new byte[nextLength];
 	    in.readFully(owner);
-	    metadata.setOwner(new String(owner, charset));
-	    nextLength = in.readInt();
-	    if (nextLength == 0) {
-		return metadata;
-	    }
-	    while (nextLength > 0) {
-		byte[] key = new byte[nextLength];
-		in.readFully(key);
-		nextLength = in.readInt();
-		if (nextLength == 0) {
-		    byte[] value = new byte[nextLength];
-		    in.readFully(value);
-		    metadata.addExtraInformation(new String(key, charset), new String(value, charset));
-		} else {
-		    metadata.addExtraInformation(new String(key, charset), null);
-		}
-		nextLength = in.readInt();
-	    }
-	    return metadata;
+	    attributes.setOwner(new String(owner, charset));
+	    return attributes;
 	} catch (IOException ex) {
-	    throw new ImageStoreException("Invalid image key, cannot resolve image metadata.");
+	    throw new ImageStoreException("Invalid image key, cannot resolve image attributes.");
 	}
     }
 
     @Override
-    public ImageKey hash(ImageMetadata metadata) {
-	int bufferSize = 512;
-	ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
-	int length = 16;
+    public ImageKey hash(ImageAttributes metadata) {
+	if (metadata.getOwner() == null) {
+	    throw new ImageStoreException("Owner attribute is not specified");
+	}
+	if (metadata.getUniqueId() == null) {
+	    throw new ImageStoreException("UniqueId attribute is not specified");
+
+	}
+	byte[] owner = metadata.getOwner().getBytes(charset);
+	byte[] uniqueId = metadata.getUniqueId().getBytes(charset);
+	int maxBufferSize = 512;
+	int length = 4 * 3 + 4 + uniqueId.length + 4 + owner.length;
+	if (length > maxBufferSize) {
+	    throw new ImageStoreException("owner+uniqueId length canot exceed " + (512 - 4 * 6));
+	}
+	ByteBuffer buffer = ByteBuffer.allocate(length);
 	buffer.putInt(metadata.getWidth());
 	buffer.putInt(metadata.getHeigth());
-	buffer.putInt(metadata.getBitDepth());
-	buffer.putInt(metadata.getFormat().intValue());
-	byte[] owner = metadata.getOwner().getBytes(charset);
-	length += 4 + owner.length + 4;
-	if (length > bufferSize) {
-	    throw new ImageStoreException("owner information is too long.");
-	}
+	buffer.putShort((short) metadata.getBitDepth());
+	buffer.putShort((short) metadata.getFormat().intValue());
+	buffer.putInt(uniqueId.length);
+	buffer.put(uniqueId);
 	buffer.putInt(owner.length);
 	buffer.put(owner);
-	buffer.putInt(0); // Indicate the end of the key.
-	return new ImageKey(new String(buffer.array(), charset));
+	return new ImageKey(ByteUtils.bytesToHexString(buffer.array()));
     }
 
     @Override
     public BundleKey resolveBundleKey(ImageKey imageKey) {
-	ImageMetadata metadata = resolveImageMetadata(imageKey);
-	return new SimpleBundleKey(metadata);
-    }
-
-    static class SimpleBundleKey implements BundleKey {
-
-	private ImageMetadata metadata;
-
-	public SimpleBundleKey(ImageMetadata metadata) {
-	    this.metadata = metadata;
-	}
-
-	@Override
-	public String getKeyInBundle() {
-	    String key = metadata.getRandomValue();
-	    key += metadata.getWidth() + "_" + metadata.getHeigth();
-	    key += "." + metadata.getFormat().name().toLowerCase();
-	    return key;
-	}
-
+	ImageAttributes metadata = resolveImageAttributes(imageKey);
+	return new ImageBundleKey(metadata);
     }
 }

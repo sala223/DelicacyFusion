@@ -34,8 +34,8 @@ public class BufferedImageServiceRoute implements ImageServiceRoute {
     }
 
     @Override
-    public ImageMetadata resolveImageMetadata(ImageKey imageKey) {
-	return serviceRoute.resolveImageMetadata(imageKey);
+    public ImageAttributes resolveImageAttributes(ImageKey imageKey) {
+	return serviceRoute.resolveImageAttributes(imageKey);
     }
 
     public void clearCache() {
@@ -49,7 +49,7 @@ public class BufferedImageServiceRoute implements ImageServiceRoute {
     }
 
     @Override
-    public ImageKey hash(ImageMetadata imageMetadata) {
+    public ImageKey hash(ImageAttributes imageMetadata) {
 	return serviceRoute.hash(imageMetadata);
     }
 

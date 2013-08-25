@@ -90,4 +90,7 @@ public class FileSystemBundleService implements BundleService {
 	return file.exists();
     }
 
+    public File getDirectory() {
+	return directory;
+    }
 }

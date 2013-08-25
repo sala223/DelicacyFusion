@@ -6,8 +6,8 @@ public interface ImageServiceRoute extends ImageKeyResolver {
 
     BundleService getBundleService(ImageKey imageKey);
 
-    ImageMetadata resolveImageMetadata(ImageKey imageKey);
+    ImageAttributes resolveImageAttributes(ImageKey imageKey);
 
-    ImageKey hash(ImageMetadata imageMetadata);
+    ImageKey hash(ImageAttributes imageMetadata);
 
 }

@@ -1,8 +1,6 @@
 package com.df.blobstore.image;
 
-import com.df.blobstore.bundle.BlobStoreException;
-
-public class ImageStoreException extends BlobStoreException {
+public class ImageStoreException extends ImageException {
 
     private static final long serialVersionUID = 1L;
 

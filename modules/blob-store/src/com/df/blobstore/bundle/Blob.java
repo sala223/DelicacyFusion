@@ -11,5 +11,4 @@ public interface Blob {
 
     void readBundleValue(InputStream input) throws IOException;
 
-    void readBundleKey(String key) throws IOException;
 }

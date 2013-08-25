@@ -2,10 +2,14 @@ package com.df.core.common.utils;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.nio.charset.Charset;
 
 public class ByteUtils {
+
+    private static final byte[] HEX_CHAR_TABLE = { (byte) '0', (byte) '1', (byte) '2', (byte) '3', (byte) '4',
+	    (byte) '5', (byte) '6', (byte) '7', (byte) '8', (byte) '9', (byte) 'a', (byte) 'b', (byte) 'c', (byte) 'd',
+	    (byte) 'e', (byte) 'f' };
+    private static Charset asciiCharset = Charset.forName("ASCII");
 
     /**
      * Convert from an array of floats to an array of bytes
@@ -66,23 +70,44 @@ public class ByteUtils {
 	return new byte[] { (byte) (i >> 24), (byte) (i >> 16), (byte) (i >> 8), (byte) i };
     }
 
-    /**
-     * 
-     * @param vals
-     * @return A hex string of the input according to SHA-1 standards
-     */
-    public static String asHex(byte[] vals) {
-	try {
-	    MessageDigest sha1;
-	    sha1 = MessageDigest.getInstance("SHA-1");
-	    byte[] bytes = sha1.digest(vals);
-	    StringBuilder hex = new StringBuilder(bytes.length * 2);
-	    for (int i = 0; i < bytes.length; i++)
-		hex.append(Integer.toHexString(0xFF & bytes[i]));
-	    return hex.toString();
-	} catch (NoSuchAlgorithmException e) {
-	    e.printStackTrace();
-	    return null;
+    public static String bytesToHexString(byte[] bytes) {
+	byte[] hex = new byte[2 * bytes.length];
+	int index = 0;
+	for (byte b : bytes) {
+	    int v = b & 0xFF;
+	    hex[index++] = HEX_CHAR_TABLE[v >>> 4];
+	    hex[index++] = HEX_CHAR_TABLE[v & 0xF];
 	}
+	return new String(hex, asciiCharset);
+    }
+
+    public static byte[] hexStringToBytes(String str) {
+	if (str.length() % 2 != 0) {
+	    throw new IllegalArgumentException("hexBinary needs to be even-length:" + str);
+	}
+
+	byte[] out = new byte[str.length() / 2];
+	for (int i = 0; i < str.length(); i += 2) {
+	    int h = hexToBin(str.charAt(i));
+	    int l = hexToBin(str.charAt(i + 1));
+	    if (h == -1 || l == -1) {
+		throw new IllegalArgumentException("contains illegal character for hexBinary: " + str);
+	    }
+	    out[i / 2] = (byte) (h * 16 + l);
+	}
+	return out;
+    }
+
+    public static int hexToBin(char ch) {
+	if ('0' <= ch && ch <= '9') {
+	    return ch - '0';
+	}
+	if ('A' <= ch && ch <= 'F') {
+	    return ch - 'A' + 10;
+	}
+	if ('a' <= ch && ch <= 'f') {
+	    return ch - 'a' + 10;
+	}
+	return -1;
     }
 }
