@@ -33,10 +33,14 @@ public class Image implements Blob {
 
     @Override
     public BundleValue getBundleValue() {
-	return new ImageBundleValue();
+	if (rawData != null) {
+	    return new ImageBundleValue();
+	} else {
+	    return null;
+	}
     }
 
-    public ImageAttributes getImageMetadata() {
+    public ImageAttributes getImageAttributes() {
 	return imageAttributes;
     }
 

@@ -11,8 +11,6 @@ public final class ImageAttributes implements Serializable {
 
     private int heigth;
 
-    private int bitDepth;
-
     private ImageFormat format;
 
     private String owner;
@@ -44,14 +42,6 @@ public final class ImageAttributes implements Serializable {
 
     public void setHeigth(int heigth) {
 	this.heigth = heigth;
-    }
-
-    public int getBitDepth() {
-	return bitDepth;
-    }
-
-    public void setBitDepth(int bitDepth) {
-	this.bitDepth = bitDepth;
     }
 
     public ImageFormat getFormat() {

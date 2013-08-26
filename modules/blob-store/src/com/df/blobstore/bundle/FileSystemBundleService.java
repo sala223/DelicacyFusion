@@ -35,7 +35,7 @@ public class FileSystemBundleService implements BundleService {
 		byte[] buffer = new byte[1024];
 		int size = 0;
 		while ((size = input.read(buffer)) > 0) {
-		    out.write(buffer, 0, size - 1);
+		    out.write(buffer, 0, size);
 		}
 	    } finally {
 		out.flush();
@@ -80,7 +80,9 @@ public class FileSystemBundleService implements BundleService {
     public void deleteBlob(BundleKey key) {
 	String fileName = key.getKeyInBundle();
 	File file = new File(directory, fileName);
-	file.deleteOnExit();
+	if(file.exists()){
+	    file.delete();
+	}
     }
 
     @Override

@@ -18,7 +18,6 @@ public class DefaultImageKeyResolverTest {
     public void testHashImageKey() {
 	ImageKeyResolver keyResolver = new DefaultImageKeyResolver();
 	ImageAttributes metadata = new ImageAttributes(12, 24, ImageFormat.GIF);
-	metadata.setBitDepth(24);
 	metadata.setOwner("test");
 	String uniqueId = metadata.getUniqueId();
 	ImageKey key = keyResolver.hash(metadata);
@@ -35,7 +34,6 @@ public class DefaultImageKeyResolverTest {
     public void testHashImageKeyWihoutOwnerAttrOrUniqueIdAttr() {
 	ImageKeyResolver keyResolver = new DefaultImageKeyResolver();
 	ImageAttributes metadata = new ImageAttributes(12, 24, ImageFormat.GIF);
-	metadata.setBitDepth(24);
 	metadata.setUniqueId("334343");
 	try {
 	    keyResolver.hash(metadata);
@@ -57,7 +55,6 @@ public class DefaultImageKeyResolverTest {
     public void testResolveBundleKey() {
 	ImageKeyResolver keyResolver = new DefaultImageKeyResolver();
 	ImageAttributes metadata = new ImageAttributes(12, 24, ImageFormat.GIF);
-	metadata.setBitDepth(24);
 	metadata.setOwner("test");
 	ImageKey key = keyResolver.hash(metadata);
 	BundleKey bundleKey = keyResolver.resolveBundleKey(key);

@@ -20,14 +20,12 @@ public class DefaultImageKeyResolver implements ImageKeyResolver {
 	try {
 	    int width = in.readInt();
 	    int heigth = in.readInt();
-	    int bitDepth = in.readShort();
 	    int formatIntValue = in.readShort();
 	    ImageFormat format = ImageFormat.fromIntValue(formatIntValue);
 	    if (format == null) {
 		throw new ImageStoreException("unknow or invalid image format:%s", formatIntValue);
 	    }
 	    ImageAttributes attributes = new ImageAttributes(width, heigth, format);
-	    attributes.setBitDepth(bitDepth);
 	    int nextLength = in.readInt();
 	    if (nextLength == 0) {
 		throw new ImageStoreException("image uniqueId is not specified in the key");
@@ -60,14 +58,13 @@ public class DefaultImageKeyResolver implements ImageKeyResolver {
 	byte[] owner = metadata.getOwner().getBytes(charset);
 	byte[] uniqueId = metadata.getUniqueId().getBytes(charset);
 	int maxBufferSize = 512;
-	int length = 4 * 3 + 4 + uniqueId.length + 4 + owner.length;
+	int length = 4 * 2 + 2 + 4 + uniqueId.length + 4 + owner.length;
 	if (length > maxBufferSize) {
 	    throw new ImageStoreException("owner+uniqueId length canot exceed " + (512 - 4 * 6));
 	}
 	ByteBuffer buffer = ByteBuffer.allocate(length);
 	buffer.putInt(metadata.getWidth());
 	buffer.putInt(metadata.getHeigth());
-	buffer.putShort((short) metadata.getBitDepth());
 	buffer.putShort((short) metadata.getFormat().intValue());
 	buffer.putInt(uniqueId.length);
 	buffer.put(uniqueId);
