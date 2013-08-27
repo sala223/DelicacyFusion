@@ -12,13 +12,16 @@ import org.eclipse.persistence.annotations.Index;
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @Entity
-public class Room extends StoreMasterData {
+@Index(name = "room_name_index", unique = true, columnNames = { "storeId", "name", MultiTenantSupport.TENANT_COLUMN })
+public class Room extends MasterData {
 
     @Column(nullable = false)
-    @Index(name = "room_name_index", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
     private String name;
 
-    @Column(length=255)
+    @Column(nullable = false)
+    private long storeId;
+
+    @Column(length = 255)
     private String description;
 
     @Column
@@ -36,6 +39,14 @@ public class Room extends StoreMasterData {
 
     public void setName(String name) {
 	this.name = name;
+    }
+
+    public long getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(long storeId) {
+        this.storeId = storeId;
     }
 
     public String getDescription() {

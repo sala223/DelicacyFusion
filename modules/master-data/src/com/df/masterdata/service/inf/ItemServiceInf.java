@@ -24,8 +24,6 @@ public interface ItemServiceInf {
 
     long getAvaliableItemCount(long storeId);
 
-    Map<Long, Long> getItemCountGroupByCategory();
-
     Map<Long, Long> getItemCountGroupByCategory(long storeId);
 
     void uploadItemPicture(InputStream stream, String comment);

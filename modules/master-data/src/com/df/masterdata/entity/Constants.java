@@ -6,12 +6,6 @@ public interface Constants {
 	public static final String IS_ENABLED_PROPERTY = "isEnabled";
     }
 
-    public static interface STOREMASTERDATA extends MASTERDATA {
-	public static final String STORE_PROPERTY = "store";
-	public static final String STORE_ID_PROPERTY = "store.id";
-
-    }
-
     public static interface CATEGORY extends MASTERDATA {
 	public static final String ENTITY_TABLE = "Category";
 	public static final String NAME_PROPERTY = "name";

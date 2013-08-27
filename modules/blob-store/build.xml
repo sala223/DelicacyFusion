@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="df-master-data" default="jar">
+	<import file="../../build/build-base-jar.xml" />
+	<path id="compile.dependent.path" >
+		<pathelement location="../core/bin/classes" />
+	</path>
+</project>
+

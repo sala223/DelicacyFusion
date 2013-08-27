@@ -50,11 +50,6 @@ public class ItemServiceImpl implements ItemServiceInf {
     }
 
     @Override
-    public Map<Long, Long> getItemCountGroupByCategory() {
-	return itemDAL.getItemCountGroupByCategory(null);
-    }
-
-    @Override
     public void uploadItemPicture(InputStream stream, String comment) {
 
     }

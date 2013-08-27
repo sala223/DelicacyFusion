@@ -14,27 +14,30 @@ import javax.persistence.criteria.Root;
 import org.eclipse.persistence.descriptors.ClassDescriptor;
 
 import com.df.masterdata.entity.Constants;
-import com.df.masterdata.entity.Constants.STOREMASTERDATA;
-import com.df.masterdata.entity.StoreMasterData;
+import com.df.masterdata.entity.MasterData;
 
-public class StoreMasterDataAccessFoundation extends MasterDataAccessFoundation {
+public class StoreAwareMasterDataAccessFoundation extends MasterDataAccessFoundation {
 
-    public <T extends StoreMasterData> List<T> all(Long storeId, Class<T> entityType) {
+    public <T extends MasterData> List<T> all(Long storeId, Class<T> entityType) {
 	return all(storeId, entityType, 0, Integer.MAX_VALUE, false);
     }
 
-    public <T extends StoreMasterData> int allCount(Long storeId, Class<T> entityType, boolean includeDisabled) {
+    public <T extends MasterData> int allCount(Long storeId, Class<T> entityType, boolean includeDisabled) {
 	EntityManager em = this.getEntityManager();
 	ClassDescriptor cd = this.getClassDescrptor(entityType);
-	String eql = "SELECT COUNT(O) FROM %s o WHERE ( o.store IS NULL ";
+	String eql = "SELECT COUNT(O) FROM %s o ";
 	if (storeId != null) {
-	    eql = " OR o.store.id=:STORE_ID ";
+	    eql = "WHERE o.%s=:STORE_ID ";
 	}
-	eql += " ) ";
 	if (!includeDisabled) {
-	    eql += " AND o." + Constants.MASTERDATA.IS_ENABLED_PROPERTY + "=:IS_ENABLED";
+	    if (storeId != null) {
+		eql += " AND o." + Constants.MASTERDATA.IS_ENABLED_PROPERTY + "=:IS_ENABLED";
+	    } else {
+		eql += " WHERE o." + Constants.MASTERDATA.IS_ENABLED_PROPERTY + "=:IS_ENABLED";
+
+	    }
 	}
-	Query query = em.createQuery(String.format(eql, cd.getAlias()));
+	Query query = em.createQuery(String.format(eql, cd.getAlias(), getStoreIdPropertyName()));
 	if (!includeDisabled) {
 	    query.setParameter("IS_ENABLED", true);
 	}
@@ -44,7 +47,7 @@ public class StoreMasterDataAccessFoundation extends MasterDataAccessFoundation 
 	return (Integer) query.getSingleResult();
     }
 
-    public <T extends StoreMasterData> List<T> all(Long storeId, Class<T> entityType, int firstResult, int maxResult,
+    public <T extends MasterData> List<T> all(Long storeId, Class<T> entityType, int firstResult, int maxResult,
 	    boolean includeDisabled) {
 	CriteriaBuilder builder = createQueryBuilder();
 	CriteriaQuery<T> query = builder.createQuery(entityType);
@@ -53,9 +56,9 @@ public class StoreMasterDataAccessFoundation extends MasterDataAccessFoundation 
 	if (!includeDisabled) {
 	    predicates.add(builder.equal(root.get(Constants.MASTERDATA.IS_ENABLED_PROPERTY), true));
 	}
-	Predicate storeIsNull = builder.isNull(root.get(STOREMASTERDATA.STORE_PROPERTY));
+	Predicate storeIsNull = builder.isNull(root.get(getStoreIdPropertyName()));
 	if (storeId != null) {
-	    Predicate storeIdEqual = builder.equal(root.get(STOREMASTERDATA.STORE_ID_PROPERTY), storeId);
+	    Predicate storeIdEqual = builder.equal(root.get(getStoreIdPropertyName()), storeId);
 	    predicates.add(builder.and(builder.or(storeIdEqual, storeIsNull)));
 	} else {
 	    predicates.add(storeIsNull);
@@ -65,5 +68,9 @@ public class StoreMasterDataAccessFoundation extends MasterDataAccessFoundation 
 	typeQuery.setFirstResult(firstResult);
 	typeQuery.setMaxResults(maxResult);
 	return typeQuery.getResultList();
+    }
+
+    protected String getStoreIdPropertyName() {
+	return "storeId";
     }
 }

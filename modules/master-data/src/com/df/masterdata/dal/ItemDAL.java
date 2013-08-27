@@ -12,24 +12,22 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import com.df.masterdata.entity.Constants.ITEM;
-import com.df.masterdata.entity.Constants.STOREMASTERDATA;
+import com.df.masterdata.entity.Constants.MASTERDATA;
 import com.df.masterdata.entity.Item;
 
-public class ItemDAL extends StoreMasterDataAccessFoundation {
+public class ItemDAL extends StoreAwareMasterDataAccessFoundation {
 
     public void newItem(Item item) {
 	this.insert(item);
     }
 
-    public Map<Long, Long> getItemCountGroupByCategory(Long storeId) {
-	String eql = "SELECT i.itemTemplate.categories.id, COUNT(i) FROM Item i group by i.Categories.id having i.store is null ";
-	if (storeId != null) {
-	    eql += " and i.store.id=:STORE_ID";
-	}
+    public Map<Long, Long> getItemCountGroupByCategory(long storeId) {
+	String eql = "SELECT i.itemTemplate.categories.id, COUNT(i) FROM Item i group by i.Categories.id ";
+	eql += " having i.storeId=:STORE_ID and i.itemTemplate." + MASTERDATA.IS_ENABLED_PROPERTY + " =:IS_ENABLED";
 	Query query = this.getEntityManager().createQuery(eql);
-	if (storeId != null) {
-	    query.setParameter("STORE_ID", storeId);
-	}
+	query.setParameter("STORE_ID", storeId);
+	query.setParameter("IS_ENABLED", true);
+
 	List<?> rows = query.getResultList();
 	Map<Long, Long> map = new HashMap<Long, Long>();
 	for (Object row : rows) {
@@ -46,9 +44,9 @@ public class ItemDAL extends StoreMasterDataAccessFoundation {
 	CriteriaQuery<Item> query = builder.createQuery(Item.class);
 	Root<Item> root = query.from(Item.class);
 	Predicate categoryEqual = builder.equal(root.get(ITEM.CATEGORY_ID_PROPERTY), categoryId);
-	Predicate ownerIsNull = builder.isNull(root.get(STOREMASTERDATA.STORE_PROPERTY));
+	Predicate ownerIsNull = builder.isNull(root.get(getStoreIdPropertyName()));
 	if (storeId != null) {
-	    Predicate ownerIdEqual = builder.equal(root.get(STOREMASTERDATA.STORE_ID_PROPERTY), storeId);
+	    Predicate ownerIdEqual = builder.equal(root.get(getStoreIdPropertyName()), storeId);
 	    query.where(builder.and(categoryEqual, builder.or(ownerIdEqual, ownerIsNull)));
 	} else {
 	    query.where(builder.and(categoryEqual, ownerIsNull));

@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Item extends StoreMasterData {
+public class Item extends MasterData {
 
     @OneToOne
     private ItemTemplate itemTemplate;
@@ -15,6 +15,16 @@ public class Item extends StoreMasterData {
 
     @Column
     private String promotionRule;
+    
+    private long storeId;
+
+    public long getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(long storeId) {
+        this.storeId = storeId;
+    }
 
     public float getPrice() {
 	if (this.price == null) {

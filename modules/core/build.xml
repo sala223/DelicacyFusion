@@ -10,13 +10,6 @@
 		<copy todir="${build.outputDirectory.classes}">
 			<fileset dir="${build.sourceDirectory}/${subSourceDirectory}" excludes="**/*.java" />
 		</copy>
-		<var name="subSourceDirectory" value="image" />
-		<javac encoding="iso-8859-1" includeantruntime="true" nowarn="${compile.nowarn}" debug="${compile.debug}" deprecation="${compile.deprecation}" source="${compile.jdk-version.source}" target="${compile.jdk-version.target}" optimize="${compile.optimize}" srcdir="${build.sourceDirectory}/${subSourceDirectory}" destdir="${build.outputDirectory.classes}">
-			<classpath refid="compile.classpath" />
-		</javac>
-		<copy todir="${build.outputDirectory.classes}">
-			<fileset dir="${build.sourceDirectory}/${subSourceDirectory}" excludes="**/*.java" />
-		</copy>
 		<var name="subSourceDirectory" value="persist" />
 		<javac encoding="iso-8859-1" includeantruntime="true" nowarn="${compile.nowarn}" debug="${compile.debug}" deprecation="${compile.deprecation}" source="${compile.jdk-version.source}" target="${compile.jdk-version.target}" optimize="${compile.optimize}" srcdir="${build.sourceDirectory}/${subSourceDirectory}" destdir="${build.outputDirectory.classes}">
 			<classpath refid="compile.classpath" />
