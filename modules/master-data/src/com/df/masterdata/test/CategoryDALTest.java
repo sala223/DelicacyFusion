@@ -55,6 +55,7 @@ public class CategoryDALTest extends MasterDataJPABaseTest {
 	Category category = new Category();
 	String name = "juice";
 	category.setName(name);
+	categoryDAL.getEntityManager().flush();
 	categoryDAL.newCategory(category, parent.getId());
 	Category found = categoryDAL.findCategoryByName(name);
 	TestCase.assertNotNull(found.getParent());

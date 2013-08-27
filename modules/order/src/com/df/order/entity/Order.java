@@ -1,52 +1,47 @@
 package com.df.order.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.df.core.persist.eclipselink.MultiTenantSupport;
-
 @Entity
-public class Order extends MultiTenantSupport {
+public class Order extends TransactionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_id_sequence")
     @SequenceGenerator(name = "order_id_sequence", sequenceName = "order_id_sequence")
     private long orderId;
 
-    @Column(nullable = false)
-    private long userId;
-
-    @Column(nullable = false)
-    private long storeId;
-
     @Temporal(value = TemporalType.TIME)
     @Column(nullable = false)
-    private Date tradeTime;
+    private Date dinnerTime;
 
-    @Temporal(value = TemporalType.TIME)
-    @Column(nullable = true)
-    private Date closeTime;
+    @Column
+    private boolean isTakeOut;
 
-    @OneToMany
+    @ElementCollection
+    @CollectionTable(joinColumns = @JoinColumn(name = "order_id"))
     private List<OrderLine> lines;
 
     @Column
     private float totalPayment;
 
-    @Column
-    private Payment payment;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Payment> payments;
 
     @Column
     private float discount;
@@ -54,54 +49,28 @@ public class Order extends MultiTenantSupport {
     @Column
     private float deposit;
 
-    @Column(length = 32)
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
-
     @Column
     private String promotionDetails;
 
     @Column
     private String comment;
 
-    public long getOrderId() {
+    @Override
+    public long getTransactionId() {
 	return orderId;
     }
 
-    public void setOrderId(long orderId) {
-	this.orderId = orderId;
+    @Override
+    public void setTransactionId(long transactionId) {
+	this.orderId = transactionId;
     }
 
-    public long getUserId() {
-	return userId;
+    public boolean isTakeOut() {
+	return isTakeOut;
     }
 
-    public void setUserId(long userId) {
-	this.userId = userId;
-    }
-
-    public long getStoreId() {
-	return storeId;
-    }
-
-    public void setStoreId(long storeId) {
-	this.storeId = storeId;
-    }
-
-    public Date getTradeTime() {
-	return tradeTime;
-    }
-
-    public void setTradeTime(Date tradeTime) {
-	this.tradeTime = tradeTime;
-    }
-
-    public Date getCloseTime() {
-	return closeTime;
-    }
-
-    public void setCloseTime(Date closeTime) {
-	this.closeTime = closeTime;
+    public void setTakeOut(boolean isTakeOut) {
+	this.isTakeOut = isTakeOut;
     }
 
     public List<OrderLine> getLines() {
@@ -112,6 +81,13 @@ public class Order extends MultiTenantSupport {
 	this.lines = lines;
     }
 
+    public void addLine(OrderLine line) {
+	if (this.lines == null) {
+	    this.lines = new ArrayList<OrderLine>();
+	}
+	this.lines.add(line);
+    }
+
     public float getTotalPayment() {
 	return totalPayment;
     }
@@ -120,12 +96,20 @@ public class Order extends MultiTenantSupport {
 	this.totalPayment = totalPayment;
     }
 
-    public Payment getPayment() {
-	return payment;
+    public Date getDinnerTime() {
+	return dinnerTime;
     }
 
-    public void setPayment(Payment payment) {
-	this.payment = payment;
+    public void setDinnerTime(Date dinnerTime) {
+	this.dinnerTime = dinnerTime;
+    }
+
+    public List<Payment> getPayments() {
+	return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+	this.payments = payments;
     }
 
     public float getDiscount() {
@@ -144,14 +128,6 @@ public class Order extends MultiTenantSupport {
 	this.deposit = deposit;
     }
 
-    public OrderStatus getStatus() {
-	return status;
-    }
-
-    public void setStatus(OrderStatus status) {
-	this.status = status;
-    }
-
     public String getPromotionDetails() {
 	return promotionDetails;
     }
@@ -167,4 +143,5 @@ public class Order extends MultiTenantSupport {
     public void setComment(String comment) {
 	this.comment = comment;
     }
+
 }

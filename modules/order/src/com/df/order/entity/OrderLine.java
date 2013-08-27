@@ -1,33 +1,32 @@
 package com.df.order.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
-import com.df.core.persist.eclipselink.MultiTenantSupport;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import com.df.masterdata.entity.PriceUnit;
 
-@Entity
-public class OrderLine extends MultiTenantSupport {
+@Embeddable
+public class OrderLine implements Serializable {
 
-    @ManyToOne(optional = false)
-    private Order order;
+    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
-    private long lineId;
+    private long lineNumber;
 
     @Column(nullable = false)
     private long itemId;
 
     @Column
     private long roomId;
-    
+
     @Column
     private float price;
-    
+
     @Column
     private int quantity;
-    
+
     @Column
     private PriceUnit priceUnit;
 
@@ -39,14 +38,6 @@ public class OrderLine extends MultiTenantSupport {
 
     @Column
     private String promotionDetails;
-
-    public Order getOrder() {
-	return order;
-    }
-
-    public void setOrder(Order order) {
-	this.order = order;
-    }
 
     public long getItemId() {
 	return itemId;
@@ -104,12 +95,12 @@ public class OrderLine extends MultiTenantSupport {
 	this.comment = comment;
     }
 
-    public long getLineId() {
-	return lineId;
+    public long getLineNumber() {
+	return lineNumber;
     }
 
-    public void setLineId(long lineId) {
-	this.lineId = lineId;
+    public void setLineNumber(long lineNumber) {
+	this.lineNumber = lineNumber;
     }
 
     public String getPromotionDetails() {

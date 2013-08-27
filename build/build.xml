@@ -22,6 +22,12 @@
 		<copy todir="${release.directory}/${build.version}/${ant.project.name}.ear">
 			<fileset dir="${modules.dir}/${module.name}/bin" includes="*.jar" />
 		</copy>
+		<var name="module.name" value="order" />
+		<echo message="Run build for module ${module.name}" />
+		<ant antfile="build.xml" target="package" dir="${modules.dir}/${module.name}" inheritall="false" inheritrefs="false" useNativeBasedir="true" />
+		<copy todir="${release.directory}/${build.version}/${ant.project.name}.ear">
+			<fileset dir="${modules.dir}/${module.name}/bin" includes="*.jar" />
+		</copy>
 		<var name="module.name" value="http-master-data" />
 		<echo message="Run build for module ${module.name}" />
 		<ant antfile="build.xml" target="package" dir="${modules.dir}/${module.name}" inheritall="false" inheritrefs="false" useNativeBasedir="true" />

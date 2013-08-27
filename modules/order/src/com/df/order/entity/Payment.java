@@ -1,29 +1,36 @@
 package com.df.order.entity;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import com.df.core.persist.eclipselink.MultiTenantSupport;
-
-public class Payment extends MultiTenantSupport {
+public class Payment extends TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_id_sequence")
     @SequenceGenerator(name = "payment_id_sequence", sequenceName = "payment_id_sequence")
-    private long orderId;
+    private long paymentId;
 
-    @Temporal(value = TemporalType.TIME)
-    @Column(nullable = false)
-    private Date createTime;
+    @Column
+    private boolean isDeposit;
 
-    @Temporal(value = TemporalType.TIME)
-    @Column(nullable = true)
-    private Date payTime;
+    @Override
+    public long getTransactionId() {
+	return paymentId;
+    }
+
+    @Override
+    public void setTransactionId(long transactionId) {
+	this.paymentId = transactionId;
+    }
+
+    public boolean isDeposit() {
+	return isDeposit;
+    }
+
+    public void setDeposit(boolean isDeposit) {
+	this.isDeposit = isDeposit;
+    }
 
 }
