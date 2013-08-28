@@ -15,15 +15,23 @@ public class Item extends MasterData {
 
     @Column
     private String promotionRule;
-    
+
+    @Column
     private long storeId;
 
+    Item() {
+    }
+
+    public Item(ItemTemplate itemTemplate) {
+	this.itemTemplate = itemTemplate;
+    }
+
     public long getStoreId() {
-        return storeId;
+	return storeId;
     }
 
     public void setStoreId(long storeId) {
-        this.storeId = storeId;
+	this.storeId = storeId;
     }
 
     public float getPrice() {

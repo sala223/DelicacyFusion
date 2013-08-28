@@ -42,7 +42,7 @@ public class ItemTemplate extends MasterData {
     private ItemType type;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "item_template_category")
+    @JoinTable(name = "item_template_category", joinColumns = @JoinColumn(name = "ITEM_TEMPLATE_ID"), inverseJoinColumns = { @JoinColumn(name = "CATEGORY_ID") })
     private List<Category> categories;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -154,7 +154,7 @@ public class ItemTemplate extends MasterData {
     }
 
     public void addCategories(Category... categories) {
-	if (this.categories != null) {
+	if (this.categories == null) {
 	    this.categories = new ArrayList<Category>();
 	}
 	if (categories != null) {

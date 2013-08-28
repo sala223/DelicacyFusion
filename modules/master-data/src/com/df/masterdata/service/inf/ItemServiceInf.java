@@ -11,9 +11,7 @@ public interface ItemServiceInf {
     void newItem(Item item);
 
     void disableItem(long itemId);
-
-    List<Item> getItemsByCategory(long categoryId);
-
+    
     List<Item> getItemsByCategory(long storeId, long categoryId);
 
     List<Item> getAvaliableItems(int fromResult, int maxResult);

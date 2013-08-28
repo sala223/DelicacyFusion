@@ -4,6 +4,11 @@
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
-	<bean id="imageService" class="com.df.blobstore.image.ImageService" autowire="default"/>
-	<bean id="imageServiceRoute" class="com.df.blobstore.image.FileSystemImageServiceRoute" autowire="default"/>
+	<bean id="imageService" class="com.df.blobstore.image.ImageService" autowire="default">
+		<constructor-arg index="0" ref="imageServiceRoute" />
+	</bean>
+	<bean id="imageServiceRoute" class="com.df.blobstore.image.FileSystemImageServiceRoute" autowire="default">
+		<constructor-arg index="0" ref="ImageKeyResolver" />
+	</bean>
+	<bean id="ImageKeyResolver" class="com.df.blobstore.image.DefaultImageKeyResolver" autowire="default"/>
 </beans>

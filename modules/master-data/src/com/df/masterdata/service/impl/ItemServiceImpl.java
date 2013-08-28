@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.df.blobstore.image.ImageServiceInf;
 import com.df.masterdata.dal.ItemDAL;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.exception.ItemException;
@@ -18,6 +19,17 @@ public class ItemServiceImpl implements ItemServiceInf {
 
     @Inject
     private ItemDAL itemDAL;
+
+    @Inject
+    private ImageServiceInf imageService;
+
+    public void setItemDAL(ItemDAL itemDAL) {
+	this.itemDAL = itemDAL;
+    }
+
+    public void setImageService(ImageServiceInf imageService) {
+	this.imageService = imageService;
+    }
 
     @Override
     public void newItem(Item item) {
@@ -32,11 +44,6 @@ public class ItemServiceImpl implements ItemServiceInf {
 	}
 	item.setEnabled(false);
 	itemDAL.update(item);
-    }
-
-    @Override
-    public List<Item> getItemsByCategory(long categoryId) {
-	return itemDAL.getItemsByCategory(categoryId, null);
     }
 
     @Override

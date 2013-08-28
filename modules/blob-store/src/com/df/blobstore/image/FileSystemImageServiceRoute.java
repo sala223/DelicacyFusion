@@ -23,6 +23,10 @@ public class FileSystemImageServiceRoute implements ImageServiceRoute {
 	this(path.toFile(), keyResolver);
     }
 
+    public FileSystemImageServiceRoute(String path, ImageKeyResolver keyResolver) {
+	this(new File(path), keyResolver);
+    }
+
     public FileSystemImageServiceRoute(ImageKeyResolver keyResolver) {
 	this(Paths.get(System.getProperty("java.io.tmpdir")), keyResolver);
     }

@@ -26,8 +26,8 @@ public interface Constants {
     }
 
     public static interface ITEM {
-	public static final String CODE_PROPERTY = "code";
-	public static final String CATEGORY_ID_PROPERTY = "categories.id";
+	public static final String STORE_ID_PROPERTY = "storeId";
+	public static final String TEMPLATE_PROPERTY = "itemTemplate";
     }
 
     public static interface DINING_TABLE {

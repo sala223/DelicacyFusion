@@ -11,6 +11,8 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.util.Assert;
+
 import com.df.masterdata.entity.Constants.CATEGORY;
 import com.df.masterdata.entity.Constants.ITEM_TEMPLATE;
 import com.df.masterdata.entity.ItemTemplate;
@@ -19,6 +21,8 @@ import com.df.masterdata.exception.ItemTemplateException;
 public class ItemTemplateDAL extends MasterDataAccessFoundation {
 
     public void newItemTemplate(ItemTemplate itl) {
+	Assert.notNull(itl.getCode());
+	Assert.notNull(itl.getName());
 	String code = itl.getCode();
 	ItemTemplate found = this.findSingleEntityByProperty(ItemTemplate.class, ITEM_TEMPLATE.CODE_PROPERTY, code);
 	if (found != null) {

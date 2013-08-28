@@ -33,7 +33,7 @@ public class CategoryDAL extends MasterDataAccessFoundation {
     public void removeCategoryById(long categoryId) {
 	List<ItemTemplate> itemTemplates = itemTemplateDAL.getItemTemplateByCategory(categoryId);
 	if (itemTemplates.size() > 0) {
-	    throw CategoryException.itemListNotEmpty(categoryId);
+	    throw CategoryException.itemTemplateListNotEmpty(categoryId);
 	} else {
 	    Category found = this.find(Category.class, categoryId);
 	    if (found == null) {
