@@ -5,40 +5,6 @@
     android:baselineAligned="false"
     android:orientation="vertical" >
 
-	<LinearLayout 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal" >
-	    <TextView
-	        android:id="@+id/tvPrevCategory"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textSize="20sp" />
- 		<ImageView 
-			android:id="@+id/imgPrevCategory"
-			android:src="@drawable/prev"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"/> 
-	    <TextView
-	        android:id="@+id/tvCategory"
-	        android:gravity="center"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:layout_gravity="center"
-	        android:textSize="30sp" />
- 		<ImageView 
-			android:id="@+id/imgNextCategory"
-			android:src="@drawable/next"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"/> 
-	    <TextView
-	        android:id="@+id/tvNextCategory"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textSize="20sp" />
-	</LinearLayout>
-    
     <GridView
         android:id="@+id/gvMenu"
         android:layout_width="match_parent"
@@ -47,6 +13,8 @@
         android:background="#FFFFFF"
         android:columnWidth="200dp"
         android:gravity="center"
+        android:drawSelectorOnTop="true"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth" />
+
 </LinearLayout>
