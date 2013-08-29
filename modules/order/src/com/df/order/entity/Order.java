@@ -8,12 +8,11 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,14 +33,14 @@ public class Order extends TransactionEntity {
     private boolean isTakeOut;
 
     @ElementCollection
-    @CollectionTable(joinColumns = @JoinColumn(name = "order_id"))
+    @CollectionTable(joinColumns = @JoinColumn(name = "ORDER_ID"))
     private List<OrderLine> lines;
 
     @Column
     private float totalPayment;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Payment> payments;
+    @OneToOne
+    private Payment payment;
 
     @Column
     private float discount;
@@ -77,15 +76,8 @@ public class Order extends TransactionEntity {
 	return lines;
     }
 
-    public void setLines(List<OrderLine> lines) {
+    void setLines(List<OrderLine> lines) {
 	this.lines = lines;
-    }
-
-    public void addLine(OrderLine line) {
-	if (this.lines == null) {
-	    this.lines = new ArrayList<OrderLine>();
-	}
-	this.lines.add(line);
     }
 
     public float getTotalPayment() {
@@ -104,12 +96,12 @@ public class Order extends TransactionEntity {
 	this.dinnerTime = dinnerTime;
     }
 
-    public List<Payment> getPayments() {
-	return payments;
+    public Payment getPayment() {
+	return payment;
     }
 
-    public void setPayments(List<Payment> payments) {
-	this.payments = payments;
+    public void Payment(Payment payment) {
+	this.payment = payment;
     }
 
     public float getDiscount() {
@@ -144,4 +136,32 @@ public class Order extends TransactionEntity {
 	this.comment = comment;
     }
 
+    public int addOrderLine(OrderLine line) {
+	if (this.lines == null) {
+	    this.lines = new ArrayList<OrderLine>();
+	}
+	int lineNumer = this.lines.size() + 1;
+	line.setLineNumber(lineNumer);
+	this.lines.add(line);
+	return lineNumer;
+    }
+
+    public boolean removeOrderLine(int lineNumber) {
+	int foundIndex = -1;
+	if (this.lines == null) {
+	    for (int i = 0; i < lines.size(); ++i) {
+		if (lines.get(i).getLineNumber() == lineNumber) {
+		    foundIndex = i;
+		    continue;
+		}
+		if (foundIndex != -1) {
+		    lines.get(i).setLineNumber(i);
+		}
+	    }
+	    if (foundIndex != -1) {
+		this.lines.remove(foundIndex);
+	    }
+	}
+	return foundIndex != -1;
+    }
 }

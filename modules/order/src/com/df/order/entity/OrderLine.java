@@ -13,7 +13,7 @@ public class OrderLine implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
-    private long lineNumber;
+    private int lineNumber;
 
     @Column(nullable = false)
     private long itemId;
@@ -95,11 +95,11 @@ public class OrderLine implements Serializable {
 	this.comment = comment;
     }
 
-    public long getLineNumber() {
+    public int getLineNumber() {
 	return lineNumber;
     }
 
-    public void setLineNumber(long lineNumber) {
+    public void setLineNumber(int lineNumber) {
 	this.lineNumber = lineNumber;
     }
 
