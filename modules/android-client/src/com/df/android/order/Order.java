@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.df.android.entity.Table;
+
 public abstract class Order {
 	protected String id;
 
@@ -17,19 +19,20 @@ public abstract class Order {
 
 	protected Date createTime;
 	protected List<OrderLine> lines = new ArrayList<OrderLine>();
-	private static Order currentOrder = null;
+	private int headCount = 0;
+	
+	
+	private Table table = null;
+	public Table getTable() {
+		return table;
+	}
+
+	public void setTable(Table table) {
+		this.table = table;
+	}
 
 	public Order(String id) {
 		this.id = id;
-		setCurrentOrder(this);
-	}
-
-	public static void setCurrentOrder(Order order) {
-		currentOrder = order;
-	}
-
-	public static Order currentOrder() {
-		return currentOrder;
 	}
 
 	public void addLine(OrderLine line) {
@@ -112,5 +115,13 @@ public abstract class Order {
 		ret += "}";
 
 		return ret;
+	}
+
+	public int getHeadCount() {
+		return headCount;
+	}
+
+	public void setHeadCount(int headCount) {
+		this.headCount = headCount;
 	}
 }

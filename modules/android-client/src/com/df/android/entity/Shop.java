@@ -1,5 +1,6 @@
 package com.df.android.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.df.android.menu.Menu;
@@ -46,4 +47,16 @@ public class Shop {
 	public List<Table> getTables() {
 		return tables;
 	}
+	
+	private List<ItemCategory> navigatableMenuItemCategories = new ArrayList<ItemCategory>();
+
+	public void setNavigatableMenuItemCategories(
+			List<ItemCategory> navigatableMenuItemCategories) {
+		this.navigatableMenuItemCategories = navigatableMenuItemCategories;
+	}
+
+	public List<ItemCategory> getNavigatableMenuItemCategories() {
+		return navigatableMenuItemCategories;
+	}
+	
 }

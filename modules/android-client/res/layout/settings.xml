@@ -9,27 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
 
-        <GridView
-            android:id="@+id/gvTables"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:columnWidth="100dp"
-            android:gravity="center"
-            android:listSelector="@drawable/tablelistitem"
-            android:numColumns="auto_fit"
-            android:stretchMode="columnWidth" />
-
-        <NumberPicker
-            android:id="@+id/npHeadCount"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="@string/server_addr"/>
+        
+        <EditText
+            android:id="@+id/etServerAddr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        </LinearLayout>
 
     <Button
-        android:id="@+id/btnConfirmTable"
+        android:id="@+id/btnConfirmSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"

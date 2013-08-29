@@ -2,6 +2,7 @@ package com.df.android;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,14 +13,16 @@ import org.w3c.dom.NodeList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnDragListener;
@@ -34,15 +37,16 @@ import com.df.android.entity.ItemCategory;
 import com.df.android.entity.Shop;
 import com.df.android.entity.Table;
 import com.df.android.menu.Menu;
-import com.df.android.menu.MenuPagerAdapter;
 import com.df.android.network.NetworkStatusChangeListener;
 import com.df.android.network.NetworkStatusMonitor;
-import com.df.android.order.OnsiteOrder;
 import com.df.android.order.Order;
 import com.df.android.order.OrderChangeListener;
+import com.df.android.order.OrderFactory;
 import com.df.android.order.OrderLine;
 import com.df.android.ui.CreateOrderDialog;
+import com.df.android.ui.MenuView;
 import com.df.android.ui.OrderListViewAdapter;
+import com.df.android.ui.SettingsDialog;
 
 public class Main extends Activity implements OrderChangeListener,
 		NetworkStatusChangeListener {
@@ -53,8 +57,7 @@ public class Main extends Activity implements OrderChangeListener,
 
 		final Shop shop = initShop("demo");
 
-		ViewPager viewPager = (ViewPager) findViewById(R.id.menuPager);
-		viewPager.setAdapter(new MenuPagerAdapter(this, shop));
+		((MenuView) findViewById(R.id.menuView)).setShop(shop);
 
 		findViewById(R.id.showHideOrder).setOnClickListener(
 				new OnClickListener() {
@@ -65,11 +68,20 @@ public class Main extends Activity implements OrderChangeListener,
 						if (leftPane.getVisibility() == View.VISIBLE) {
 							leftPane.setVisibility(View.GONE);
 						} else {
-							if (Order.currentOrder() == null)
+							if (OrderFactory.currentOrder() == null)
 								chooseTable(view.getContext(), shop);
-
-							leftPane.setVisibility(View.VISIBLE);
+							else
+								leftPane.setVisibility(View.VISIBLE);
 						}
+					}
+				});
+
+		findViewById(R.id.btnSendOrder).setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						sendOrder(OrderFactory.currentOrder());
+						OrderFactory.clearCurrentOrder();
 					}
 				});
 
@@ -79,32 +91,102 @@ public class Main extends Activity implements OrderChangeListener,
 				ConnectivityManager.CONNECTIVITY_ACTION));
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(android.view.Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(android.view.MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_settings:
+			final SettingsDialog settingsDialog = new SettingsDialog(this);
+			settingsDialog.show();
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
+
 	private void chooseTable(Context cxt, final Shop shop) {
-		new CreateOrderDialog(cxt, shop).show();
+		final CreateOrderDialog chooseTableDialog = new CreateOrderDialog(cxt,
+				shop);
+		chooseTableDialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				if (chooseTableDialog.getSelectedTable() != null) {
+					createOrder(chooseTableDialog.getSelectedTable(),
+							chooseTableDialog.getHeadCount());
+				}
+			}
+
+		});
+		chooseTableDialog.show();
 	}
 
 	private Shop initShop(String shopId) {
 		Shop shop = new Shop(shopId, shopId);
 
+		// Load menus
 		Menu menu = buildMenuFromMetaFile("cache/" + shopId + "/menu.xml");
+		shop.setMenu(menu);
+
+		// Load tables
 		List<Table> tables = buildTablesFromMetaFile("cache/" + shopId
 				+ "/tables.xml");
 
-		shop.setMenu(menu);
 		shop.setTables(tables);
+
+		// Load default configurations
+		initShopConfigurations(shop);
 
 		return shop;
 	}
 
-	private void createOrder(final Table table) {
-		Order order = new OnsiteOrder("order id");
+	private void initShopConfigurations(final Shop shop) {
+		String metaFile = "cache/" + shop.getId() + "/shop.xml";
+
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			Document dom = builder.parse(this.getAssets().open(metaFile));
+			Element root = dom.getDocumentElement();
+			NodeList confNodes = root.getChildNodes();
+			for (int i = 0; i < confNodes.getLength(); i++) {
+				if ("menuCategories".equals(confNodes.item(i).getNodeName())) {
+					List<ItemCategory> categories = new ArrayList<ItemCategory>();
+
+					NodeList xmlItems = root.getElementsByTagName("category");
+					for (int j = 0; j < xmlItems.getLength(); j++) {
+						categories.add(ItemCategory.valueOf(xmlItems.item(j)
+								.getTextContent()));
+					}
+
+					shop.setNavigatableMenuItemCategories(categories);
+				}
+			}
+		} catch (Exception e) {
+			Log.e(getClass().getName(),
+					"Fail to initialize shop configurations due to " + e);
+		}
+	}
+
+	private void createOrder(final Table table, int headCount) {
+		Order order = OrderFactory.createOnsiteOrder(UUID.randomUUID()
+				.toString().substring(0, 10), table, headCount);
 		order.registerChangeListener(this);
 
 		final ListView lstOrder = (ListView) findViewById(R.id.lstOrder);
 		OrderListViewAdapter orderAdapter = new OrderListViewAdapter(this,
 				order);
 		order.registerChangeListener(orderAdapter);
-		// orderAdapter.setOrder(order);
+
+		initOrder(order);
+
 		lstOrder.setAdapter(orderAdapter);
 		lstOrder.setOnDragListener(new OnDragListener() {
 			@Override
@@ -127,7 +209,7 @@ public class Main extends Activity implements OrderChangeListener,
 
 					OrderLine line = new OrderLine(item);
 					line.setTable(Table.getCurrentTable());
-					Order.currentOrder().addLine(line);
+					OrderFactory.currentOrder().addLine(line);
 				default:
 					break;
 				}
@@ -136,6 +218,18 @@ public class Main extends Activity implements OrderChangeListener,
 		});
 
 		((TextView) findViewById(R.id.orderId)).setText(order.getId());
+	}
+
+	private void initOrder(final Order order) {
+
+	}
+
+	private void sendOrder(final Order order) {
+		final LinearLayout leftPane = (LinearLayout) findViewById(R.id.leftPane);
+		if (leftPane.getVisibility() == View.VISIBLE)
+			leftPane.setVisibility(View.GONE);
+
+		((TextView) findViewById(R.id.orderCount)).setText("0");
 	}
 
 	private Menu buildMenuFromMetaFile(String metaFile) {
@@ -199,7 +293,8 @@ public class Main extends Activity implements OrderChangeListener,
 			for (int i = 0; i < xmlItems.getLength(); i++) {
 				Element xmlItem = (Element) xmlItems.item(i);
 				String id = xmlItem.getAttribute("id");
-				int capacity = Integer.parseInt(xmlItem.getAttribute("capacity"));
+				int capacity = Integer.parseInt(xmlItem
+						.getAttribute("capacity"));
 
 				tables.add(new Table(id, capacity));
 			}
@@ -244,16 +339,16 @@ public class Main extends Activity implements OrderChangeListener,
 	@Override
 	public void onLineAdded(OrderLine line) {
 		((TextView) findViewById(R.id.orderCount)).setText(""
-				+ Order.currentOrder().getItemCount());
+				+ OrderFactory.currentOrder().getItemCount());
 		((TextView) findViewById(R.id.orderTotal)).setText(""
-				+ Order.currentOrder().getTotal());
+				+ OrderFactory.currentOrder().getTotal());
 	}
 
 	@Override
 	public void onLineRemoved(OrderLine line) {
 		((TextView) findViewById(R.id.orderCount)).setText(""
-				+ Order.currentOrder().getItemCount());
+				+ OrderFactory.currentOrder().getItemCount());
 		((TextView) findViewById(R.id.orderTotal)).setText(""
-				+ Order.currentOrder().getTotal());
+				+ OrderFactory.currentOrder().getTotal());
 	}
 }

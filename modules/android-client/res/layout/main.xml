@@ -1,154 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal"
+    android:animateLayoutChanges="true"
     android:baselineAligned="false"
-    android:animateLayoutChanges="true">
+    android:orientation="horizontal" >
 
     <FrameLayout
-		android:layout_gravity="center_vertical"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content">
-        <Button 
-			android:id="@+id/showHideOrder"
-			android:textColor="#FFFFFF"
-			android:text="@string/myOrder" 
-			android:layout_height="wrap_content" 
-			android:background="@drawable/clip"
-			android:paddingTop="10dp"
-			android:layout_marginTop="20dp"
-			android:paddingBottom="10dp"
-			android:layout_width="20dp">
-		</Button>
-		<TextView 
-			android:id="@+id/orderCount"
-			android:textColor="#FFFFFF"
-			android:textSize="20sp"
-			android:text="0" 
-			android:layout_width="40dp" 
-			android:layout_height="40dp" 
-			android:gravity="center"
-			android:layout_gravity="top|right"
-			android:background="@drawable/notification_circle"
-		    />
-	</FrameLayout>
-	    
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical" >
+
+        <Button
+            android:id="@+id/showHideOrder"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/clip"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/myOrder"
+            android:textColor="#FFFFFF" >
+        </Button>
+
+        <TextView
+            android:id="@+id/orderCount"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="top|right"
+            android:background="@drawable/notification_circle"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/leftPane"
-	    android:layout_width="300dp"
-	    android:layout_height="match_parent"
-	    android:orientation="vertical"
-	    android:visibility="gone">
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone" >
 
-		<TextView 
-			android:id="@+id/tvNetworkStatus"
-			android:background="#FF0000"
-			android:textColor="#FFFFFF"
-			android:layout_width="match_parent" 
-			android:layout_height="wrap_content" />
-	    <ListView 
-	        android:id="@+id/lstOrder"
-	        android:layout_weight="1"
-	        android:animateLayoutChanges="true"
-		    android:layout_width="match_parent"
-		    android:layout_height="0dp"/>
-		<LinearLayout
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="vertical">
-			<LinearLayout
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="horizontal">
-				<TextView 
-					android:id="@+id/orderId"
-					android:layout_weight="1"
-					android:layout_width="0dp" 
-					android:layout_height="wrap_content" />
-				<TextView 
-					android:id="@+id/orderTotal"
-					android:textColor="#FF0000"
-					android:textSize="48sp"
-					android:layout_width="wrap_content" 
-					android:layout_height="wrap_content" />
-			</LinearLayout>
-   			
+        <TextView
+            android:id="@+id/tvNetworkStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FF0000"
+            android:textColor="#FFFFFF" />
+
+        <ListView
+            android:id="@+id/lstOrder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:animateLayoutChanges="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/orderId"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/orderTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FF0000"
+                    android:textSize="48sp" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/btnSendOrder"
                 style="?android:attr/borderlessButtonStyle"
-                android:drawableLeft="@drawable/send_order"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" 
-                android:text="@string/send_order" 
+                android:layout_height="wrap_content"
+                android:layout_margin="5dip"
                 android:background="#008800"
-                android:textColor="#FFFFFF"
-                android:paddingLeft="10dip" 
-                android:paddingRight="10dip" 
-                android:layout_margin="5dip"/> 
-   		</LinearLayout>
-	</LinearLayout>
+                android:drawableLeft="@drawable/send_order"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/send_order"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/menuContainer"
-	    android:layout_weight="1"
-	    android:layout_width="0dp"
-	    android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
 
-	    <android.support.v4.view.ViewPager
-	        android:id="@+id/menuPager"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent" />
- 		<LinearLayout
-			android:id="@+id/menuItemDetail"
-			android:layout_width="match_parent" 
-			android:layout_height="match_parent"
-			android:background="#FFFFFF"
-			android:orientation="horizontal" 
-			android:visibility="invisible" >
-	 		<ImageView 
-				android:id="@+id/enlargedImage"
-				android:layout_width="0dp" 
-				android:layout_height="match_parent" 
-				android:layout_weight="1"
-				android:gravity="center" />
-	 		
-	 		<LinearLayout
-				android:layout_width="wrap_content" 
-				android:layout_height="match_parent"
-				android:gravity="center"
-				android:orientation="vertical" >
-		 		<TextView 
-			        android:id="@+id/tvMenuItemDetailName"
-					android:textSize="30sp"
-					android:layout_marginTop="10dp"
-					android:layout_height="wrap_content" 
-					android:layout_width="match_parent"/>
-		 		<TextView 
-			        android:id="@+id/tvMenuItemDetailPrice"
-					android:textSize="64sp"
-					android:layout_marginTop="10dp"
-					android:textColor="#FF0000" 
-					android:layout_height="wrap_content" 
-					android:layout_width="match_parent"/>
-		 		<TextView 
-					android:layout_marginTop="10dp"
-					android:layout_weight="1"
-					android:layout_height="0dp" 
-					android:layout_width="match_parent"/>
-		 		<Button 
-		 		    android:id="@+id/btnMenuItemDetailOrder"
-					android:layout_margin="10dp"
-					android:padding="10dp"
-					android:background="#008800"
-					android:textColor="#FFFFFF"
-					android:textSize="30sp"
-					android:text="@string/order"
-					android:layout_height="wrap_content"
-					android:layout_width="match_parent"/>
-		 	</LinearLayout>
- 		</LinearLayout>
-	 </FrameLayout>
-				    
+        <com.df.android.ui.MenuView
+            android:id="@+id/menuView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+        <LinearLayout
+            android:id="@+id/menuItemDetail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:orientation="horizontal"
+            android:visibility="invisible" >
+
+            <ImageView
+                android:id="@+id/enlargedImage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/tvMenuItemDetailName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/tvMenuItemDetailPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#FF0000"
+                    android:textSize="64sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btnMenuItemDetailOrder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="#008800"
+                    android:padding="10dp"
+                    android:text="@string/order"
+                    android:textColor="#FFFFFF"
+                    android:textSize="30sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
 </LinearLayout>
