@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7"/>
 	<classpathentry exported="true" kind="lib" path="jboss-as-7.1.1.Final/modules/javax/persistence/api/main/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
-	<classpathentry kind="lib" path="third-lib/mysql-connector-java-5.0.8-bin.jar"/>
 	<classpathentry kind="lib" path="jboss-as-7.1.1.Final/modules/org/apache/log4j/main/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="jboss-as-7.1.1.Final/modules/org/slf4j/jcl-over-slf4j/main/jcl-over-slf4j-1.6.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="jboss-as-7.1.1.Final/modules/org/slf4j/main/slf4j-api-1.6.1.jar"/>
@@ -34,5 +33,6 @@
 	<classpathentry exported="true" kind="lib" path="jboss-as-7.1.1.Final/modules/javax/inject/api/main/javax.inject-1.jar"/>
 	<classpathentry exported="true" kind="lib" path="hadoop-1.2.1/hadoop-core-1.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="third-lib/commons-imaging-1.0-SNAPSHOT.jar" sourcepath="C:/workstation/download/chrome-download/commons-imaging-1.0-20130811.112243-2-bin/commons-imaging-1.0-SNAPSHOT/commons-imaging-1.0-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="third-lib/mysql-connector-java-5.1.26-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

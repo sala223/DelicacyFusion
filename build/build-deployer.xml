@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="deployer" default="deploy">
+	<import file="./build-ear.xml" />
+	<target name="deploy-conf">
+		<copy todir="${JBOSS_HOME}" verbose="true" overwrite="true">
+			<fileset dir="${basedir}/wildfly" includes="**/*" />
+		</copy>
+	</target>
+	<target name="deploy" depends="ear,deploy-conf">
+		<copy flatten="false" verbose="true" overwrite="true" todir="${JBOSS_HOME}/standalone/deployments/${ear.name}.ear">
+			<fileset dir="${release.directory}/${build.version}/${ear.name}.ear" includes="**/*"/>
+		</copy>
+		<touch file="${JBOSS_HOME}/standalone/deployments/${ear.name}.ear.dodeploy"/>
+	</target>
+	<target name="fast-deploy"  depends="fast-ear,deploy-conf">
+		<copy flatten="false" verbose="true" overwrite="true" todir="${JBOSS_HOME}/standalone/deployments/${ear.name}.ear">
+			<fileset dir="${release.directory}/${build.version}/${ear.name}.ear" includes="**/*"/>
+		</copy>
+		<touch file="${JBOSS_HOME}/standalone/deployments/${ear.name}.ear.dodeploy"/>
+	</target>
+</project>
+
