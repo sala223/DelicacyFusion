@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE application PUBLIC "-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN" "http://java.sun.com/dtd/application_1_5.dtd">  
+<application id="DelicacyFusion">  
+    <display-name>DelicacyFusion</display-name>  
+    <module id="masterdata">  
+        <web>  
+            <web-uri>http-master-data-{build.version}.war</web-uri>  
+            <context-root>masterdata</context-root>  
+        </web>  
+    </module>  
+</application>  

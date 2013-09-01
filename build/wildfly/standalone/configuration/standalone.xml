@@ -90,9 +90,8 @@
 		<subsystem xmlns="urn:jboss:domain:datasources:1.0">
 			<datasources>
 				<datasource jndi-name="java:jboss/datasources/df" pool-name="df-data-source" enabled="true" use-java-context="true">
-					<connection-url>jdbc:mysql://localhost:3306/DELICACY_FUSION?profileSQL=true</connection-url>
-					<driver-class> com.mysql.jdbc.Driver</driver-class>
-					<driver>mysql-connector-java-5.1.26-bin.jar</driver>
+					<connection-url>jdbc:mysql://localhost:3306/DELICACY_FUSION</connection-url>
+					<driver>mysql</driver>
 					<transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
 					<pool>
 						<min-pool-size>200</min-pool-size>
@@ -100,7 +99,8 @@
 					</pool>
 					<security>
 						<user-name>root</user-name>
-						<password></password>
+						<password>
+						</password>
 					</security>
 					<validation>
 						<validate-on-match>false</validate-on-match>
@@ -111,6 +111,9 @@
 						<share-prepared-statements/>
 					</statement>
 				</datasource>
+				<drivers>
+					<driver name="mysql" module="com.mysql"/>
+				</drivers>
 			</datasources>
 		</subsystem>
 		<subsystem xmlns="urn:jboss:domain:deployment-scanner:1.1">

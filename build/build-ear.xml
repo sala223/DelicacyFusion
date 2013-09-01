@@ -4,84 +4,90 @@
 	<property name="modules.dir" value="../modules" />
 	<property name="release.directory" value="../release" />
 	<if>
-		<isset property="ear.name"/>
+		<isset property="ear.name" />
 		<else>
-			<property name="ear.name" value="delicacy-fusion"/>
+			<property name="ear.name" value="delicacy-fusion" />
 		</else>
 	</if>
 	<property name="ear.name" value="${ear.name}" />
 	<target name="ear">
-		<delete dir="${release.directory}/${build.version}" quiet="true"/>
+		<delete dir="${release.directory}/${build.version}" quiet="true" />
 		<var name="module.name" value="core" />
 		<echo message="Run build for module ${module.name}" />
 		<ant antfile="build.xml" target="package" dir="${modules.dir}/${module.name}" inheritall="false" inheritrefs="false" useNativeBasedir="true" />
-		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true" >
+		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true">
 			<fileset dir="${modules.dir}/${module.name}/bin" includes="*.jar" />
 		</copy>
 		<var name="module.name" value="blob-store" />
 		<echo message="Run build for module ${module.name}" />
 		<ant antfile="build.xml" target="package" dir="${modules.dir}/${module.name}" inheritall="false" inheritrefs="false" useNativeBasedir="true" />
-		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true" >
+		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true">
 			<fileset dir="${modules.dir}/${module.name}/bin" includes="*.jar" />
 		</copy>
 		<var name="module.name" value="master-data" />
 		<echo message="Run build for module ${module.name}" />
 		<ant antfile="build.xml" target="package" dir="${modules.dir}/${module.name}" inheritall="false" inheritrefs="false" useNativeBasedir="true" />
-		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true" >
+		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true">
 			<fileset dir="${modules.dir}/${module.name}/bin" includes="*.jar" />
 		</copy>
 		<var name="module.name" value="order" />
 		<echo message="Run build for module ${module.name}" />
 		<ant antfile="build.xml" target="package" dir="${modules.dir}/${module.name}" inheritall="false" inheritrefs="false" useNativeBasedir="true" />
-		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true" >
+		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true">
 			<fileset dir="${modules.dir}/${module.name}/bin" includes="*.jar" />
 		</copy>
 		<var name="module.name" value="http-master-data" />
 		<echo message="Run build for module ${module.name}" />
 		<ant antfile="build.xml" target="package" dir="${modules.dir}/${module.name}" inheritall="false" inheritrefs="false" useNativeBasedir="true" />
-		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true" >
+		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true">
 			<fileset dir="${modules.dir}/${module.name}/bin" includes="*.war" />
 		</copy>
 		<copy flatten="true" todir="${release.directory}/${build.version}/${ear.name}.ear/lib">
-			<fileset dir="./third-lib" includes="**/*.jar" excludes="junit*.jar,harncrest*.jar" />
+			<fileset dir="./third-lib" includes="**/*.jar" excludes="junit*.jar, hamcrest*.jar, mysql*.jar, sqljdbc*.jar" />
 		</copy>
-		<copy  todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="false" >
-			<fileset dir="./ear" includes="**/*"/>
+		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="false">
+			<fileset dir="./ear" includes="**/*" />
 		</copy>
+		<replace summary="true" dir="${release.directory}/${build.version}/${ear.name}.ear" token="{build.version}" value="${build.version}">
+			<include name="**/*.xml" />
+		</replace>
 	</target>
 	<target name="fast-ear">
-		<delete dir="${release.directory}/${build.version}" quiet="true"/>
+		<delete dir="${release.directory}/${build.version}" quiet="true" />
 		<var name="module.name" value="core" />
 		<echo message="Run build for module ${module.name}" />
-		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true" >
+		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true">
 			<fileset dir="${modules.dir}/${module.name}/bin" includes="*.jar" />
 		</copy>
 		<var name="module.name" value="blob-store" />
 		<echo message="Run build for module ${module.name}" />
-		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true" >
+		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true">
 			<fileset dir="${modules.dir}/${module.name}/bin" includes="*.jar" />
 		</copy>
 		<var name="module.name" value="master-data" />
 		<echo message="Run build for module ${module.name}" />
-		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true" >
+		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true">
 			<fileset dir="${modules.dir}/${module.name}/bin" includes="*.jar" />
 		</copy>
 		<var name="module.name" value="order" />
 		<echo message="Run build for module ${module.name}" />
-		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true" >
+		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true">
 			<fileset dir="${modules.dir}/${module.name}/bin" includes="*.jar" />
 		</copy>
 		<var name="module.name" value="http-master-data" />
 		<echo message="Run build for module ${module.name}" />
-		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true" >
+		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true">
 			<fileset dir="${modules.dir}/${module.name}/bin" includes="*.war" />
 		</copy>
 		<copy flatten="true" todir="${release.directory}/${build.version}/${ear.name}.ear/lib">
-			<fileset dir="./third-lib" includes="**/*.jar" excludes="junit*.jar,harncrest*.jar" />
+			<fileset dir="./third-lib" includes="**/*.jar" excludes="junit*.jar, hamcrest*.jar, mysql*.jar, sqljdbc*.jar" />
 		</copy>
-		<copy  todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="false" >
-			<fileset dir="./ear" includes="**/*"/>
+		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true">
+			<fileset dir="./ear" includes="**/*" />
 		</copy>
+		<replace summary="true" dir="${release.directory}/${build.version}/${ear.name}.ear" token="{build.version}" value="${build.version}">
+			<include name="**/*.xml" />
+		</replace>
 	</target>
 </project>
 

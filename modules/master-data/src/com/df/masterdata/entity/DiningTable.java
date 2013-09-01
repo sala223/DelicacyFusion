@@ -16,7 +16,7 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
 public class DiningTable extends MasterData {
 
     @Column(nullable = false, length = 32)
-    @Index(name = "room_number_index", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
+    @Index(name = "room_number_index", unique = true, columnNames = { "number", MultiTenantSupport.TENANT_COLUMN })
     private String number;
 
     @Column(nullable = false, length = 128)
