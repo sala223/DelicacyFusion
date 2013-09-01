@@ -40,9 +40,11 @@ public class MenuView extends LinearLayout{
 		final RadioGroup menuNavigator = (RadioGroup) li.inflate(R.layout.menunavigator,
 				this, false);
 		
+		int i = 0;
 		for (ItemCategory category : shop.getNavigatableMenuItemCategories()) {
 			RadioButton rb = (RadioButton) li.inflate(R.layout.menunavigatorbutton,
 					menuNavigator, false);
+			rb.setId(i++);
 			rb.setText(getContext().getResources().getString(getContext().getResources().getIdentifier(getContext().getPackageName() + ":string/" + category.toString(), null, null)));
 			menuNavigator.addView(rb);
 		}
@@ -67,8 +69,8 @@ public class MenuView extends LinearLayout{
 
 			@Override
 			public void onPageSelected(int position) {
-				if(menuNavigator.getCheckedRadioButtonId() != position + 1)
-					menuNavigator.check(position + 1);
+				if(menuNavigator.getCheckedRadioButtonId() != position)
+					menuNavigator.check(position);
 			}
 			
 		});
@@ -76,9 +78,9 @@ public class MenuView extends LinearLayout{
 		menuNavigator.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
-			public void onCheckedChanged(RadioGroup view, int position) {
-				if(menuPager.getCurrentItem() != position - 1)
-					menuPager.setCurrentItem(position - 1);
+			public void onCheckedChanged(RadioGroup view, int checkedId) {
+				if(menuPager.getCurrentItem() != checkedId)
+					menuPager.setCurrentItem(checkedId);
 			}
 
 		});
@@ -87,6 +89,6 @@ public class MenuView extends LinearLayout{
 		this.addView(menuNavigator);
 		this.addView(menuPager);
 		
-		menuNavigator.check(1);
+		menuNavigator.check(0);
 	}
 }
