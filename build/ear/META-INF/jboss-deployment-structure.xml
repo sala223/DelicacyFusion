@@ -8,7 +8,6 @@
 		<!-- exclude-subsystem prevents a subsystems deployment unit processors running on a deployment -->
 		<!-- which gives basically the same effect as removing the subsystem, but it only affects single deployment -->
 		<exclusions>
-			<module  name="resteasy" />
 			<module  name="webservices" />
 		</exclusions>
 	</deployment>
