@@ -7,7 +7,6 @@
 	http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
-	<import resource="classpath:META-INF/blob-store-beans.xml" />
 	<bean id="categoryDAL" class="com.df.masterdata.dal.CategoryDAL" autowire="default"/>
 	<bean id="itemTemplateDAL" class="com.df.masterdata.dal.ItemTemplateDAL" autowire="default"/>
 	<bean id="roomDAL" class="com.df.masterdata.dal.RoomDAL" autowire="default"/>

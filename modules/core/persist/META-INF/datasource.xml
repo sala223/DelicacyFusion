@@ -14,15 +14,9 @@
 		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 			<property name="entityManagerFactory" ref="entityManagerFactory" />
 		</bean>
-		<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect">
-			<property name="lazyDatabaseTransaction" value="true" />
+		<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+			<property name="persistenceUnitName" value="delicacy-fusion" />
 		</bean>
-		<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-			<property name="dataSource" ref="dataSource" />
-			<property name="jpaDialect" ref="jpaDialect" />
-			<property name="persistenceUnitManager" ref="persistenceUnitManager" />
-		</bean>
-		<bean id="persistenceUnitManager" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager"/>
 	</beans>
 	<beans profile="test">
 		<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
@@ -34,6 +28,14 @@
 			p:driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" p:url="jdbc:sqlserver://10.58.81.202:1433;databaseName=DELICACY_FUSION"
 			p:username="sa"
 			p:password="Oba.2247d">
+		</bean>
+		<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect">
+			<property name="lazyDatabaseTransaction" value="true" />
+		</bean>
+		<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+			<property name="dataSource" ref="dataSource" />
+			<property name="jpaDialect" ref="jpaDialect" />
+			<property name="persistenceUnitManager" ref="persistenceUnitManager" />
 		</bean>
 		<bean id="persistenceUnitManager" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
 			<property name="defaultDataSource" ref="dataSource" />

@@ -9,31 +9,24 @@
 		<param-value>/rs</param-value>
 	</context-param>
 	<context-param>
-		<param-name>resteasy.scan.resources</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath*:http-master-data-beans.xml</param-value>
 	</context-param>
 	<servlet>
-		<servlet-name>Resteasy</servlet-name>
+		<servlet-name>javax.ws.rs.core.Application</servlet-name>
 		<servlet-class>
             org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
 		</servlet-class>
-		<init-param>
-			<param-name>javax.ws.rs.Application</param-name>
-			<param-value>com.df.http.masterdata.application.MasterDataApplication</param-value>
-		</init-param>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>Resteasy</servlet-name>
+		<servlet-name>javax.ws.rs.core.Application</servlet-name>
 		<url-pattern>/rs/*</url-pattern>
 	</servlet-mapping>
 	<listener>
-		<listener-class>
-			org.jboss.resteasy.plugins.spring.SpringContextLoaderListener
-		</listener-class>
+		<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
+	</listener>
+	<listener>
+		<listener-class>com.df.core.rs.resteasy.SpringContextLoaderListener</listener-class>
 	</listener>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

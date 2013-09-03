@@ -8,16 +8,25 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+
+
+import org.springframework.stereotype.Component;
+
 import com.df.masterdata.entity.Category;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.service.inf.CategoryServiceInf;
 
 @Path("/categories/")
 @Produces("application/json")
+@Component
 public class CategoryResource {
 
     @Inject
     private CategoryServiceInf categoryService;
+
+    public void setCategoryService(CategoryServiceInf categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GET
     @Path("/{categoryId}/foods")
