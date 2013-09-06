@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,7 @@ public class AuthenticationServiceTest extends IdmBaseTest {
 	private IUserManagementService userManagementService;
 
 	@Test
-	public void testAuthenticationProviderWithCorrectAccount() {
+	public void testAuthenticationProviderWithEmailAccount() {
 		String email = "sala223@msn.com";
 		String telephone = "1352992345";
 		String password = "Oba.2247d";
@@ -40,6 +41,46 @@ public class AuthenticationServiceTest extends IdmBaseTest {
 		TestCase.assertEquals(token.getPrincipal().getClass(), UserObject.class);
 		UserObject userObject = (UserObject) token.getPrincipal();
 		TestCase.assertEquals(userObject.getTelephone(), telephone);
+		userManagementService.deleteUser(user.getId());
+	}
+
+	@Test
+	public void testAuthenticationProviderWithTelephoneAccount() {
+		String email = "sala223@msn.com";
+		String telephone = "1352992345";
+		String password = "Oba.2247d";
+		User user = new User();
+		user.setEmail(email);
+		user.setTelephone(telephone);
+		user.setPassword(password);
+		userManagementService.createUser(user);
+		UserPropertyAuthenticationToken authToken = new UserPropertyAuthenticationToken(telephone, password);
+		Authentication authentication = authProvider.authenticate(authToken);
+		TestCase.assertTrue(authentication instanceof UserPropertyAuthenticationToken);
+		UserPropertyAuthenticationToken token = (UserPropertyAuthenticationToken) authentication;
+		TestCase.assertEquals(token.getPrincipal().getClass(), UserObject.class);
+		UserObject userObject = (UserObject) token.getPrincipal();
+		TestCase.assertEquals(userObject.getTelephone(), telephone);
+		userManagementService.deleteUser(user.getId());
+	}
+
+	@Test
+	public void testAuthenticationProviderWithIncorrectAccount() {
+		String email = "sala223@msn.com";
+		String telephone = "1352992345";
+		String password = "Oba.2247d";
+		User user = new User();
+		user.setEmail(email);
+		user.setTelephone(telephone);
+		user.setPassword(password);
+		userManagementService.createUser(user);
+		UserPropertyAuthenticationToken authToken = new UserPropertyAuthenticationToken("errorAccount", password);
+		try {
+			authProvider.authenticate(authToken);
+			TestCase.fail();
+		}
+		catch (BadCredentialsException ex) {
+		}
 		userManagementService.deleteUser(user.getId());
 	}
 }

@@ -3,20 +3,20 @@ package com.df.http.masterdata.resources;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-
-
 import org.springframework.stereotype.Component;
 
+import com.df.core.common.context.TenantContext;
+import com.df.core.common.context.TenantContextHolder;
 import com.df.masterdata.entity.Category;
-import com.df.masterdata.entity.Item;
 import com.df.masterdata.service.inf.CategoryServiceInf;
 
-@Path("/categories/")
+@Path("/{tenantId}/category/")
 @Produces("application/json")
 @Component
 public class CategoryResource {
@@ -25,18 +25,25 @@ public class CategoryResource {
     private CategoryServiceInf categoryService;
 
     public void setCategoryService(CategoryServiceInf categoryService) {
-        this.categoryService = categoryService;
-    }
-
-    @GET
-    @Path("/{categoryId}/foods")
-    public List<Item> getFoodsByCategory(@PathParam("categoryId") long categoryId) {
-	return null;
+	this.categoryService = categoryService;
     }
 
     @GET
     @Path("/")
-    public List<Category> getCategories() {
+    public List<Category> getCategories(@PathParam("tenantId") String tenantId) {
+	injectTenantContext(tenantId);
 	return categoryService.getRootCategories();
+    }
+
+    @DELETE
+    @Path("/{categoryId}/delete")
+    public void removeCategory(@PathParam("tenantId") String tenantId, @PathParam("categoryId") long categoryId) {
+	injectTenantContext(tenantId);
+	categoryService.removeCategory(categoryId);
+    }
+
+    private void injectTenantContext(String tenantId) {
+	TenantContext context = new TenantContext(tenantId);
+	TenantContextHolder.setTenant(context);
     }
 }

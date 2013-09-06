@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="delicacy-fusion">
-	<import file="build-env.xml" />
+<project name="delicacy-fusion-build" default="build">
+	<target name="build">
+		<ant antfile="build-ear.xml" target="ear" dir="${basedir}" inheritall="false" inheritrefs="false" useNativeBasedir="true" />
+	</target>
 </project>
 

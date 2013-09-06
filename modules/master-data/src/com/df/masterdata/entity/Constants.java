@@ -22,6 +22,7 @@ public interface Constants {
 	public static final String TABLE_NAME = "item_template";
 	public static final String CODE_PROPERTY = "code";
 	public static final String NAME_PROPERTY = "name";
+	public static final String TYPE_PROPERTY = "type";
 	public static final String CATEGORIES_PROPERTY = "categories";
     }
 

@@ -90,4 +90,18 @@ public class ItemServiceImpl implements ItemServiceInf {
 	return itemDAL.getItemCountGroupByCategory(storeId);
     }
 
+    @Override
+    public List<Item> getFoodsByCategory(long storeId, long categoryId) {
+	return itemDAL.getFoodByCategory(categoryId, storeId);
+    }
+
+    @Override
+    public long getAvaliableFoodCount(long storeId) {
+	return itemDAL.allFoodCount(storeId, false);
+    }
+
+    @Override
+    public List<Item> getAvaliableFoods(long storeId, int fromResult, int maxResult) {
+	return itemDAL.allFood(storeId, fromResult, maxResult, false);
+    }
 }

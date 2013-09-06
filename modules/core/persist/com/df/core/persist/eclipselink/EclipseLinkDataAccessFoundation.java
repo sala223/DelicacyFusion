@@ -1,5 +1,6 @@
 package com.df.core.persist.eclipselink;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -8,6 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.eclipse.persistence.config.QueryHints;
@@ -93,6 +95,35 @@ public class EclipseLinkDataAccessFoundation extends JPADataAccessFoundation {
 	CriteriaQuery<T> query = builder.createQuery(entityClass);
 	Root<T> root = query.from(entityClass);
 	query.where(builder.equal(root.get(property), propertyValue));
+	EntityManager em = getEntityManager();
+	return em.createQuery(query).getResultList();
+    }
+
+    protected <T> T findSingleEntityByProperties(Class<T> entityClass, Property<Object>... rootProperties) {
+	CriteriaBuilder builder = createQueryBuilder();
+	CriteriaQuery<T> query = builder.createQuery(entityClass);
+	Root<T> root = query.from(entityClass);
+	if (rootProperties != null) {
+	    List<Predicate> predicates = new ArrayList<Predicate>();
+	    for (Property<Object> p : rootProperties) {
+		predicates.add(builder.equal(root.get(p.getName()), p.getValue()));
+	    }
+	    query.where(predicates.toArray(new Predicate[0]));
+	}
+	return executeSingleQuery(query);
+    }
+
+    protected <T> List<T> findEntityListByProperties(Class<T> entityClass, Property<Object>... rootProperties) {
+	CriteriaBuilder builder = createQueryBuilder();
+	CriteriaQuery<T> query = builder.createQuery(entityClass);
+	Root<T> root = query.from(entityClass);
+	if (rootProperties != null) {
+	    List<Predicate> predicates = new ArrayList<Predicate>();
+	    for (Property<Object> p : rootProperties) {
+		predicates.add(builder.equal(root.get(p.getName()), p.getValue()));
+	    }
+	    query.where(predicates.toArray(new Predicate[0]));
+	}
 	EntityManager em = getEntityManager();
 	return em.createQuery(query).getResultList();
     }

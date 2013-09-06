@@ -13,14 +13,20 @@ public interface ItemServiceInf {
     void disableItem(long itemId);
     
     List<Item> getItemsByCategory(long storeId, long categoryId);
-
+    
+    List<Item> getFoodsByCategory(long storeId, long categoryId);
+    
     List<Item> getAvaliableItems(int fromResult, int maxResult);
 
     List<Item> getAvaliableItems(long storeId, int fromResult, int maxResult);
+    
+    List<Item> getAvaliableFoods(long storeId, int fromResult, int maxResult);
 
     long getAvaliableItemCount();
 
     long getAvaliableItemCount(long storeId);
+    
+    long getAvaliableFoodCount(long storeId);
 
     Map<Long, Long> getItemCountGroupByCategory(long storeId);
 

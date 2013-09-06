@@ -14,7 +14,6 @@ public class InternalAuthenticationProvider extends UserObjectAuthenticationProv
 
 	private UserObjectService userObjectService;
 
-	
 	public InternalAuthenticationProvider(UserObjectService userObjectService) {
 		this.userObjectService = userObjectService;
 	}
