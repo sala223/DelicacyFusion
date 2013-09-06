@@ -37,5 +37,9 @@
 	<classpathentry exported="true" kind="lib" path="third-lib/resteasy-spring-2.3.4.Final.jar" sourcepath="C:/workstation/download/chrome-download/resteasy-spring-2.3.4.Final-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="third-lib/spring/spring-web-4.0.0.M2.jar" sourcepath="C:/workstation/download/chrome-download/spring-framework-4.0.0.M2/libs/spring-web-4.0.0.M2-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="jboss-as-7.1.1.Final/modules/javax/servlet/api/main/jboss-servlet-api_3.0_spec-1.0.0.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="third-lib/spring/spring-security-core-3.2.0.RC1.jar" sourcepath="C:/workstation/download/chrome-download/spring-security-3.2.0.RC1/dist/spring-security-core-3.2.0.RC1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="third-lib/spring/spring-security-acl-3.2.0.RC1.jar"/>
+	<classpathentry exported="true" kind="lib" path="third-lib/spring/spring-security-crypto-3.2.0.RC1.jar"/>
+	<classpathentry exported="true" kind="lib" path="third-lib/spring/spring-security-web-3.2.0.RC1.jar" sourcepath="C:/workstation/download/chrome-download/spring-security-3.2.0.RC1/dist/spring-security-web-3.2.0.RC1-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
