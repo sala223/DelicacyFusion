@@ -7,4 +7,5 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<import resource="classpath:META-INF/datasource.xml" />
+	<bean id="businessExceptionMapper" class="com.df.core.rs.BusinessExceptionMapper"/>
 </beans>

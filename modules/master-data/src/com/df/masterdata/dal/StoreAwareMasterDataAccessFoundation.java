@@ -73,4 +73,17 @@ public class StoreAwareMasterDataAccessFoundation extends MasterDataAccessFounda
     protected String getStoreIdPropertyName() {
 	return "storeId";
     }
+
+    protected <T> T findSingleEntityByProperty(Class<T> entityClass, long storeId, String propertyName,
+	    Object propertyValue) {
+	CriteriaBuilder builder = createQueryBuilder();
+	CriteriaQuery<T> query = builder.createQuery(entityClass);
+	Root<T> root = query.from(entityClass);
+	List<Predicate> predicates = new ArrayList<Predicate>();
+	predicates.add(builder.equal(root.get(getStoreIdPropertyName()), storeId));
+	predicates.add(builder.equal(root.get(propertyName), propertyValue));
+	query.where(predicates.toArray(new Predicate[0]));
+	return executeSingleQuery(query);
+    }
+
 }

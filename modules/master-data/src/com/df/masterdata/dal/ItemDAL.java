@@ -108,11 +108,11 @@ public class ItemDAL extends StoreAwareMasterDataAccessFoundation {
 	return em.createQuery(query).getResultList();
     }
 
-    public int allFoodCount(long storeId, boolean includeDisabled) {
+    public long allFoodCount(long storeId, boolean includeDisabled) {
 	EntityManager em = this.getEntityManager();
 	ClassDescriptor cd = this.getClassDescrptor(Item.class);
-	String eql = "SELECT COUNT(O) FROM %s o ";
-	eql = "WHERE o.%s=:STORE_ID and o.%s=:TYPE ";
+	String eql = "SELECT COUNT(o) FROM %s o INNER JOIN o.itemTemplate t ";
+	eql += "WHERE o.%s=:STORE_ID and t." + Constants.ITEM_TEMPLATE.TYPE_PROPERTY + "=:TYPE ";
 	if (!includeDisabled) {
 	    eql += " AND o." + Constants.MASTERDATA.IS_ENABLED_PROPERTY + "=:IS_ENABLED";
 	}
@@ -122,7 +122,7 @@ public class ItemDAL extends StoreAwareMasterDataAccessFoundation {
 	}
 	query.setParameter("STORE_ID", storeId);
 	query.setParameter("TYPE", ItemType.Food);
-	return (Integer) query.getSingleResult();
+	return (Long) query.getSingleResult();
     }
 
     public List<Item> allFood(long storeId, int firstResult, int maxResult, boolean includeDisabled) {

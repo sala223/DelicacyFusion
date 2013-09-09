@@ -16,6 +16,7 @@ import com.df.masterdata.dal.ItemTemplateDAL;
 import com.df.masterdata.entity.Category;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.entity.ItemTemplate;
+import com.df.masterdata.entity.ItemType;
 import com.df.masterdata.exception.ItemException;
 
 @Transactional
@@ -110,6 +111,42 @@ public class ItemDALTest extends MasterDataJPABaseTest {
 	TestCase.assertTrue(results.get(2L) == 3);
     }
 
+    @Test
+    public void testAllFoodCount(){
+	Category category = new Category();
+	category.setName("fruit");
+	categoryDAL.newCategory(category, null);
+	ItemTemplate template = new ItemTemplate();
+	template.setCode("A0001");
+	template.setName("A0001");
+	template.setDescription("Good taste");
+	template.addCategories(category);
+	templateDAL.newItemTemplate(template);
+	ItemTemplate template2 = new ItemTemplate();
+	template2.setCode("A0002");
+	template2.setName("A0002");
+	template2.addCategories(category);
+	templateDAL.newItemTemplate(template2);
+	ItemTemplate template3 = new ItemTemplate();
+	template3.setCode("A0003");
+	template3.setName("A0003");
+	template3.setType(ItemType.Other);
+	template3.addCategories(category);
+	templateDAL.newItemTemplate(template3);
+	Item item = new Item(template);
+	itemDAL.newItem(item);
+	item.setStoreId(23);
+	Item item2 = new Item(template2);
+	item2.setStoreId(23);
+	itemDAL.newItem(item2);
+	Item item3 = new Item(template3);
+	item3.setStoreId(23);
+	itemDAL.newItem(item3);
+	itemDAL.getEntityManager().flush();
+	long count = itemDAL.allFoodCount(23, false);
+	TestCase.assertEquals(count, 2l);
+    }
+    
     @Test
     public void testGetItemsByCategory() {
 	Category category = new Category();
