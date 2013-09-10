@@ -20,7 +20,6 @@ public abstract class Item {
 		this.image = image;
 	}
 
-	private float actualPrice;
 	private String image;
 	
 	public String getImage() {
@@ -48,8 +47,13 @@ public abstract class Item {
 		return price;
 	}
 
+//	private transient float actualPrice;
+//	public void setActualPrice(float actualPrice) {
+//		this.actualPrice = actualPrice;
+//	}
+
 	public float getActualPrice() {
-		return actualPrice;
+		return getPrice();
 	}
 
 	public String getCode() {

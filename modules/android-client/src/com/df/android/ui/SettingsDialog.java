@@ -2,7 +2,6 @@ package com.df.android.ui;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
@@ -10,8 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.df.android.GlobalSettings;
 import com.df.android.R;
-import com.df.android.service.ShopSyncService;
 
 public class SettingsDialog extends Dialog {
 	SharedPreferences preferences;
@@ -35,11 +34,6 @@ public class SettingsDialog extends Dialog {
 			@Override
 			public void onClick(View view) {
 				applySettings();
-				Intent i= new Intent(cxt, ShopSyncService.class);
-				
-				i.putExtra("SERVERURL", ((EditText)findViewById(R.id.etServerAddr)).getText().toString());
-				i.putExtra("SHOPID", "demo");
-				cxt.startService(i);
 				dismiss();
 			}
 		});
@@ -47,7 +41,11 @@ public class SettingsDialog extends Dialog {
 	
 	private void applySettings() {
 		Editor edit = preferences.edit();
-		edit.putString("SERVERURL", ((EditText)findViewById(R.id.etServerAddr)).getText().toString());
+		
+		String serverUrl = ((EditText)findViewById(R.id.etServerAddr)).getText().toString();
+		edit.putString("SERVERURL", serverUrl);
 		edit.apply();
+		
+		GlobalSettings.setServerUrl(serverUrl);
 	}
 }

@@ -13,7 +13,8 @@
     <string name="create_before_ordering">点菜前必须先开单</string>
     <string name="ok">确定</string>
     <string name="server_addr">服务器地址</string>
-    
+
+    <string name="init_shop">正在初始化门店，请稍候</string>
     <string name="network_unavailable">当前没有网络连接，部分功能将不可用</string>
     <string name="order_unavailable">点餐前必须先开单</string>
     
