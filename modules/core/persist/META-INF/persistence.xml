@@ -2,7 +2,7 @@
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	<persistence-unit name="delicacy-fusion" transaction-type="RESOURCE_LOCAL">
-		<description>persist unit for DelicacyFusio application</description>
+		<description>persist unit for DelicacyFusion application</description>
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<non-jta-data-source>java:jboss/datasources/df</non-jta-data-source>
 		<mapping-file>META-INF/master-orm.xml</mapping-file>
@@ -12,7 +12,8 @@
 		<validation-mode>NONE</validation-mode>
 		<properties>
 			<property name="eclipselink.target-server" value="JBoss"/>  
-			<property name="eclipselink.logging.level" value="CONFIG" />
+			<property name="eclipselink.logging.level" value="FINEST" />
+			<property name="eclipselink.logging.logger" value="JavaLogger"/>  
 			<property name="eclipselink.logging.thread" value="false" />
 			<property name="eclipselink.logging.session" value="false" />
 			<property name="eclipselink.logging.timestamp" value="false" />
@@ -31,7 +32,7 @@
 			<property name="eclipselink.cache.shared.default" value="true" />
 			<property name="eclipselink.jpa.uppercase-column-names" value="true" />
 			<property name="javax.persistence.schema-generation.database.action" value="create" />
-			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+			<property name="eclipselink.ddl-generation" value="none" />
 			<property name="eclipselink.ddl-generation.output-mode" value="database" />
 			<property name="eclipselink.jdbc.uppercase-columns" value="true" />
 			<property name="eclipselink.create-ddl-jdbc-file-name" value="/sql/ddl_script.sql" />
@@ -42,6 +43,7 @@
 			<property name="eclipselink.multitenant.tenants-share-emf" value="true" />
 			<property name="eclipselink.deploy-on-startup" value="true" />
 			<property name="clipselink.jpa.uppercase-column-names" value="false"/>
+			<property name="jboss.entity.manager.factory.jndi.name" value="java:jboss/entityManagerFactory" />  
 		</properties>
 	</persistence-unit>
 </persistence>

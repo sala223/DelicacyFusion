@@ -63,8 +63,9 @@
 		<copy todir="${release.directory}/${build.version}/${ear.name}.ear" verbose="true" overwrite="true">
 			<fileset dir="./ear" includes="**/*" />
 		</copy>
-		<replace summary="true" dir="${release.directory}/${build.version}/${ear.name}.ear" token="{build.version}" value="${build.version}">
+		<replace summary="true" dir="${release.directory}/${build.version}/${ear.name}.ear" propertyFile="${basedir}/env.properties">
 			<include name="**/*.xml" />
+			<replacefilter token="{build.version}" property="build.version"/>
 		</replace>
 	</target>
 </project>

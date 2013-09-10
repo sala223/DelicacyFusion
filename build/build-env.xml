@@ -7,8 +7,8 @@
 	<!-- -Java compilier options-->
 	<property name="compile.debug" value="true" />
 	<property name="compile.deprecation" value="off" />
-	<property name="compile.jdk-version.source" value="1.6" />
-	<property name="compile.jdk-version.target" value="1.6" />
+	<property name="compile.jdk-version.source" value="1.7" />
+	<property name="compile.jdk-version.target" value="1.7" />
 	<property name="compile.optimize" value="true" />
 	<property name="compile.nowarn" value="on" />
 	<path id="compile.dependent.path" />

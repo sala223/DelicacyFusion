@@ -5,12 +5,21 @@
 		<copy todir="${JBOSS_HOME}" verbose="true" overwrite="true">
 			<fileset dir="${basedir}/wildfly" includes="**/*" />
 		</copy>
+		<copy todir="${JBOSS_HOME}" verbose="true" overwrite="true">
+			<fileset dir="${basedir}/wildfly" includes="**/*.xml" />
+			<filterset begintoken="{" endtoken="}">
+				<filter token="db.host" value="${db.host}"/>
+				<filter token="db.user" value="${db.user}"/>
+				<filter token="db.password" value="${db.password}"/>
+			</filterset>
+		</copy>
 	</target>
 	<target name="deploy" depends="ear,deploy-conf">
 		<ear destfile="${JBOSS_HOME}/standalone/deployments/${ear.name}.ear" update="true" appxml="${release.directory}/${build.version}/${ear.name}.ear/META-INF/application.xml">
 			<fileset dir="${release.directory}/${build.version}/${ear.name}.ear" includes="**/*" />
 		</ear>
 		<touch file="${JBOSS_HOME}/standalone/deployments/${ear.name}.ear.dodeploy" />
+		<delete file="${JBOSS_HOME}/standalone/deployments/${ear.name}.ear.failed" failonerror="false"/>
 	</target>
 	<target name="fast-deploy" depends="fast-ear,deploy-conf">
 		<ear destfile="${JBOSS_HOME}/standalone/deployments/${ear.name}.ear" update="true" appxml="${release.directory}/${build.version}/${ear.name}.ear/META-INF/application.xml">

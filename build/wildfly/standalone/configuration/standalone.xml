@@ -90,7 +90,7 @@
 		<subsystem xmlns="urn:jboss:domain:datasources:1.0">
 			<datasources>
 				<datasource jndi-name="java:jboss/datasources/df" pool-name="df-data-source" enabled="true" use-java-context="true">
-					<connection-url>jdbc:mysql://localhost:3306/DELICACY_FUSION</connection-url>
+					<connection-url>jdbc:mysql://{db.host}:3306/DELICACY_FUSION</connection-url>
 					<driver>mysql</driver>
 					<transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
 					<pool>
@@ -98,9 +98,8 @@
 						<max-pool-size>300</max-pool-size>
 					</pool>
 					<security>
-						<user-name>root</user-name>
-						<password>
-						</password>
+						<user-name>{db.user}</user-name>
+						<password>{db.password}</password> 
 					</security>
 					<validation>
 						<validate-on-match>false</validate-on-match>
