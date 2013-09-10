@@ -12,14 +12,13 @@ public class Shop {
 	private Menu menu;
 	private List<Table> tables; 
 	
-	public Shop(String id, String name) {
-		this(id, name, "");
+	public Shop(String id) {
+		this.id = id;
 	}
 	
-	public Shop(String id, String name, String address) {
+	public Shop(String id, String name) {
 		this.id = id;
 		this.name = name;
-		this.address = address;
 	}
 	
 	public void setMenu(Menu menu) {

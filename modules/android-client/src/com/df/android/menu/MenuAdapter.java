@@ -11,6 +11,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Log;
@@ -88,12 +89,17 @@ public class MenuAdapter extends BaseAdapter {
 		final TextView tvName = (TextView) view.findViewById(R.id.menuItemName);
 		final ImageView ivImage = (ImageView) view
 				.findViewById(R.id.menuItemImage);
+		final TextView tvPrevPrice = (TextView) view
+				.findViewById(R.id.menuItemPrevPrice);
 		final TextView tvPrice = (TextView) view
 				.findViewById(R.id.menuItemPrice);
 
 		final Item item = items.get(position);
 		tvName.setText(item.getName());
-		tvPrice.setText("" + item.getPrice());
+		tvPrevPrice.setText("" + item.getPrice());
+		tvPrevPrice.setPaintFlags(tvPrevPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		tvPrevPrice.setVisibility(View.VISIBLE);
+		tvPrice.setText("" + item.getActualPrice());
 		String imageFile = item.getImage();
 		try {
 			ivImage.setImageBitmap(BitmapFactory.decodeStream(context

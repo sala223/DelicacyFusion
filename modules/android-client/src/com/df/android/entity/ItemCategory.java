@@ -8,4 +8,5 @@ public enum ItemCategory {
 	Soup,
 	WineDrinking,
 	Desert,
+	Facility
 }

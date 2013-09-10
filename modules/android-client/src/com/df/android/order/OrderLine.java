@@ -11,7 +11,7 @@ public class OrderLine {
 	private Table table; 
 	
 	public OrderLine(Item item) {
-		this(item, item.getActualPrice());
+		this(item, item.getPrice());
 	}
 	
 	public OrderLine(Item item, float price) {
