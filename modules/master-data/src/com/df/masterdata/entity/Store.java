@@ -1,27 +1,28 @@
 package com.df.masterdata.entity;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
-import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.Index;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @Entity
-@Table
-@SecondaryTable(name = "store_address", pkJoinColumns = @PrimaryKeyJoinColumn(name = "address_id"))
-@Index(name = "store_name_index", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
+@Index(name = "IDX_STORE_T_NAME", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
 public class Store extends MasterData {
 
     @Column
-    @Index(name = "store_code_index", unique = true, columnNames = { "code", MultiTenantSupport.TENANT_COLUMN })
+    @Index(name = "IDX_STORE_T_CODE", unique = true, columnNames = { "code", MultiTenantSupport.TENANT_COLUMN })
     private String code;
 
     @Column(nullable = false, length = 255)
@@ -31,15 +32,10 @@ public class Store extends MasterData {
     @Column
     private String description;
 
-    @Embedded
-    @AttributeOverrides({
-	    @AttributeOverride(name = "country", column = @Column(name = "COUNTRY", table = "store_address")),
-	    @AttributeOverride(name = "province", column = @Column(name = "PROVINCE", table = "store_address")),
-	    @AttributeOverride(name = "city", column = @Column(name = "CITY", table = "store_address")),
-	    @AttributeOverride(name = "county", column = @Column(name = "COUNTY", table = "store_address")),
-	    @AttributeOverride(name = "town", column = @Column(name = "TOWN", table = "store_address")),
-	    @AttributeOverride(name = "address", column = @Column(name = "ADDRESS", table = "store_address")) })
-    private Address address;
+    @ElementCollection(fetch=FetchType.EAGER)
+    @CollectionTable(joinColumns = @JoinColumn(name = "STORE_ID"))
+    @JoinFetch(JoinFetchType.OUTER)
+    private List<Address> addresses;
 
     @Column(length = 32, nullable = false)
     private String telephone1;
@@ -73,11 +69,17 @@ public class Store extends MasterData {
     }
 
     public Address getAddress() {
-	return address;
+	if (addresses != null && addresses.size() > 0) {
+	    return addresses.get(0);
+	}
+	return null;
     }
 
     public void setAddress(Address address) {
-	this.address = address;
+	if (addresses == null) {
+	    addresses = new ArrayList<Address>();
+	}
+	this.addresses.add(address);
     }
 
     public String getTelephone1() {

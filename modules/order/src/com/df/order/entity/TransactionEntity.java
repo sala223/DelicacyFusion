@@ -10,10 +10,16 @@ import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.eclipse.persistence.annotations.Multitenant;
+import org.eclipse.persistence.annotations.MultitenantType;
+import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
+
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @MappedSuperclass
-public abstract class TransactionEntity extends MultiTenantSupport {
+@Multitenant(MultitenantType.SINGLE_TABLE)
+@TenantDiscriminatorColumn(name = MultiTenantSupport.TENANT_COLUMN, length = 12, contextProperty = MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY)
+public abstract class TransactionEntity  {
 
     @Column(nullable = false)
     private long ownerId;

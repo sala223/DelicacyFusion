@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -19,6 +20,7 @@ import org.eclipse.persistence.annotations.Index;
 
 @Cache
 @Entity
+@Table(name="users")
 @FetchGroup(name = "AuthenticationInfo", attributes = { @FetchAttribute(name = "password"),
 		@FetchAttribute(name = "weiboAccount"), @FetchAttribute(name = "email"), @FetchAttribute(name = "telephone"), })
 public class User implements Serializable {

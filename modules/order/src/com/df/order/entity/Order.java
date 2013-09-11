@@ -14,10 +14,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
+
 @Entity
+@Table(name = "orders")
 public class Order extends TransactionEntity {
 
     @Id
@@ -34,6 +39,7 @@ public class Order extends TransactionEntity {
 
     @ElementCollection
     @CollectionTable(joinColumns = @JoinColumn(name = "ORDER_ID"))
+    @JoinFetch(JoinFetchType.OUTER)
     private List<OrderLine> lines;
 
     @Column

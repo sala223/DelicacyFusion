@@ -10,22 +10,22 @@ public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "country", nullable = false, length = 128)
+    @Column(name = "COUNTRY", nullable = false, length = 128)
     private String country;
 
-    @Column(name = "province", nullable = false, length = 128)
+    @Column(name = "PROVINCE", nullable = false, length = 128)
     private String province;
 
-    @Column(name = "city", nullable = false, length = 128)
+    @Column(name = "CITY", nullable = false, length = 128)
     private String city;
 
-    @Column(name = "county", nullable = false, length = 128)
+    @Column(name = "COUNTY", nullable = false, length = 128)
     private String county;
 
-    @Column(name = "town", nullable = false, length = 128)
+    @Column(name = "TOWN", nullable = false, length = 128)
     private String town;
 
-    @Column(name = "address", nullable = false, length = 512)
+    @Column(name = "ADDRESS", nullable = false, length = 512)
     private String address;
 
     public String getCountry() {

@@ -11,5 +11,8 @@
 			<module  name="webservices" />
 			<module  name="org.hibernate" />
 		</exclusions>
+		<dependencies>
+     		<module name="org.eclipse.persistence" />
+    	</dependencies>
 	</deployment>
 </jboss-deployment-structure>

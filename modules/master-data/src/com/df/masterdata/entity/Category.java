@@ -19,10 +19,9 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @Entity
 @Table(name = Constants.CATEGORY.ENTITY_TABLE)
-@Index(name = "UNIQUE_INDEX", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
+@Index(name = "IDX_CATEGORY_T_NAME", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
 public class Category extends MasterData {
     @Column(length = 64)
-    @Index
     private String name;
 
     @Column(length = 512)

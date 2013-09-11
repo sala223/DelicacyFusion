@@ -26,7 +26,7 @@ import com.df.masterdata.entity.Constants.ITEM_TEMPLATE;
 
 @Cache
 @Entity
-@Index(name = "item_code_index", unique = true, columnNames = { "code", MultiTenantSupport.TENANT_COLUMN })
+@Index(name = "IDX_ITEM_TPL_T_CODE", unique = true, columnNames = { "code", MultiTenantSupport.TENANT_COLUMN })
 @Table(name = ITEM_TEMPLATE.TABLE_NAME)
 public class ItemTemplate extends MasterData {
 
@@ -34,7 +34,7 @@ public class ItemTemplate extends MasterData {
     private String code;
 
     @Column(length = 128)
-    @Index(name = "item_name_index", unique = false, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
+    @Index(name = "IDX_ITEM_T_NAME", unique = false, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
     private String name;
 
     @Column(length = 64)

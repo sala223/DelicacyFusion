@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
+
 @Entity
 public class Delivery extends TransactionEntity {
     @Id
@@ -25,6 +28,7 @@ public class Delivery extends TransactionEntity {
 
     @ElementCollection
     @CollectionTable(joinColumns = @JoinColumn(name = "order_id"))
+    @JoinFetch(JoinFetchType.OUTER)
     private List<DeliveryLine> lines;
 
     @Override

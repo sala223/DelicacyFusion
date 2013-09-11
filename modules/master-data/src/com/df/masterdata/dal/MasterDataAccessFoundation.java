@@ -59,6 +59,9 @@ public class MasterDataAccessFoundation extends EclipseLinkDataAccessFoundation 
 	CriteriaBuilder builder = createQueryBuilder();
 	CriteriaQuery<T> query = builder.createQuery(entityType);
 	Root<T> root = query.from(entityType);
+	if (!includeDisabled) {
+	    query.where(builder.equal(root.get(Constants.MASTERDATA.IS_ENABLED_PROPERTY), true));
+	}
 	TypedQuery<T> typeQuery = this.getEntityManager().createQuery(query);
 	typeQuery.setFirstResult(firstResult);
 	typeQuery.setMaxResults(maxResult);

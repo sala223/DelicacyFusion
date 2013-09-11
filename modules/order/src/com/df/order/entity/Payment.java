@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -12,8 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.SequenceGenerator;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
+
 import com.df.masterdata.entity.PriceUnit;
 
+@Entity
 public class Payment extends TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_id_sequence")
@@ -27,7 +33,9 @@ public class Payment extends TransactionEntity {
     @Column
     private float totalPrice;
 
+    @ElementCollection
     @CollectionTable(joinColumns = @JoinColumn(name = "PAYMENT_ID"))
+    @JoinFetch(JoinFetchType.OUTER)
     private List<PaymentLine> lines;
 
     @Override
