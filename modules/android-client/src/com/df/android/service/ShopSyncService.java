@@ -4,16 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 
 import org.xmlpull.v1.XmlSerializer;
 
 import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Xml;
@@ -22,7 +18,7 @@ import com.df.android.GlobalSettings;
 import com.df.android.entity.Shop;
 
 public class ShopSyncService extends IntentService {
-	private final static int SYNC_INTERVAL = 10000;
+//	private final static int SYNC_INTERVAL = 10000;
 
 	public ShopSyncService() {
 		super("ShopSyncService");
@@ -72,48 +68,48 @@ public class ShopSyncService extends IntentService {
 		return Activity.RESULT_OK;
 	}
 
-	private int syncURL(final String url) {
-		String fileName = url;
-		File output = new File(Environment.getExternalStorageDirectory(),
-				fileName);
-		if (output.exists()) {
-			output.delete();
-		}
-
-		InputStream stream = null;
-		FileOutputStream fos = null;
-		try {
-
-			stream = new URL(url).openConnection().getInputStream();
-			InputStreamReader reader = new InputStreamReader(stream);
-			fos = new FileOutputStream(output.getPath());
-			int next = -1;
-			while ((next = reader.read()) != -1) {
-				fos.write(next);
-			}
-			// Successful finished
-			return Activity.RESULT_OK;
-
-		} catch (Exception e) {
-			Log.e(getClass().getName(), "Fail to sync " + url);
-			return Activity.RESULT_CANCELED;
-		} finally {
-			if (stream != null) {
-				try {
-					stream.close();
-				} catch (IOException e) {
-					Log.e(getClass().getName(), "Fail to close file handle");
-				}
-			}
-			if (fos != null) {
-				try {
-					fos.close();
-				} catch (IOException e) {
-					Log.e(getClass().getName(), "Fail to close file handle");
-				}
-			}
-		}
-	}
+//	private int syncURL(final String url) {
+//		String fileName = url;
+//		File output = new File(Environment.getExternalStorageDirectory(),
+//				fileName);
+//		if (output.exists()) {
+//			output.delete();
+//		}
+//
+//		InputStream stream = null;
+//		FileOutputStream fos = null;
+//		try {
+//
+//			stream = new URL(url).openConnection().getInputStream();
+//			InputStreamReader reader = new InputStreamReader(stream);
+//			fos = new FileOutputStream(output.getPath());
+//			int next = -1;
+//			while ((next = reader.read()) != -1) {
+//				fos.write(next);
+//			}
+//			// Successful finished
+//			return Activity.RESULT_OK;
+//
+//		} catch (Exception e) {
+//			Log.e(getClass().getName(), "Fail to sync " + url);
+//			return Activity.RESULT_CANCELED;
+//		} finally {
+//			if (stream != null) {
+//				try {
+//					stream.close();
+//				} catch (IOException e) {
+//					Log.e(getClass().getName(), "Fail to close file handle");
+//				}
+//			}
+//			if (fos != null) {
+//				try {
+//					fos.close();
+//				} catch (IOException e) {
+//					Log.e(getClass().getName(), "Fail to close file handle");
+//				}
+//			}
+//		}
+//	}
 
 	private void syncConfiguration(final String shopId) {
 		String rootFolder = getExternalCacheDir() + "/" + shopId;

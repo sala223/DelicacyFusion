@@ -25,17 +25,12 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.df.android.R;
 import com.df.android.entity.Item;
 import com.df.android.entity.ItemCategory;
 import com.df.android.entity.Shop;
-import com.df.android.entity.Table;
-import com.df.android.order.OrderFactory;
-import com.df.android.order.OrderLine;
 
 public class MenuAdapter extends BaseAdapter {
 	private Shop shop;
@@ -57,7 +52,7 @@ public class MenuAdapter extends BaseAdapter {
 					items.add(item);
 		}
 	}
-
+	
 	public ItemCategory getMenuItemType() {
 		return itemCategory;
 	}
@@ -148,11 +143,11 @@ public class MenuAdapter extends BaseAdapter {
 				.setText(item.getName());
 		((TextView) activity.findViewById(R.id.tvMenuItemDetailPrice))
 				.setText("" + item.getPrice());
-		final LinearLayout expandedView = (LinearLayout) activity
+		final View expandedView = activity
 				.findViewById(R.id.menuItemDetail);
 		final ImageView expandedImageView = (ImageView) activity
 				.findViewById(R.id.enlargedImage);
-		String imageFile = "cache/" + shop.getId() + "/" + item.getImage();
+		String imageFile = "cache/" + shop.getId() + "/" + item.getImage(); 
 		try {
 			expandedImageView.setImageBitmap(BitmapFactory.decodeStream(context
 					.getAssets().open(imageFile)));
@@ -165,30 +160,8 @@ public class MenuAdapter extends BaseAdapter {
 
 					@Override
 					public void onClick(View view) {
-						if (OrderFactory.currentOrder() == null) {
-
-							Toast.makeText(
-									view.getContext(),
-									view.getContext()
-											.getResources()
-											.getString(
-													view.getContext()
-															.getResources()
-															.getIdentifier(
-																	view.getContext()
-																			.getPackageName()
-																			+ ":string/order_unavailable",
-																	null, null)),
-									Toast.LENGTH_LONG).show();
-							return;
-						}
-
-						OrderLine line = new OrderLine(item);
-						line.setTable(Table.getCurrentTable());
-						OrderFactory.currentOrder().addLine(line);
-
+						MenuEventDispatcher.sendEvent(new ItemOrderEvent(item));
 					}
-
 				});
 
 		// Calculate the starting and ending bounds for the zoomed-in image.
@@ -316,5 +289,4 @@ public class MenuAdapter extends BaseAdapter {
 			}
 		});
 	}
-
 }
