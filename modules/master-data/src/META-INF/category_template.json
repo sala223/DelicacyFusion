@@ -1,0 +1,18 @@
+[
+	{
+		"code":"SYS00001",
+		"name":"Cold Food"
+	},
+	{
+		"code":"SYS00002",
+		"name":"Fruit"
+	},
+	{
+		"code":"SYS00003",
+		"name":"Sweet"
+	},
+	{
+		"code":"SYS00004",
+		"name":"vegetables"
+	}
+]

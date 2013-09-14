@@ -10,19 +10,19 @@ public class PictureRef implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(length = 512, nullable = false)
+    @Column(length = 512, nullable = false, name = "RAW_IMG_ID")
     private String rawImageId;
 
-    @Column(length = 512, nullable = true)
+    @Column(length = 512, nullable = true, name = "SCALE1_IMG_ID")
     private String scale1ImageId;
 
-    @Column(length = 512, nullable = true)
+    @Column(length = 512, nullable = true, name = "SCALE2_IMG_ID")
     private String scale2ImageId;
 
-    @Column(length = 512, nullable = true)
+    @Column(length = 512, nullable = true, name = "SCALE3_IMG_ID")
     private String scale3ImageId;
 
-    @Column(length = 128)
+    @Column(length = 512, name = "COMMENTS")
     private String comments;
 
     public String getRawImageId() {

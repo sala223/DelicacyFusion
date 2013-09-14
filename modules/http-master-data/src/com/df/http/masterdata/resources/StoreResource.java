@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.df.core.rs.TenantResource;
 import com.df.masterdata.entity.Store;
-import com.df.masterdata.service.inf.StoreServiceInf;
+import com.df.masterdata.service.contract.StoreServiceInf;
 
 @Path("/{tenantId}/store")
 @Produces("application/json")

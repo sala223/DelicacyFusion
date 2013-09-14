@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 
 import com.df.core.rs.TenantResource;
 import com.df.masterdata.entity.Room;
-import com.df.masterdata.service.inf.RoomServiceInf;
+import com.df.masterdata.service.contract.RoomServiceInf;
 
-@Path("/{tenantId}/{storeId}/room")
+@Path("/{tenantId}/{storeCode}/room")
 @Produces("application/json")
 @Component
 public class RoomResource extends TenantResource {
@@ -28,7 +28,7 @@ public class RoomResource extends TenantResource {
 
     @GET
     @Path("/")
-    public List<Room> getRooms(@PathParam("tenantId") String tenantId, @PathParam("storeId") long storeId) {
-	return roomService.getRooms(storeId);
+    public List<Room> getRooms(@PathParam("tenantId") String tenantId, @PathParam("storeCode") String storeCode) {
+	return roomService.getRooms(storeCode);
     }
 }

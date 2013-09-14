@@ -4,12 +4,12 @@ import javax.inject.Inject;
 
 import org.junit.Test;
 
-import com.df.order.dal.OrderDAL;
+import com.df.order.dao.OrderDao;
 
 public class OrderDALTest extends OrderBaseTest {
 
     @Inject
-    private OrderDAL orderDAL;
+    private OrderDao orderDAL;
 
     @Test
     public void testCreateOrder() {

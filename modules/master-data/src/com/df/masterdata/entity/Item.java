@@ -10,28 +10,29 @@ public class Item extends MasterData {
     @OneToOne
     private ItemTemplate itemTemplate;
 
-    @Column
+    @Column(name = "PRICE")
     private Float price;
 
-    @Column
+    @Column(name = "PROMOTION_RULE")
     private String promotionRule;
 
-    @Column
-    private long storeId;
+    @Column(name = "STORE_CODE")
+    private String storeCode;
 
     Item() {
     }
 
-    public Item(ItemTemplate itemTemplate) {
+    public Item(ItemTemplate itemTemplate, String storeCode) {
 	this.itemTemplate = itemTemplate;
+	this.storeCode = storeCode;
     }
 
-    public long getStoreId() {
-	return storeId;
+    public String getStoreCode() {
+	return storeCode;
     }
 
-    public void setStoreId(long storeId) {
-	this.storeId = storeId;
+    public void setStoreCode(String storeCode) {
+	this.storeCode = storeCode;
     }
 
     public float getPrice() {
@@ -60,5 +61,4 @@ public class Item extends MasterData {
     public void setItemTemplate(ItemTemplate itemTemplate) {
 	this.itemTemplate = itemTemplate;
     }
-
 }

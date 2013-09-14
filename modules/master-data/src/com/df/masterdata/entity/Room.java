@@ -1,36 +1,51 @@
 package com.df.masterdata.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.eclipse.persistence.annotations.Index;
+import org.eclipse.persistence.annotations.Indexes;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
+@JsonIgnoreProperties({ "diningTables" })
 @Entity
-@Index(name = "room_name_index", unique = true, columnNames = { "storeId", "name", MultiTenantSupport.TENANT_COLUMN })
+@Indexes({
+	@Index(name = "IDX_ROOM_STR_CODE", unique = true, columnNames = { "STORE_CODE", "CODE",
+		MultiTenantSupport.TENANT_COLUMN }),
+	@Index(name = "IDX_ROOM_STR_NAME", unique = true, columnNames = { "STORE_CODE", "NAME",
+		MultiTenantSupport.TENANT_COLUMN }) })
 public class Room extends MasterData {
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "NAME")
     private String name;
 
-    @Column(nullable = false)
-    private long storeId;
+    @Column(nullable = false, name = "STORE_CODE")
+    private String storeCode;
 
-    @Column(length = 255)
+    @Column(length = 255, name = "DESCRIPTION")
     private String description;
 
-    @Column
-    private int tableCapacity;
+    @Column(name = "TABLE_CAPACITY")
+    private int tableCapacity = Integer.MAX_VALUE;
 
-    @Column(scale = 2)
+    @Column(scale = 2, name = "MINIMUM_COST")
     private double minimumCost;
 
-    @OneToMany(cascade = { CascadeType.REMOVE, CascadeType.REFRESH })
+    @Column(scale = 2, name = "MINIMUM_COST_UNIT")
+    @Enumerated(value = EnumType.STRING)
+    private PriceUnit minimumCostUnit;
+
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     private List<DiningTable> diningTables;
 
     public String getName() {
@@ -41,12 +56,12 @@ public class Room extends MasterData {
 	this.name = name;
     }
 
-    public long getStoreId() {
-        return storeId;
+    public String getStoreCode() {
+	return storeCode;
     }
 
-    public void setStoreId(long storeId) {
-        this.storeId = storeId;
+    public void setStoreCode(String storeCode) {
+	this.storeCode = storeCode;
     }
 
     public String getDescription() {
@@ -75,5 +90,13 @@ public class Room extends MasterData {
 
     public void setMinimumCost(double minimumCost) {
 	this.minimumCost = minimumCost;
+    }
+
+    public void addDiningTable(DiningTable table) {
+	if (this.getDiningTables() == null) {
+	    diningTables = new ArrayList<DiningTable>();
+	}
+	table.setRoom(this);
+	diningTables.add(table);
     }
 }

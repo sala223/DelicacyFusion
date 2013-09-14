@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.df.masterdata.entity.Address;
 import com.df.masterdata.entity.Store;
-import com.df.masterdata.service.inf.StoreServiceInf;
+import com.df.masterdata.service.contract.StoreServiceInf;
 
 public class StoreServiceTest extends MasterDataJPABaseTest {
 

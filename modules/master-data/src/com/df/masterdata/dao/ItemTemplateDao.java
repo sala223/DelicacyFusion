@@ -1,4 +1,4 @@
-package com.df.masterdata.dal;
+package com.df.masterdata.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import com.df.masterdata.entity.Constants.ITEM_TEMPLATE;
 import com.df.masterdata.entity.ItemTemplate;
 import com.df.masterdata.exception.ItemTemplateException;
 
-public class ItemTemplateDAL extends MasterDataAccessFoundation {
+public class ItemTemplateDao extends MasterDataAccessFoundation {
 
     public void newItemTemplate(ItemTemplate itl) {
 	Assert.notNull(itl.getCode());
@@ -36,8 +36,12 @@ public class ItemTemplateDAL extends MasterDataAccessFoundation {
 	this.insert(itl);
     }
 
-    public void disableItemTemplate(long itemTemplateId) {
-	this.disableMasterData(ItemTemplate.class, itemTemplateId);
+    public void disableItemTemplate(String itemCode) {
+	this.disableMasterData(ItemTemplate.class, itemCode);
+    }
+
+    public void enableItemTemplate(String itemCode) {
+	this.enableMasterData(ItemTemplate.class, itemCode);
     }
 
     public ItemTemplate getItemTemplateByCode(String code) {
@@ -48,14 +52,14 @@ public class ItemTemplateDAL extends MasterDataAccessFoundation {
 	return this.findSingleEntityByProperty(ItemTemplate.class, ITEM_TEMPLATE.NAME_PROPERTY, name);
     }
 
-    public List<ItemTemplate> getItemTemplateByCategory(long categoryId, int firstResult, int maxResult,
+    public List<ItemTemplate> getItemTemplateByCategory(String categoryCode, int firstResult, int maxResult,
 	    boolean includeDisabled) {
 	CriteriaBuilder builder = createQueryBuilder();
 	CriteriaQuery<ItemTemplate> query = builder.createQuery(ItemTemplate.class);
 	Root<ItemTemplate> root = query.from(ItemTemplate.class);
 	Join<Object, Object> categoriesJoin = root.join(ITEM_TEMPLATE.CATEGORIES_PROPERTY);
 	List<Predicate> predicates = new ArrayList<Predicate>();
-	Predicate categoryEqual = builder.equal(categoriesJoin.get(CATEGORY.ID_PROPERTY), categoryId);
+	Predicate categoryEqual = builder.equal(categoriesJoin.get(CATEGORY.CODE_PROPERTY), categoryCode);
 	predicates.add(categoryEqual);
 	if (!includeDisabled) {
 	    predicates.add(builder.equal(root.get(ITEM_TEMPLATE.IS_ENABLED_PROPERTY), true));
@@ -68,7 +72,7 @@ public class ItemTemplateDAL extends MasterDataAccessFoundation {
 	return typedQuery.getResultList();
     }
 
-    public List<ItemTemplate> getItemTemplateByCategory(long categoryId) {
-	return this.getItemTemplateByCategory(categoryId, 0, Integer.MAX_VALUE, false);
+    public List<ItemTemplate> getItemTemplateByCategory(String categoryCode) {
+	return this.getItemTemplateByCategory(categoryCode, 0, Integer.MAX_VALUE, false);
     }
 }

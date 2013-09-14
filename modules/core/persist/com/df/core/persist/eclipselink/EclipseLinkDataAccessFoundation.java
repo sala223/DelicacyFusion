@@ -99,13 +99,13 @@ public class EclipseLinkDataAccessFoundation extends JPADataAccessFoundation {
 	return em.createQuery(query).getResultList();
     }
 
-    protected <T> T findSingleEntityByProperties(Class<T> entityClass, Property<Object>... rootProperties) {
+    protected <T> T findSingleEntityByProperties(Class<T> entityClass, Property<?>... rootProperties) {
 	CriteriaBuilder builder = createQueryBuilder();
 	CriteriaQuery<T> query = builder.createQuery(entityClass);
 	Root<T> root = query.from(entityClass);
 	if (rootProperties != null) {
 	    List<Predicate> predicates = new ArrayList<Predicate>();
-	    for (Property<Object> p : rootProperties) {
+	    for (Property<?> p : rootProperties) {
 		predicates.add(builder.equal(root.get(p.getName()), p.getValue()));
 	    }
 	    query.where(predicates.toArray(new Predicate[0]));
@@ -113,13 +113,13 @@ public class EclipseLinkDataAccessFoundation extends JPADataAccessFoundation {
 	return executeSingleQuery(query);
     }
 
-    protected <T> List<T> findEntityListByProperties(Class<T> entityClass, Property<Object>... rootProperties) {
+    protected <T> List<T> findEntityListByProperties(Class<T> entityClass, Property<?>... rootProperties) {
 	CriteriaBuilder builder = createQueryBuilder();
 	CriteriaQuery<T> query = builder.createQuery(entityClass);
 	Root<T> root = query.from(entityClass);
 	if (rootProperties != null) {
 	    List<Predicate> predicates = new ArrayList<Predicate>();
-	    for (Property<Object> p : rootProperties) {
+	    for (Property<?> p : rootProperties) {
 		predicates.add(builder.equal(root.get(p.getName()), p.getValue()));
 	    }
 	    query.where(predicates.toArray(new Predicate[0]));

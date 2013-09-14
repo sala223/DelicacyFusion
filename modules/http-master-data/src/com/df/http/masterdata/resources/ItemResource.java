@@ -14,41 +14,40 @@ import org.springframework.stereotype.Component;
 
 import com.df.core.rs.TenantResource;
 import com.df.masterdata.entity.Item;
-import com.df.masterdata.service.inf.ItemServiceInf;
+import com.df.masterdata.service.contract.ItemServiceInf;
 
-@Path("/{tenantId}/{storeId}/item")
+@Path("/{tenantId}/{storeCode}/item")
 @Produces("application/json")
 @Component
 public class ItemResource extends TenantResource {
     @Inject
     private ItemServiceInf itemService;
 
-    
     public void setItemService(ItemServiceInf itemService) {
-        this.itemService = itemService;
+	this.itemService = itemService;
     }
 
     @GET
-    @Path("/")
-    public List<Item> getFoodsByCategory(@PathParam("tenantId") String tenantId, @PathParam("storeId") long storeId,
-	    @QueryParam("categoryId") long categoryId) {
+    @Path("/food")
+    public List<Item> getFoodsByCategory(@PathParam("tenantId") String tenantId,
+	    @PathParam("storeCode") String storeCode, @QueryParam("categoryCode") String categoryCode) {
 	injectTenantContext(tenantId);
-	return itemService.getFoodsByCategory(storeId, categoryId);
+	return itemService.getFoodsByCategory(storeCode, categoryCode);
     }
 
     @GET
-    @Path("/count")
-    public long getFoodsCount(@PathParam("tenantId") String tenantId, @PathParam("storeId") long storeId) {
+    @Path("/food/count")
+    public long getFoodsCount(@PathParam("tenantId") String tenantId, @PathParam("storeCode") String storeCode) {
 	injectTenantContext(tenantId);
-	return itemService.getAvaliableFoodCount(storeId);
+	return itemService.getAvaliableFoodCount(storeCode);
     }
 
     @GET
-    @Path("/")
-    public List<Item> getFoods(@PathParam("tenantId") String tenantId, @PathParam("storeId") long storeId,
+    @Path("/food")
+    public List<Item> getFoods(@PathParam("tenantId") String tenantId, @PathParam("storeCode") String storeCode,
 	    @QueryParam("from") @DefaultValue("0") int from, @QueryParam("to") @DefaultValue("100") int to) {
 	injectTenantContext(tenantId);
 	int firstResult = from < 0 ? 0 : from;
-	return itemService.getAvaliableFoods(storeId, firstResult, to);
+	return itemService.getAvaliableFoods(storeCode, firstResult, to);
     }
 }

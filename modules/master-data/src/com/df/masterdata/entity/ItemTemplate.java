@@ -1,8 +1,6 @@
 package com.df.masterdata.entity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -12,65 +10,52 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import org.eclipse.persistence.annotations.Cache;
 import org.eclipse.persistence.annotations.Index;
+import org.eclipse.persistence.annotations.Indexes;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
-import com.df.masterdata.entity.Constants.ITEM_TEMPLATE;
 
-@Cache
 @Entity
-@Index(name = "IDX_ITEM_TPL_T_CODE", unique = true, columnNames = { "code", MultiTenantSupport.TENANT_COLUMN })
-@Table(name = ITEM_TEMPLATE.TABLE_NAME)
+@Indexes({
+	@Index(name = "IDX_ITEM_TPL_T_CODE", unique = true, columnNames = { "CODE", MultiTenantSupport.TENANT_COLUMN }),
+	@Index(name = "IDX_ITEM_TPL_T_NAME", unique = false, columnNames = { "NAME", MultiTenantSupport.TENANT_COLUMN }) })
+@Table(name = "ITEM_TEMPLATE")
 public class ItemTemplate extends MasterData {
 
-    @Column(length = 16)
-    private String code;
-
-    @Column(length = 128)
-    @Index(name = "IDX_ITEM_T_NAME", unique = false, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
+    @Column(length = 128, name = "NAME")
     private String name;
 
-    @Column(length = 64)
+    @Column(length = 64, name = "TYPE")
     @Enumerated(EnumType.STRING)
     private ItemType type;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "item_template_category", joinColumns = @JoinColumn(name = "ITEM_TEMPLATE_ID"), inverseJoinColumns = { @JoinColumn(name = "CATEGORY_ID") })
-    private List<Category> categories;
+    @ElementCollection(targetClass = String.class)
+    @Column(name = "CATEGORY_CODE", length = 255)
+    @CollectionTable(name = "ITEM_TEMPLATE_CATEGORY", joinColumns = @JoinColumn(name = "ITEM_TEMPLATE_ID"))
+    private Set<String> categories;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "item_template_pictures", joinColumns = @JoinColumn(name = "ITEM_ID"))
-    @Column
+    @CollectionTable(name = "ITEM_TEMPLATE_PICTURE", joinColumns = @JoinColumn(name = "ITEM_ID"))
     private Set<PictureRef> pictureSet;
 
     @Lob
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(precision = 2)
+    @Column(precision = 2, name = "PRICE")
     private float price;
 
     @Enumerated(EnumType.STRING)
-    @Column
+    @Column(name = "PRICE_UNIT")
     private PriceUnit priceUnit;
 
     @Enumerated(EnumType.STRING)
-    @Column
+    @Column(name = "ITEM_UNIT")
     private ItemUnit itemUnit;
-
-    public String getCode() {
-	return code;
-    }
-
-    public void setCode(String code) {
-	this.code = code;
-    }
 
     public String getName() {
 	return name;
@@ -80,11 +65,11 @@ public class ItemTemplate extends MasterData {
 	this.name = name;
     }
 
-    public List<Category> getCategories() {
+    public Set<String> getCategories() {
 	return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(Set<String> categories) {
 	this.categories = categories;
     }
 
@@ -142,23 +127,23 @@ public class ItemTemplate extends MasterData {
 	if (this.type == null) {
 	    this.type = ItemType.Food;
 	}
-	if (this.itemUnit == null) {
-	    this.itemUnit = ItemUnit.DISK;
-	}
     }
 
-    public void setCategories(Category... categories) {
-	if (categories != null) {
-	    this.categories = Arrays.asList(categories);
-	}
-    }
-
-    public void addCategories(Category... categories) {
+    public void setCategories(String... categories) {
 	if (this.categories == null) {
-	    this.categories = new ArrayList<Category>();
+	    this.categories = new HashSet<String>();
+	} else {
+	    this.categories.clear();
+	}
+	addCategories(categories);
+    }
+
+    public void addCategories(String... categories) {
+	if (this.categories == null) {
+	    this.categories = new HashSet<String>();
 	}
 	if (categories != null) {
-	    for (Category c : categories) {
+	    for (String c : categories) {
 		this.categories.add(c);
 	    }
 	}

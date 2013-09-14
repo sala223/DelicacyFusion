@@ -1,4 +1,4 @@
-package com.df.masterdata.service.inf;
+package com.df.masterdata.service.contract;
 
 import java.util.List;
 
@@ -8,9 +8,11 @@ public interface StoreServiceInf {
 
     void newStore(Store store);
 
-    void disableStore(long storeId);
+    void disableStore(String storeCode);
+
+    void enableStore(String storeCode);
 
     List<Store> getStoreList();
 
-    Store getStoreById(long storeId);
+    Store getStoreByCode(String storeCode);
 }

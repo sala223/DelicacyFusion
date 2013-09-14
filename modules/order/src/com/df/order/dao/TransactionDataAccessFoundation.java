@@ -1,4 +1,4 @@
-package com.df.order.dal;
+package com.df.order.dao;
 
 import com.df.core.persist.eclipselink.EclipseLinkDataAccessFoundation;
 

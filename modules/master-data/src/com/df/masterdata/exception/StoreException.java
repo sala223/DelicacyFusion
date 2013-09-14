@@ -12,7 +12,7 @@ public class StoreException extends BusinessException {
 
     public static final int STORE_WITH_CODE_ALREADY_EXIST = 100001;
 
-    public static final int STORE_WITH_ID_NOT_EXIST = 100002;
+    public static final int STORE_WITH_CODE_NOT_EXIST = 100002;
 
     public StoreException(Throwable cause, int errorCode) {
 	super(cause, REALM, errorCode);
@@ -34,7 +34,7 @@ public class StoreException extends BusinessException {
 	return new CategoryException(STORE_WITH_CODE_ALREADY_EXIST, "Store Code=%s is already exist.", code);
     }
 
-    public static CategoryException storeWithIdNotExist(long storeId) {
-	return new CategoryException(STORE_WITH_ID_NOT_EXIST, "Store ID=%s does not exist.", storeId);
+    public static CategoryException storeWithCodeNotExist(String storeCode) {
+	return new CategoryException(STORE_WITH_CODE_NOT_EXIST, "Store Code=%s does not exist.", storeCode);
     }
 }

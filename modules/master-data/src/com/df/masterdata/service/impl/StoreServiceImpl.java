@@ -7,45 +7,57 @@ import javax.inject.Inject;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.df.masterdata.dal.StoreDAL;
+import com.df.masterdata.dao.StoreDao;
 import com.df.masterdata.entity.Store;
 import com.df.masterdata.exception.StoreException;
-import com.df.masterdata.service.inf.StoreServiceInf;
+import com.df.masterdata.service.contract.StoreServiceInf;
 
 @Transactional(isolation = Isolation.DEFAULT)
 public class StoreServiceImpl implements StoreServiceInf {
 
     @Inject
-    private StoreDAL storeDAL;
+    private StoreDao storeDao;
+
+    public void setStoreDao(StoreDao storeDao) {
+	this.storeDao = storeDao;
+    }
 
     @Override
     public void newStore(Store store) {
-	if (storeDAL.getStoreByName(store.getName()) != null) {
+	if (storeDao.getStoreByName(store.getName()) != null) {
 	    throw StoreException.storeWithNameAlreadyExist(store.getName());
 	} else {
-	    storeDAL.insert(store);
+	    storeDao.insert(store);
 	}
     }
 
     @Override
-    public void disableStore(long storeId) {
-	Store store = storeDAL.find(Store.class, storeId);
+    public void disableStore(String storeCode) {
+	Store store = storeDao.getStoreByCode(storeCode);
 	if (store == null) {
-	    throw StoreException.storeWithIdNotExist(storeId);
+	    throw StoreException.storeWithCodeNotExist(storeCode);
 	}
 	store.setEnabled(false);
-	storeDAL.update(store);
+	storeDao.update(store);
+    }
 
+    @Override
+    public void enableStore(String storeCode) {
+	Store store = storeDao.getStoreByCode(storeCode);
+	if (store == null) {
+	    throw StoreException.storeWithCodeNotExist(storeCode);
+	}
+	store.setEnabled(true);
+	storeDao.update(store);
     }
 
     @Override
     public List<Store> getStoreList() {
-	return storeDAL.all(Store.class, 0, Integer.MAX_VALUE, false);
+	return storeDao.all(Store.class, 0, Integer.MAX_VALUE, false);
     }
 
     @Override
-    public Store getStoreById(long storeId) {
-	return storeDAL.find(Store.class, storeId);
+    public Store getStoreByCode(String storeCode) {
+	return storeDao.getStoreByCode(storeCode);
     }
-
 }

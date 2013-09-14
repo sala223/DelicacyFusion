@@ -12,44 +12,43 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 
 import org.eclipse.persistence.annotations.Index;
+import org.eclipse.persistence.annotations.Indexes;
 import org.eclipse.persistence.annotations.JoinFetch;
 import org.eclipse.persistence.annotations.JoinFetchType;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @Entity
-@Index(name = "IDX_STORE_T_NAME", unique = true, columnNames = { "name", MultiTenantSupport.TENANT_COLUMN })
+@Indexes({
+	@Index(name = "IDX_STORE_T_CODE", unique = true, columnNames = { "CODE", MultiTenantSupport.TENANT_COLUMN }),
+	@Index(name = "IDX_STORE_T_NAME", unique = true, columnNames = { "NAME", MultiTenantSupport.TENANT_COLUMN }) })
 public class Store extends MasterData {
 
-    @Column
-    @Index(name = "IDX_STORE_T_CODE", unique = true, columnNames = { "code", MultiTenantSupport.TENANT_COLUMN })
-    private String code;
-
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, name = "NAME", length = 255)
     private String name;
 
     @Lob
-    @Column
+    @Column(name = "DESCRIPTION")
     private String description;
 
-    @ElementCollection(fetch=FetchType.EAGER)
-    @CollectionTable(joinColumns = @JoinColumn(name = "STORE_ID"))
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name="STORE_ADDRESS",joinColumns = @JoinColumn(name = "STORE_ID"))
     @JoinFetch(JoinFetchType.OUTER)
     private List<Address> addresses;
 
-    @Column(length = 32, nullable = false)
+    @Column(length = 32, nullable = false, name = "TELEPHONE1")
     private String telephone1;
 
-    @Column(length = 32)
+    @Column(length = 32, name = "TELEPHONE2")
     private String telephone2;
 
-    @Column(nullable = false)
-    private int businessHourFrom;
+    @Column(nullable = false, name = "BUSINESS_HOUR_FROM")
+    private int businessHourFrom = -1;
 
-    @Column(nullable = false)
-    private int businessHourTo;
+    @Column(nullable = false, name = "BUSINESS_HOUR_TO")
+    private int businessHourTo = -1;
 
-    @Column(length = 512)
+    @Column(length = 512, name = "TRAFFIC_INFO")
     private String trafficInfo;
 
     public String getName() {
@@ -122,12 +121,15 @@ public class Store extends MasterData {
 	this.trafficInfo = trafficInfo;
     }
 
-    public String getCode() {
-	return code;
-    }
-
-    public void setCode(String code) {
-	this.code = code;
+    @Override
+    protected void fillDefaultValue() {
+	super.fillDefaultValue();
+	if (this.businessHourFrom < 0) {
+	    this.businessHourFrom = 60 * 7;
+	}
+	if (this.businessHourTo < 0) {
+	    this.businessHourTo = 60 * 22;
+	}
     }
 
 }

@@ -7,15 +7,15 @@ import junit.framework.TestCase;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.df.masterdata.dal.StoreDAL;
+import com.df.masterdata.dao.StoreDao;
 import com.df.masterdata.entity.Address;
 import com.df.masterdata.entity.Store;
 
 @Transactional
-public class StoreDALTest extends MasterDataJPABaseTest {
+public class StoreDaoTest extends MasterDataJPABaseTest {
 
     @Inject
-    private StoreDAL storeDAL;
+    private StoreDao storeDao;
 
     @Test
     public void testCreateFindAndRemove() {
@@ -29,15 +29,16 @@ public class StoreDALTest extends MasterDataJPABaseTest {
 	address.setCountry("China");
 	address.setProvince("Hunan");
 	address.setCity("Changsha");
+	address.setTown("Changsha"); 
 	address.setCounty("HuRong District");
 	address.setAddress("Mawang dui");
 	store.setAddress(address);
-	storeDAL.newStore(store);
-	storeDAL.getEntityManager().flush();
-	Store found = storeDAL.find(Store.class, store.getId());
+	storeDao.newStore(store);
+	storeDao.getEntityManager().flush();
+	Store found = storeDao.find(Store.class, store.getId());
 	TestCase.assertNotNull(found);
-	storeDAL.remove(found);
-	found = storeDAL.find(Store.class, store.getId());
+	storeDao.remove(found);
+	found = storeDao.find(Store.class, store.getId());
 	TestCase.assertNull(found);
     }
 
@@ -54,11 +55,12 @@ public class StoreDALTest extends MasterDataJPABaseTest {
 	address.setCountry("China");
 	address.setProvince("Hunan");
 	address.setCity("Changsha");
+	address.setTown("Changsha"); 
 	address.setCounty("HuRong District");
 	address.setAddress("Mawang dui");
 	store.setAddress(address);
-	storeDAL.newStore(store);
-	Store found = storeDAL.getStoreByName(name);
+	storeDao.newStore(store);
+	Store found = storeDao.getStoreByName(name);
 	TestCase.assertNotNull(found);
     }
 
@@ -69,17 +71,16 @@ public class StoreDALTest extends MasterDataJPABaseTest {
 	store.setCode(code);
 	store.setName("DanceQueue");
 	store.setTelephone1("0731-34343433");
-	store.setBusinessHourFrom(8);
-	store.setBusinessHourFrom(22);
 	Address address = new Address();
 	address.setCountry("China");
 	address.setProvince("Hunan");
 	address.setCity("Changsha");
+	address.setTown("Changsha"); 
 	address.setCounty("HuRong District");
 	address.setAddress("Mawang dui");
 	store.setAddress(address);
-	storeDAL.newStore(store);
-	Store found = storeDAL.getStoreByCode(code);
+	storeDao.newStore(store);
+	Store found = storeDao.getStoreByCode(code);
 	TestCase.assertNotNull(found);
     }
 
@@ -89,24 +90,18 @@ public class StoreDALTest extends MasterDataJPABaseTest {
 	store.setCode("MyCode");
 	store.setName("DanceQueue");
 	store.setTelephone1("0731-34343433");
-	store.setBusinessHourFrom(8);
-	store.setBusinessHourFrom(22);
-	storeDAL.newStore(store);
+	storeDao.newStore(store);
 	Store store2 = new Store();
 	store2.setCode("MyCode2");
 	store2.setName("DanceQueue2");
 	store2.setTelephone1("0731-34343433");
-	store2.setBusinessHourFrom(8);
-	store2.setBusinessHourFrom(22);
-	storeDAL.newStore(store2);
+	storeDao.newStore(store2);
 	Store store3 = new Store();
 	store3.setCode("MyCode3");
 	store3.setName("DanceQueue3");
 	store3.setEnabled(false);
 	store3.setTelephone1("0731-34343433");
-	store3.setBusinessHourFrom(8);
-	store3.setBusinessHourFrom(22);
-	storeDAL.newStore(store3);
-	TestCase.assertEquals(storeDAL.getStoreList(false).size(), 2);
+	storeDao.newStore(store3);
+	TestCase.assertEquals(storeDao.all().size(), 2);
     }
 }

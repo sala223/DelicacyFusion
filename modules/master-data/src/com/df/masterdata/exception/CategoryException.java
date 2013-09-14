@@ -8,13 +8,11 @@ public class CategoryException extends BusinessException {
 
     private static final String REALM = "Category";
 
-    public static final int PARENT_CATEGORY_NOT_FOUND = 100000;
-
     public static final int UNREMOVEABLE_ITEM_TEMPLATE_LIST_NOT_EMPTY = 100001;
 
-    public static final int UNREMOVEABLE_DESCENDANTS_EXIST = 100002;
+    public static final int CATEGORY_WITH_CODE_EXIST = 100002;
 
-    public static final int CATEGORY_WITH_NAME_EXIST = 100003;
+    public static final int EXCEED_MAX_CATEGORY_COUNT = 100003;
 
     public CategoryException(Throwable cause, int errorCode) {
 	super(cause, REALM, errorCode);
@@ -28,22 +26,18 @@ public class CategoryException extends BusinessException {
 	super(null, REALM, errorCode, messageFormat, args);
     }
 
-    public static CategoryException parentCategoryNotFound(long parentCategoryId) {
-	return new CategoryException(PARENT_CATEGORY_NOT_FOUND, "Category ID=%s is not found.", parentCategoryId);
-    }
-
-    public static CategoryException itemTemplateListNotEmpty(long categoryId) {
+    public static CategoryException itemTemplateListNotEmpty(String categoryCode) {
 	String msg = "Cannot remove category ID=%s, there are item template belongs to this category.";
-	return new CategoryException(UNREMOVEABLE_ITEM_TEMPLATE_LIST_NOT_EMPTY, msg, categoryId);
+	return new CategoryException(UNREMOVEABLE_ITEM_TEMPLATE_LIST_NOT_EMPTY, msg, categoryCode);
     }
 
-    public static CategoryException descendantsExist(long categoryId) {
-	String msg = "Cannot remove category ID=%s, there are descendants belongs to this category.";
-	return new CategoryException(UNREMOVEABLE_DESCENDANTS_EXIST, msg, categoryId);
+    public static CategoryException categoryWithCodeExist(String categoryCode) {
+	String msg = "Category Code=%s, already exsit.";
+	return new CategoryException(CATEGORY_WITH_CODE_EXIST, msg, categoryCode);
     }
 
-    public static CategoryException categoryWithNameExist(String categoryName) {
-	String msg = "Category Name=%s, already exsit.";
-	return new CategoryException(CATEGORY_WITH_NAME_EXIST, msg, categoryName);
+    public static CategoryException exceedMaxCategoryCount(int maxCategoryCount) {
+	String msg = "Exceed max category=%d count limitation.";
+	return new CategoryException(EXCEED_MAX_CATEGORY_COUNT, msg, maxCategoryCount);
     }
 }

@@ -1,6 +1,5 @@
 package com.df.masterdata.service.impl;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -8,100 +7,84 @@ import javax.inject.Inject;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.df.blobstore.image.ImageServiceInf;
-import com.df.masterdata.dal.ItemDAL;
+import com.df.masterdata.dao.ItemDao;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.exception.ItemException;
-import com.df.masterdata.service.inf.ItemServiceInf;
+import com.df.masterdata.service.contract.ItemServiceInf;
 
 @Transactional
 public class ItemServiceImpl implements ItemServiceInf {
 
     @Inject
-    private ItemDAL itemDAL;
+    private ItemDao itemDao;
 
-    @Inject
-    private ImageServiceInf imageService;
-
-    public void setItemDAL(ItemDAL itemDAL) {
-	this.itemDAL = itemDAL;
-    }
-
-    public void setImageService(ImageServiceInf imageService) {
-	this.imageService = imageService;
+    public void setItemDao(ItemDao itemDao) {
+	this.itemDao = itemDao;
     }
 
     @Override
     public void newItem(Item item) {
-	itemDAL.insert(item);
+	itemDao.newItem(item);
     }
 
     @Override
-    public void disableItem(long itemId) {
-	Item item = itemDAL.find(Item.class, itemId);
+    public void disableItem(String storeCode, String itemCode) {
+	Item item = itemDao.getItemByItemCode(storeCode, itemCode);
 	if (item == null) {
-	    throw ItemException.itemWithIdNotExist(itemId);
+	    throw ItemException.itemWithCodeNotExist(itemCode);
 	}
+
 	item.setEnabled(false);
-	itemDAL.update(item);
+	itemDao.update(item);
     }
 
     @Override
-    public List<Item> getAvaliableItems(int fromResult, int maxResult) {
-	return itemDAL.all((Long) null, Item.class, fromResult, maxResult, false);
+    public List<Item> getAvaliableItems(String storeCode, int fromResult, int maxResult) {
+	return itemDao.all(storeCode, Item.class, fromResult, maxResult, false);
     }
 
     @Override
-    public long getAvaliableItemCount() {
-	return itemDAL.allCount(Item.class, false);
+    public List<Item> getAvaliableFoods(String storeCode, int fromResult, int maxResult) {
+	return itemDao.allFood(storeCode, fromResult, maxResult, false);
     }
 
     @Override
-    public void uploadItemPicture(InputStream stream, String comment) {
-
-    }
-
-    @Override
-    public void removeItemPicture(long itemID, String pictureUrl) {
+    public long getAvaliableItemCount(String storeCode) {
+	return itemDao.allCount(storeCode, Item.class, false);
     }
 
     @Override
     public void updateItem(Item item) {
-	itemDAL.update(item);
+	itemDao.update(item);
     }
 
     @Override
-    public List<Item> getItemsByCategory(long storeId, long categoryId) {
-	return itemDAL.getItemsByCategory(categoryId, storeId);
+    public List<Item> getItemsByCategory(String storeCode, String categoryCode) {
+	return itemDao.getItemsByCategory(categoryCode, storeCode);
     }
 
     @Override
-    public List<Item> getAvaliableItems(long storeId, int fromResult, int maxResult) {
-	return itemDAL.all(storeId, Item.class, fromResult, maxResult, false);
+    public Map<String, Long> getItemCountGroupByCategory(String storeCode) {
+	return itemDao.getItemCountGroupByCategory(storeCode);
     }
 
     @Override
-    public long getAvaliableItemCount(long storeId) {
-	return itemDAL.allCount(storeId, Item.class, false);
+    public List<Item> getFoodsByCategory(String storeCode, String categoryCode) {
+	return itemDao.getFoodsByCategory(categoryCode, storeCode);
     }
 
     @Override
-    public Map<Long, Long> getItemCountGroupByCategory(long storeId) {
-	return itemDAL.getItemCountGroupByCategory(storeId);
+    public long getAvaliableFoodCount(String storeCode) {
+	return itemDao.allFoodCount(storeCode, false);
     }
 
     @Override
-    public List<Item> getFoodsByCategory(long storeId, long categoryId) {
-	return itemDAL.getFoodByCategory(categoryId, storeId);
-    }
-
-    @Override
-    public long getAvaliableFoodCount(long storeId) {
-	return itemDAL.allFoodCount(storeId, false);
-    }
-
-    @Override
-    public List<Item> getAvaliableFoods(long storeId, int fromResult, int maxResult) {
-	return itemDAL.allFood(storeId, fromResult, maxResult, false);
+    public void enableItem(String storeCode, String itemCode) {
+	Item item = itemDao.getItemByItemCode(storeCode, itemCode);
+	if (item == null) {
+	    throw ItemException.itemWithCodeNotExist(itemCode);
+	}
+	item.setEnabled(true);
+	itemDao.update(item);
     }
 }

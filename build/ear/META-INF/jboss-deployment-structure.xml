@@ -13,6 +13,7 @@
 		</exclusions>
 		<dependencies>
      		<module name="org.eclipse.persistence" />
+     		<module name="org.codehaus.jackson.jackson-mapper-asl" />
     	</dependencies>
 	</deployment>
 </jboss-deployment-structure>

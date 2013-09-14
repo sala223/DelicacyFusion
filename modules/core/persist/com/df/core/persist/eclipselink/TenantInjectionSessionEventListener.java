@@ -24,6 +24,15 @@ public class TenantInjectionSessionEventListener extends SessionEventAdapter {
     }
 
     @Override
+    public void preExecuteQuery(SessionEvent event) {
+	try {
+	    injectTenantProperty(event);
+	} catch (IOException ex) {
+	    throw new PersistenceException(ex);
+	}
+    }
+
+    @Override
     public void preBeginTransaction(SessionEvent event) {
 	try {
 	    injectTenantProperty(event);

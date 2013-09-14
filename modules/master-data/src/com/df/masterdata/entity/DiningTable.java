@@ -1,32 +1,44 @@
 package com.df.masterdata.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.eclipse.persistence.annotations.Index;
-
-import com.df.core.persist.eclipselink.MultiTenantSupport;
+import org.eclipse.persistence.annotations.Indexes;
 
 @Entity
-@Table(name="dining_table")
-public class DiningTable extends MasterData {
+@Table(name = "DINING_TABLE")
+@JsonIgnoreProperties({ "id", "room" })
+@Indexes({ @Index(name = "IDX_DT_BAR_CODE", unique = true, columnNames = { "BAR_CODE" }),
+	@Index(name = "IDX_DT_NUMBE", unique = false, columnNames = { "NUMBER" }) })
+public class DiningTable implements Serializable {
 
-    @Column(nullable = false, length = 32)
-    @Index(name = "room_number_index", unique = true, columnNames = { "number", MultiTenantSupport.TENANT_COLUMN })
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
+
+    @Column(nullable = false, length = 32, name = "NUMBER")
     private String number;
 
-    @Column(nullable = false, length = 128)
-    @Index(name = "room_barCode_index")
+    @Column(nullable = false, length = 128, name = "BAR_CODE")
     private String barCode;
 
-    @Column
+    @Column(name = "CAPACITY")
     private int capacity;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Room room;
 
     public String getNumber() {
@@ -60,11 +72,4 @@ public class DiningTable extends MasterData {
     public void setRoom(Room room) {
 	this.room = room;
     }
-
-    @Override
-    public void fillDefaultValue() {
-	super.fillDefaultValue();
-	this.capacity = 10;
-    }
-
 }

@@ -8,15 +8,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.MultitenantType;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
+@JsonIgnoreProperties({ "id", "createdTime", "changedTime", "createdBy"})
 @MappedSuperclass
 @Multitenant(MultitenantType.SINGLE_TABLE)
 @TenantDiscriminatorColumn(name = MultiTenantSupport.TENANT_COLUMN, length = 12, contextProperty = MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY)
@@ -27,23 +31,22 @@ public abstract class MasterData {
     @Column(name = "ID")
     private long id;
 
+    @Column(length = 255, name = "CODE")
+    @Index
+    private String code;
+
     @Temporal(value = TemporalType.TIME)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "CREATED_TIME")
     private Date createdTime;
 
     @Temporal(value = TemporalType.TIME)
+    @Column(name = "CHANGED_TIME")
     private Date changedTime;
 
-    @Column
+    @Column(name = "CREATED_BY")
     private long createdBy;
 
-    @Temporal(value = TemporalType.DATE)
-    private Date validFrom;
-
-    @Temporal(value = TemporalType.DATE)
-    private Date validTo;
-
-    @Column
+    @Column(name = "IS_ENABLED")
     private boolean isEnabled = true;
 
     public long getId() {
@@ -52,6 +55,17 @@ public abstract class MasterData {
 
     public void setId(long id) {
 	this.id = id;
+    }
+
+    public String getCode() {
+	return code;
+    }
+
+    /**
+     * Code is unique for each tenant
+     */
+    public void setCode(String code) {
+	this.code = code;
     }
 
     public Date getCreatedTime() {
@@ -78,22 +92,6 @@ public abstract class MasterData {
 	this.createdBy = createdBy;
     }
 
-    public Date getValidFrom() {
-	return validFrom;
-    }
-
-    public void setValidFrom(Date validFrom) {
-	this.validFrom = validFrom;
-    }
-
-    public Date getValidTo() {
-	return validTo;
-    }
-
-    public void setValidTo(Date validTo) {
-	this.validTo = validTo;
-    }
-
     public boolean isEnabled() {
 	return isEnabled;
     }
@@ -107,8 +105,10 @@ public abstract class MasterData {
 	if (this.createdTime == null) {
 	    this.setCreatedTime(new Date());
 	}
-	if (this.validFrom == null) {
-	    this.setValidFrom(new Date());
-	}
+    }
+
+    @PreUpdate
+    protected void updateDefaultValue() {
+	this.setChangedTime(new Date());
     }
 }

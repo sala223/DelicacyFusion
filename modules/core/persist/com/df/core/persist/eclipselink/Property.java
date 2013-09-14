@@ -4,9 +4,9 @@ public class Property<T> {
 
     private String name;
 
-    private Object value;
+    private T value;
 
-    public Property(String name, Object value) {
+    public Property(String name, T value) {
 	this.name = name;
 	this.value = value;
     }
@@ -15,7 +15,7 @@ public class Property<T> {
 	return name;
     }
 
-    public Object getValue() {
+    public T getValue() {
 	return value;
     }
 }
