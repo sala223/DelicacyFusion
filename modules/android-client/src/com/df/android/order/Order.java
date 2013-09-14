@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.util.Log;
+
 import com.df.android.entity.Table;
 
 public abstract class Order {
@@ -35,7 +37,9 @@ public abstract class Order {
 		this.id = id;
 	}
 
-	public void addLine(OrderLine line) {
+	public void addLine(OrderLine line) { 
+		Log.d(getClass().getName(), "Line " + line + " adding");
+		
 		int index = lines.indexOf(line);
 		if(index >= 0) { 
 			OrderLine l = lines.get(index);

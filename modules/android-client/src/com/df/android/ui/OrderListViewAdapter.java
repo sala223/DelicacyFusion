@@ -31,7 +31,7 @@ public class OrderListViewAdapter extends BaseAdapter implements
 		rebuildList(); 
 	}
 
-	private void rebuildList() {
+	private void rebuildList() { 
 		// List<LVOrderLineCategory> categories = null;
 		// if(order instanceof OnsiteOrder) {
 		// lvOrder = new LVOnsiteOrder();

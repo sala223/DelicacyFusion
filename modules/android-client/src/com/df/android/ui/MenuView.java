@@ -105,7 +105,7 @@ public class MenuView extends LinearLayout {
 
 					});
 
-			menuNavigator.check(1);
+			menuNavigator.check(0);
 		}
 
 		final ViewPager menuPager = (ViewPager) li.inflate(R.layout.menupager,
@@ -142,11 +142,5 @@ public class MenuView extends LinearLayout {
 			}
 
 		});
-		
-		
-		this.addView(menuNavigator);
-		this.addView(menuPager);
-		
-		menuNavigator.check(0);
 	}
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/leftContentPane"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone" >
+
+    <Button
+        android:id="@+id/btnSendOrder"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="5dip"
+        android:background="#008800"
+        android:drawableLeft="@drawable/send_order"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:text="@string/send_order"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/orderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@id/btnSendOrder" />
+
+    <TextView
+        android:id="@+id/orderTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/orderId"
+        android:layout_above="@id/btnSendOrder"
+        android:textColor="#FF0000"
+        android:textSize="48sp" />
+
+    <ListView
+        android:id="@+id/lstOrder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/orderId"
+        android:animateLayoutChanges="true" />
+
+</RelativeLayout>
+
