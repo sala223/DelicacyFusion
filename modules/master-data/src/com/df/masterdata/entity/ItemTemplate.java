@@ -1,6 +1,7 @@
 package com.df.masterdata.entity;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -12,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.Index;
@@ -36,10 +38,10 @@ public class ItemTemplate extends MasterData {
     @ElementCollection(targetClass = String.class)
     @Column(name = "CATEGORY_CODE", length = 255)
     @CollectionTable(name = "ITEM_TEMPLATE_CATEGORY", joinColumns = @JoinColumn(name = "ITEM_TEMPLATE_ID"))
-    private Set<String> categories;
+    private List<String> categories;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "ITEM_TEMPLATE_PICTURE", joinColumns = @JoinColumn(name = "ITEM_ID"))
+    @CollectionTable(name = "ITEM_TEMPLATE_PICTURE", joinColumns = @JoinColumn(name = "ITEM_TEMPLATE_ID"))
     private Set<PictureRef> pictureSet;
 
     @Lob
@@ -65,11 +67,11 @@ public class ItemTemplate extends MasterData {
 	this.name = name;
     }
 
-    public Set<String> getCategories() {
+    public List<String> getCategories() {
 	return categories;
     }
 
-    public void setCategories(Set<String> categories) {
+    public void setCategories(List<String> categories) {
 	this.categories = categories;
     }
 
@@ -125,13 +127,15 @@ public class ItemTemplate extends MasterData {
     protected void fillDefaultValue() {
 	super.fillDefaultValue();
 	if (this.type == null) {
-	    this.type = ItemType.Food;
+	    this.type = ItemType.FOOD;
+	}if (this.priceUnit == null) {
+	    this.priceUnit = PriceUnit.RMB;
 	}
     }
 
     public void setCategories(String... categories) {
 	if (this.categories == null) {
-	    this.categories = new HashSet<String>();
+	    this.categories = new ArrayList<String>();
 	} else {
 	    this.categories.clear();
 	}
@@ -140,7 +144,7 @@ public class ItemTemplate extends MasterData {
 
     public void addCategories(String... categories) {
 	if (this.categories == null) {
-	    this.categories = new HashSet<String>();
+	    this.categories = new ArrayList<String>();
 	}
 	if (categories != null) {
 	    for (String c : categories) {

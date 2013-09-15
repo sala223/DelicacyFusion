@@ -9,14 +9,17 @@ import javax.persistence.Embeddable;
 public class DeliveryLine implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "LINE_NUMBER")
     private long lineNumber;
 
-    @Column(nullable = false)
-    private long itemId;
+    @Column(nullable = false, name = "ITEM_CODE")
+    private String itemCode;
 
-    @Column
+    @Column(name = "QUANTITY")
     private int quantity;
+
+    @Column(name = "ROOM_CODE")
+    private String roomCode;
 
     public long getLineNumber() {
 	return lineNumber;
@@ -26,12 +29,12 @@ public class DeliveryLine implements Serializable {
 	this.lineNumber = lineNumber;
     }
 
-    public long getItemId() {
-	return itemId;
+    public String getItemCode() {
+	return itemCode;
     }
 
-    public void setItemId(long itemId) {
-	this.itemId = itemId;
+    public void setItemCode(String itemCode) {
+	this.itemCode = itemCode;
     }
 
     public int getQuantity() {
@@ -40,5 +43,13 @@ public class DeliveryLine implements Serializable {
 
     public void setQuantity(int quantity) {
 	this.quantity = quantity;
+    }
+
+    public String getRoomCode() {
+	return roomCode;
+    }
+
+    public void setRoomCode(String roomCode) {
+	this.roomCode = roomCode;
     }
 }

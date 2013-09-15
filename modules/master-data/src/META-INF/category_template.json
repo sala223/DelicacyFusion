@@ -1,18 +1,26 @@
 [
 	{
 		"code":"SYS00001",
-		"name":"Cold Food"
+		"name":"Cold Drink"
 	},
 	{
 		"code":"SYS00002",
-		"name":"Fruit"
+		"name":"Sweet"
 	},
 	{
 		"code":"SYS00003",
-		"name":"Sweet"
+		"name":"Fruit"
 	},
 	{
 		"code":"SYS00004",
 		"name":"vegetables"
+	},
+	{
+		"code":"SYS00005",
+		"name":"Fish"
+	},
+	{
+		"code":"SYS00006",
+		"name":"Cold Food"
 	}
 ]

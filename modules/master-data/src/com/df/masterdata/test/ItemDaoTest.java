@@ -56,8 +56,8 @@ public class ItemDaoTest extends MasterDataJPABaseTest {
 	templateDao.newItemTemplate(itemTemplate4);
 	ItemTemplate itemTemplate5 = new ItemTemplate();
 	itemTemplate5.setCode("A0005");
-	itemTemplate5.setName("Service");
-	itemTemplate5.setType(ItemType.Service);
+	itemTemplate5.setName("chopsticks");
+	itemTemplate5.setType(ItemType.GOODS);
 	templateDao.newItemTemplate(itemTemplate5);
 	Item item1 = new Item(itemTemplate1, "S1");
 	Item item2 = new Item(itemTemplate2, "S1");

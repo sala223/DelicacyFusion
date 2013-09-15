@@ -3,14 +3,13 @@ package com.df.order.entity;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import org.eclipse.persistence.annotations.JoinFetch;
@@ -23,11 +22,11 @@ public class Delivery extends TransactionEntity {
     @SequenceGenerator(name = "delivery_id_sequence", sequenceName = "delivery_id_sequence")
     private long deliveryId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Order order;
+    @Column(name = "ORDER_ID", nullable = false)
+    private long orderId;
 
     @ElementCollection
-    @CollectionTable(joinColumns = @JoinColumn(name = "order_id"))
+    @CollectionTable(name = "DELIVERY_LINE", joinColumns = @JoinColumn(name = "order_id"))
     @JoinFetch(JoinFetchType.OUTER)
     private List<DeliveryLine> lines;
 
@@ -41,12 +40,12 @@ public class Delivery extends TransactionEntity {
 	this.deliveryId = transactionId;
     }
 
-    public Order getOrder() {
-	return order;
+    public long getOrderId() {
+	return orderId;
     }
 
-    public void setOrder(Order order) {
-	this.order = order;
+    public void setOrderId(long orderId) {
+	this.orderId = orderId;
     }
 
 }

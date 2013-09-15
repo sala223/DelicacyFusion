@@ -12,47 +12,50 @@ public class OrderLine implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "LINE_NUMBER")
     private int lineNumber;
 
-    @Column(nullable = false)
-    private long itemId;
+    @Column(nullable = false, name = "ITEM_CODE")
+    private String itemCode;
 
-    @Column
-    private long roomId;
+    @Column(name = "ROOM_CODE")
+    private String roomCode;
 
-    @Column
+    @Column(name = "PRICE")
     private float price;
 
-    @Column
+    @Column(name = "DISCOUNT")
+    private float discount;
+
+    @Column(name = "QUANTITY")
     private int quantity;
 
-    @Column
+    @Column(name = "PRICE_UNIT")
     private PriceUnit priceUnit;
 
-    @Column
+    @Column(name = "TOTAL_PAYMENT")
     private float totalPayment;
 
-    @Column
+    @Column(name = "COMMENT")
     private String comment;
 
-    @Column
+    @Column(name = "PROMOTION_DETAILS")
     private String promotionDetails;
 
-    public long getItemId() {
-	return itemId;
+    public String getItemCode() {
+	return itemCode;
     }
 
-    public void setItemId(long itemId) {
-	this.itemId = itemId;
+    public void setItemCode(String itemCode) {
+	this.itemCode = itemCode;
     }
 
-    public long getRoomId() {
-	return roomId;
+    public String getRoomCode() {
+	return roomCode;
     }
 
-    public void setRoomId(long roomId) {
-	this.roomId = roomId;
+    public void setRoomCode(String roomCode) {
+	this.roomCode = roomCode;
     }
 
     public float getPrice() {
@@ -110,4 +113,13 @@ public class OrderLine implements Serializable {
     public void setPromotionDetails(String promotionDetails) {
 	this.promotionDetails = promotionDetails;
     }
+
+    public float getDiscount() {
+	return discount;
+    }
+
+    public void setDiscount(float discount) {
+	this.discount = discount;
+    }
+
 }

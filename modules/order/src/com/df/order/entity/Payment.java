@@ -24,17 +24,21 @@ public class Payment extends TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_id_sequence")
     @SequenceGenerator(name = "payment_id_sequence", sequenceName = "payment_id_sequence")
+    @Column(name = "PAYMENT_ID")
     private long paymentId;
 
+    @Column(name = "ORDER_ID", nullable = false)
+    private Long orderId;
+
     @Enumerated(EnumType.STRING)
-    @Column
+    @Column(name = "PRICE_UNIT")
     private PriceUnit priceUnit;
 
-    @Column
+    @Column(name = "TOTAL_PRICE")
     private float totalPrice;
 
     @ElementCollection
-    @CollectionTable(joinColumns = @JoinColumn(name = "PAYMENT_ID"))
+    @CollectionTable(name = "PAYMENT_LINE", joinColumns = @JoinColumn(name = "PAYMENT_ID"))
     @JoinFetch(JoinFetchType.OUTER)
     private List<PaymentLine> lines;
 
@@ -78,5 +82,13 @@ public class Payment extends TransactionEntity {
 
     public void setTotalPrice(float totalPrice) {
 	this.totalPrice = totalPrice;
+    }
+
+    public Long getOrderId() {
+	return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+	this.orderId = orderId;
     }
 }

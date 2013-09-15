@@ -6,10 +6,10 @@ import org.junit.Test;
 
 import com.df.order.dao.OrderDao;
 
-public class OrderDALTest extends OrderBaseTest {
+public class OrderDaoTest extends OrderBaseTest {
 
     @Inject
-    private OrderDao orderDAL;
+    private OrderDao orderDao;
 
     @Test
     public void testCreateOrder() {

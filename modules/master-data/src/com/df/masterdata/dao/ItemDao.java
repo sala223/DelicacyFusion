@@ -98,7 +98,7 @@ public class ItemDao extends StoreAwareMasterDataAccessFoundation {
 	CriteriaQuery<Item> query = builder.createQuery(Item.class);
 	Root<Item> root = query.from(Item.class);
 	Join<Object, Object> templateJoin = root.join(ITEM.TEMPLATE_PROPERTY);
-	Predicate typeEqual = builder.equal(templateJoin.get(ITEM_TEMPLATE.TYPE_PROPERTY), ItemType.Food);
+	Predicate typeEqual = builder.equal(templateJoin.get(ITEM_TEMPLATE.TYPE_PROPERTY), ItemType.FOOD);
 	Predicate categoryEqual = builder.equal(templateJoin.get(ITEM_TEMPLATE.CATEGORIES_PROPERTY), categoryCode);
 	Predicate ownerIdEqual = builder.equal(root.get(getStoreCodePropertyName()), storeCode);
 	query.where(builder.and(builder.and(categoryEqual, ownerIdEqual), typeEqual));
@@ -119,7 +119,7 @@ public class ItemDao extends StoreAwareMasterDataAccessFoundation {
 	    query.setParameter("IS_ENABLED", true);
 	}
 	query.setParameter("STORE_CODE", storeCode);
-	query.setParameter("TYPE", ItemType.Food);
+	query.setParameter("TYPE", ItemType.FOOD);
 	return (Long) query.getSingleResult();
     }
 

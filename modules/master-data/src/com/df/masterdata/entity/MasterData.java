@@ -35,11 +35,11 @@ public abstract class MasterData {
     @Index
     private String code;
 
-    @Temporal(value = TemporalType.TIME)
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(nullable = false, name = "CREATED_TIME")
     private Date createdTime;
 
-    @Temporal(value = TemporalType.TIME)
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "CHANGED_TIME")
     private Date changedTime;
 

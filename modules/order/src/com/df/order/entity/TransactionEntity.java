@@ -19,23 +19,23 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
 @MappedSuperclass
 @Multitenant(MultitenantType.SINGLE_TABLE)
 @TenantDiscriminatorColumn(name = MultiTenantSupport.TENANT_COLUMN, length = 12, contextProperty = MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY)
-public abstract class TransactionEntity  {
+public abstract class TransactionEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "OWNER_ID")
     private long ownerId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "STORE_ID")
     private long storeId;
 
-    @Temporal(value = TemporalType.TIME)
-    @Column(nullable = false)
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(nullable = false, name = "CREATE_TIME")
     private Date createTime;
 
     @Temporal(value = TemporalType.TIME)
-    @Column
+    @Column(name = "CLOSE_TIME")
     private Date closeTime;
 
-    @Column(length = 32)
+    @Column(length = 32, name = "STATUS")
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
 

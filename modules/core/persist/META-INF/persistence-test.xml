@@ -29,8 +29,8 @@
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 			<property name="eclipselink.ddl-generation.output-mode" value="both" />
 			<property name="eclipselink.jdbc.uppercase-columns" value="true" />
-			<property name="eclipselink.drop-ddl-jdbc-file-name" value="bin/drop.sql"/>
-			<property name="eclipselink.create-ddl-jdbc-file-name" value="bin/create.sql" />
+			<property name="eclipselink.drop-ddl-jdbc-file-name" value="../../integration-test/drop.sql"/>
+			<property name="eclipselink.create-ddl-jdbc-file-name" value="../../integration-test/create.sql" />
 			<property name="eclipselink.jdbc.batch-writing" value="JDBC" />
 			<!-- single persist unit for multiple tenants -->
 			<property name="eclipselink.session-event-listener" value="com.df.core.persist.eclipselink.TenantInjectionSessionEventListener" />

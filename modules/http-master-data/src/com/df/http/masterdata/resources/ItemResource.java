@@ -16,7 +16,7 @@ import com.df.core.rs.TenantResource;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.service.contract.ItemServiceInf;
 
-@Path("/{tenantId}/{storeCode}/item")
+@Path("/{tenantId}/{storeCode}")
 @Produces("application/json")
 @Component
 public class ItemResource extends TenantResource {
@@ -28,9 +28,9 @@ public class ItemResource extends TenantResource {
     }
 
     @GET
-    @Path("/food")
+    @Path("/{categoryCode}/food")
     public List<Item> getFoodsByCategory(@PathParam("tenantId") String tenantId,
-	    @PathParam("storeCode") String storeCode, @QueryParam("categoryCode") String categoryCode) {
+	    @PathParam("storeCode") String storeCode, @PathParam("categoryCode") String categoryCode) {
 	injectTenantContext(tenantId);
 	return itemService.getFoodsByCategory(storeCode, categoryCode);
     }

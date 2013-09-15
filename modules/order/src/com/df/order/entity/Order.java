@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,42 +21,46 @@ import org.eclipse.persistence.annotations.JoinFetch;
 import org.eclipse.persistence.annotations.JoinFetchType;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "ORDERS")
 public class Order extends TransactionEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_id_sequence")
-    @SequenceGenerator(name = "order_id_sequence", sequenceName = "order_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ORDER_ID_SEQUENCE")
+    @SequenceGenerator(name = "ORDER_ID_SEQUENCE", sequenceName = "ORDER_ID_SEQUENCE")
+    @Column(name = "ORDER_ID")
     private long orderId;
 
     @Temporal(value = TemporalType.TIME)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "DINNER_TIME")
     private Date dinnerTime;
 
-    @Column
+    @Column(name = "IS_TAKE_OUT")
     private boolean isTakeOut;
 
     @ElementCollection
-    @CollectionTable(joinColumns = @JoinColumn(name = "ORDER_ID"))
+    @CollectionTable(name = "ORDER_LINE", joinColumns = @JoinColumn(name = "ORDER_ID"))
     @JoinFetch(JoinFetchType.OUTER)
     private List<OrderLine> lines;
 
-    @Column
+    @Column(name = "TOTAL_PAYMENT")
     private float totalPayment;
 
-    @OneToOne
-    private Payment payment;
-
-    @Column
+    @Column(name = "DISCOUNT")
     private float discount;
 
-    @Column
+    @Column(name = "DEPOSIT")
     private float deposit;
+
+    @Column(name = "SERVICE_FEE")
+    private float serviceFee;
+
+    @Column(name = "OTHER_FEE")
+    private float otherFee;
 
     @Column
     private String promotionDetails;
 
-    @Column
+    @Column(name = "COMMENT")
     private String comment;
 
     @Override
@@ -102,14 +105,6 @@ public class Order extends TransactionEntity {
 	this.dinnerTime = dinnerTime;
     }
 
-    public Payment getPayment() {
-	return payment;
-    }
-
-    public void Payment(Payment payment) {
-	this.payment = payment;
-    }
-
     public float getDiscount() {
 	return discount;
     }
@@ -150,6 +145,22 @@ public class Order extends TransactionEntity {
 	line.setLineNumber(lineNumer);
 	this.lines.add(line);
 	return lineNumer;
+    }
+
+    public float getServiceFee() {
+	return serviceFee;
+    }
+
+    public void setServiceFee(float serviceFee) {
+	this.serviceFee = serviceFee;
+    }
+
+    public float getOtherFee() {
+	return otherFee;
+    }
+
+    public void setOtherFee(float otherFee) {
+	this.otherFee = otherFee;
     }
 
     public boolean removeOrderLine(int lineNumber) {

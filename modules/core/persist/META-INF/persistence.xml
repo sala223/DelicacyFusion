@@ -12,7 +12,7 @@
 		<validation-mode>NONE</validation-mode>
 		<properties>
 			<property name="eclipselink.target-server" value="JBoss"/>  
-			<property name="eclipselink.logging.level" value="INFO" />
+			<property name="eclipselink.logging.level" value="FINE" />
 			<property name="eclipselink.logging.logger" value="JavaLogger"/>  
 			<property name="eclipselink.logging.thread" value="false" />
 			<property name="eclipselink.logging.session" value="false" />
