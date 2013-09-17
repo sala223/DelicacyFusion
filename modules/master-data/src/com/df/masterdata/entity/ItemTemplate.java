@@ -13,7 +13,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.Index;
@@ -48,12 +47,11 @@ public class ItemTemplate extends MasterData {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(precision = 2, name = "PRICE")
+    @Column(scale=2, name = "PRICE")
     private float price;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "PRICE_UNIT")
-    private PriceUnit priceUnit;
+    private String currency;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ITEM_UNIT")
@@ -107,12 +105,12 @@ public class ItemTemplate extends MasterData {
 	this.price = price;
     }
 
-    public PriceUnit getPriceUnit() {
-	return priceUnit;
+    public String getCurrency() {
+	return currency;
     }
 
-    public void setPriceUnit(PriceUnit priceUnit) {
-	this.priceUnit = priceUnit;
+    public void setCurrency(String currency) {
+	this.currency = currency;
     }
 
     public ItemUnit getItemUnit() {
@@ -128,8 +126,6 @@ public class ItemTemplate extends MasterData {
 	super.fillDefaultValue();
 	if (this.type == null) {
 	    this.type = ItemType.FOOD;
-	}if (this.priceUnit == null) {
-	    this.priceUnit = PriceUnit.RMB;
 	}
     }
 

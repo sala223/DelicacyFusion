@@ -43,6 +43,25 @@ public class ItemDao extends StoreAwareMasterDataAccessFoundation {
 	}
     }
 
+    public List<Item> listAvaliableItems(String storeCode, List<String> itemCodes) {
+	if (itemCodes == null || itemCodes.size() == 0) {
+	    return new ArrayList<Item>();
+	}
+
+	CriteriaBuilder builder = createQueryBuilder();
+	CriteriaQuery<Item> query = builder.createQuery(Item.class);
+	Root<Item> root = query.from(Item.class);
+	Join<Object, Object> templateJoin = root.join(ITEM.TEMPLATE_PROPERTY);
+	List<Predicate> predicates = new ArrayList<Predicate>();
+	predicates.add(templateJoin.get(ITEM_TEMPLATE.CODE_PROPERTY).in(itemCodes));
+	predicates.add(builder.equal(root.get(ITEM.STORE_CODE_PROPERTY), storeCode));
+	predicates.add(builder.equal(root.get(ITEM.IS_ENABLED_PROPERTY), true));
+	query.where(predicates.toArray(new Predicate[0]));
+	EntityManager em = getEntityManager();
+	TypedQuery<Item> typedQuery = em.createQuery(query);
+	return typedQuery.getResultList();
+    }
+
     public Item getItemByItemCode(String storeCode, String itemCode) {
 	CriteriaBuilder builder = createQueryBuilder();
 	CriteriaQuery<Item> query = builder.createQuery(Item.class);

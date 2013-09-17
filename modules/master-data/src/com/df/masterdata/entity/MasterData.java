@@ -27,7 +27,7 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
 public abstract class MasterData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ID")
     private long id;
 

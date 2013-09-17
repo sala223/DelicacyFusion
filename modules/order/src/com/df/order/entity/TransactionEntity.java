@@ -24,8 +24,8 @@ public abstract class TransactionEntity {
     @Column(nullable = false, name = "OWNER_ID")
     private long ownerId;
 
-    @Column(nullable = false, name = "STORE_ID")
-    private long storeId;
+    @Column(nullable = false, name = "STORE_CODE")
+    private String storeCode;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(nullable = false, name = "CREATE_TIME")
@@ -47,12 +47,12 @@ public abstract class TransactionEntity {
 	this.ownerId = ownerId;
     }
 
-    public long getStoreId() {
-	return storeId;
+    public String getStoreCode() {
+	return storeCode;
     }
 
-    public void setStoreId(long storeId) {
-	this.storeId = storeId;
+    public void setStoreCode(String storeCode) {
+	this.storeCode = storeCode;
     }
 
     public Date getCreateTime() {

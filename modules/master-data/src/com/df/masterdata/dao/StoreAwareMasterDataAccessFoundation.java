@@ -15,15 +15,17 @@ import org.eclipse.persistence.descriptors.ClassDescriptor;
 
 import com.df.core.persist.eclipselink.Property;
 import com.df.masterdata.entity.Constants;
-import com.df.masterdata.entity.MasterData;
+import com.df.masterdata.entity.Constants.STORE_AWARE_MASTERDATA;
+import com.df.masterdata.entity.StoreAwareMasterData;
 
 public class StoreAwareMasterDataAccessFoundation extends MasterDataAccessFoundation {
 
-    public <T extends MasterData> List<T> all(String storeCode, Class<T> storeMasterDataType) {
+    public <T extends StoreAwareMasterData> List<T> all(String storeCode, Class<T> storeMasterDataType) {
 	return all(storeCode, storeMasterDataType, 0, Integer.MAX_VALUE, false);
     }
 
-    public <T extends MasterData> int allCount(String storeCode, Class<T> storeMasterDataType, boolean includeDisabled) {
+    public <T extends StoreAwareMasterData> int allCount(String storeCode, Class<T> storeMasterDataType,
+	    boolean includeDisabled) {
 	EntityManager em = this.getEntityManager();
 	ClassDescriptor cd = this.getClassDescrptor(storeMasterDataType);
 	String eql = "SELECT COUNT(O) FROM %s o WHERE o.%s=:STORE_CODE ";
@@ -38,8 +40,8 @@ public class StoreAwareMasterDataAccessFoundation extends MasterDataAccessFounda
 	return (Integer) query.getSingleResult();
     }
 
-    public <T extends MasterData> List<T> all(String storeCode, Class<T> storeMasterDataType, int firstResult,
-	    int maxResult, boolean includeDisabled) {
+    public <T extends StoreAwareMasterData> List<T> all(String storeCode, Class<T> storeMasterDataType,
+	    int firstResult, int maxResult, boolean includeDisabled) {
 	CriteriaBuilder builder = createQueryBuilder();
 	CriteriaQuery<T> query = builder.createQuery(storeMasterDataType);
 	Root<T> root = query.from(storeMasterDataType);
@@ -57,11 +59,11 @@ public class StoreAwareMasterDataAccessFoundation extends MasterDataAccessFounda
     }
 
     protected String getStoreCodePropertyName() {
-	return "storeCode";
+	return STORE_AWARE_MASTERDATA.STORE_CODE_PROPERTY;
     }
 
-    protected <T> T findSingleEntityByProperty(Class<T> storeMasterDataType, String storeCode, String propertyName,
-	    Object propertyValue) {
+    protected <T extends StoreAwareMasterData> T findSingleEntityByProperty(Class<T> storeMasterDataType,
+	    String storeCode, String propertyName, Object propertyValue) {
 	Property<String> p1 = new Property<String>(getStoreCodePropertyName(), storeCode);
 	Property<Object> p2 = new Property<Object>(propertyName, propertyValue);
 	return this.findSingleEntityByProperties(storeMasterDataType, p1, p2);

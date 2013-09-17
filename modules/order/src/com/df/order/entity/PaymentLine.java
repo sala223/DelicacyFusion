@@ -1,6 +1,7 @@
 package com.df.order.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -16,8 +17,8 @@ public class PaymentLine implements Serializable {
     @Column(nullable = false, name = "ITEM_CODE")
     private String itemCode;
 
-    @Column(name = "TOTAL_PRICE")
-    private float totalPrice;
+    @Column(name = "TOTAL", scale = 2)
+    private BigDecimal total;
 
     @Column(name = "QUANTITY")
     private int quantity;
@@ -38,12 +39,12 @@ public class PaymentLine implements Serializable {
 	this.itemCode = itemCode;
     }
 
-    public float getTotalPrice() {
-	return totalPrice;
+    public BigDecimal getTotal() {
+	return total;
     }
 
-    public void setTotalPrice(float totalPrice) {
-	this.totalPrice = totalPrice;
+    public void setTotal(BigDecimal total) {
+	this.total = total;
     }
 
     public int getQuantity() {

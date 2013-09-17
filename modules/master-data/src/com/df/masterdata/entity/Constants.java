@@ -8,6 +8,10 @@ public interface Constants {
 	public static final String IS_ENABLED_PROPERTY = "isEnabled";
     }
 
+    public static interface STORE_AWARE_MASTERDATA extends MASTERDATA {
+	public static final String STORE_CODE_PROPERTY = "storeCode";
+    }
+
     public static interface CATEGORY extends MASTERDATA {
 	public static final String NAME_PROPERTY = "name";
 	public static final String CODE_PROPERTY = "code";
@@ -26,8 +30,7 @@ public interface Constants {
 	public static final String CATEGORIES_PROPERTY = "categories";
     }
 
-    public static interface ITEM extends MASTERDATA {
-	public static final String STORE_CODE_PROPERTY = "storeCode";
+    public static interface ITEM extends STORE_AWARE_MASTERDATA {
 	public static final String TEMPLATE_PROPERTY = "itemTemplate";
     }
 
@@ -37,8 +40,7 @@ public interface Constants {
 	public static final String ROOM_PROPERTY = "room";
     }
 
-    public static interface ROOM extends MASTERDATA {
+    public static interface ROOM extends STORE_AWARE_MASTERDATA {
 	public static final String NAME_PROPERTY = "name";
-	public static final String STORE_CODE_PROPERTY = "storeCode";
     }
 }

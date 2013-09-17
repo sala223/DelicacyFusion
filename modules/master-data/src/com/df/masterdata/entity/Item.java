@@ -11,36 +11,25 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @Entity
-public class Item extends MasterData {
+public class Item extends StoreAwareMasterData {
 
     @OneToOne
     @JsonIgnore
     private ItemTemplate itemTemplate;
 
-    @Column(name = "PRICE")
+    @Column(name = "PRICE", scale=2)
     private Float price;
-
-    @Column(name = "STORE_CODE")
-    private String storeCode;
-
+    
     Item() {
     }
 
     public Item(ItemTemplate itemTemplate, String storeCode) {
 	this.itemTemplate = itemTemplate;
-	this.storeCode = storeCode;
+	this.setStoreCode(storeCode);
     }
 
     public ItemTemplate getItemTemplate() {
 	return itemTemplate;
-    }
-
-    public String getStoreCode() {
-	return storeCode;
-    }
-
-    public void setStoreCode(String storeCode) {
-	this.storeCode = storeCode;
     }
 
     public float getPrice() {
@@ -85,15 +74,15 @@ public class Item extends MasterData {
     }
 
     @JsonProperty
-    public PriceUnit getPriceUnit() {
-	return this.itemTemplate.getPriceUnit();
+    public String getCurrency() {
+	return this.itemTemplate.getCurrency();
     }
 
     @JsonProperty
     public ItemUnit getItemUnit() {
 	return this.itemTemplate.getItemUnit();
     }
-
+    
     @Override
     public boolean isEnabled() {
 	if (this.itemTemplate.isEnabled()) {

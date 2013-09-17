@@ -1,5 +1,6 @@
 package com.df.order.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,8 +43,11 @@ public class Order extends TransactionEntity {
     @JoinFetch(JoinFetchType.OUTER)
     private List<OrderLine> lines;
 
-    @Column(name = "TOTAL_PAYMENT")
-    private float totalPayment;
+    @Column(name = "TOTAL_PAYMENT", scale=2)
+    private BigDecimal totalPayment;
+
+    @Column(name = "CURRENCY")
+    private String currency;
 
     @Column(name = "DISCOUNT")
     private float discount;
@@ -57,8 +61,11 @@ public class Order extends TransactionEntity {
     @Column(name = "OTHER_FEE")
     private float otherFee;
 
-    @Column
-    private String promotionDetails;
+    @Column(name = "PROMOTION_NAME", length=128)
+    private String promotionName;
+    
+    @Column(name = "PROMOTION_ID")
+    private long promotionId;
 
     @Column(name = "COMMENT")
     private String comment;
@@ -89,11 +96,11 @@ public class Order extends TransactionEntity {
 	this.lines = lines;
     }
 
-    public float getTotalPayment() {
+    public BigDecimal getTotalPayment() {
 	return totalPayment;
     }
 
-    public void setTotalPayment(float totalPayment) {
+    public void setTotalPayment(BigDecimal totalPayment) {
 	this.totalPayment = totalPayment;
     }
 
@@ -121,12 +128,20 @@ public class Order extends TransactionEntity {
 	this.deposit = deposit;
     }
 
-    public String getPromotionDetails() {
-	return promotionDetails;
+    public String getPromotionName() {
+        return promotionName;
     }
 
-    public void setPromotionDetails(String promotionDetails) {
-	this.promotionDetails = promotionDetails;
+    public void setPromotionName(String promotionName) {
+        this.promotionName = promotionName;
+    }
+    
+    public long getPromotionId() {
+        return promotionId;
+    }
+
+    public void setPromotionId(long promotionId) {
+        this.promotionId = promotionId;
     }
 
     public String getComment() {
@@ -161,6 +176,14 @@ public class Order extends TransactionEntity {
 
     public void setOtherFee(float otherFee) {
 	this.otherFee = otherFee;
+    }
+
+    public String getCurrency() {
+	return currency;
+    }
+
+    public void setCurrency(String currency) {
+	this.currency = currency;
     }
 
     public boolean removeOrderLine(int lineNumber) {

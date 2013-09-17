@@ -102,6 +102,6 @@ public class StoreDaoTest extends MasterDataJPABaseTest {
 	store3.setEnabled(false);
 	store3.setTelephone1("0731-34343433");
 	storeDao.newStore(store3);
-	TestCase.assertEquals(storeDao.all().size(), 2);
+ 	TestCase.assertEquals(storeDao.all().size(), 2);
     }
 }

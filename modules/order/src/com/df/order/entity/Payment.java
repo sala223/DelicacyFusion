@@ -1,13 +1,12 @@
 package com.df.order.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,8 +15,6 @@ import javax.persistence.SequenceGenerator;
 
 import org.eclipse.persistence.annotations.JoinFetch;
 import org.eclipse.persistence.annotations.JoinFetchType;
-
-import com.df.masterdata.entity.PriceUnit;
 
 @Entity
 public class Payment extends TransactionEntity {
@@ -30,12 +27,11 @@ public class Payment extends TransactionEntity {
     @Column(name = "ORDER_ID", nullable = false)
     private Long orderId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "PRICE_UNIT")
-    private PriceUnit priceUnit;
+    @Column(name = "CURRENCY")
+    private String currency;
 
-    @Column(name = "TOTAL_PRICE")
-    private float totalPrice;
+    @Column(name = "TOTAL", scale = 2)
+    private BigDecimal total;
 
     @ElementCollection
     @CollectionTable(name = "PAYMENT_LINE", joinColumns = @JoinColumn(name = "PAYMENT_ID"))
@@ -68,20 +64,20 @@ public class Payment extends TransactionEntity {
 	this.paymentId = paymentId;
     }
 
-    public PriceUnit getPriceUnit() {
-	return priceUnit;
+    public String getCurrency() {
+	return currency;
     }
 
-    public void setPriceUnit(PriceUnit priceUnit) {
-	this.priceUnit = priceUnit;
+    public void setCurrency(String currency) {
+	this.currency = currency;
     }
 
-    public float getTotalPrice() {
-	return totalPrice;
+    public BigDecimal getTotal() {
+	return total;
     }
 
-    public void setTotalPrice(float totalPrice) {
-	this.totalPrice = totalPrice;
+    public void setTotal(BigDecimal total) {
+	this.total = total;
     }
 
     public Long getOrderId() {

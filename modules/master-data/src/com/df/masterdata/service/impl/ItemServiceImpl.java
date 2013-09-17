@@ -87,4 +87,9 @@ public class ItemServiceImpl implements ItemServiceInf {
 	item.setEnabled(true);
 	itemDao.update(item);
     }
+
+    @Override
+    public List<Item> listAvaliableItems(String storeCode,List<String> itemCodes) {
+	return itemDao.listAvaliableItems(storeCode, itemCodes);
+    }
 }

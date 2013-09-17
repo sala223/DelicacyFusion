@@ -6,8 +6,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
@@ -24,13 +22,10 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
 		MultiTenantSupport.TENANT_COLUMN }),
 	@Index(name = "IDX_ROOM_STR_NAME", unique = true, columnNames = { "STORE_CODE", "NAME",
 		MultiTenantSupport.TENANT_COLUMN }) })
-public class Room extends MasterData {
+public class Room extends StoreAwareMasterData {
 
     @Column(nullable = false, name = "NAME")
     private String name;
-
-    @Column(nullable = false, name = "STORE_CODE")
-    private String storeCode;
 
     @Column(length = 255, name = "DESCRIPTION")
     private String description;
@@ -41,9 +36,8 @@ public class Room extends MasterData {
     @Column(scale = 2, name = "MINIMUM_COST")
     private double minimumCost;
 
-    @Column(scale = 2, name = "MINIMUM_COST_UNIT")
-    @Enumerated(value = EnumType.STRING)
-    private PriceUnit minimumCostUnit;
+    @Column(name = "CURRENCY")
+    private String currency;
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
     private List<DiningTable> diningTables;
@@ -54,14 +48,6 @@ public class Room extends MasterData {
 
     public void setName(String name) {
 	this.name = name;
-    }
-
-    public String getStoreCode() {
-	return storeCode;
-    }
-
-    public void setStoreCode(String storeCode) {
-	this.storeCode = storeCode;
     }
 
     public String getDescription() {
