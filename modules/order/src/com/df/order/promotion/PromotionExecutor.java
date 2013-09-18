@@ -1,13 +1,12 @@
 package com.df.order.promotion;
 
 import com.df.masterdata.entity.Item;
+import com.df.masterdata.entity.Promotion;
 import com.df.order.entity.Order;
 
 public interface PromotionExecutor {
 
-    void setPromotionRepository(PromotionRepository repository);
+    void executeRule(Item item, Promotion promotion);
 
-    void runPromotionForItem(Item item);
-
-    void runPromotionForOrder(Order order);
+    void executeRule(Order order, Promotion promotion);
 }

@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -50,8 +49,8 @@ public class Promotion extends StoreAwareMasterData {
     @Column(nullable = false, name = "Details")
     private String details;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
-    private Rule rule;
+    @Embedded
+    private RuleDescriptor rule;
 
     public Date getValidFrom() {
 	return validFrom;
@@ -85,11 +84,11 @@ public class Promotion extends StoreAwareMasterData {
 	this.details = details;
     }
 
-    public Rule getRule() {
+    public RuleDescriptor getRule() {
 	return rule;
     }
 
-    public void setRule(Rule rule) {
+    public void setRule(RuleDescriptor rule) {
 	this.rule = rule;
     }
 

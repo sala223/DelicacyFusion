@@ -10,8 +10,15 @@ import com.df.masterdata.entity.Item;
 import com.df.masterdata.entity.Promotion;
 import com.df.order.entity.Order;
 import com.df.order.entity.OrderLine;
+import com.df.order.promotion.PromotionRepository;
 
 public abstract class AbstractPaymentCalculator implements PaymentCalculator {
+
+    private PromotionRepository promotionRepository;
+
+    public AbstractPaymentCalculator(PromotionRepository promotionRepository) {
+	this.promotionRepository = promotionRepository;
+    }
 
     @Override
     public final PaymentContext createContext() {
@@ -26,10 +33,6 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 
     protected abstract BigDecimal calcuateWithPromotion(Order order, Promotion promotion);
 
-    protected abstract List<Promotion> getItemAvaliablePromotions(User user, Item item);
-
-    protected abstract List<Promotion> getOrderAvaliablePromotions(User user, Order order);
-
     private void checkPaymentContextSupport(PaymentContext context) {
 	if (!(context instanceof PaymentContextImpl)) {
 	    throw new IllegalArgumentException("paymentContext must be type of " + PaymentContextImpl.class);
@@ -42,7 +45,7 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 	Item item = ((PaymentContextImpl) paymentContext).getItem();
 	User user = ((PaymentContextImpl) paymentContext).getUser();
 	Assert.notNull(item);
-	List<Promotion> promotions = getItemAvaliablePromotions(user, item);
+	List<Promotion> promotions = promotionRepository.getItemBestPromotions(user, item);
 	if (promotions != null && promotions.size() > 0) {
 	    BigDecimal total = null;
 	    Promotion appliedPromotion = null;
@@ -92,7 +95,7 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 	    }
 	    context.setItem(null);
 	    context.setItemAppliedPromotion(null);
-	    List<Promotion> promotions = this.getOrderAvaliablePromotions(context.getUser(), order);
+	    List<Promotion> promotions = promotionRepository.getOrderBestPromotions(context.getUser(), order);
 	    if (promotions != null && promotions.size() > 0) {
 		Promotion appliedPromotion = null;
 		for (int i = 0; i < promotions.size(); i++) {

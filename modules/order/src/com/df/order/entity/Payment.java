@@ -19,8 +19,8 @@ import org.eclipse.persistence.annotations.JoinFetchType;
 @Entity
 public class Payment extends TransactionEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_id_sequence")
-    @SequenceGenerator(name = "payment_id_sequence", sequenceName = "payment_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAYMENT_ID_SEQUENCE")
+    @SequenceGenerator(name = "PAYMENT_ID_SEQUENCE", sequenceName = "PAYMENT_ID_SEQUENCE")
     @Column(name = "PAYMENT_ID")
     private long paymentId;
 
