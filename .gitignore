@@ -214,5 +214,5 @@ pip-log.txt
 #############
 intermidiate/
 release/
-build/jboss-as-7.1.1.Final
+build/jboss*
 build/hadoop*

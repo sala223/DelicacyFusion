@@ -1,4 +1,9 @@
+SET SQL_SAFE_UPDATES=0; 
+DELETE FROM `delicacy_fusion`.`store_address`;
+DELETE FROM `delicacy_fusion`.`store`;
 INSERT INTO `delicacy_fusion`.`store` (`ID`, `TENANT_ID`, `BUSINESS_HOUR_FROM`, `BUSINESS_HOUR_TO`, `CODE`, `CREATED_BY`, `CREATED_TIME`, `IS_ENABLED`, `NAME`, `TELEPHONE1`) VALUES ('1', 'TEST', '480', '1320', 'S1', '0', '2013-01-02 09:22:22', '1', ' 望湘园龙阳路店', '13345453232');
+INSERT INTO `delicacy_fusion`.`store` (`ID`, `TENANT_ID`, `BUSINESS_HOUR_FROM`, `BUSINESS_HOUR_TO`, `CODE`, `CREATED_BY`, `CREATED_TIME`, `IS_ENABLED`, `NAME`, `TELEPHONE1`) VALUES ('2', 'TEST', '480', '1320', 'S2', '0', '2013-02-01 09:22:22', '1', ' 望湘园正大广场店', '13345453232');
+INSERT INTO `delicacy_fusion`.`store` (`ID`, `TENANT_ID`, `BUSINESS_HOUR_FROM`, `BUSINESS_HOUR_TO`, `CODE`, `CREATED_BY`, `CREATED_TIME`, `IS_ENABLED`, `NAME`, `TELEPHONE1`) VALUES ('3', 'TEST', '480', '1320', 'S3', '0', '2013-03-05 09:22:22', '1', ' 望湘园浦三路店', '13345453232');
 
 INSERT INTO `delicacy_fusion`.`item_template` (`ID`, `TENANT_ID`, `CODE`, `CREATED_BY`, `CREATED_TIME`, `DESCRIPTION`, `IS_ENABLED`, `ITEM_UNIT`, `NAME`, `PRICE`, `PRICE_UNIT`, `TYPE`) VALUES ('1', 'TEST', 'A0001', '0', '2013-09-15 08:09:21', '', '1', 'CUP', 'IceCream', '23.0', 'RMB', 'FOOD');
 INSERT INTO `delicacy_fusion`.`item_template` (`ID`, `TENANT_ID`, `CODE`, `CREATED_BY`, `CREATED_TIME`, `DESCRIPTION`, `IS_ENABLED`, `ITEM_UNIT`, `NAME`, `PRICE`, `PRICE_UNIT`, `TYPE`) VALUES ('2', 'TEST', 'A0002', '0', '2013-09-15 08:09:21', '', '1', 'CUP', 'Milk', '12.0', 'RMB', 'FOOD');

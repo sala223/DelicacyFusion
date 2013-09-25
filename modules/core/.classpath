@@ -4,5 +4,26 @@
 	<classpathentry kind="src" path="persist"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/build"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/spring/spring-core-4.0.0.M2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/resteasy-spring-3.0.4.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/spring/spring-context-4.0.0.M2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/jboss/modules/javax/servlet/api/main/jboss-servlet-api_3.0_spec-1.0.0.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/spring/spring-web-4.0.0.M2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/jboss/modules/org/slf4j/main/slf4j-api-1.6.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/jboss/modules/javax/persistence/api/main/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/spring/spring-orm-4.0.0.M2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/spring/spring-beans-4.0.0.M2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/spring/spring-test-4.0.0.M2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/jboss/modules/javax/ws/rs/api/main/jaxrs-api-3.0.4.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/jboss/modules/javax/inject/api/main/javax.inject-1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/wildfly/modules/org/codehaus/jackson/jackson-core-asl/main/jackson-core-asl-1.9.12.jar"/>
+	<classpathentry kind="lib" path="/build/wildfly/modules/org/eclipse/persistence/main/eclipselink.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/jboss/modules/org/slf4j/jcl-over-slf4j/main/jcl-over-slf4j-1.6.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/spring/spring-aop-4.0.0.M2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/spring/spring-tx-4.0.0.M2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/spring/com.springsource.org.aopalliance-1.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/spring/spring-expression-4.0.0.M2.jar"/>
+	<classpathentry exported="true" kind="lib" path="/build/third-lib/spring/spring-jdbc-4.0.0.M2.jar"/>
+	<classpathentry kind="lib" path="/build/wildfly/modules/com/mysql/main/mysql-connector-java-5.1.26-bin.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

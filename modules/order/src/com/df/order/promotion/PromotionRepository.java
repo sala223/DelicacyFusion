@@ -2,8 +2,7 @@ package com.df.order.promotion;
 
 import java.util.List;
 
-import org.springframework.security.core.userdetails.User;
-
+import com.df.idm.entity.User;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.entity.Promotion;
 import com.df.order.entity.Order;

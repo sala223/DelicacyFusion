@@ -27,7 +27,7 @@
 		<bean id="dataSource-sqlServer" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 			p:driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" p:url="jdbc:sqlserver://10.58.81.202:1433;databaseName=DELICACY_FUSION"
 			p:username="sa"
-			p:password="Oba.2247d">
+			p:password="Oba.2247d" lazy-init="true">
 		</bean>
 		<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect">
 			<property name="lazyDatabaseTransaction" value="true" />

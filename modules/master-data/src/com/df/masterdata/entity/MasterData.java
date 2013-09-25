@@ -12,7 +12,6 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.MultitenantType;
@@ -20,12 +19,10 @@ import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
-@JsonIgnoreProperties({ "id", "createdTime", "changedTime", "createdBy"})
 @MappedSuperclass
 @Multitenant(MultitenantType.SINGLE_TABLE)
 @TenantDiscriminatorColumn(name = MultiTenantSupport.TENANT_COLUMN, length = 12, contextProperty = MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY)
 public abstract class MasterData {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ID")

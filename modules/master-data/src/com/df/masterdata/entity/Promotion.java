@@ -50,7 +50,7 @@ public class Promotion extends StoreAwareMasterData {
     private String details;
 
     @Embedded
-    private RuleDescriptor rule;
+    private RuleDefinition rule;
 
     public Date getValidFrom() {
 	return validFrom;
@@ -84,11 +84,11 @@ public class Promotion extends StoreAwareMasterData {
 	this.details = details;
     }
 
-    public RuleDescriptor getRule() {
+    public RuleDefinition getRule() {
 	return rule;
     }
 
-    public void setRule(RuleDescriptor rule) {
+    public void setRule(RuleDefinition rule) {
 	this.rule = rule;
     }
 

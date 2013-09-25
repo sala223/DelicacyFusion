@@ -8,4 +8,5 @@ import com.df.masterdata.entity.RuleParameter;
 public interface Rule<T> {
 
     BigDecimal execute(T entity, Map<String, RuleParameter> parmaters);
+
 }

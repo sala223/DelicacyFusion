@@ -3,7 +3,7 @@
 	<property environment="env" />
 	<dirname property="release.build.directory" file="${ant.file.DelicacyFusion-Env}" />
 	<property file="${release.build.directory}/env.properties" />
-	<property name="JBOSS_HOME" value="${release.build.directory}/jboss-as-7.1.1.Final" />
+	<property name="JBOSS_HOME" value="${release.build.directory}/jboss" />
 	<!-- -Java compilier options-->
 	<property name="compile.debug" value="true" />
 	<property name="compile.deprecation" value="off" />
@@ -27,6 +27,9 @@
 		</fileset>
 		<fileset dir="${JBOSS_HOME}/modules">
 			<include name="**/*jpa*.jar" />
+		</fileset>
+		<fileset dir="${release.build.directory}/wildfly">
+				<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${release.build.directory}/ext">
 			<include name="antcontrib.jar" />

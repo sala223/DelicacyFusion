@@ -3,9 +3,9 @@ package com.df.order.price;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.security.core.userdetails.User;
 import org.springframework.util.Assert;
 
+import com.df.idm.entity.User;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.entity.Promotion;
 import com.df.order.entity.Order;
@@ -86,11 +86,8 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 		Promotion promotion = paymentContext.getItemAppliedPromotion();
 		line.setPromotionId(promotion.getId());
 		line.setPromotionName(promotion.getName());
-		line.setPrice(price);
-		line.setTotalPayment(price.multiply(new BigDecimal(line.getQuantity())));
-		float orignalPrice = item.getPrice();
-		BigDecimal orignalTotal = new BigDecimal(orignalPrice).multiply(new BigDecimal(4));
-		line.setDiscount(orignalTotal.subtract(line.getTotalPayment()));
+		line.setPromotionPrice(price.floatValue());
+		line.calcuatePayment();
 		total.add(line.getTotalPayment());
 	    }
 	    context.setItem(null);

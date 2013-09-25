@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.df.masterdata.entity.Item;
+
 @Embeddable
 public class OrderLine implements Serializable {
 
@@ -20,8 +22,14 @@ public class OrderLine implements Serializable {
     @Column(name = "ROOM_CODE")
     private String roomCode;
 
+    @Column(name = "TABLE_NUMBER")
+    private String tableNumber;
+
     @Column(name = "PRICE", scale = 2)
-    private BigDecimal price;
+    private float price;
+
+    @Column(name = "PROMOTION_PRICE", scale = 2)
+    private float promotionPrice;
 
     @Column(name = "DISCOUNT", scale = 2)
     private BigDecimal discount;
@@ -32,14 +40,26 @@ public class OrderLine implements Serializable {
     @Column(name = "TOTAL_PAYMENT", scale = 2)
     private BigDecimal totalPayment;
 
+    @Column(name = "PROMOTION_TOTAL_PAYMENT", scale = 2)
+    private BigDecimal promotionTotalPayment;
+
     @Column(name = "COMMENT")
     private String comment;
 
     @Column(name = "PROMOTION_ID")
-    private long promotionId;
-    
+    private Long promotionId;
+
     @Column(name = "PROMOTION_NAME")
     private String promotionName;
+
+    OrderLine() {
+    }
+
+    public OrderLine(Item item, int quantity) {
+	this.itemCode = item.getCode();
+	this.quantity = quantity;
+	this.price = item.getPrice();
+    }
 
     public String getItemCode() {
 	return itemCode;
@@ -57,11 +77,11 @@ public class OrderLine implements Serializable {
 	this.roomCode = roomCode;
     }
 
-    public BigDecimal getPrice() {
+    public float getPrice() {
 	return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(float price) {
 	this.price = price;
     }
 
@@ -75,10 +95,6 @@ public class OrderLine implements Serializable {
 
     public BigDecimal getTotalPayment() {
 	return totalPayment;
-    }
-
-    public void setTotalPayment(BigDecimal totalPayment) {
-	this.totalPayment = totalPayment;
     }
 
     public String getComment() {
@@ -98,28 +114,54 @@ public class OrderLine implements Serializable {
     }
 
     public long getPromotionId() {
-        return promotionId;
+	return promotionId;
     }
 
     public void setPromotionId(long promotionId) {
-        this.promotionId = promotionId;
+	this.promotionId = promotionId;
     }
 
     public BigDecimal getDiscount() {
 	return discount;
     }
 
-    public void setDiscount(BigDecimal discount) {
-	this.discount = discount;
-    }
-
     public String getPromotionName() {
-        return promotionName;
+	return promotionName;
     }
 
     public void setPromotionName(String promotionName) {
-        this.promotionName = promotionName;
+	this.promotionName = promotionName;
     }
-    
-    
+
+    public float getPromotionPrice() {
+	return promotionPrice;
+    }
+
+    public void setPromotionPrice(float promotionPrice) {
+	this.promotionPrice = promotionPrice;
+    }
+
+    public String getTableNumber() {
+	return tableNumber;
+    }
+
+    public void setTableNumber(String tableNumber) {
+	this.tableNumber = tableNumber;
+    }
+
+    public BigDecimal getPromotionTotalPayment() {
+	return promotionTotalPayment;
+    }
+
+    public boolean hasPromotion() {
+	return this.promotionId != null && promotionId.longValue() != 1l;
+    }
+
+    public void calcuatePayment() {
+	this.totalPayment = new BigDecimal(this.price).multiply(new BigDecimal(quantity));
+	if (this.hasPromotion()) {
+	    this.promotionTotalPayment = new BigDecimal(this.promotionPrice).multiply(new BigDecimal(quantity));
+	    this.discount = this.totalPayment.subtract(this.promotionTotalPayment);
+	}
+    }
 }

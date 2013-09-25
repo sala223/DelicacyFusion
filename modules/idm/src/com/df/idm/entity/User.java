@@ -20,7 +20,7 @@ import org.eclipse.persistence.annotations.Index;
 
 @Cache
 @Entity
-@Table(name="users")
+@Table(name="USERS")
 @FetchGroup(name = "AuthenticationInfo", attributes = { @FetchAttribute(name = "password"),
 		@FetchAttribute(name = "weiboAccount"), @FetchAttribute(name = "email"), @FetchAttribute(name = "telephone"), })
 public class User implements Serializable {

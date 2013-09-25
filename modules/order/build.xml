@@ -4,6 +4,7 @@
 	<path id="compile.dependent.path">
 		<pathelement location="../core/bin/classes" />
 		<pathelement location="../master-data/bin/classes" />
+		<pathelement location="../idm/bin/classes" />
 	</path>
 	<target name="before-jar" description="perform weaving for order data entity">
 		<echo message="Start eclipselink static weaving for entities" />

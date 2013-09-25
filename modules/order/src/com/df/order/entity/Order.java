@@ -43,14 +43,14 @@ public class Order extends TransactionEntity {
     @JoinFetch(JoinFetchType.OUTER)
     private List<OrderLine> lines;
 
-    @Column(name = "TOTAL_PAYMENT", scale=2)
+    @Column(name = "TOTAL_PAYMENT", scale = 2)
     private BigDecimal totalPayment;
 
     @Column(name = "CURRENCY")
     private String currency;
 
     @Column(name = "DISCOUNT")
-    private float discount;
+    private BigDecimal discount;
 
     @Column(name = "DEPOSIT")
     private float deposit;
@@ -61,9 +61,9 @@ public class Order extends TransactionEntity {
     @Column(name = "OTHER_FEE")
     private float otherFee;
 
-    @Column(name = "PROMOTION_NAME", length=128)
+    @Column(name = "PROMOTION_NAME", length = 128)
     private String promotionName;
-    
+
     @Column(name = "PROMOTION_ID")
     private long promotionId;
 
@@ -112,12 +112,8 @@ public class Order extends TransactionEntity {
 	this.dinnerTime = dinnerTime;
     }
 
-    public float getDiscount() {
+    public BigDecimal getDiscount() {
 	return discount;
-    }
-
-    public void setDiscount(float discount) {
-	this.discount = discount;
     }
 
     public float getDeposit() {
@@ -129,19 +125,19 @@ public class Order extends TransactionEntity {
     }
 
     public String getPromotionName() {
-        return promotionName;
+	return promotionName;
     }
 
     public void setPromotionName(String promotionName) {
-        this.promotionName = promotionName;
+	this.promotionName = promotionName;
     }
-    
+
     public long getPromotionId() {
-        return promotionId;
+	return promotionId;
     }
 
     public void setPromotionId(long promotionId) {
-        this.promotionId = promotionId;
+	this.promotionId = promotionId;
     }
 
     public String getComment() {
@@ -203,5 +199,15 @@ public class Order extends TransactionEntity {
 	    }
 	}
 	return foundIndex != -1;
+    }
+
+    public void consolidateLine() {
+	if (this.lines == null) {
+	    this.lines = new ArrayList<OrderLine>();
+	}
+    }
+
+    public void calculatePayment() {
+
     }
 }

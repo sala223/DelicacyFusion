@@ -4,5 +4,7 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/build"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/blob-store"/>
+	<classpathentry kind="lib" path="/build/wildfly/modules/org/eclipse/persistence/main/eclipselink.jar"/>
+	<classpathentry kind="lib" path="/build/wildfly/modules/org/codehaus/jackson/jackson-mapper-asl/main/jackson-mapper-asl-1.9.12.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
