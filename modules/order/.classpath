@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/master-data"/>
-	<classpathentry kind="lib" path="/build/wildfly/modules/org/eclipse/persistence/main/eclipselink.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/idm"/>
-	<classpathentry kind="output" path="bin/classes"/>
-</classpath>

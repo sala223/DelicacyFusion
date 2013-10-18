@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="http-master-data" default="package">
-	<import file="../../build/build-base-war.xml" />
-	<path id="compile.dependent.path">
-		<pathelement location="../core/bin/classes" />
-		<pathelement location="../master-data/bin/classes" />
-	</path>
-</project>
-

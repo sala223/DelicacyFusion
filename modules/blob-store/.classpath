@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/core"/>
-	<classpathentry kind="lib" path="/build/third-lib/commons-imaging-1.0-SNAPSHOT.jar"/>
-	<classpathentry kind="output" path="bin/classes"/>
-</classpath>
