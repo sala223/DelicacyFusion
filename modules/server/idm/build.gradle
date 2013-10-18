@@ -1,0 +1,44 @@
+dependencies {
+    compile project(':core')
+    compile ":javax.inject:1"
+    compile ":spring-tx:4.0.0.M2"
+    compile ":spring-security-core:3.2.0.RC1"
+    compile ":spring-security-acl:3.2.0.RC1"
+    compile ":spring-security-web:3.2.0.RC1"
+    compile ":jackson-core-asl:1.9.12"
+    compile ":jackson-mapper-asl:1.9.12"
+    testRuntime ":mysql-connector-java:5.1.26-bin"
+    testRuntime ":spring-test:4.0.0.M2"
+    runtime ":spring-aop:4.0.0.M2"
+    runtime ":spring-expression:4.0.0.M2"
+    runtime ":spring-jdbc:4.0.0.M2"
+    runtime ":com.springsource.org.aopalliance:1.0.0"
+}
+
+sourceSets {
+    main {
+    	output.resourcesDir = project.buildDir.path+'/classes/main'
+    	output.classesDir   = project.buildDir.path+'/classes/main'
+    }
+}
+
+eclipse {
+	classpath{
+    	defaultOutputDir=new File(project.buildDir.path+'/classes/main')
+	}
+}
+
+classes.doLast{
+    println weave.description
+	weave.execute() 
+}
+
+task weave(type: JavaExec, dependsOn:[classes]) {
+		description="Static weave entities from " + sourceSets.main.output.classesDir.path
+   		main="org.eclipse.persistence.tools.weaving.jpa.StaticWeave"
+    	classpath sourceSets.main.compileClasspath.plus(sourceSets.main.output.dirs)
+    	args=["-persistenceinfo", 
+    			project(':core').sourceSets.main.output.resourcesDir.path,
+    	     	sourceSets.main.output.classesDir.path, 
+    	     	sourceSets.main.output.classesDir.path ]
+ }

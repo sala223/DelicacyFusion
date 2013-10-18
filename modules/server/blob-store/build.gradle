@@ -1,0 +1,4 @@
+dependencies {
+    compile project(':core')
+    compile ":commons-imaging:1.0-SNAPSHOT"
+}

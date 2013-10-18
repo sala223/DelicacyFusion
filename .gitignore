@@ -214,5 +214,10 @@ pip-log.txt
 #############
 intermidiate/
 release/
-build/jboss*
-build/hadoop*
+dependencies/jboss/
+build/gradle/
+create.gen.sql
+drop.gen.sql
+modules/server/*.classpath
+modules/server/*.project
+modules/server/*.settings

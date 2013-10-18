@@ -1,0 +1,5 @@
+Feature														Status			Date
+===============================================================================
+On-the-fly ordering											New
+Authentication via signature recognition
+Zero manual input

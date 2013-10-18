@@ -1,0 +1,15 @@
+dependencies {
+    compile project(':core')
+    compile project(':blob-store')
+    testRuntime project(':core').sourceSets.test.output
+    compile ":javax.inject:1"
+    compile ":spring-tx:4.0.0.M2"
+    compile ":jackson-core-asl:1.9.12"
+    compile ":jackson-mapper-asl:1.9.12"
+    runtime ":spring-aop:4.0.0.M2"
+    runtime ":spring-expression:4.0.0.M2"
+    runtime ":spring-jdbc:4.0.0.M2"
+    runtime ":com.springsource.org.aopalliance:1.0.0"
+    testRuntime ":mysql-connector-java:5.1.26-bin"
+    testRuntime ":spring-test:4.0.0.M2"
+}

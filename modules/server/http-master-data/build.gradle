@@ -1,0 +1,13 @@
+dependencies {
+    compile project(':master-data')
+    compile ":javax.inject:1"
+    compile ":jaxrs-api:3.0.4.Final"
+    compile "org.codehaus.jackson:jackson-core-asl:1.9.12"
+    compile "org.codehaus.jackson:jackson-mapper-asl:1.9.12"
+    compile "org.codehaus.jackson:jackson-jaxrs:1.9.12" 
+    compile "org.codehaus.jackson:jackson-xc:1.9.12" 
+    compile "org.jboss.resteasy:resteasy-jackson-provider:3.0.4.Final" 
+    runtime "org.apache.httpcomponents:httpclient:4.1.2" 
+    runtime "org.apache.httpcomponents:httpcore:4.1.4" 
+    runtime "commons-codec:commons-codec:1.4" 
+}
