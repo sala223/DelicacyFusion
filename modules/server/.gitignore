@@ -218,3 +218,5 @@ pip-log.txt
 bin
 build
 .gradle
+create.gen.sql
+drop.gen.sql

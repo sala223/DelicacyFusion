@@ -218,6 +218,3 @@ dependencies/jboss/
 build/gradle/
 create.gen.sql
 drop.gen.sql
-modules/server/*.classpath
-modules/server/*.project
-modules/server/*.settings
