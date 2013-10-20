@@ -14,7 +14,7 @@ import com.df.core.rs.TenantResource;
 import com.df.masterdata.dao.ItemTemplateDao;
 import com.df.masterdata.entity.ItemTemplate;
 
-@Path("/tenant/{tenantId}/itpl/")
+@Path("/tenant/{tenantCode}/itpl/")
 @Produces("application/json;charset=UTF-8")
 @Component
 public class ItemTemplateResource extends TenantResource {
@@ -32,8 +32,8 @@ public class ItemTemplateResource extends TenantResource {
 
     @GET
     @Path("/")
-    public List<ItemTemplate> getAvaliableItemTemplates(@PathParam("tenantId") String tenantId) {
-	injectTenantContext(tenantId);
+    public List<ItemTemplate> getAvaliableItemTemplates(@PathParam("tenantCode") String tenantCode) {
+	injectTenantContext(tenantCode);
 	return itemTemplateDao.all(ItemTemplate.class, 0, Integer.MAX_VALUE, false);
     }
 }

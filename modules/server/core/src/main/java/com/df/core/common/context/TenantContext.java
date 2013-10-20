@@ -2,19 +2,19 @@ package com.df.core.common.context;
 
 public class TenantContext implements TenantAware {
 
-    private String tenantId;
+    private String tenantCode;
 
-    public TenantContext(String tenantId) {
-	this.tenantId = tenantId;
+    public TenantContext(String tenantCode) {
+	this.tenantCode = tenantCode;
     }
 
-    public void setTenantId(String tenantId) {
-	this.tenantId = tenantId;
+    public void setTenantId(String tenantCode) {
+	this.tenantCode = tenantCode;
     }
 
     @Override
-    public String getTenantId() {
-	return tenantId;
+    public String getTenantCode() {
+	return tenantCode;
     }
 
 }

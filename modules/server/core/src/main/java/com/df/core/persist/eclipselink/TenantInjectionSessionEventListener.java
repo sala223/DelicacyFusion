@@ -51,13 +51,13 @@ public class TenantInjectionSessionEventListener extends SessionEventAdapter {
 	Object value = session.getProperties().get(MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY);
 	if (value != null) {
 	    String currentTenantId = value.toString();
-	    if (!StringUtils.isEmpty(currentTenantId) && !currentTenantId.equals(tenant.getTenantId())) {
+	    if (!StringUtils.isEmpty(currentTenantId) && !currentTenantId.equals(tenant.getTenantCode())) {
 		String fmt = "TenantId %s is bounded to current session, you cannot change it to %s ";
-		throw new TenantAlreadyBoundException(String.format(fmt, currentTenantId, tenant.getTenantId()));
+		throw new TenantAlreadyBoundException(String.format(fmt, currentTenantId, tenant.getTenantCode()));
 	    }
 	} else {
-	    session.getLog().write("Inject TenantId=" + tenant.getTenantId() + " to session");
-	    session.setProperty(MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY, tenant.getTenantId());
+	    session.getLog().write("Inject TenantId=" + tenant.getTenantCode() + " to session");
+	    session.setProperty(MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY, tenant.getTenantCode());
 	}
     }
 }

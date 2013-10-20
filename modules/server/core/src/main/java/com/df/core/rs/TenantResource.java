@@ -5,8 +5,8 @@ import com.df.core.common.context.TenantContextHolder;
 
 public abstract class TenantResource {
 
-    protected void injectTenantContext(String tenantId) {
-	TenantContext context = new TenantContext(tenantId);
+    protected void injectTenantContext(String tenantCode) {
+	TenantContext context = new TenantContext(tenantCode);
 	TenantContextHolder.setTenant(context);
     }
 }

@@ -14,7 +14,7 @@ import com.df.core.rs.TenantResource;
 import com.df.masterdata.entity.Room;
 import com.df.masterdata.service.contract.RoomServiceInf;
 
-@Path("/tenant/{tenantId}/{storeCode}/room")
+@Path("/tenant/{tenantCode}/{storeCode}/room")
 @Produces("application/json")
 @Component
 public class RoomResource extends TenantResource {
@@ -28,7 +28,7 @@ public class RoomResource extends TenantResource {
 
     @GET
     @Path("/")
-    public List<Room> getRooms(@PathParam("tenantId") String tenantId, @PathParam("storeCode") String storeCode) {
+    public List<Room> getRooms(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
 	return roomService.getRooms(storeCode);
     }
 }

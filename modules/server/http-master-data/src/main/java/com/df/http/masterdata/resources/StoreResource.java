@@ -14,24 +14,22 @@ import com.df.core.rs.TenantResource;
 import com.df.masterdata.entity.Store;
 import com.df.masterdata.service.contract.StoreServiceInf;
 
-@Path("/tenant/{tenantId}/store")
-@Produces("application/json")
+@Path("/tenant/{tenantCode}/store")
+@Produces("application/json;charset=UTF-8")
 @Component
 public class StoreResource extends TenantResource {
 
     @Inject
     private StoreServiceInf storeService;
 
-    
     public void setStoreService(StoreServiceInf storeService) {
-        this.storeService = storeService;
+	this.storeService = storeService;
     }
-
 
     @GET
     @Path("/")
-    public List<Store> getStores(@PathParam("tenantId") String tenantId) {
-	injectTenantContext(tenantId);
+    public List<Store> getStores(@PathParam("tenantCode") String tenantCode) {
+	injectTenantContext(tenantCode);
 	return storeService.getStoreList();
     }
 

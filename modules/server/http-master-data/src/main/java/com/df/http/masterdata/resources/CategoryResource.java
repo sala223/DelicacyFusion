@@ -15,7 +15,7 @@ import com.df.core.rs.TenantResource;
 import com.df.masterdata.entity.Category;
 import com.df.masterdata.service.contract.CategoryServiceInf;
 
-@Path("/tenant/{tenantId}/category/")
+@Path("/tenant/{tenantCode}/category/")
 @Produces("application/json;charset=UTF-8")
 @Component
 public class CategoryResource extends TenantResource {
@@ -30,8 +30,8 @@ public class CategoryResource extends TenantResource {
 
     @GET
     @Path("/")
-    public List<Category> getCategories(@PathParam("tenantId") String tenantId) {
-	injectTenantContext(tenantId);
+    public List<Category> getCategories(@PathParam("tenantCode") String tenantCode) {
+	injectTenantContext(tenantCode);
 	return categoryService.getCategories();
     }
 }

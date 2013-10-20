@@ -16,7 +16,7 @@ import com.df.core.rs.TenantResource;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.service.contract.ItemServiceInf;
 
-@Path("/tenant/{tenantId}/{storeCode}")
+@Path("/tenant/{tenantCode}/{storeCode}")
 @Produces("application/json;charset=UTF-8")
 @Component
 public class ItemResource extends TenantResource {
@@ -29,24 +29,24 @@ public class ItemResource extends TenantResource {
 
     @GET
     @Path("/{categoryCode}/food")
-    public List<Item> getFoodsByCategory(@PathParam("tenantId") String tenantId,
+    public List<Item> getFoodsByCategory(@PathParam("tenantCode") String tenantCode,
 	    @PathParam("storeCode") String storeCode, @PathParam("categoryCode") String categoryCode) {
-	injectTenantContext(tenantId);
+	injectTenantContext(tenantCode);
 	return itemService.getFoodsByCategory(storeCode, categoryCode);
     }
 
     @GET
     @Path("/food/count")
-    public long getFoodsCount(@PathParam("tenantId") String tenantId, @PathParam("storeCode") String storeCode) {
-	injectTenantContext(tenantId);
+    public long getFoodsCount(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
+	injectTenantContext(tenantCode);
 	return itemService.getAvaliableFoodCount(storeCode);
     }
 
     @GET
     @Path("/food")
-    public List<Item> getFoods(@PathParam("tenantId") String tenantId, @PathParam("storeCode") String storeCode,
+    public List<Item> getFoods(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	    @QueryParam("from") @DefaultValue("0") int from, @QueryParam("to") @DefaultValue("100") int to) {
-	injectTenantContext(tenantId);
+	injectTenantContext(tenantCode);
 	int firstResult = from < 0 ? 0 : from;
 	return itemService.getAvaliableFoods(storeCode, firstResult, to);
     }
