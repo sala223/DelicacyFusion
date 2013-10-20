@@ -28,7 +28,7 @@ public class FileSystemImageServiceRoute implements ImageServiceRoute {
     }
 
     public FileSystemImageServiceRoute(ImageKeyResolver keyResolver) {
-	this(Paths.get(System.getProperty("java.io.tmpdir")), keyResolver);
+	this(Paths.get(System.getProperty("user.home")), keyResolver);
     }
 
     public void setMetadataResolver(ImageKeyResolver keyResolver) {

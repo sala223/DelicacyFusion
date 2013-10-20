@@ -16,7 +16,7 @@ import com.df.masterdata.entity.Category;
 import com.df.masterdata.service.contract.CategoryServiceInf;
 
 @Path("/tenant/{tenantId}/category/")
-@Produces("application/json")
+@Produces("application/json;charset=UTF-8")
 @Component
 public class CategoryResource extends TenantResource {
 

@@ -17,7 +17,7 @@ import com.df.masterdata.entity.Item;
 import com.df.masterdata.service.contract.ItemServiceInf;
 
 @Path("/tenant/{tenantId}/{storeCode}")
-@Produces("application/json")
+@Produces("application/json;charset=UTF-8")
 @Component
 public class ItemResource extends TenantResource {
     @Inject

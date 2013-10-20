@@ -15,7 +15,7 @@ import com.df.masterdata.dao.ItemTemplateDao;
 import com.df.masterdata.entity.ItemTemplate;
 
 @Path("/tenant/{tenantId}/itpl/")
-@Produces("application/json")
+@Produces("application/json;charset=UTF-8")
 @Component
 public class ItemTemplateResource extends TenantResource {
 

@@ -44,4 +44,10 @@ public class OrderServiceImpl implements OrderServiceInf {
 	orderDao.insert(order); 
     }
 
+    @Override
+    public List<Order> getLatestOrders(long userId, int number) {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
 }

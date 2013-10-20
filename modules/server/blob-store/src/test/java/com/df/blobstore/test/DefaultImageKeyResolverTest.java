@@ -21,7 +21,6 @@ public class DefaultImageKeyResolverTest {
 	metadata.setOwner("test");
 	String uniqueId = metadata.getUniqueId();
 	ImageKey key = keyResolver.hash(metadata);
-	System.out.println("Hash key is:" + key.getKey());
 	metadata = keyResolver.resolveImageAttributes(key);
 	TestCase.assertEquals(12, metadata.getWidth());
 	TestCase.assertEquals(24, metadata.getHeigth());
@@ -57,6 +56,7 @@ public class DefaultImageKeyResolverTest {
 	ImageAttributes metadata = new ImageAttributes(12, 24, ImageFormat.GIF);
 	metadata.setOwner("test");
 	ImageKey key = keyResolver.hash(metadata);
+	System.out.println("Hash key is:" + key.getKey());
 	BundleKey bundleKey = keyResolver.resolveBundleKey(key);
 	System.out.println(bundleKey.toString());
     }

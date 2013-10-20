@@ -6,16 +6,17 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
+import org.apache.commons.codec.binary.Base64;
+
 import com.df.blobstore.bundle.BundleKey;
-import com.df.core.common.utils.ByteUtils;
 
 public class DefaultImageKeyResolver implements ImageKeyResolver {
 
-    private static Charset charset = Charset.forName("utf-8");
+    private static Charset utf8 = Charset.forName("utf-8");
 
     @Override
     public ImageAttributes resolveImageAttributes(ImageKey imageKey) {
-	byte[] bytes = ByteUtils.hexStringToBytes(imageKey.getKey());
+	byte[] bytes = Base64.decodeBase64(imageKey.getKey());
 	DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes));
 	try {
 	    int width = in.readInt();
@@ -32,14 +33,14 @@ public class DefaultImageKeyResolver implements ImageKeyResolver {
 	    }
 	    byte[] uniqueId = new byte[nextLength];
 	    in.readFully(uniqueId);
-	    attributes.setUniqueId(new String(uniqueId, charset));
+	    attributes.setUniqueId(new String(uniqueId, utf8));
 	    nextLength = in.readInt();
 	    if (nextLength == 0) {
 		throw new ImageStoreException("image owner is not specified in the key");
 	    }
 	    byte[] owner = new byte[nextLength];
 	    in.readFully(owner);
-	    attributes.setOwner(new String(owner, charset));
+	    attributes.setOwner(new String(owner, utf8));
 	    return attributes;
 	} catch (IOException ex) {
 	    throw new ImageStoreException("Invalid image key, cannot resolve image attributes.");
@@ -55,8 +56,8 @@ public class DefaultImageKeyResolver implements ImageKeyResolver {
 	    throw new ImageStoreException("UniqueId attribute is not specified");
 
 	}
-	byte[] owner = metadata.getOwner().getBytes(charset);
-	byte[] uniqueId = metadata.getUniqueId().getBytes(charset);
+	byte[] owner = metadata.getOwner().getBytes(utf8);
+	byte[] uniqueId = metadata.getUniqueId().getBytes(utf8);
 	int maxBufferSize = 512;
 	int length = 4 * 2 + 2 + 4 + uniqueId.length + 4 + owner.length;
 	if (length > maxBufferSize) {
@@ -70,7 +71,7 @@ public class DefaultImageKeyResolver implements ImageKeyResolver {
 	buffer.put(uniqueId);
 	buffer.putInt(owner.length);
 	buffer.put(owner);
-	return new ImageKey(ByteUtils.bytesToHexString(buffer.array()));
+	return new ImageKey(Base64.encodeBase64URLSafeString(buffer.array()));
     }
 
     @Override
