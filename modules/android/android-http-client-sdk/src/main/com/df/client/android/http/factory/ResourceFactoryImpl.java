@@ -5,11 +5,15 @@ import java.util.Map;
 
 import com.df.client.android.http.rs.resource.impl.CategoryResourceImpl;
 import com.df.client.android.http.rs.resource.impl.ItemResourceImpl;
+import com.df.client.android.http.rs.resource.impl.OrderResourceImpl;
+import com.df.client.android.http.rs.resource.impl.StoreResourceImpl;
 import com.df.client.http.ResourceContext;
 import com.df.client.http.ResourceFactory;
 import com.df.client.rs.resource.CategoryResource;
 import com.df.client.rs.resource.ItemResource;
+import com.df.client.rs.resource.OrderResource;
 import com.df.client.rs.resource.Resource;
+import com.df.client.rs.resource.StoreResource;
 import com.df.client.rs.resource.exception.ResourceInstantiateError;
 
 public class ResourceFactoryImpl extends ResourceFactory {
@@ -22,6 +26,8 @@ public class ResourceFactoryImpl extends ResourceFactory {
 	typeMapping = new HashMap<Class<? extends Resource>, Class<? extends Resource>>();
 	typeMapping.put(CategoryResource.class, CategoryResourceImpl.class);
 	typeMapping.put(ItemResource.class, ItemResourceImpl.class);
+	typeMapping.put(StoreResource.class, StoreResourceImpl.class);
+	typeMapping.put(OrderResource.class, OrderResourceImpl.class);
     }
 
     public static <T extends Resource> void registerResourceType(Class<T> resourceType, Class<T> implType) {
@@ -37,7 +43,7 @@ public class ResourceFactoryImpl extends ResourceFactory {
 	try {
 	    Class<? extends Resource> implType = typeMapping.get(resourceType);
 	    if (implType == null) {
-		throw new ResourceInstantiateError(null, "Resource type %s is not registered");
+		throw new ResourceInstantiateError(null, "Resource type %s is not registered", resourceType);
 	    }
 	    @SuppressWarnings("unchecked")
 	    T inst = (T) implType.newInstance();

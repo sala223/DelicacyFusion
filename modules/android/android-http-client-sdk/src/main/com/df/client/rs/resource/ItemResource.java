@@ -8,6 +8,6 @@ public interface ItemResource extends Resource {
 
     public Item[] getFoods();
 
-    public Item[] getItemsByCategory(String categoryCode);
+    public Item[] getFoodsByCategory(String categoryCode);
 
 }

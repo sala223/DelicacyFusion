@@ -8,5 +8,6 @@
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 	<bean id="orderDao" class="com.df.order.dao.OrderDao" autowire="default"/>
+	<bean id="orderService" class="com.df.order.service.impl.OrderServiceImpl" />
 	<tx:annotation-driven/>
 </beans>

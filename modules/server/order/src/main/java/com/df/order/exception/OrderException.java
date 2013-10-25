@@ -7,6 +7,8 @@ public class OrderException extends BusinessException {
 
     private static final String REALM = "Order";
 
+    public static final int EMPTY_LINES = 100000;
+
     public OrderException(Throwable cause, int errorCode) {
 	super(cause, REALM, errorCode);
     }
@@ -17,5 +19,9 @@ public class OrderException extends BusinessException {
 
     public OrderException(int errorCode, String messageFormat, Object... args) {
 	super(null, REALM, errorCode, messageFormat, args);
+    }
+
+    public static OrderException emptyLinesException() {
+	return new OrderException(EMPTY_LINES, "Order must have a line at least.");
     }
 }

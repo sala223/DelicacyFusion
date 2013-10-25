@@ -8,4 +8,5 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<import resource="classpath:META-INF/datasource.xml" />
 	<bean id="businessExceptionMapper" class="com.df.core.rs.BusinessExceptionMapper"/>
+	<bean id="jacksonContextResolver" class="com.df.core.json.ext.JacksonContextResolver"/>
 </beans>
