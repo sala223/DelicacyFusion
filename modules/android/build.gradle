@@ -1,34 +1,7 @@
-project.ext.set('sourceCompatibility', 1.5)
-project.ext.set("version", "1.0")
-
-subprojects {
-    apply plugin: 'java'
-	apply plugin: 'eclipse'
-
+configure(allprojects){
+	version=1.0
 	
-	sourceSets {
-		test {
-			output.resourcesDir = project.buildDir.path+'/classes/test'
-			output.classesDir   = project.buildDir.path+'/classes/test'
-		}
+	repositories {
+		mavenCentral()
 	}
-	
-    test {
-    	minHeapSize = "128m"
-   		maxHeapSize = "512m"
-   		ignoreFailures = true
-    }
-	
-   repositories {
-   		mavenCentral()
-	}
-	
-	dependencies {
-        compile 'junit:junit:4.11'
-        testRuntime 'org.hamcrest:hamcrest-core:1.3'
-	}
-
-    jar {
-        manifest.attributes provider: 'www.delicacyfusion.com'
-    }
 }
