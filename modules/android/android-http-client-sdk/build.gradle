@@ -1,0 +1,58 @@
+apply plugin: 'android-library'
+defaultTasks  'build'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.6.3'
+     }
+}
+
+dependencies {
+    compile 'com.google.code.gson:gson:2.2.2'
+    compile 'org.springframework.android:spring-android-core:1.0.1.RELEASE'
+    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'   
+}
+
+android {
+ 	compileOptions {
+ 		encoding = "UTF-8"
+    }
+    buildToolsVersion "18.1.0"
+    compileSdkVersion 18
+    
+    defaultConfig {
+        versionCode 1
+        versionName "$version"
+        minSdkVersion 14
+        targetSdkVersion 18
+        testPackageName "com.df.client.rs.resource.test"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+    }
+    
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src/main']
+            resources.srcDirs = ['src/main']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+		instrumentTest {
+			java.srcDirs = ['src/test']
+		}
+        
+    }
+	
+	 task jar(type: Jar) {
+		from sourceSets.main.java
+	}
+}
+
+assemble.dependsOn jar
+

@@ -22,9 +22,11 @@ public class StoreResource extends TenantResource {
     @Inject
     private StoreServiceInf storeService;
 
+    
     public void setStoreService(StoreServiceInf storeService) {
-	this.storeService = storeService;
+        this.storeService = storeService;
     }
+
 
     @GET
     @Path("/")

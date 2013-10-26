@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.df.masterdata.dao.RoomDao;
+import com.df.masterdata.entity.DiningTable;
 import com.df.masterdata.entity.Room;
 
 @Transactional
@@ -23,6 +24,16 @@ public class RoomDaoTest extends MasterDataJPABaseTest {
 	room.setStoreCode("S1");
 	room.setCode("ROOM1");
 	room.setName("A001");
+	DiningTable table1 = new DiningTable();
+	table1.setBarCode("TV10001");
+	table1.setCapacity(10);
+	table1.setNumber("S1000001");
+	DiningTable table2 = new DiningTable();
+	table2.setBarCode("TV10002");
+	table2.setCapacity(10);
+	table2.setNumber("S1000002");
+	room.addDiningTable(table1);
+	room.addDiningTable(table2);
 	roomDao.insert(room);
 	room = new Room();
 	room.setStoreCode("S1");

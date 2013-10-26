@@ -214,6 +214,7 @@ pip-log.txt
 #############
 intermidiate/
 release/
+dependencies/adt
 dependencies/jboss/
 build/gradle/
 create.gen.sql

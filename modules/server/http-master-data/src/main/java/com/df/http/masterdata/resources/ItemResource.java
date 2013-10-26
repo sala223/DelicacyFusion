@@ -50,4 +50,13 @@ public class ItemResource extends TenantResource {
 	int firstResult = from < 0 ? 0 : from;
 	return itemService.getAvaliableFoods(storeCode, firstResult, to);
     }
+
+    @GET
+    @Path("/item")
+    public List<Item> getItems(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
+	    @QueryParam("from") @DefaultValue("0") int from, @QueryParam("to") @DefaultValue("100") int to) {
+	injectTenantContext(tenantCode);
+	int firstResult = from < 0 ? 0 : from;
+	return itemService.getAvaliableItems(storeCode, firstResult, to);
+    }
 }
