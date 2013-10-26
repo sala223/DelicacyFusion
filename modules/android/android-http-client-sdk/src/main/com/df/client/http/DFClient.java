@@ -32,6 +32,10 @@ public class DFClient {
     public void setStore(String storeCode) {
 	rc.setStoreCode(storeCode);
     }
+    
+    public String getStoreCode() {
+    	return rc.getStoreCode();
+    }
 
     public String[] getAvaliableStores() {
 	return null;
