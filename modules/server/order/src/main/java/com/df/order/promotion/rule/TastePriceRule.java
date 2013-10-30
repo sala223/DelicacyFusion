@@ -1,6 +1,7 @@
 package com.df.order.promotion.rule;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 
 import com.df.masterdata.entity.Item;
@@ -10,7 +11,9 @@ public class TastePriceRule implements ItemRule {
 
     private float tastePrice;
 
-    private static final String TASTE_PRICE_PAR = "TASTE_PRICE";
+    private int scale = Rule.DEFAULT_SCALE;
+
+    public static final String TASTE_PRICE_PAR = "TASTE_PRICE";
 
     @Override
     public BigDecimal execute(Item entity, Map<String, RuleParameter> parmaters) {
@@ -25,7 +28,7 @@ public class TastePriceRule implements ItemRule {
 	    throw RuleParameterException.parameterValueTypeError(ruleClass, TASTE_PRICE_PAR, parameter.getValue());
 	}
 
-	return new BigDecimal(tastePrice);
+	return new BigDecimal(tastePrice).setScale(scale, RoundingMode.HALF_UP);
     }
 
 }

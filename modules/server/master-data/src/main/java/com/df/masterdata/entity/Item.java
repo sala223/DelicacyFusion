@@ -26,6 +26,7 @@ public class Item extends StoreAwareMasterData {
     public Item(ItemTemplate itemTemplate, String storeCode) {
 	this.itemTemplate = itemTemplate;
 	this.setStoreCode(storeCode);
+	this.setCode(itemTemplate.getCode()); 
     }
 
     public ItemTemplate getItemTemplate() {

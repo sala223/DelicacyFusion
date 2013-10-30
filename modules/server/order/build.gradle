@@ -19,7 +19,11 @@ dependencies {
 sourceSets {
     main {
     	output.resourcesDir = project.buildDir.path+'/classes/main'
-    	output.classesDir   = project.buildDir.path+'/classes/main'
+    	output.classesDir   = output.resourcesDir
+    }
+    test {
+    	output.resourcesDir = project.buildDir.path+'/classes/main'
+    	output.classesDir   = output.resourcesDir
     }
 }
 

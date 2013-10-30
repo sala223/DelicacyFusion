@@ -9,6 +9,8 @@ public class OrderException extends BusinessException {
 
     public static final int EMPTY_LINES = 100000;
 
+    public static final int NO_DINING_TIME_FOR_PRESERVED_ORDER = 100001;
+
     public OrderException(Throwable cause, int errorCode) {
 	super(cause, REALM, errorCode);
     }
@@ -23,5 +25,9 @@ public class OrderException extends BusinessException {
 
     public static OrderException emptyLinesException() {
 	return new OrderException(EMPTY_LINES, "Order must have a line at least.");
+    }
+
+    public static OrderException noDiningTimeForPreservedOrder() {
+	return new OrderException(NO_DINING_TIME_FOR_PRESERVED_ORDER, "Preserved order must have dining time.");
     }
 }

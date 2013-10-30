@@ -1,5 +1,6 @@
 package com.df.masterdata.test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -113,10 +114,18 @@ public class ItemDaoTest extends MasterDataJPABaseTest {
 	List<Item> items = itemDao.getItemsByCategory("XiangCai", "S1");
 	TestCase.assertEquals(items.size(), 2);
     }
-    
+
     @Test
     public void testGetFoodsByCategory() {
 	List<Item> items = itemDao.getFoodsByCategory("XiangCai", "S1");
 	TestCase.assertEquals(items.size(), 2);
+    }
+
+    @Test
+    public void testListUnavaliableItems() {
+	List<String> itemCodes = Arrays.asList("A0001", "testItemCode001");
+	List<String> unavaliableItems = itemDao.listUnavaliableItems("S1", itemCodes);
+	TestCase.assertEquals(1,unavaliableItems.size());
+	TestCase.assertEquals(unavaliableItems.get(0), "testItemCode001");
     }
 }

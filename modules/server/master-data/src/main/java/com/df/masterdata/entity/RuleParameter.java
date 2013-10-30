@@ -16,7 +16,7 @@ public class RuleParameter implements Serializable {
     @Column(name = "VALUE", length = 128, nullable = false)
     private String value;
 
-    public RuleParameter() {
+    RuleParameter() {
     }
 
     public RuleParameter(String name, String value) {

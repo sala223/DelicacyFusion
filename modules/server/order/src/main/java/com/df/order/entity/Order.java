@@ -31,7 +31,7 @@ public class Order extends TransactionEntity {
     @Column(name = "ORDER_ID")
     private long orderId;
 
-    @Temporal(value = TemporalType.TIME)
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(nullable = false, name = "DINNER_TIME")
     private Date dinnerTime;
 

@@ -13,7 +13,7 @@ public interface ItemServiceInf {
 
     void enableItem(String storeCode, String itemCode);
 
-    List<Item> listAvaliableItems(String storeCode, List<String> itemCodes);
+    List<String> listUnavaliableItems(String storeCode, List<String> itemCodes);
 
     List<Item> getItemsByCategory(String storeCode, String categoryCode);
 

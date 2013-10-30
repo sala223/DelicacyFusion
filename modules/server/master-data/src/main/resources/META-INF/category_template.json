@@ -1,26 +1,30 @@
 [
 	{
+		"code":"SYS00000",
+		"name":"All"
+	},
+	{
 		"code":"SYS00001",
-		"name":"Cold Drink"
+		"name":"CoolDish"
 	},
 	{
 		"code":"SYS00002",
-		"name":"Sweet"
+		"name":"HotDish"
 	},
 	{
 		"code":"SYS00003",
-		"name":"Fruit"
+		"name":"Soup"
 	},
 	{
 		"code":"SYS00004",
-		"name":"vegetables"
+		"name":"WineDrinking"
 	},
 	{
 		"code":"SYS00005",
-		"name":"Fish"
+		"name":"Desert"
 	},
 	{
 		"code":"SYS00006",
-		"name":"Cold Food"
+		"name":"SeaFood"
 	}
 ]

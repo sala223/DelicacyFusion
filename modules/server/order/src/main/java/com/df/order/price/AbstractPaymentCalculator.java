@@ -25,9 +25,11 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 	return new PaymentContextImpl();
     }
 
-    protected abstract boolean hasPromotionForItem(Item item);
+    public PromotionRepository getPromotionRepository() {
+	return promotionRepository;
+    }
 
-    protected abstract Item getItemByItemCode(String itemCode);
+    protected abstract Item getItemByItemCode(String storeCode,String itemCode);
 
     protected abstract BigDecimal calcuateWithPromotion(Item item, Promotion promotion);
 
@@ -80,7 +82,7 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 	if (lines != null && lines.size() > 0) {
 	    for (OrderLine line : lines) {
 		String itemCode = line.getItemCode();
-		Item item = this.getItemByItemCode(itemCode);
+		Item item = this.getItemByItemCode(order.getStoreCode(),itemCode);
 		paymentContext.setItem(item);
 		BigDecimal price = this.calculateItemPayment(paymentContext);
 		Promotion promotion = paymentContext.getItemAppliedPromotion();

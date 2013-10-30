@@ -31,7 +31,7 @@ public abstract class TransactionEntity {
     @Column(nullable = false, name = "CREATE_TIME")
     private Date createTime;
 
-    @Temporal(value = TemporalType.TIME)
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "CLOSE_TIME")
     private Date closeTime;
 

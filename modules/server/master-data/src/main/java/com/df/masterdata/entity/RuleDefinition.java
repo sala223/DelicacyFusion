@@ -27,6 +27,10 @@ public class RuleDefinition implements Serializable {
     RuleDefinition() {
     }
 
+    void setParameters(Map<String, RuleParameter> parameters) {
+	this.parameters = parameters;
+    }
+
     public RuleDefinition(String qualifier) {
 	this.qualifier = qualifier;
     }

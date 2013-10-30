@@ -89,7 +89,7 @@ public class ItemServiceImpl implements ItemServiceInf {
     }
 
     @Override
-    public List<Item> listAvaliableItems(String storeCode,List<String> itemCodes) {
-	return itemDao.listAvaliableItems(storeCode, itemCodes);
+    public List<String> listUnavaliableItems(String storeCode,List<String> itemCodes) {
+	return itemDao.listUnavaliableItems(storeCode, itemCodes);
     }
 }
