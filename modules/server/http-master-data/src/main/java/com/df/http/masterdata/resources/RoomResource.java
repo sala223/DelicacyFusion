@@ -14,7 +14,7 @@ import com.df.core.rs.TenantResource;
 import com.df.masterdata.entity.Room;
 import com.df.masterdata.service.contract.RoomServiceInf;
 
-@Path("/tenant/{tenantCode}/{storeCode}/room")
+@Path("/tenant/{tenantCode}/store/{storeCode}/room")
 @Produces("application/json;charset=UTF-8")
 @Component
 public class RoomResource extends TenantResource {

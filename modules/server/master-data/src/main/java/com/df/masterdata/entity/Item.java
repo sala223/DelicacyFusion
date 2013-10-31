@@ -1,7 +1,6 @@
 package com.df.masterdata.entity;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +9,8 @@ import javax.persistence.OneToOne;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+import com.df.blobstore.image.http.ImageLinkCreator;
+
 @Entity
 public class Item extends StoreAwareMasterData {
 
@@ -17,16 +18,16 @@ public class Item extends StoreAwareMasterData {
     @JsonIgnore
     private ItemTemplate itemTemplate;
 
-    @Column(name = "PRICE", scale=2)
+    @Column(name = "PRICE", scale = 2)
     private Float price;
-    
+
     Item() {
     }
 
     public Item(ItemTemplate itemTemplate, String storeCode) {
 	this.itemTemplate = itemTemplate;
 	this.setStoreCode(storeCode);
-	this.setCode(itemTemplate.getCode()); 
+	this.setCode(itemTemplate.getCode());
     }
 
     public ItemTemplate getItemTemplate() {
@@ -64,8 +65,7 @@ public class Item extends StoreAwareMasterData {
 	return this.itemTemplate.getType();
     }
 
-    @JsonProperty
-    public Set<PictureRef> getPictureSet() {
+    public List<PictureRef> getPictureSet() {
 	return this.itemTemplate.getPictureSet();
     }
 
@@ -83,7 +83,7 @@ public class Item extends StoreAwareMasterData {
     public ItemUnit getItemUnit() {
 	return this.itemTemplate.getItemUnit();
     }
-    
+
     @Override
     public boolean isEnabled() {
 	if (this.itemTemplate.isEnabled()) {
@@ -92,4 +92,7 @@ public class Item extends StoreAwareMasterData {
 	return false;
     }
 
+    public void createImageLink(ImageLinkCreator creator) {
+	this.itemTemplate.createImageLink(creator);
+    }
 }
