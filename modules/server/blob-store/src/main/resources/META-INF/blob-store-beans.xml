@@ -11,5 +11,8 @@
 		<constructor-arg index="0" ref="imageKeyResolver" />
 	</bean>
 	<bean id="imageKeyResolver" class="com.df.blobstore.image.DefaultImageKeyResolver" />
-	<bean id="imageLinkCreator" class="com.df.blobstore.image.http.DefaultImageLinkCreator" lazy-init="true"/>
+	<bean id="imageLinkCreator" class="com.df.blobstore.image.http.DefaultImageLinkCreator"
+		lazy-init="true">
+		<property name="imageRequestPrefix" value="/image" />
+	</bean>
 </beans>

@@ -9,7 +9,13 @@ public class DefaultImageLinkCreator implements ImageLinkCreator {
     @Autowired
     private ServletContext servletContext;
 
+    private String imageRequestPrefix;
+
     public DefaultImageLinkCreator() {
+    }
+
+    public void setImageRequestPrefix(String imageRequestPrefix) {
+	this.imageRequestPrefix = imageRequestPrefix;
     }
 
     public void setServletContext(ServletContext servletContext) {
@@ -18,6 +24,11 @@ public class DefaultImageLinkCreator implements ImageLinkCreator {
 
     @Override
     public String createImageLink(String imageKey) {
-	return servletContext.getContextPath() + "/" + imageKey;
+	if (imageRequestPrefix != null) {
+	    return servletContext.getContextPath() + imageRequestPrefix + "/" + imageKey;
+	} else {
+	    return servletContext.getContextPath() + "/" + imageKey;
+
+	}
     }
 }
