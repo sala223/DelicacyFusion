@@ -17,7 +17,7 @@ import com.df.core.rs.TenantResource;
 import com.df.order.entity.Order;
 import com.df.order.service.contract.OrderServiceInf;
 
-@Path("/tenant/{tenantCode}/{storeCode}/order")
+@Path("/tenant/{tenantCode}/store/{storeCode}/order")
 @Produces("application/json;charset=UTF-8")
 @Component
 public class OrderResource extends TenantResource {
