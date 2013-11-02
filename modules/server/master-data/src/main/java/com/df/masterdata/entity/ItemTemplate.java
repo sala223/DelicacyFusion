@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Indexes;
@@ -20,6 +21,7 @@ import org.eclipse.persistence.annotations.Indexes;
 import com.df.blobstore.image.http.ImageLinkCreator;
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
+@XmlRootElement
 @Entity
 @Indexes({
 	@Index(name = "IDX_ITEM_TPL_T_CODE", unique = true, columnNames = { "CODE", MultiTenantSupport.TENANT_COLUMN }),

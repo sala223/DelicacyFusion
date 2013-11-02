@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<enunciate label="delicacyfusion" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://enunciate.codehaus.org/schemas/enunciate-1.26.xsd">
+	<api-import pattern="com.df.masterdata.entity.*" />
+	<modules>
+		<!-- Docs -->
+		<docs splashPackage="com.df.http.masterdata.resources" title="master-data-restful-api"
+			copyright="www.delicacyfusion.com" />
+	</modules>
+</enunciate>

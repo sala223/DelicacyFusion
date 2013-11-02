@@ -22,17 +22,31 @@ public class StoreResource extends TenantResource {
     @Inject
     private StoreServiceInf storeService;
 
-    
     public void setStoreService(StoreServiceInf storeService) {
-        this.storeService = storeService;
+	this.storeService = storeService;
     }
-
 
     @GET
     @Path("/")
     public List<Store> getStores(@PathParam("tenantCode") String tenantCode) {
 	injectTenantContext(tenantCode);
 	return storeService.getStoreList();
+    }
+
+    /**
+     * Get store by store code.
+     * 
+     * @param tenantCode
+     *            the tenant code
+     * @param storeCode
+     *            the store code
+     * @return return the found store or return null if it doesn't exist.
+     */
+    @GET
+    @Path("/{storeCode}")
+    public Store getStoreByCode(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
+	injectTenantContext(tenantCode);
+	return storeService.getStoreByCode(storeCode);
     }
 
 }

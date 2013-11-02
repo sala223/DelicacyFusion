@@ -16,10 +16,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKey;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.persistence.annotations.JoinFetch;
 import org.eclipse.persistence.annotations.JoinFetchType;
 
+@XmlRootElement
 @Entity
 public class Promotion extends StoreAwareMasterData {
     public static enum PromotionType {

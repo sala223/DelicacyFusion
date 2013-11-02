@@ -31,6 +31,17 @@ public class ItemResource extends TenantResource {
 	this.itemService = itemService;
     }
 
+    /**
+     * Get all the food by the specified category in a store.
+     * 
+     * @param tenantCode
+     *            The tenant code
+     * @param storeCode
+     *            The store code
+     * @param categoryCode
+     *            The category code
+     * @return all the food
+     */
     @GET
     @Path("/{categoryCode}/food")
     public List<Item> getFoodsByCategory(@PathParam("tenantCode") String tenantCode,
@@ -39,6 +50,15 @@ public class ItemResource extends TenantResource {
 	return createItemImageLink(itemService.getFoodsByCategory(storeCode, categoryCode));
     }
 
+    /**
+     * Get the food count in a store.
+     * 
+     * @param tenantCode
+     *            The tenant code
+     * @param storeCode
+     *            The store code
+     * @return the food count
+     */
     @GET
     @Path("/food/count")
     public long getFoodsCount(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
@@ -46,6 +66,19 @@ public class ItemResource extends TenantResource {
 	return itemService.getAvaliableFoodCount(storeCode);
     }
 
+    /**
+     * Pagination get foods from a store
+     * 
+     * @param tenantCode
+     *            The tenant code
+     * @param storeCode
+     *            The store code
+     * @param from
+     *            The offset to begin to get
+     * @param to
+     *            The offset to end to get
+     * @return the foods between <code>from</from> and <code>to</code>.
+     */
     @GET
     @Path("/food")
     public List<Item> getFoods(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,

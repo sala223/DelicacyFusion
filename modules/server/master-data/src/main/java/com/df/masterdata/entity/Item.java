@@ -5,12 +5,14 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.df.blobstore.image.http.ImageLinkCreator;
 
+@XmlRootElement
 @Entity
 public class Item extends StoreAwareMasterData {
 
