@@ -49,3 +49,9 @@ task weave(type: JavaExec, dependsOn:[classes]) {
     	     	sourceSets.main.output.classesDir.path ]
  }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+	
+jar.dependsOn sourcesJar

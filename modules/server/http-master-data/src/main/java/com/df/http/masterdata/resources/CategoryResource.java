@@ -28,10 +28,18 @@ public class CategoryResource extends TenantResource {
 	this.categoryService = categoryService;
     }
 
+    /**
+     * Get all categories in a tenant
+     * 
+     * @param tenantCode
+     *            The tenant code
+     * @return all the categories
+     */
     @GET
     @Path("/")
     public List<Category> getCategories(@PathParam("tenantCode") String tenantCode) {
 	injectTenantContext(tenantCode);
 	return categoryService.getCategories();
     }
+
 }

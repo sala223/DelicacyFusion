@@ -34,14 +34,21 @@ public class ItemTemplateResource extends TenantResource {
 	itemTemplateDao.newItemTemplate(itpl);
     }
 
+    /**
+     * Get all available item templates for a tenant.
+     * 
+     * @param tenantCode
+     *            The tenant code
+     * @return all available item template for a tenant.
+     */
     @GET
     @Path("/")
-    public List<ItemTemplate> getAvaliableItemTemplates(@PathParam("tenantCode") String tenantCode) {
+    public ItemTemplate[] getAvaliableItemTemplates(@PathParam("tenantCode") String tenantCode) {
 	injectTenantContext(tenantCode);
 	List<ItemTemplate> its = itemTemplateDao.all(ItemTemplate.class, 0, Integer.MAX_VALUE, false);
 	for (ItemTemplate it : its) {
 	    it.createImageLink(imageLinkCreator);
 	}
-	return its;
+	return its.toArray(new ItemTemplate[0]);
     }
 }

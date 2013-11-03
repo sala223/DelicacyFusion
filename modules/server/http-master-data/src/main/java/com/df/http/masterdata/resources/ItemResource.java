@@ -44,10 +44,10 @@ public class ItemResource extends TenantResource {
      */
     @GET
     @Path("/{categoryCode}/food")
-    public List<Item> getFoodsByCategory(@PathParam("tenantCode") String tenantCode,
+    public Item[] getFoodsByCategory(@PathParam("tenantCode") String tenantCode,
 	    @PathParam("storeCode") String storeCode, @PathParam("categoryCode") String categoryCode) {
 	injectTenantContext(tenantCode);
-	return createItemImageLink(itemService.getFoodsByCategory(storeCode, categoryCode));
+	return createItemImageLink(itemService.getFoodsByCategory(storeCode, categoryCode)).toArray(new Item[0]);
     }
 
     /**
@@ -67,34 +67,47 @@ public class ItemResource extends TenantResource {
     }
 
     /**
-     * Pagination get foods from a store
+     * Pagination retrieve foods from a store
      * 
      * @param tenantCode
      *            The tenant code
      * @param storeCode
      *            The store code
      * @param from
-     *            The offset to begin to get
+     *            The offset to begin to retrieve
      * @param to
-     *            The offset to end to get
-     * @return the foods between <code>from</from> and <code>to</code>.
+     *            The offset to end to retrieve
+     * @return the foods between <code>from</code> and <code>to</code>.
      */
     @GET
     @Path("/food")
-    public List<Item> getFoods(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
+    public Item[] getFoods(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	    @QueryParam("from") @DefaultValue("0") int from, @QueryParam("to") @DefaultValue("100") int to) {
 	injectTenantContext(tenantCode);
 	int firstResult = from < 0 ? 0 : from;
-	return createItemImageLink(itemService.getAvaliableFoods(storeCode, firstResult, to));
+	return createItemImageLink(itemService.getAvaliableFoods(storeCode, firstResult, to)).toArray(new Item[0]);
     }
 
+    /**
+     * Pagination retrieve items from a store
+     * 
+     * @param tenantCode
+     *            The tenant code
+     * @param storeCode
+     *            The store code
+     * @param from
+     *            The offset to begin to retrieve
+     * @param to
+     *            The offset to end to retrieve
+     * @return the items between <code>from</code> and <code>to</code>.
+     */
     @GET
     @Path("/item")
-    public List<Item> getItems(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
+    public Item[] getItems(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	    @QueryParam("from") @DefaultValue("0") int from, @QueryParam("to") @DefaultValue("100") int to) {
 	injectTenantContext(tenantCode);
 	int firstResult = from < 0 ? 0 : from;
-	return createItemImageLink(itemService.getAvaliableItems(storeCode, firstResult, to));
+	return createItemImageLink(itemService.getAvaliableItems(storeCode, firstResult, to)).toArray(new Item[0]);
     }
 
     protected List<Item> createItemImageLink(List<Item> items) {

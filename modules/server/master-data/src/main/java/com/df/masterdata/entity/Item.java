@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -48,40 +49,49 @@ public class Item extends StoreAwareMasterData {
     }
 
     @JsonProperty
+    @XmlElement
     public String getName() {
 	return itemTemplate.getName();
     }
 
     @JsonProperty
+    @XmlElement
     public String getCode() {
 	return itemTemplate.getCode();
     }
 
     @JsonProperty
+    @XmlElement
     public List<String> getCategories() {
 	return this.itemTemplate.getCategories();
     }
 
     @JsonProperty
+    @XmlElement
     public ItemType getType() {
 	return this.itemTemplate.getType();
     }
 
+    @JsonProperty
+    @XmlElement
     public List<PictureRef> getPictureSet() {
 	return this.itemTemplate.getPictureSet();
     }
 
     @JsonProperty
+    @XmlElement
     public String getDescription() {
 	return this.itemTemplate.getDescription();
     }
 
     @JsonProperty
+    @XmlElement
     public String getCurrency() {
 	return this.itemTemplate.getCurrency();
     }
 
     @JsonProperty
+    @XmlElement
     public ItemUnit getItemUnit() {
 	return this.itemTemplate.getItemUnit();
     }

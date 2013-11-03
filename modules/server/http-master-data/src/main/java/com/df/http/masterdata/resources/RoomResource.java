@@ -1,7 +1,5 @@
 package com.df.http.masterdata.resources;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -26,10 +24,19 @@ public class RoomResource extends TenantResource {
 	this.roomService = roomService;
     }
 
+    /**
+     * Get all rooms for a specified store
+     * 
+     * @param tenantCode
+     *            The tenant code
+     * @param storeCode
+     *            The store code
+     * @return all rooms.
+     */
     @GET
     @Path("/")
-    public List<Room> getRooms(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
+    public Room[] getRooms(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
 	this.injectTenantContext(tenantCode);
-	return roomService.getRooms(storeCode);
+	return roomService.getRooms(storeCode).toArray(new Room[0]);
     }
 }
