@@ -1,30 +1,30 @@
-[
-	{
+{
+	"SYS00000":{
 		"code":"SYS00000",
 		"name":"All"
 	},
-	{
+	"SYS00001":{
 		"code":"SYS00001",
 		"name":"CoolDish"
 	},
-	{
+	"SYS00002":{
 		"code":"SYS00002",
 		"name":"HotDish"
 	},
-	{
+	"SYS00003":{
 		"code":"SYS00003",
 		"name":"Soup"
 	},
-	{
+	"SYS00004":{
 		"code":"SYS00004",
 		"name":"WineDrinking"
 	},
-	{
+	"SYS00005":{
 		"code":"SYS00005",
 		"name":"Desert"
 	},
-	{
+	"SYS00006":{
 		"code":"SYS00006",
 		"name":"SeaFood"
 	}
-]
+}

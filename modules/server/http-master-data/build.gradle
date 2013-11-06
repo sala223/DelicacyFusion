@@ -12,9 +12,8 @@ dependencies {
     runtime "commons-codec:commons-codec:1.4" 
 }
 
-def master_data_jar=project(':master-data').jar
-def master_data_src_jar=master_data_jar.destinationDir.path +"/" + master_data_jar.baseName +"-"+ master_data_jar.version +"-sources.jar";
-ant.properties['enunciate.dependencies']=configurations.compile.asPath + master_data_src_jar
+def src_dependencies=project(':master-data').sourceSets.main.java.srcDirs.toArray()[0].path 
+ant.properties['enunciate.dependencies']=configurations.compile.asPath 
 ant.properties['enunciate.outputDir']=project.buildDir.path
-ant.importBuild 'enumicate.build.xml'
+ant.importBuild 'enunicate.build.xml'
 jar.dependsOn gendoc

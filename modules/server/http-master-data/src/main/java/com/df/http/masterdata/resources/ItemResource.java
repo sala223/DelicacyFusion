@@ -44,10 +44,10 @@ public class ItemResource extends TenantResource {
      */
     @GET
     @Path("/{categoryCode}/food")
-    public Item[] getFoodsByCategory(@PathParam("tenantCode") String tenantCode,
+    public List<Item> getFoodsByCategory(@PathParam("tenantCode") String tenantCode,
 	    @PathParam("storeCode") String storeCode, @PathParam("categoryCode") String categoryCode) {
 	injectTenantContext(tenantCode);
-	return createItemImageLink(itemService.getFoodsByCategory(storeCode, categoryCode)).toArray(new Item[0]);
+	return createItemImageLink(itemService.getFoodsByCategory(storeCode, categoryCode));
     }
 
     /**
@@ -81,11 +81,11 @@ public class ItemResource extends TenantResource {
      */
     @GET
     @Path("/food")
-    public Item[] getFoods(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
+    public List<Item> getFoods(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	    @QueryParam("from") @DefaultValue("0") int from, @QueryParam("to") @DefaultValue("100") int to) {
 	injectTenantContext(tenantCode);
 	int firstResult = from < 0 ? 0 : from;
-	return createItemImageLink(itemService.getAvaliableFoods(storeCode, firstResult, to)).toArray(new Item[0]);
+	return createItemImageLink(itemService.getAvaliableFoods(storeCode, firstResult, to));
     }
 
     /**
@@ -103,11 +103,11 @@ public class ItemResource extends TenantResource {
      */
     @GET
     @Path("/item")
-    public Item[] getItems(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
+    public List<Item> getItems(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	    @QueryParam("from") @DefaultValue("0") int from, @QueryParam("to") @DefaultValue("100") int to) {
 	injectTenantContext(tenantCode);
 	int firstResult = from < 0 ? 0 : from;
-	return createItemImageLink(itemService.getAvaliableItems(storeCode, firstResult, to)).toArray(new Item[0]);
+	return createItemImageLink(itemService.getAvaliableItems(storeCode, firstResult, to));
     }
 
     protected List<Item> createItemImageLink(List<Item> items) {

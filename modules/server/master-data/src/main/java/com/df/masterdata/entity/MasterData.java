@@ -11,6 +11,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Multitenant;
@@ -19,6 +20,7 @@ import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
+@XmlRootElement
 @MappedSuperclass
 @Multitenant(MultitenantType.SINGLE_TABLE)
 @TenantDiscriminatorColumn(name = MultiTenantSupport.TENANT_COLUMN, length = 12, contextProperty = MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY)

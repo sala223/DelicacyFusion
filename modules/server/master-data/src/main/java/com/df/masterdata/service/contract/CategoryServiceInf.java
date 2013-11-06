@@ -6,10 +6,12 @@ import com.df.masterdata.entity.Category;
 
 public interface CategoryServiceInf {
 
-    public List<Category> getCategories();
+    List<Category> getCategories();
 
-    public void newCategory(Category category);
+    void newCategory(Category category);
     
-    public void removeCategory(String categoryCode);
+    void newCategoryFromTemplate(String... categoryCodes);
+
+    void removeCategory(String categoryCode);
 
 }

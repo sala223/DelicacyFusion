@@ -2,16 +2,14 @@ package com.df.masterdata.service.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.type.ArrayType;
-import org.codehaus.jackson.map.type.TypeFactory;
+import org.codehaus.jackson.type.TypeReference;
 
-import com.df.masterdata.entity.Category;
+import com.df.masterdata.auxiliary.template.CategoryProfile;
 import com.df.masterdata.exception.CategoryResourceBundleException;
 
 public class JsonResourceBundleParser implements ResourceBundleParser {
@@ -25,11 +23,11 @@ public class JsonResourceBundleParser implements ResourceBundleParser {
     }
 
     @Override
-    public List<Category> parse(InputStream in) {
-	ArrayType arrayType = TypeFactory.defaultInstance().constructArrayType(Category.class);
-	Object value = null;
+    public Map<String, CategoryProfile> parse(InputStream in) {
+	Map<String, CategoryProfile> value = new HashMap<String, CategoryProfile>();
 	try {
-	    value = objectMapper.readValue(in, arrayType);
+	    value = objectMapper.readValue(in, new TypeReference<HashMap<String, CategoryProfile>>() {
+	    });
 	} catch (Throwable ex) {
 	    throw new CategoryResourceBundleException(ex);
 	} finally {
@@ -39,11 +37,6 @@ public class JsonResourceBundleParser implements ResourceBundleParser {
 		e.printStackTrace();
 	    }
 	}
-	if (value != null && value instanceof Category[]) {
-	    Category[] cs = (Category[]) value;
-	    return Arrays.asList(cs);
-	}
-
-	return new ArrayList<Category>();
+	return value;
     }
 }

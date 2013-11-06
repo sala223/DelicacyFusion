@@ -25,7 +25,7 @@ public class StoreResource extends TenantResource {
     }
 
     /**
-     * Get all stores for a specified tenant
+     * Get all stores in a tenant
      * 
      * @param tenantCode
      *            The tenant code

@@ -18,15 +18,11 @@
 	<bean id="storeServive" class="com.df.masterdata.service.impl.StoreServiceImpl" autowire="default"/>
 	<bean id="itemServive" class="com.df.masterdata.service.impl.ItemServiceImpl" autowire="default"/>
 	<bean id="roomServive" class="com.df.masterdata.service.impl.RoomServiceImpl" autowire="default"/>
-	<bean id="resourceBundleCategoryService" class="com.df.masterdata.service.impl.CachedCategoryService">
+	<bean id="categoryTemplate" class="com.df.masterdata.auxiliary.template.ResourceBundleCategoryTemplate">
 		<constructor-arg index="0">
-			<bean id="resourceBundleCategoryTemplateService" class="com.df.masterdata.service.impl.ResourceBundleCategoryService">
-				<constructor-arg index="0">
 					<bean class="com.df.masterdata.service.impl.JsonResourceBundleParser"/>
-				</constructor-arg>
-			    <property name="resourceBaseSuffix" value="json" />
-			</bean>
 		</constructor-arg>
+		<property name="resourceBaseSuffix" value="json" />
 	</bean>
 	<tx:annotation-driven/>
 </beans>
