@@ -26,6 +26,7 @@ public class PictureRef implements Serializable {
     @Column(length = 16, nullable = false, name = "FORMAT")
     private String format;
 
+    
     public String getImageId() {
 	return imageId;
     }

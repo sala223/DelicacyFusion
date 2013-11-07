@@ -7,29 +7,29 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.df.masterdata.service.contract.ItemServiceInf;
+import com.df.masterdata.service.contract.ItemService;
 import com.df.order.dao.OrderDao;
 import com.df.order.entity.Order;
 import com.df.order.entity.OrderLine;
 import com.df.order.entity.TransactionStatus;
 import com.df.order.exception.InvalidItemException;
 import com.df.order.exception.OrderException;
-import com.df.order.service.contract.OrderServiceInf;
+import com.df.order.service.contract.OrderService;
 
 @Transactional
-public class OrderServiceImpl implements OrderServiceInf {
+public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderDao orderDao;
 
     @Autowired
-    private ItemServiceInf itemService;
+    private ItemService itemService;
 
     public void setOrderDao(OrderDao orderDao) {
 	this.orderDao = orderDao;
     }
 
-    public void setItemService(ItemServiceInf itemService) {
+    public void setItemService(ItemService itemService) {
 	this.itemService = itemService;
     }
 

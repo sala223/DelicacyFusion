@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.df.masterdata.entity.Promotion;
 
-public interface PromotionServiceInf {
+public interface PromotionService {
 
     void createPromotion(Promotion promotion);
 

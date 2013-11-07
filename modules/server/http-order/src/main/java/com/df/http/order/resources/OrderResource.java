@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.df.core.rs.TenantResource;
 import com.df.order.entity.Order;
-import com.df.order.service.contract.OrderServiceInf;
+import com.df.order.service.contract.OrderService;
 
 @Path("/tenant/{tenantCode}/store/{storeCode}/order")
 @Produces("application/json;charset=UTF-8")
@@ -24,7 +24,7 @@ import com.df.order.service.contract.OrderServiceInf;
 public class OrderResource extends TenantResource {
 
     @Autowired
-    private OrderServiceInf orderService;
+    private OrderService orderService;
 
     /**
      * Pagination retrieve orders from a store

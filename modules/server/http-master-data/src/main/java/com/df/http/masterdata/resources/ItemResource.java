@@ -10,24 +10,25 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import org.codehaus.enunciate.jaxrs.TypeHint;
 import org.springframework.stereotype.Component;
 
 import com.df.blobstore.image.http.ImageLinkCreator;
 import com.df.core.rs.TenantResource;
 import com.df.masterdata.entity.Item;
-import com.df.masterdata.service.contract.ItemServiceInf;
+import com.df.masterdata.service.contract.ItemService;
 
 @Path("/tenant/{tenantCode}/store/{storeCode}")
 @Produces("application/json;charset=UTF-8")
 @Component
 public class ItemResource extends TenantResource {
     @Inject
-    private ItemServiceInf itemService;
+    private ItemService itemService;
 
     @Inject
     private ImageLinkCreator imageLinkCreator;
 
-    public void setItemService(ItemServiceInf itemService) {
+    public void setItemService(ItemService itemService) {
 	this.itemService = itemService;
     }
 
@@ -44,6 +45,7 @@ public class ItemResource extends TenantResource {
      */
     @GET
     @Path("/{categoryCode}/food")
+    @TypeHint(Item.class)
     public List<Item> getFoodsByCategory(@PathParam("tenantCode") String tenantCode,
 	    @PathParam("storeCode") String storeCode, @PathParam("categoryCode") String categoryCode) {
 	injectTenantContext(tenantCode);
@@ -81,6 +83,7 @@ public class ItemResource extends TenantResource {
      */
     @GET
     @Path("/food")
+    @TypeHint(Item.class)
     public List<Item> getFoods(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	    @QueryParam("from") @DefaultValue("0") int from, @QueryParam("to") @DefaultValue("100") int to) {
 	injectTenantContext(tenantCode);
@@ -103,6 +106,7 @@ public class ItemResource extends TenantResource {
      */
     @GET
     @Path("/item")
+    @TypeHint(Item.class)
     public List<Item> getItems(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	    @QueryParam("from") @DefaultValue("0") int from, @QueryParam("to") @DefaultValue("100") int to) {
 	injectTenantContext(tenantCode);

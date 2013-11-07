@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.df.masterdata.entity.Category;
 
-public interface CategoryServiceInf {
+public interface CategoryService {
 
     List<Category> getCategories();
 

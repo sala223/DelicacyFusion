@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.df.core.rs.TenantResource;
 import com.df.masterdata.entity.Store;
-import com.df.masterdata.service.contract.StoreServiceInf;
+import com.df.masterdata.service.contract.StoreService;
 
 @Path("/tenant/{tenantCode}/store")
 @Produces("application/json;charset=UTF-8")
@@ -18,9 +18,9 @@ import com.df.masterdata.service.contract.StoreServiceInf;
 public class StoreResource extends TenantResource {
 
     @Inject
-    private StoreServiceInf storeService;
+    private StoreService storeService;
 
-    public void setStoreService(StoreServiceInf storeService) {
+    public void setStoreService(StoreService storeService) {
 	this.storeService = storeService;
     }
 

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.df.masterdata.entity.Item;
 
-public interface ItemServiceInf {
+public interface ItemService {
 
     void newItem(Item item);
 

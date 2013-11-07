@@ -3,15 +3,14 @@ package com.df.masterdata.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.eclipse.persistence.annotations.Index;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 import com.df.masterdata.auxiliary.template.CategoryProfile;
 
 @Entity
-@JsonIgnoreProperties({ "enabled" })
 @Index(name = "IDX_CATEGORY_T_CODE", unique = true, columnNames = { "code", MultiTenantSupport.TENANT_COLUMN })
 @XmlRootElement
 public class Category extends MasterData {
@@ -37,5 +36,10 @@ public class Category extends MasterData {
 
     public void setName(String name) {
 	this.name = name;
+    }
+
+    @XmlTransient
+    public boolean isEnabled() {
+	return super.isEnabled();
     }
 }

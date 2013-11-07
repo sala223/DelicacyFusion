@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.df.order.entity.Order;
 
-public interface OrderServiceInf {
+public interface OrderService {
 
     void createOrder(long userId, Order order);
 

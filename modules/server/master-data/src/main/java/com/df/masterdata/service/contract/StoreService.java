@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.df.masterdata.entity.Store;
 
-public interface StoreServiceInf {
+public interface StoreService {
 
     void newStore(Store store);
 

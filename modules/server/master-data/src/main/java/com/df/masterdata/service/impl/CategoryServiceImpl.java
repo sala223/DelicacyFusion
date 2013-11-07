@@ -12,10 +12,10 @@ import com.df.masterdata.dao.ItemTemplateDao;
 import com.df.masterdata.entity.Category;
 import com.df.masterdata.entity.ItemTemplate;
 import com.df.masterdata.exception.CategoryException;
-import com.df.masterdata.service.contract.CategoryServiceInf;
+import com.df.masterdata.service.contract.CategoryService;
 
 @Transactional
-public class CategoryServiceImpl implements CategoryServiceInf {
+public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryDao categoryDao;

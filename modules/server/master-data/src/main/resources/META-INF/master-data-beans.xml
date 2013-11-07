@@ -17,6 +17,7 @@
 	<bean id="categoryServive" class="com.df.masterdata.service.impl.CategoryServiceImpl" autowire="default"/>
 	<bean id="storeServive" class="com.df.masterdata.service.impl.StoreServiceImpl" autowire="default"/>
 	<bean id="itemServive" class="com.df.masterdata.service.impl.ItemServiceImpl" autowire="default"/>
+	<bean id="itemTemplateServive" class="com.df.masterdata.service.impl.ItemTemplateServiceImpl" autowire="default"/>
 	<bean id="roomServive" class="com.df.masterdata.service.impl.RoomServiceImpl" autowire="default"/>
 	<bean id="categoryTemplate" class="com.df.masterdata.auxiliary.template.ResourceBundleCategoryTemplate">
 		<constructor-arg index="0">
