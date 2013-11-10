@@ -11,4 +11,9 @@ public class Category extends MasterData {
     public void setName(String name) {
 	this.name = name;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+    	return (o instanceof Category) && (o != null) && ((Category)o).getCode().equals(getCode());
+    }
 }

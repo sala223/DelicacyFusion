@@ -9,7 +9,8 @@ public class OrderLine implements Serializable {
 
     private int lineNumber;
 
-    private String itemCode;
+//    private String itemCode;
+    private Item item;
 
     private String roomCode;
 
@@ -36,18 +37,17 @@ public class OrderLine implements Serializable {
     OrderLine() {
     }
 
+    public OrderLine(Item item) {
+	this(item, 1);
+    }
+    
     public OrderLine(Item item, int quantity) {
-	this.itemCode = item.getCode();
+	this.item = item;
 	this.quantity = quantity;
-	this.price = item.getPrice();
     }
 
-    public String getItemCode() {
-	return itemCode;
-    }
-
-    public void setItemCode(String itemCode) {
-	this.itemCode = itemCode;
+    public Item getItem() {
+	return item;
     }
 
     public String getRoomCode() {
@@ -145,4 +145,9 @@ public class OrderLine implements Serializable {
 	    this.discount = this.totalPayment.subtract(this.promotionTotalPayment);
 	}
     }
+    
+	@Override
+	public boolean equals(Object o) {
+		return o != null && tableNumber.equals(((OrderLine)o).getTableNumber()) && item.equals(((OrderLine)o).getItem());
+	}
 }

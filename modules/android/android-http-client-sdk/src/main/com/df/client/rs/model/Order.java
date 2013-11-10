@@ -13,7 +13,7 @@ public class Order extends TransactionEntity {
 
     private boolean isTakeOut;
 
-    private List<OrderLine> lines;
+    private List<OrderLine> lines = new ArrayList<OrderLine>();
 
     private BigDecimal totalPayment;
 
@@ -52,6 +52,14 @@ public class Order extends TransactionEntity {
 
     void setLines(List<OrderLine> lines) {
 	this.lines = lines;
+    }
+    
+    public int getItemCount() {
+    	int count = 0;
+		for (OrderLine line : lines)
+			count += line.getQuantity();
+
+		return count;
     }
 
     public BigDecimal getTotalPayment() {
@@ -94,15 +102,15 @@ public class Order extends TransactionEntity {
 	this.comment = comment;
     }
 
-    public int addOrderLine(OrderLine line) {
-	if (this.lines == null) {
-	    this.lines = new ArrayList<OrderLine>();
-	}
-	int lineNumer = this.lines.size() + 1;
-	line.setLineNumber(lineNumer);
-	this.lines.add(line);
-	return lineNumer;
-    }
+//    public int addOrderLine(OrderLine line) {
+//	if (this.lines == null) {
+//	    this.lines = new ArrayList<OrderLine>();
+//	}
+//	int lineNumer = this.lines.size() + 1;
+//	line.setLineNumber(lineNumer);
+//	this.lines.add(line);
+//	return lineNumer;
+//    }
 
     public float getServiceFee() {
 	return serviceFee;
@@ -128,24 +136,24 @@ public class Order extends TransactionEntity {
 	this.currency = currency;
     }
 
-    public boolean removeOrderLine(int lineNumber) {
-	int foundIndex = -1;
-	if (this.lines == null) {
-	    for (int i = 0; i < lines.size(); ++i) {
-		if (lines.get(i).getLineNumber() == lineNumber) {
-		    foundIndex = i;
-		    continue;
-		}
-		if (foundIndex != -1) {
-		    lines.get(i).setLineNumber(i);
-		}
-	    }
-	    if (foundIndex != -1) {
-		this.lines.remove(foundIndex);
-	    }
-	}
-	return foundIndex != -1;
-    }
+//    public boolean removeOrderLine(int lineNumber) {
+//	int foundIndex = -1;
+//	if (this.lines == null) {
+//	    for (int i = 0; i < lines.size(); ++i) {
+//		if (lines.get(i).getLineNumber() == lineNumber) {
+//		    foundIndex = i;
+//		    continue;
+//		}
+//		if (foundIndex != -1) {
+//		    lines.get(i).setLineNumber(i);
+//		}
+//	    }
+//	    if (foundIndex != -1) {
+//		this.lines.remove(foundIndex);
+//	    }
+//	}
+//	return foundIndex != -1;
+//    }
 
     public void consolidateLine() {
 	if (this.lines == null) {
