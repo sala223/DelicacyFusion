@@ -1,8 +1,5 @@
 package com.df.client.android.http.rs.resource.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
 import com.df.client.http.ResourceContext;
 import com.df.client.rs.model.Item;
 import com.df.client.rs.model.PictureRef;
@@ -31,7 +28,7 @@ public class ItemResourceImpl extends RestTemplateResource implements ItemResour
 		return getRestTemplate().getForObject(url, Item[].class, rc.getTenantCode(), rc.getStoreCode(), categoryCode);
 	}
 
-	public InputStream getItemImage(Item item, String imageId) {
+	public byte[] getItemImage(Item item, String imageId) {
 		ResourceContext rc = this.getResourceContext();
 		PictureRef pic = item.getImageByImageId(imageId);
 		if (pic == null) {
@@ -40,6 +37,6 @@ public class ItemResourceImpl extends RestTemplateResource implements ItemResour
 		String url = rc.getTargetUrl() + "/tenant/{tenantCode}/store/{storeCode}/item/{itemCode}/image/{iamgeId}";
 		byte[] imageData = getRestTemplate().getForObject(url, byte[].class, rc.getTenantCode(), rc.getStoreCode(),
 		        item.getCode(), imageId);
-		return new ByteArrayInputStream(imageData);
+		return imageData;
 	}
 }
