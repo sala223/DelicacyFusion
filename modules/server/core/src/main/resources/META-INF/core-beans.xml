@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<import resource="classpath:META-INF/datasource.xml" />
-	<bean id="businessExceptionMapper" class="com.df.core.rs.BusinessExceptionMapper"/>
-	<bean id="jacksonContextResolver" class="com.df.core.json.ext.JacksonContextResolver"/>
+	<bean id="businessExceptionMapper" class="com.df.core.rs.BusinessExceptionMapper" />
+	<bean id="jacksonContextResolver" class="com.df.core.json.ext.JacksonContextResolver" />
+	<beans profile="test">
+		<bean id="responseSampleLogInterceptor" class="com.df.core.rs.ResponseSampleLogInterceptor">
+			<property name="enabled" value="true" />
+		</bean>
+	</beans>
 </beans>

@@ -61,6 +61,12 @@ public class OrderLine implements Serializable {
 	this.price = item.getPrice();
     }
 
+    public OrderLine(String itemCode, float price, int quantity) {
+	this.itemCode = itemCode;
+	this.quantity = quantity;
+	this.price = price;
+    }
+
     public String getItemCode() {
 	return itemCode;
     }

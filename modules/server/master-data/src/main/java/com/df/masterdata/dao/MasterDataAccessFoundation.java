@@ -59,7 +59,7 @@ public class MasterDataAccessFoundation extends EclipseLinkDataAccessFoundation 
 	}
     }
 
-    public <T extends MasterData> int allCount(Class<T> entityType, boolean includeDisabled) {
+    public <T extends MasterData> long allCount(Class<T> entityType, boolean includeDisabled) {
 	EntityManager em = this.getEntityManager();
 	ClassDescriptor cd = this.getClassDescrptor(entityType);
 	String eql = "SELECT COUNT(O) FROM %s o";
@@ -70,7 +70,7 @@ public class MasterDataAccessFoundation extends EclipseLinkDataAccessFoundation 
 	if (!includeDisabled) {
 	    query.setParameter("IS_ENABLED", true);
 	}
-	return (Integer) query.getSingleResult();
+	return (Long) query.getSingleResult();
     }
 
     public <T extends MasterData> List<T> all(Class<T> entityType, int firstResult, int maxResult,

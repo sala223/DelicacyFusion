@@ -63,7 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		Category c = new Category(profile);
 		Category found = categoryDao.findCategoryByCode(c.getCode());
-		if (found != null) {
+		if (found == null) {
 		    newCategory(c);
 		}
 	    }
@@ -72,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void newCategory(Category category) {
-	int allCount = categoryDao.allCount(Category.class, false);
+	long allCount = categoryDao.allCount(Category.class, false);
 	if (allCount >= maxCategoryCount) {
 	    throw CategoryException.exceedMaxCategoryCount(maxCategoryCount);
 	}

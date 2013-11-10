@@ -1,6 +1,7 @@
 package com.df.http.masterdata.resources;
 
 import java.util.List;
+import java.util.regex.PatternSyntaxException;
 
 import javax.inject.Inject;
 import javax.ws.rs.DELETE;
@@ -14,7 +15,7 @@ import org.codehaus.enunciate.jaxrs.TypeHint;
 import org.springframework.stereotype.Component;
 
 import com.df.core.rs.TenantResource;
-import com.df.core.rs.resteasy.StringArrayUnmarsahller.StringArray;
+import com.df.http.masterdata.resources.exception.InputValidationException;
 import com.df.masterdata.auxiliary.template.CategoryProfile;
 import com.df.masterdata.auxiliary.template.CategoryTemplate;
 import com.df.masterdata.entity.Category;
@@ -76,10 +77,19 @@ public class CategoryResource extends TenantResource {
      *            separated with ",".
      */
     @POST
-    @Path("/codes={categoryCodes}")
+    @Path("/{categoryCodes}")
     public void addCategoryFromTemplate(@PathParam("tenantCode") String tenantCode,
-	    @PathParam("categoryCodes") @StringArray String[] categoryCodes) {
-	categoryService.newCategoryFromTemplate(categoryCodes);
+	    @PathParam("categoryCodes") String categoryCodes) {
+	if (categoryCodes == null || categoryCodes.length() == 0) {
+	    return;
+	}
+	try {
+	    String[] codesArray = categoryCodes.split(",");
+	    injectTenantContext(tenantCode);
+	    categoryService.newCategoryFromTemplate(codesArray);
+	} catch (PatternSyntaxException ex) {
+	    throw new InputValidationException(100000, "Multiple category code must be seperated with ,");
+	}
     }
 
     /**
@@ -94,6 +104,7 @@ public class CategoryResource extends TenantResource {
     @Path("/{categoryCode}")
     public void removeCategory(@PathParam("tenantCode") String tenantCode,
 	    @PathParam("categoryCode") String categoryCode) {
+	injectTenantContext(tenantCode);
 	categoryService.removeCategory(categoryCode);
     }
 }
