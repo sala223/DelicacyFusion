@@ -106,6 +106,17 @@ public class Item extends MasterData {
 		}
 	}
 
+	public PictureRef getImageByImageId(String imageId) {
+		if (pictureSet != null) {
+			for (PictureRef pic : pictureSet) {
+				if (pic.getImageId().equals(imageId)) {
+					return pic;
+				}
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || !(o instanceof Item))

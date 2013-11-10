@@ -12,6 +12,8 @@ public interface ItemService {
     void disableItem(String storeCode, String itemCode);
 
     void enableItem(String storeCode, String itemCode);
+    
+    Item getItemByCode(String storeCode, String itemCode);
 
     List<String> listUnavaliableItems(String storeCode, List<String> itemCodes);
 

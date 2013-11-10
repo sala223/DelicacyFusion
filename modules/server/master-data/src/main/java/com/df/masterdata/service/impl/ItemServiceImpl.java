@@ -92,4 +92,9 @@ public class ItemServiceImpl implements ItemService {
     public List<String> listUnavaliableItems(String storeCode,List<String> itemCodes) {
 	return itemDao.listUnavaliableItems(storeCode, itemCodes);
     }
+
+	@Override
+    public Item getItemByCode(String storeCode, String itemCode) {
+	    return itemDao.getItemByItemCode(storeCode, itemCode); 
+    }
 }

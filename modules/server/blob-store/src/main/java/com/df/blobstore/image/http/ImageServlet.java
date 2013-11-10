@@ -20,63 +20,63 @@ import com.df.blobstore.image.ImageService;
 
 public abstract class ImageServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private ImageService imageService;
+	private ImageService imageService;
 
-    private static final Logger logger = LoggerFactory.getLogger(ImageServlet.class);
+	private static final Logger logger = LoggerFactory.getLogger(ImageServlet.class);
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-	initImageService(config);
-    }
-
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-	ImageKey imageKey = this.getImageKeyFromRequest(req);
-	if (imageKey == null) {
-	    resp.setStatus(404);
-	} else {
-	    InputStream in = null;
-	    OutputStream out = null;
-	    try {
-		Image image = imageService.fetchImage(imageKey);
-		ImageFormat format = image.getImageAttributes().getFormat();
-		resp.setContentType("image/" + format.name().toLowerCase());
-		in = image.getBundleValue().getDataInBundle();
-		resp.setContentLength(image.getBundleValue().getSize());
-		out = resp.getOutputStream();
-		byte[] buf = new byte[1024];
-		int count = 0;
-		while ((count = in.read(buf)) >= 0) {
-		    out.write(buf, 0, count);
-		}
-	    } catch (Throwable ex) {
-		String msg = "Cannot get image from key " + imageKey.toString();
-		logger.error(msg, ex);
-		resp.setStatus(404);
-	    } finally {
-		if (in != null) {
-		    try {
-			in.close();
-		    } catch (Throwable ex) {
-		    }
-		}
-		if (out != null) {
-		    try {
-			out.close();
-		    } catch (Throwable ex) {
-		    }
-		}
-	    }
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		initImageService(config);
 	}
-    }
 
-    protected abstract ImageKey getImageKeyFromRequest(HttpServletRequest request);
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		ImageKey imageKey = this.getImageKeyFromRequest(req);
+		if (imageKey == null) {
+			resp.setStatus(404);
+		} else {
+			InputStream in = null;
+			OutputStream out = null;
+			try {
+				Image image = imageService.fetchImage(imageKey);
+				ImageFormat format = image.getImageAttributes().getFormat();
+				resp.setContentType("image/" + format.name().toLowerCase());
+				in = image.getBundleValue().getDataInBundle();
+				resp.setContentLength(image.getBundleValue().getSize());
+				out = resp.getOutputStream();
+				byte[] buf = new byte[1024];
+				int count = 0;
+				while ((count = in.read(buf)) >= 0) {
+					out.write(buf, 0, count);
+				}
+			} catch (Throwable ex) {
+				String msg = "Cannot get image from key " + imageKey.toString();
+				logger.error(msg, ex);
+				resp.setStatus(404);
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (Throwable ex) {
+					}
+				}
+				if (out != null) {
+					try {
+						out.close();
+					} catch (Throwable ex) {
+					}
+				}
+			}
+		}
+	}
 
-    protected abstract void initImageService(ServletConfig config);
+	protected abstract ImageKey getImageKeyFromRequest(HttpServletRequest request);
 
-    protected void setImageService(ImageService imageService) {
-	this.imageService = imageService;
-    }
+	protected abstract void initImageService(ServletConfig config);
+
+	protected void setImageService(ImageService imageService) {
+		this.imageService = imageService;
+	}
 
 }

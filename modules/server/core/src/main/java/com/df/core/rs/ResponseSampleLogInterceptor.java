@@ -29,123 +29,144 @@ import org.codehaus.jackson.map.ObjectWriter;
 @ConstrainedTo(RuntimeType.SERVER)
 public class ResponseSampleLogInterceptor implements ReaderInterceptor, WriterInterceptor {
 
-    private UriInfo uri;
+	private UriInfo uri;
 
-    private Request request;
+	private Request request;
 
-    private File outPutDirectory;
+	private File outPutDirectory;
 
-    private boolean enabled;
+	private boolean enabled;
 
-    private ObjectMapper objectMapper;
+	private ObjectMapper objectMapper;
 
-    protected Providers providers;
+	protected Providers providers;
 
-    private Charset charset = Charset.forName("utf8");
+	private Charset charset = Charset.forName("utf8");
 
-    protected static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
+	protected static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
 
-    public ResponseSampleLogInterceptor() {
-	this.setOutPutPath(System.getProperty("user.home") + "/rest-sample");
-    }
-
-    @Context
-    public void setUri(UriInfo uri) {
-	this.uri = uri;
-    }
-
-    @Context
-    public void setProviders(Providers providers) {
-	this.providers = providers;
-    }
-
-    @Context
-    public void setRequest(Request request) {
-	this.request = request;
-    }
-
-    public void setOutPutPath(String outPutPath) {
-	this.outPutDirectory = new File(outPutPath);
-	if (!this.outPutDirectory.exists() && this.outPutDirectory.isDirectory()) {
-	    throw new IllegalArgumentException(outPutPath + " must be a directory");
+	public ResponseSampleLogInterceptor() {
+		this.setOutPutPath(System.getProperty("user.home") + "/rest-sample");
 	}
-	if (this.outPutDirectory.exists() && !this.outPutDirectory.canWrite()) {
-	    throw new IllegalArgumentException("Must have write permission to " + outPutPath);
+
+	@Context
+	public void setUri(UriInfo uri) {
+		this.uri = uri;
 	}
-	if (!outPutDirectory.exists()) {
-	    outPutDirectory.mkdir();
+
+	@Context
+	public void setProviders(Providers providers) {
+		this.providers = providers;
 	}
-    }
 
-    public void setEnabled(boolean enabled) {
-	this.enabled = enabled;
-    }
+	@Context
+	public void setRequest(Request request) {
+		this.request = request;
+	}
 
-    @Override
-    public void aroundWriteTo(WriterInterceptorContext context) throws IOException, WebApplicationException {
-	if (!enabled) {
-	    context.proceed();
-	} else {
-
-	    List<String> urls = uri.getMatchedURIs();
-	    Object entity = context.getEntity();
-	    if (urls.size() > 0 && entity != null) {
-		String seperator = System.getProperty("line.separator");
-		ObjectMapper mapper = this.getObjectMapper(context.getMediaType());
-		ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
-		String url = urls.get(0).replace("/", ".");
-		String method = request.getMethod();
-		File file = new File(outPutDirectory, url);
-		if (!file.exists()) {
-		    file.createNewFile();
+	public void setOutPutPath(String outPutPath) {
+		this.outPutDirectory = new File(outPutPath);
+		if (!this.outPutDirectory.exists() && this.outPutDirectory.isDirectory()) {
+			throw new IllegalArgumentException(outPutPath + " must be a directory");
 		}
-		BufferedOutputStream buffer = new BufferedOutputStream(new FileOutputStream(file));
-		try {
-		    buffer.write(("METHOD	   :" + method + seperator).getBytes(charset));
-		    buffer.write(("URL		   :" + urls.get(0) + seperator).getBytes(charset));
-		    buffer.write(("QUERY PARAMETERS:" + uri.getQueryParameters() + seperator).getBytes(charset));
-		    buffer.write(("PATH PARAMETERS :" + uri.getPathParameters() + seperator).getBytes(charset));
-		    buffer.write(("PATH SEGMENTS   :" + uri.getPathSegments() + seperator).getBytes(charset));
-
-		    if (entity != null) {
-			buffer.write(("SAMPLE           :" + seperator).getBytes(charset));
-			String jsonValue = writer.writeValueAsString(entity);
-			buffer.write(jsonValue.getBytes(charset));
-		    }
-		} finally {
-		    buffer.close();
+		if (this.outPutDirectory.exists() && !this.outPutDirectory.canWrite()) {
+			throw new IllegalArgumentException("Must have write permission to " + outPutPath);
 		}
-	    }
-
-	    context.proceed();
-	}
-    }
-
-    protected ObjectMapper getObjectMapper(MediaType mediaType) {
-	if (this.objectMapper != null) {
-	    return this.objectMapper;
+		if (!outPutDirectory.exists()) {
+			outPutDirectory.mkdir();
+		}
 	}
 
-	if (this.providers != null) {
-	    ContextResolver<ObjectMapper> resolver = this.providers.getContextResolver(ObjectMapper.class, mediaType);
-	    if (resolver == null) {
-		resolver = this.providers.getContextResolver(ObjectMapper.class, null);
-	    }
-	    if (resolver != null) {
-		return ((ObjectMapper) resolver.getContext(ObjectMapper.class));
-	    }
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
-	return DEFAULT_MAPPER;
-    }
+	@Override
+	public void aroundWriteTo(WriterInterceptorContext context) throws IOException, WebApplicationException {
+		if (!enabled) {
+			context.proceed();
+		} else {
 
-    @Override
-    public Object aroundReadFrom(ReaderInterceptorContext context) throws IOException, WebApplicationException {
-	if (!enabled) {
-	    return context.proceed();
-	} else {
-	    return context.proceed();
+			List<String> urls = uri.getMatchedURIs();
+			Object entity = context.getEntity();
+			if (urls.size() > 0 && entity != null) {
+				String seperator = System.getProperty("line.separator");
+				ObjectMapper mapper = this.getObjectMapper(context.getMediaType());
+				ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
+				String url = urls.get(0).replace("/", ".");
+				String method = request.getMethod();
+				File file = new File(outPutDirectory, url);
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+				BufferedOutputStream buffer = new BufferedOutputStream(new FileOutputStream(file));
+				try {
+					buffer.write(("METHOD	   :" + method + seperator).getBytes(charset));
+					buffer.write(("URL		   :" + urls.get(0) + seperator).getBytes(charset));
+					buffer.write(("QUERY PARAMETERS:" + uri.getQueryParameters() + seperator).getBytes(charset));
+					buffer.write(("PATH PARAMETERS :" + uri.getPathParameters() + seperator).getBytes(charset));
+					buffer.write(("PATH SEGMENTS   :" + uri.getPathSegments() + seperator).getBytes(charset));
+
+					if (entity != null) {
+						buffer.write(("SAMPLE           :" + seperator).getBytes(charset));
+						String jsonValue = writer.writeValueAsString(entity);
+						buffer.write(jsonValue.getBytes(charset));
+					}
+				} finally {
+					buffer.close();
+				}
+			}
+
+			context.proceed();
+		}
 	}
-    }
+
+	protected ObjectMapper getObjectMapper(MediaType mediaType) {
+		if (this.objectMapper != null) {
+			return this.objectMapper;
+		}
+
+		if (this.providers != null) {
+			ContextResolver<ObjectMapper> resolver = this.providers.getContextResolver(ObjectMapper.class, mediaType);
+			if (resolver == null) {
+				resolver = this.providers.getContextResolver(ObjectMapper.class, null);
+			}
+			if (resolver != null) {
+				return ((ObjectMapper) resolver.getContext(ObjectMapper.class));
+			}
+		}
+
+		return DEFAULT_MAPPER;
+	}
+
+	@Override
+	public Object aroundReadFrom(ReaderInterceptorContext context) throws IOException, WebApplicationException {
+		if (!enabled) {
+			return context.proceed();
+		} else {
+			List<String> urls = uri.getMatchedURIs();
+			if (urls.size() > 0) {
+				String seperator = System.getProperty("line.separator");
+				String url = urls.get(0).replace("/", ".");
+				String method = request.getMethod();
+				File file = new File(outPutDirectory, url);
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+				BufferedOutputStream buffer = new BufferedOutputStream(new FileOutputStream(file));
+				try {
+					buffer.write(("METHOD	   :" + method + seperator).getBytes(charset));
+					buffer.write(("URL		   :" + urls.get(0) + seperator).getBytes(charset));
+					buffer.write(("QUERY PARAMETERS:" + uri.getQueryParameters() + seperator).getBytes(charset));
+					buffer.write(("PATH PARAMETERS :" + uri.getPathParameters() + seperator).getBytes(charset));
+					buffer.write(("PATH SEGMENTS   :" + uri.getPathSegments() + seperator).getBytes(charset));
+				} finally {
+					buffer.close();
+				}
+			}
+
+			return context.proceed();
+		}
+	}
 
 }

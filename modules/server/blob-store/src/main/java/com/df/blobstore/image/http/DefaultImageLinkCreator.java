@@ -6,29 +6,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class DefaultImageLinkCreator implements ImageLinkCreator {
 
-    @Autowired
-    private ServletContext servletContext;
+	@Autowired
+	private ServletContext servletContext;
 
-    private String imageRequestPrefix;
+	private String imageRequestPrefix;
 
-    public DefaultImageLinkCreator() {
-    }
-
-    public void setImageRequestPrefix(String imageRequestPrefix) {
-	this.imageRequestPrefix = imageRequestPrefix;
-    }
-
-    public void setServletContext(ServletContext servletContext) {
-	this.servletContext = servletContext;
-    }
-
-    @Override
-    public String createImageLink(String imageKey) {
-	if (imageRequestPrefix != null) {
-	    return servletContext.getContextPath() + imageRequestPrefix + "/" + imageKey;
-	} else {
-	    return servletContext.getContextPath() + "/" + imageKey;
-
+	public DefaultImageLinkCreator() {
 	}
-    }
+
+	public void setImageRequestPrefix(String imageRequestPrefix) {
+		this.imageRequestPrefix = imageRequestPrefix;
+	}
+
+	public void setServletContext(ServletContext servletContext) {
+		this.servletContext = servletContext;
+	}
+
+	@Override
+	public String createImageLink(String imageKey) {
+		if (imageRequestPrefix != null) {
+			return imageRequestPrefix + "/" + imageKey;
+		} else {
+			return "/" + imageKey;
+
+		}
+	}
 }
