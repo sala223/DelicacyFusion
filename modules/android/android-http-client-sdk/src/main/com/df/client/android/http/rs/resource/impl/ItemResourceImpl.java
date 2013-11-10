@@ -37,8 +37,9 @@ public class ItemResourceImpl extends RestTemplateResource implements ItemResour
 		if (pic == null) {
 			return null;
 		}
-		String url = rc.getTargetUrl() + pic.getImageLink();
-		byte[] imageData = getRestTemplate().getForObject(url, byte[].class);
+		String url = rc.getTargetUrl() + "/tenant/{tenantCode}/store/{storeCode}/item/{itemCode}/image/{iamgeId}";
+		byte[] imageData = getRestTemplate().getForObject(url, byte[].class, rc.getTenantCode(), rc.getStoreCode(),
+		        item.getCode(), imageId);
 		return new ByteArrayInputStream(imageData);
 	}
 }

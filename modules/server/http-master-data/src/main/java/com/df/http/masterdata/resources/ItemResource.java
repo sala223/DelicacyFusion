@@ -133,7 +133,7 @@ public class ItemResource extends TenantResource {
 	}
 
 	@GET
-	@Path("/{itemCode}/{imageId}")
+	@Path("/item/{itemCode}/image/{imageId}")
 	/**
 	 * Get item image by image id.
 	 * 
@@ -144,11 +144,12 @@ public class ItemResource extends TenantResource {
 	 * @param itemCode
 	 *            The item code
 	 * @param imageId
-	 *            The id of the image to be retrived.
+	 *            The id of the image to be retrieved.
 	 * @return the items between <code>from</code> and <code>to</code>.
 	 */
 	public Response getItemImage(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	        @PathParam("itemCode") String itemCode, @PathParam("imageId") String imageId) {
+		injectTenantContext(tenantCode);
 		Item item = itemService.getItemByCode(storeCode, itemCode);
 		if (item == null) {
 			throw ItemException.itemWithCodeNotExist(itemCode);
@@ -166,7 +167,6 @@ public class ItemResource extends TenantResource {
 			in = image.getBundleValue().getDataInBundle();
 			byte[] imageData = new byte[image.getBundleValue().getSize()];
 
-			int count = 0;
 			in.read(imageData, 0, imageData.length);
 			return builder.entity(imageData).build();
 		} catch (Throwable ex) {
@@ -181,7 +181,6 @@ public class ItemResource extends TenantResource {
 				}
 			}
 		}
-
 	}
 
 	protected List<Item> createItemImageLink(List<Item> items) {

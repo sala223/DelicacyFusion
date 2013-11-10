@@ -86,12 +86,11 @@ public class ResponseSampleLogInterceptor implements ReaderInterceptor, WriterIn
 		if (!enabled) {
 			context.proceed();
 		} else {
-
 			List<String> urls = uri.getMatchedURIs();
 			Object entity = context.getEntity();
-			if (urls.size() > 0 && entity != null) {
+			ObjectMapper mapper = this.getObjectMapper(context.getMediaType());
+			if (urls.size() > 0 && entity != null && mapper != null) {
 				String seperator = System.getProperty("line.separator");
-				ObjectMapper mapper = this.getObjectMapper(context.getMediaType());
 				ObjectWriter writer = mapper.writer().withDefaultPrettyPrinter();
 				String url = urls.get(0).replace("/", ".");
 				String method = request.getMethod();
