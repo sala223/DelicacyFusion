@@ -14,6 +14,8 @@ public class CategoryException extends BusinessException {
 
     public static final int EXCEED_MAX_CATEGORY_COUNT = 100003;
 
+    public static final int NON_EXISTING_CATEGORY_CODE = 100004;
+
     public CategoryException(Throwable cause, int errorCode) {
 	super(cause, REALM, errorCode);
     }
@@ -39,5 +41,10 @@ public class CategoryException extends BusinessException {
     public static CategoryException exceedMaxCategoryCount(int maxCategoryCount) {
 	String msg = "Exceed max category=%d count limitation.";
 	return new CategoryException(EXCEED_MAX_CATEGORY_COUNT, msg, maxCategoryCount);
+    }
+
+    public static CategoryException nonExistingCategoryCode(String categoryCode) {
+	String msg = "Invalid category code %s, category code must be predefined.";
+	return new CategoryException(NON_EXISTING_CATEGORY_CODE, msg, categoryCode);
     }
 }

@@ -4,15 +4,19 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.codehaus.enunciate.jaxrs.TypeHint;
 import org.springframework.stereotype.Component;
 
+import com.df.blobstore.image.http.ImageLinkCreator;
 import com.df.core.rs.TenantResource;
-import com.df.masterdata.dao.ItemTemplateDao;
 import com.df.masterdata.entity.ItemTemplate;
+import com.df.masterdata.service.contract.ItemTemplateService;
 
 @Path("/tenant/{tenantCode}/itpl/")
 @Produces("application/json;charset=UTF-8")
@@ -20,20 +24,54 @@ import com.df.masterdata.entity.ItemTemplate;
 public class ItemTemplateResource extends TenantResource {
 
     @Inject
-    private ItemTemplateDao itemTemplateDao;
+    private ItemTemplateService itemTemplateService;
 
-    public void setItemTemplateDao(ItemTemplateDao itemTemplateDao) {
-	this.itemTemplateDao = itemTemplateDao;
+    @Inject
+    private ImageLinkCreator imageLinkCreator;
+
+    public void setItemTemplateDao(ItemTemplateService service) {
+	this.itemTemplateService = service;
     }
 
+    /**
+     * Create a item template in a tenant.
+     * 
+     * @param tenantCode
+     *            The tenant code
+     */
+    @POST
+    @Path("/")
     public void createItemTemplate(ItemTemplate itpl) {
-	itemTemplateDao.newItemTemplate(itpl);
     }
 
+    /**
+     * Update a item template in a tenant.
+     * 
+     * @param tenantCode
+     *            The tenant code
+     */
+    @PUT
+    @Path("/")
+    public void updateItemTemplate(ItemTemplate itemTemplateCode) {
+	itemTemplateService.updateItemTemplate(itemTemplateCode);
+    }
+
+    /**
+     * Get all available item templates for a tenant.
+     * 
+     * @param tenantCode
+     *            The tenant code
+     * @return all available item template for a tenant.
+     */
     @GET
     @Path("/")
-    public List<ItemTemplate> getAvaliableItemTemplates(@PathParam("tenantCode") String tenantCode) {
+    @TypeHint(ItemTemplate.class)
+    public ItemTemplate[] getAvaliableItemTemplates(@PathParam("tenantCode") String tenantCode) {
 	injectTenantContext(tenantCode);
-	return itemTemplateDao.all(ItemTemplate.class, 0, Integer.MAX_VALUE, false);
+	List<ItemTemplate> its = itemTemplateService.all(false);
+	for (ItemTemplate it : its) {
+	    it.createImageLink(imageLinkCreator);
+	}
+	return its.toArray(new ItemTemplate[0]);
     }
 }

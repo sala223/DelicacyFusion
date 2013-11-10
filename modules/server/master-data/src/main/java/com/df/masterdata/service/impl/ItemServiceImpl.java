@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.df.masterdata.dao.ItemDao;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.exception.ItemException;
-import com.df.masterdata.service.contract.ItemServiceInf;
+import com.df.masterdata.service.contract.ItemService;
 
 @Transactional
-public class ItemServiceImpl implements ItemServiceInf {
+public class ItemServiceImpl implements ItemService {
 
     @Inject
     private ItemDao itemDao;
@@ -89,7 +89,7 @@ public class ItemServiceImpl implements ItemServiceInf {
     }
 
     @Override
-    public List<Item> listAvaliableItems(String storeCode,List<String> itemCodes) {
-	return itemDao.listAvaliableItems(storeCode, itemCodes);
+    public List<String> listUnavaliableItems(String storeCode,List<String> itemCodes) {
+	return itemDao.listUnavaliableItems(storeCode, itemCodes);
     }
 }

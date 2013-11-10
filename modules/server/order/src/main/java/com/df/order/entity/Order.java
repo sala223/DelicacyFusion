@@ -17,10 +17,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.persistence.annotations.JoinFetch;
 import org.eclipse.persistence.annotations.JoinFetchType;
 
+@XmlRootElement
 @Entity
 @Table(name = "ORDERS")
 public class Order extends TransactionEntity {
@@ -31,7 +33,7 @@ public class Order extends TransactionEntity {
     @Column(name = "ORDER_ID")
     private long orderId;
 
-    @Temporal(value = TemporalType.TIME)
+    @Temporal(value = TemporalType.TIMESTAMP)
     @Column(nullable = false, name = "DINNER_TIME")
     private Date dinnerTime;
 

@@ -11,22 +11,22 @@ import com.df.masterdata.entity.Room;
 import com.df.masterdata.entity.Store;
 import com.df.masterdata.exception.RoomException;
 import com.df.masterdata.exception.StoreException;
-import com.df.masterdata.service.contract.RoomServiceInf;
-import com.df.masterdata.service.contract.StoreServiceInf;
+import com.df.masterdata.service.contract.RoomService;
+import com.df.masterdata.service.contract.StoreService;
 
 @Transactional
-public class RoomServiceImpl implements RoomServiceInf {
+public class RoomServiceImpl implements RoomService {
 
     @Inject
     private RoomDao roomDao;
 
-    private StoreServiceInf storeService;
+    private StoreService storeService;
 
     public void setRoomDao(RoomDao roomDao) {
 	this.roomDao = roomDao;
     }
 
-    public void setStoreService(StoreServiceInf storeService) {
+    public void setStoreService(StoreService storeService) {
 	this.storeService = storeService;
     }
 

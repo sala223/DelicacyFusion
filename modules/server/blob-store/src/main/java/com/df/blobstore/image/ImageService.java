@@ -13,6 +13,10 @@ public class ImageService implements ImageServiceInf {
 	this.serviceRoute = serviceRoute;
     }
 
+    public ImageKeyResolver getImageKeyResolver() {
+        return serviceRoute;
+    }
+
     @Override
     public ImageKey uploadImage(InputStream in, String tenantId) {
 	Image image = ImageFactory.createImageFromStream(in, tenantId);
@@ -28,7 +32,7 @@ public class ImageService implements ImageServiceInf {
 	BundleKey bundleKey = serviceRoute.resolveBundleKey(imageKey);
 	bundleService.deleteBlob(bundleKey);
     }
-
+ 
     @Override
     public Image fetchImage(ImageKey imageKey) {
 	Image image = ImageFactory.createBlankImage(serviceRoute, imageKey);

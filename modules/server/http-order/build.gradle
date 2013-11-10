@@ -10,3 +10,8 @@ dependencies {
     runtime "org.apache.httpcomponents:httpcore:4.1.4" 
     runtime "commons-codec:commons-codec:1.4" 
 }
+  
+ant.properties['enunciate.dependencies']=configurations.compile.asPath
+ant.properties['enunciate.outputDir']=project.buildDir.path
+ant.importBuild 'enunicate.build.xml'
+jar.dependsOn gendoc

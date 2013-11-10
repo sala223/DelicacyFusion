@@ -1,7 +1,5 @@
 package com.df.http.masterdata.resources;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -12,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.df.core.rs.TenantResource;
 import com.df.masterdata.entity.Store;
-import com.df.masterdata.service.contract.StoreServiceInf;
+import com.df.masterdata.service.contract.StoreService;
 
 @Path("/tenant/{tenantCode}/store")
 @Produces("application/json;charset=UTF-8")
@@ -20,19 +18,40 @@ import com.df.masterdata.service.contract.StoreServiceInf;
 public class StoreResource extends TenantResource {
 
     @Inject
-    private StoreServiceInf storeService;
+    private StoreService storeService;
 
-    
-    public void setStoreService(StoreServiceInf storeService) {
-        this.storeService = storeService;
+    public void setStoreService(StoreService storeService) {
+	this.storeService = storeService;
     }
 
-
+    /**
+     * Get all stores in a tenant
+     * 
+     * @param tenantCode
+     *            The tenant code
+     * @return all the stores for a tenant
+     */
     @GET
     @Path("/")
-    public List<Store> getStores(@PathParam("tenantCode") String tenantCode) {
+    public Store[] getStores(@PathParam("tenantCode") String tenantCode) {
 	injectTenantContext(tenantCode);
-	return storeService.getStoreList();
+	return storeService.getStoreList().toArray(new Store[0]);
+    }
+
+    /**
+     * Get store by store code.
+     * 
+     * @param tenantCode
+     *            the tenant code
+     * @param storeCode
+     *            the store code
+     * @return return the found store or return null if it doesn't exist.
+     */
+    @GET
+    @Path("/{storeCode}")
+    public Store getStoreByCode(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
+	injectTenantContext(tenantCode);
+	return storeService.getStoreByCode(storeCode);
     }
 
 }

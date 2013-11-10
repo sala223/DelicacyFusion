@@ -43,4 +43,19 @@ public interface Constants {
     public static interface ROOM extends STORE_AWARE_MASTERDATA {
 	public static final String NAME_PROPERTY = "name";
     }
+
+    public static interface PROMOTION extends STORE_AWARE_MASTERDATA {
+	public static final String NAME_PROPERTY = "name";
+
+	public static final String VALID_FROM_PROPERTY = "validFrom";
+
+	public static final String VALID_TO_PROPERTY = "validTo";
+
+	public static final String TYPE_PROPERTY = "type";
+
+	public static final String ITEMS_PROPERTY = "items";
+
+	public static final String CATEGORIES_PROPERTY = "categories";
+
+    }
 }

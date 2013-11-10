@@ -6,53 +6,53 @@ public class PictureRef implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String rawImageId;
+    private String imageId;
 
-    private String scale1ImageId;
+    private String imageLink;
 
-    private String scale2ImageId;
+    private int width;
 
-    private String scale3ImageId;
+    private int heigth;
 
-    private String comments;
+    private String format;
 
-    public String getRawImageId() {
-	return rawImageId;
+    public String getImageId() {
+	return imageId;
     }
 
-    public void setRawImageId(String rawImageId) {
-	this.rawImageId = rawImageId;
+    public void setImageId(String imageId) {
+	this.imageId = imageId;
     }
 
-    public String getScale1ImageId() {
-	return scale1ImageId;
+    public int getWidth() {
+	return width;
     }
 
-    public void setScale1ImageId(String scale1ImageId) {
-	this.scale1ImageId = scale1ImageId;
+    public void setWidth(int width) {
+	this.width = width;
     }
 
-    public String getScale2ImageId() {
-	return scale2ImageId;
+    public int getHeigth() {
+	return heigth;
     }
 
-    public void setScale2ImageId(String scale2ImageId) {
-	this.scale2ImageId = scale2ImageId;
+    public void setHeigth(int heigth) {
+	this.heigth = heigth;
     }
 
-    public String getScale3ImageId() {
-	return scale3ImageId;
+    public String getFormat() {
+	return format;
     }
 
-    public void setScale3ImageId(String scale3ImageId) {
-	this.scale3ImageId = scale3ImageId;
+    public void setFormat(String format) {
+	this.format = format;
     }
 
-    public String getComments() {
-	return comments;
+    public String getImageLink() {
+	return imageLink;
     }
 
-    public void setComments(String comments) {
-	this.comments = comments;
+    public void setImageLink(String imageLink) {
+	this.imageLink = imageLink;
     }
 }

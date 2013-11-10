@@ -11,7 +11,10 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.MultitenantType;
@@ -19,6 +22,7 @@ import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
+@XmlRootElement
 @MappedSuperclass
 @Multitenant(MultitenantType.SINGLE_TABLE)
 @TenantDiscriminatorColumn(name = MultiTenantSupport.TENANT_COLUMN, length = 12, contextProperty = MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY)
@@ -26,6 +30,7 @@ public abstract class MasterData {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "ID")
+    @JsonIgnore
     private long id;
 
     @Column(length = 255, name = "CODE")
@@ -46,6 +51,7 @@ public abstract class MasterData {
     @Column(name = "IS_ENABLED")
     private boolean isEnabled = true;
 
+    @XmlTransient
     public long getId() {
 	return id;
     }

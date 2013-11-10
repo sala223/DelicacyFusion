@@ -1,11 +1,11 @@
 package com.df.masterdata.service.impl;
 
 import java.io.InputStream;
-import java.util.List;
+import java.util.Map;
 
-import com.df.masterdata.entity.Category;
+import com.df.masterdata.auxiliary.template.CategoryProfile;
 
 public interface ResourceBundleParser {
 
-    List<Category> parse(InputStream in);
+    Map<String, CategoryProfile> parse(InputStream in);
 }

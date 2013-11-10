@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.df.masterdata.entity.Room;
 
-public interface RoomServiceInf {
+public interface RoomService {
 
     void newRoom(Room room);
 

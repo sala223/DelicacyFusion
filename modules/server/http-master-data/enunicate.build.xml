@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="yes"?>
+<project name="http-master" default="gendoc" basedir=".">
+	<description>
+		Generate master data restful api documentation
+	</description>
+	<property name="enunciate.home" value="${basedir}/../../../build/enunciate-1.27" />
+	<path id="enunciate.classpath">
+		<fileset dir="${enunciate.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<taskdef name="enunciate" classname="org.codehaus.enunciate.main.EnunciateTask">
+		<classpath refid="enunciate.classpath" />
+	</taskdef>
+	<target name="gendoc">
+		<echo message="Generate master data restful api documentation" />
+		<enunciate basedir="src/main/java" configFile="${basedir}/enunciate.xml"
+			generateDir="${enunciate.outputDir}/enunciate/gen" compileDir="${enunciate.outputDir}/enunciate/compile"
+			buildDir="${enunciate.outputDir}/enunciate/build" scratchDir="${enunciate.outputDir}/enunciate/scratch"
+			packageDir="${enunciate.outputDir}/enunciate/package">
+			<include name="com/df/http/masterdata/**/*.java" />
+			<classpath>
+				<pathelement path="${enunciate.dependencies}" />
+			</classpath>
+			<export artifactId="docs"
+				destination="${enunciate.outputDir}/enunciate/http-master-doc.tar" />
+		</enunciate>
+	</target>
+</project>

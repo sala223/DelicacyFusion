@@ -18,7 +18,7 @@ public class DefaultRuleRepository implements RuleRepository {
 
     @Override
     public Rule<?> getRuleInstanceByQualifier(String qualifier) {
-	RuleDescriptor desc = ruleTypes.get(ruleTypes);
+	RuleDescriptor desc = ruleTypes.get(qualifier);
 	if (desc == null) {
 	    throw new RuleNotFoundException(qualifier);
 	}

@@ -1,22 +1,24 @@
-package com.df.masterdata.service.impl;
+package com.df.masterdata.auxiliary.template;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
-import com.df.masterdata.entity.Category;
+import com.df.core.common.utils.LocalCache;
 import com.df.masterdata.exception.CategoryResourceBundleException;
-import com.df.masterdata.service.contract.CategoryServiceInf;
+import com.df.masterdata.service.impl.ResourceBundleParser;
 
-public class ResourceBundleCategoryService implements CategoryServiceInf {
+public class ResourceBundleCategoryTemplate implements CategoryTemplate {
 
     private ResourceLoader resourceLoader = new DefaultResourceLoader();
+
+    private static LocalCache<Locale, Map<String, CategoryProfile>> cache = new LocalCache<Locale, Map<String, CategoryProfile>>();
 
     private String resourceBaseName = "META-INF/category_template";
 
@@ -24,7 +26,7 @@ public class ResourceBundleCategoryService implements CategoryServiceInf {
 
     private ResourceBundleParser resourceBundleParser;
 
-    public ResourceBundleCategoryService(ResourceBundleParser resourceBundleParser) {
+    public ResourceBundleCategoryTemplate(ResourceBundleParser resourceBundleParser) {
 	this.resourceBundleParser = resourceBundleParser;
     }
 
@@ -45,13 +47,27 @@ public class ResourceBundleCategoryService implements CategoryServiceInf {
     }
 
     @Override
-    public List<Category> getCategories() {
+    public CategoryProfile[] getCategories() {
 	Locale locale = LocaleContextHolder.getLocale();
-	InputStream stream = this.loadResourceBundle(resourceBaseName, resourceBaseSuffix, locale);
-	return parseResourceBundle(stream);
+	return getCategories(locale);
     }
 
-    protected List<Category> parseResourceBundle(InputStream resourceBundle) {
+    public CategoryProfile[] getCategories(Locale locale) {
+	Map<String, CategoryProfile> cmap = cache.get(locale);
+	if (cmap == null) {
+	    synchronized (ResourceBundleCategoryTemplate.class) {
+		if (cmap == null) {
+		    InputStream stream = this.loadResourceBundle(resourceBaseName, resourceBaseSuffix, locale);
+		    cmap = parseResourceBundle(stream);
+		    cache.put(locale, cmap);
+		}
+	    }
+	}
+
+	return cmap.values().toArray(new CategoryProfile[0]);
+    }
+
+    protected Map<String, CategoryProfile> parseResourceBundle(InputStream resourceBundle) {
 	return resourceBundleParser.parse(resourceBundle);
     }
 
@@ -108,13 +124,22 @@ public class ResourceBundleCategoryService implements CategoryServiceInf {
     }
 
     @Override
-    public void newCategory(Category category) {
-	throw new UnsupportedOperationException();
-
+    public CategoryProfile getCategory(String categoryCode) {
+	Locale locale = LocaleContextHolder.getLocale();
+	return getCategory(categoryCode, locale);
     }
 
-    @Override
-    public void removeCategory(String categoryCode) {
-	throw new UnsupportedOperationException();
+    public CategoryProfile getCategory(String categoryCode, Locale locale) {
+	Map<String, CategoryProfile> cmap = cache.get(locale);
+	if (cmap == null) {
+	    synchronized (ResourceBundleCategoryTemplate.class) {
+		if (cmap == null) {
+		    InputStream stream = this.loadResourceBundle(resourceBaseName, resourceBaseSuffix, locale);
+		    cmap = parseResourceBundle(stream);
+		    cache.put(locale, cmap);
+		}
+	    }
+	}
+	return cmap.get(categoryCode);
     }
 }

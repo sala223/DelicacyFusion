@@ -21,10 +21,10 @@ INSERT INTO `delicacy_fusion`.`item_template_category`(`ITEM_TEMPLATE_ID`,`CATEG
 INSERT INTO `delicacy_fusion`.`item_template_category`(`ITEM_TEMPLATE_ID`,`CATEGORY_CODE`) values(3, 'SYS00005');
 INSERT INTO `delicacy_fusion`.`item_template_category`(`ITEM_TEMPLATE_ID`,`CATEGORY_CODE`) values(4, 'SYS00006');
 
-INSERT INTO `delicacy_fusion`.`item_template_picture`(`ITEM_TEMPLATE_ID`,`RAW_IMG_ID`) values(1, 'AAAADAAAABgABAAAACRkNGNhM2U4Yi1lMTlhLTQ4NmItYjg4YS0xMTVmNzBlZThmYTgAAAAEdGVzdA');
-INSERT INTO `delicacy_fusion`.`item_template_picture`(`ITEM_TEMPLATE_ID`,`RAW_IMG_ID`) values(2, 'AAAADAAAABgABAAAACRkNGNhM2U4Yi1lMTlhLTQ4NmItYjg4YS0xMTVmNzBlZThmYTgAAAAEdGVzdA');
-INSERT INTO `delicacy_fusion`.`item_template_picture`(`ITEM_TEMPLATE_ID`,`RAW_IMG_ID`) values(3, 'AAAADAAAABgABAAAACRkNGNhM2U4Yi1lMTlhLTQ4NmItYjg4YS0xMTVmNzBlZThmYTgAAAAEdGVzdA');
-INSERT INTO `delicacy_fusion`.`item_template_picture`(`ITEM_TEMPLATE_ID`,`RAW_IMG_ID`) values(4, 'AAAADAAAABgABAAAACRkNGNhM2U4Yi1lMTlhLTQ4NmItYjg4YS0xMTVmNzBlZThmYTgAAAAEdGVzdA');
+INSERT INTO `delicacy_fusion`.`item_template_picture`(`ITEM_TEMPLATE_ID`,`IMG_ID`,`WIDTH`,`HEIGTH`,`FORMAT`) values(1, 'AAAADAAAABgABAAAACRkNGNhM2U4Yi1lMTlhLTQ4NmItYjg4YS0xMTVmNzBlZThmYTgAAAAEdGVzdA',251,201,'jpg');
+INSERT INTO `delicacy_fusion`.`item_template_picture`(`ITEM_TEMPLATE_ID`,`IMG_ID`,`WIDTH`,`HEIGTH`,`FORMAT`) values(2, 'AAAADAAAABgABAAAACRkNGNhM2U4Yi1lMTlhLTQ4NmItYjg4YS0xMTVmNzBlZThmYTgAAAAEdGVzdA',251,201,'jpg');
+INSERT INTO `delicacy_fusion`.`item_template_picture`(`ITEM_TEMPLATE_ID`,`IMG_ID`,`WIDTH`,`HEIGTH`,`FORMAT`) values(3, 'AAAADAAAABgABAAAACRkNGNhM2U4Yi1lMTlhLTQ4NmItYjg4YS0xMTVmNzBlZThmYTgAAAAEdGVzdA',251,201,'jpg');
+INSERT INTO `delicacy_fusion`.`item_template_picture`(`ITEM_TEMPLATE_ID`,`IMG_ID`,`WIDTH`,`HEIGTH`,`FORMAT`) values(4, 'AAAADAAAABgABAAAACRkNGNhM2U4Yi1lMTlhLTQ4NmItYjg4YS0xMTVmNzBlZThmYTgAAAAEdGVzdA',251,201,'jpg');
 
 
 INSERT INTO `delicacy_fusion`.`item` (`ID`, `TENANT_ID`, `CODE`, `CREATED_BY`, `CREATED_TIME`, `IS_ENABLED`, `PRICE`, `STORE_CODE`, `ITEMTEMPLATE_ID`) VALUES ('1', 'TEST', 'A0001', '0', '2013-09-02:12:23:21', '1', '23', 'S1', '1');

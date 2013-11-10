@@ -9,21 +9,21 @@ public class ItemResourceImpl extends RestTemplateResource implements ItemResour
     @Override
     public Item[] getItems() {
 	ResourceContext rc = this.getResourceContext();
-	String url = rc.getTargetUrl() + "/tenant/{tenantCode}/{storeCode}/item";
+	String url = rc.getTargetUrl() + "/tenant/{tenantCode}/store/{storeCode}/item";
 	return getRestTemplate().getForObject(url, Item[].class, rc.getTenantCode(), rc.getStoreCode());
     }
 
     @Override
     public Item[] getFoods() {
 	ResourceContext rc = this.getResourceContext();
-	String url = rc.getTargetUrl() + "/tenant/{tenantCode}/{storeCode}/food";
+	String url = rc.getTargetUrl() + "/tenant/{tenantCode}/store/{storeCode}/food";
 	return getRestTemplate().getForObject(url, Item[].class, rc.getTenantCode(), rc.getStoreCode());
     }
 
     @Override
     public Item[] getFoodsByCategory(String categoryCode) {
 	ResourceContext rc = this.getResourceContext();
-	String url = rc.getTargetUrl() + "/tenant/{tenantCode}/{storeCode}/{categoryCode}/food";
+	String url = rc.getTargetUrl() + "/tenant/{tenantCode}/store/{storeCode}/{categoryCode}/food";
 	return getRestTemplate().getForObject(url, Item[].class, rc.getTenantCode(), rc.getStoreCode(), categoryCode);
     }
 }

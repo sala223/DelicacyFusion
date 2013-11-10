@@ -55,6 +55,7 @@ subprojects {
 	}
 
     jar {
+		duplicatesStrategy='EXCLUDE'
         manifest.attributes provider: 'www.delicacyfusion.com'
-    }
+    } 
 }

@@ -2,7 +2,6 @@ package com.df.masterdata.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -14,12 +13,15 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Indexes;
 
+import com.df.blobstore.image.http.ImageLinkCreator;
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
+@XmlRootElement
 @Entity
 @Indexes({
 	@Index(name = "IDX_ITEM_TPL_T_CODE", unique = true, columnNames = { "CODE", MultiTenantSupport.TENANT_COLUMN }),
@@ -41,13 +43,13 @@ public class ItemTemplate extends MasterData {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "ITEM_TEMPLATE_PICTURE", joinColumns = @JoinColumn(name = "ITEM_TEMPLATE_ID"))
-    private Set<PictureRef> pictureSet;
+    private List<PictureRef> pictureSet;
 
     @Lob
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(scale=2, name = "PRICE")
+    @Column(scale = 2, name = "PRICE")
     private float price;
 
     @Column(name = "PRICE_UNIT")
@@ -81,11 +83,11 @@ public class ItemTemplate extends MasterData {
 	this.type = type;
     }
 
-    public Set<PictureRef> getPictureSet() {
+    public List<PictureRef> getPictureSet() {
 	return pictureSet;
     }
 
-    public void setPictureSet(Set<PictureRef> pictureSet) {
+    public void setPictureSet(List<PictureRef> pictureSet) {
 	this.pictureSet = pictureSet;
     }
 
@@ -145,6 +147,14 @@ public class ItemTemplate extends MasterData {
 	if (categories != null) {
 	    for (String c : categories) {
 		this.categories.add(c);
+	    }
+	}
+    }
+
+    public void createImageLink(ImageLinkCreator creator) {
+	if (this.pictureSet != null) {
+	    for (PictureRef pictureRef : pictureSet) {
+		pictureRef.setImageLink(creator.createImageLink(pictureRef.getImageId()));
 	    }
 	}
     }

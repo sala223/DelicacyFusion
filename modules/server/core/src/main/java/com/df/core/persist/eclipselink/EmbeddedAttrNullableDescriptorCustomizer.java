@@ -1,6 +1,5 @@
 package com.df.core.persist.eclipselink;
 
-
 import org.eclipse.persistence.config.DescriptorCustomizer;
 import org.eclipse.persistence.descriptors.ClassDescriptor;
 import org.eclipse.persistence.mappings.AggregateObjectMapping;
@@ -17,7 +16,7 @@ public class EmbeddedAttrNullableDescriptorCustomizer implements DescriptorCusto
     public void customize(ClassDescriptor descriptor) throws Exception {
 	if (nullableAttrs != null)
 	    for (String nullableAttr : nullableAttrs) {
-		((AggregateObjectMapping) descriptor.getMappingForAttributeName(nullableAttr)).setIsNullAllowed(true);
+		((AggregateObjectMapping) descriptor.getMappingForAttributeName(nullableAttr)).allowNull();
 	    }
     }
 

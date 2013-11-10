@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.df.masterdata.entity.Address;
 import com.df.masterdata.entity.Store;
-import com.df.masterdata.service.contract.StoreServiceInf;
+import com.df.masterdata.service.contract.StoreService;
 
 public class StoreServiceTest extends MasterDataJPABaseTest {
 
     @Autowired
-    private StoreServiceInf storeService;
+    private StoreService storeService;
 
     @Test
     public void newStoreTest() {

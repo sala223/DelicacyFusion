@@ -13,7 +13,7 @@ public class OrderResourceImpl extends RestTemplateResource implements OrderReso
     @Override
     public Order createOrder(Order order) {
 	ResourceContext rc = this.getResourceContext();
-	String url = rc.getTargetUrl() + "/tenant/{tenantCode}/{storeCode}/order";
+	String url = rc.getTargetUrl() + "/tenant/{tenantCode}/store/{storeCode}/order";
 	RestTemplate rt = this.getRestTemplate();
 	Log.d(getClass().getName(), "Post createorder to " + url + ", order: " + order);
 	Order ro = rt.postForObject(url, order, Order.class, rc.getTenantCode(), rc.getStoreCode());

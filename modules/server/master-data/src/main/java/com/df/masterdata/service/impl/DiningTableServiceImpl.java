@@ -8,10 +8,10 @@ import com.df.masterdata.dao.DiningTableDao;
 import com.df.masterdata.dao.RoomDao;
 import com.df.masterdata.entity.DiningTable;
 import com.df.masterdata.exception.DiningTableException;
-import com.df.masterdata.service.contract.DiningTableServiceInf;
+import com.df.masterdata.service.contract.DiningTableService;
 
 @Transactional
-public class DiningTableServiceImpl implements DiningTableServiceInf {
+public class DiningTableServiceImpl implements DiningTableService {
 
     @Inject
     private DiningTableDao diningTableDao;

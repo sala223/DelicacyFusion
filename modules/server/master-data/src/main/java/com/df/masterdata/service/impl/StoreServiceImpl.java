@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.df.masterdata.dao.StoreDao;
 import com.df.masterdata.entity.Store;
 import com.df.masterdata.exception.StoreException;
-import com.df.masterdata.service.contract.StoreServiceInf;
+import com.df.masterdata.service.contract.StoreService;
 
 @Transactional(isolation = Isolation.DEFAULT)
-public class StoreServiceImpl implements StoreServiceInf {
+public class StoreServiceImpl implements StoreService {
 
     @Inject
     private StoreDao storeDao;

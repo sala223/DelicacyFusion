@@ -17,10 +17,14 @@ dependencies {
 sourceSets {
     main {
     	output.resourcesDir = project.buildDir.path+'/classes/main'
-    	output.classesDir   = project.buildDir.path+'/classes/main'
-    }
+    	output.classesDir   = output.resourcesDir
+    } 
+	test {
+    	output.resourcesDir = project.buildDir.path+'/classes/main'
+    	output.classesDir   = output.resourcesDir
+    }   
 }
-
+ 
 eclipse {
 	classpath{
     	defaultOutputDir=new File(project.buildDir.path+'/classes/main')
@@ -41,3 +45,11 @@ task weave(type: JavaExec, dependsOn:[classes]) {
     	     	sourceSets.main.output.classesDir.path, 
     	     	sourceSets.main.output.classesDir.path ]
  }
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+	
+jar.dependsOn sourcesJar
+ 

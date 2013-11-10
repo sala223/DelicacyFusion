@@ -43,23 +43,27 @@ public class ItemDao extends StoreAwareMasterDataAccessFoundation {
 	}
     }
 
-    public List<Item> listAvaliableItems(String storeCode, List<String> itemCodes) {
+    public List<String> listUnavaliableItems(String storeCode, List<String> itemCodes) {
 	if (itemCodes == null || itemCodes.size() == 0) {
-	    return new ArrayList<Item>();
+	    return new ArrayList<String>();
 	}
 
-	CriteriaBuilder builder = createQueryBuilder();
-	CriteriaQuery<Item> query = builder.createQuery(Item.class);
-	Root<Item> root = query.from(Item.class);
-	Join<Object, Object> templateJoin = root.join(ITEM.TEMPLATE_PROPERTY);
-	List<Predicate> predicates = new ArrayList<Predicate>();
-	predicates.add(templateJoin.get(ITEM_TEMPLATE.CODE_PROPERTY).in(itemCodes));
-	predicates.add(builder.equal(root.get(ITEM.STORE_CODE_PROPERTY), storeCode));
-	predicates.add(builder.equal(root.get(ITEM.IS_ENABLED_PROPERTY), true));
-	query.where(predicates.toArray(new Predicate[0]));
-	EntityManager em = getEntityManager();
-	TypedQuery<Item> typedQuery = em.createQuery(query);
-	return typedQuery.getResultList();
+	String eqlFmt = "SELECT i.%s FROM Item i INNER JOIN i.itemTemplate t ";
+	eqlFmt += " WHERE i.%s=:STORE_CODE AND t." + MASTERDATA.IS_ENABLED_PROPERTY + " =:IS_ENABLED";
+	eqlFmt += " AND i.%s IN :ITEM_CODES";
+	String eql = String.format(eqlFmt, ITEM.CODE_PROPERTY, ITEM.STORE_CODE_PROPERTY, ITEM.CODE_PROPERTY);
+	Query query = this.getEntityManager().createQuery(eql);
+	query.setParameter("STORE_CODE", storeCode);
+	query.setParameter("IS_ENABLED", true);
+	query.setParameter("ITEM_CODES", itemCodes);
+	List<?> rows = query.getResultList();
+	ArrayList<String> unavaliableItems = new ArrayList<String>();
+	for (String itemCode : itemCodes) {
+	    if (!rows.contains(itemCode)) {
+		unavaliableItems.add(itemCode);
+	    }
+	}
+	return unavaliableItems;
     }
 
     public Item getItemByItemCode(String storeCode, String itemCode) {

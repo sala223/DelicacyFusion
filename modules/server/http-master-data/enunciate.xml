@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<enunciate label="delicacyfusion" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://enunciate.codehaus.org/schemas/enunciate-1.27.xsd">
+	<api-import pattern="com.df.masterdata.entity.*" />
+	<api-import pattern="com.df.masterdata.auxiliary.template.*" />
+	<namespaces>
+		<namespace id="masterdata" uri="http://api.delicacyfusion.com/masterdata" />
+	</namespaces>
+	<modules>
+		<!-- Docs -->
+		<docs splashPackage="com.df.http.masterdata.resources" title="master-data-restful-api"
+			copyright="www.delicacyfusion.com" includeExampleXml="false">
+		</docs>
+		<basic-app disabled="false" />
+		<ruby disabled="true" />
+		<c disabled="true" />
+		<csharp disabled="true" />
+		<java-client disabled="false" />
+		<cxf disabled="true" />
+		<jaxws-client disabled="true" />
+		<jaxws-ri disabled="true" />
+		<jaxws-support disabled="true" />
+		<jersey disabled="true" />
+		<obj-c disabled="true" />
+		<xml disabled="true" />
+		<php disabled="true" />
+	</modules>
+</enunciate>

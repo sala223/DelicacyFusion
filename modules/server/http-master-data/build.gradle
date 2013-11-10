@@ -11,3 +11,9 @@ dependencies {
     runtime "org.apache.httpcomponents:httpcore:4.1.4" 
     runtime "commons-codec:commons-codec:1.4" 
 }
+
+def src_dependencies=project(':master-data').sourceSets.main.java.srcDirs.toArray()[0].path 
+ant.properties['enunciate.dependencies']=configurations.compile.asPath 
+ant.properties['enunciate.outputDir']=project.buildDir.path
+ant.importBuild 'enunicate.build.xml'
+jar.dependsOn gendoc
