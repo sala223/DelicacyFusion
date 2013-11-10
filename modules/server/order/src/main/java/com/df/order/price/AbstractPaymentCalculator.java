@@ -86,9 +86,11 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 		paymentContext.setItem(item);
 		BigDecimal price = this.calculateItemPayment(paymentContext);
 		Promotion promotion = paymentContext.getItemAppliedPromotion();
-		line.setPromotionId(promotion.getId());
-		line.setPromotionName(promotion.getName());
-		line.setPromotionPrice(price.floatValue());
+		if(promotion != null){
+		    line.setPromotionId(promotion.getId());
+			line.setPromotionName(promotion.getName());
+			line.setPromotionPrice(price.floatValue());
+		}
 		line.calcuatePayment();
 		total.add(line.getTotalPayment());
 	    }

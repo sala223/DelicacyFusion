@@ -11,6 +11,8 @@ public class OrderException extends BusinessException {
 
     public static final int NO_DINING_TIME_FOR_PRESERVED_ORDER = 100001;
 
+    public static final int STORE_IS_NOT_SPECIFIED = 100002;
+
     public OrderException(Throwable cause, int errorCode) {
 	super(cause, REALM, errorCode);
     }
@@ -29,5 +31,9 @@ public class OrderException extends BusinessException {
 
     public static OrderException noDiningTimeForPreservedOrder() {
 	return new OrderException(NO_DINING_TIME_FOR_PRESERVED_ORDER, "Preserved order must have dining time.");
+    }
+
+    public static OrderException storeIsNotSpecifiedException() {
+	return new OrderException(STORE_IS_NOT_SPECIFIED, "Store must be specified when creating order.");
     }
 }
