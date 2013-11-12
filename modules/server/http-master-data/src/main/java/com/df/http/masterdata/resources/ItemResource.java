@@ -154,6 +154,13 @@ public class ItemResource extends TenantResource {
 		if (item == null) {
 			throw ItemException.itemWithCodeNotExist(itemCode);
 		}
+		for (ImageFormat format : ImageFormat.values()) {
+			if (imageId.endsWith("." + format.name().toLowerCase())) {
+				imageId = imageId.substring(0, imageId.length() - format.name().length() - 1);
+				break;
+			}
+		}
+
 		PictureRef pic = item.getImageByImageId(imageId);
 		if (pic == null) {
 			return Response.status(Status.NOT_FOUND).type(MediaType.IMAGE_JPEG_VALUE).build();
@@ -163,7 +170,7 @@ public class ItemResource extends TenantResource {
 			Image image = imageService.fetchImage(new ImageKey(pic.getImageId()));
 			ImageFormat format = image.getImageAttributes().getFormat();
 			ResponseBuilder builder = Response.ok();
-			builder.type("image/" + format);
+			builder.type(format.getMediaType());
 			in = image.getBundleValue().getDataInBundle();
 			byte[] imageData = new byte[image.getBundleValue().getSize()];
 

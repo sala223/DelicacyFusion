@@ -40,6 +40,7 @@ public class ItemResourceTest extends AbstractResourceTest {
 		item.setCode("A0001");
 		String imageId = "AAAADAAAABgABAAAACRkNGNhM2U4Yi1lMTlhLTQ4NmItYjg4YS0xMTVmNzBlZThmYTgAAAAEdGVzdA";
 		byte[] image = itemResource.getItemImage(item, imageId);
+		TestCase.assertNotNull(image);
 		TestCase.assertTrue(image.length > 0);
 	}
 }

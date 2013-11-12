@@ -4,55 +4,55 @@ import java.io.Serializable;
 
 public class PictureRef implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private String imageId;
+	private String imageId;
 
-    private String imageLink;
+	private String imageLink;
 
-    private int width;
+	private int width;
 
-    private int heigth;
+	private int heigth;
 
-    private String format;
+	private String format;
 
-    public String getImageId() {
-	return imageId;
-    }
+	public String getImageId() {
+		return imageId;
+	}
 
-    public void setImageId(String imageId) {
-	this.imageId = imageId;
-    }
+	public void setImageId(String imageId) {
+		this.imageId = imageId;
+	}
 
-    public int getWidth() {
-	return width;
-    }
+	public int getWidth() {
+		return width;
+	}
 
-    public void setWidth(int width) {
-	this.width = width;
-    }
+	public void setWidth(int width) {
+		this.width = width;
+	}
 
-    public int getHeigth() {
-	return heigth;
-    }
+	public int getHeigth() {
+		return heigth;
+	}
 
-    public void setHeigth(int heigth) {
-	this.heigth = heigth;
-    }
+	public void setHeigth(int heigth) {
+		this.heigth = heigth;
+	}
 
-    public String getFormat() {
-	return format;
-    }
+	public String getFormat() {
+		return format;
+	}
 
-    public void setFormat(String format) {
-	this.format = format;
-    }
+	public void setFormat(String format) {
+		this.format = format;
+	}
 
-    public String getImageLink() {
-	return imageLink;
-    }
+	public String getImageLink() {
+		return imageLink;
+	}
 
-    public void setImageLink(String imageLink) {
-	this.imageLink = imageLink;
-    }
+	public void setImageLink(String imageLink) {
+		this.imageLink = imageLink;
+	}
 }

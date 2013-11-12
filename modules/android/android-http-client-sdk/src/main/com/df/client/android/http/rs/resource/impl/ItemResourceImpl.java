@@ -2,7 +2,6 @@ package com.df.client.android.http.rs.resource.impl;
 
 import com.df.client.http.ResourceContext;
 import com.df.client.rs.model.Item;
-import com.df.client.rs.model.PictureRef;
 import com.df.client.rs.resource.ItemResource;
 
 public class ItemResourceImpl extends RestTemplateResource implements ItemResource {
@@ -30,10 +29,6 @@ public class ItemResourceImpl extends RestTemplateResource implements ItemResour
 
 	public byte[] getItemImage(Item item, String imageId) {
 		ResourceContext rc = this.getResourceContext();
-		PictureRef pic = item.getImageByImageId(imageId);
-		if (pic == null) {
-			return null;
-		}
 		String url = rc.getTargetUrl() + "/tenant/{tenantCode}/store/{storeCode}/item/{itemCode}/image/{iamgeId}";
 		byte[] imageData = getRestTemplate().getForObject(url, byte[].class, rc.getTenantCode(), rc.getStoreCode(),
 		        item.getCode(), imageId);

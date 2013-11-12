@@ -41,7 +41,7 @@ public abstract class ImageServlet extends HttpServlet {
 			try {
 				Image image = imageService.fetchImage(imageKey);
 				ImageFormat format = image.getImageAttributes().getFormat();
-				resp.setContentType("image/" + format.name().toLowerCase());
+				resp.setContentType(format.getMediaType());
 				in = image.getBundleValue().getDataInBundle();
 				resp.setContentLength(image.getBundleValue().getSize());
 				out = resp.getOutputStream();

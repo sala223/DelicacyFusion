@@ -14,5 +14,6 @@
 	<bean id="imageLinkCreator" class="com.df.blobstore.image.http.DefaultImageLinkCreator"
 		lazy-init="true">
 		<property name="imageRequestPrefix" value="/image" />
+		<property name="keyResolver" ref="imageKeyResolver"/>
 	</bean>
 </beans>

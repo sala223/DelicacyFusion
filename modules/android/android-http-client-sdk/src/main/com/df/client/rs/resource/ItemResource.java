@@ -11,5 +11,4 @@ public interface ItemResource extends Resource {
 	public Item[] getFoodsByCategory(String categoryCode);
 
 	public byte[] getItemImage(Item item, String imageId);
-
 }
