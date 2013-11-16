@@ -3,9 +3,9 @@ package com.df.masterdata.service.impl;
 import java.io.InputStream;
 import java.util.Map;
 
-import com.df.masterdata.auxiliary.template.CategoryProfile;
+import com.df.masterdata.auxiliary.Category;
 
 public interface ResourceBundleParser {
 
-    Map<String, CategoryProfile> parse(InputStream in);
+	Map<String, Category> parse(InputStream in);
 }

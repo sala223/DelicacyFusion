@@ -1,12 +1,7 @@
 package com.df.http.masterdata.resources;
 
-import java.util.List;
-import java.util.regex.PatternSyntaxException;
-
 import javax.inject.Inject;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -15,96 +10,34 @@ import org.codehaus.enunciate.jaxrs.TypeHint;
 import org.springframework.stereotype.Component;
 
 import com.df.core.rs.TenantResource;
-import com.df.http.masterdata.resources.exception.InputValidationException;
-import com.df.masterdata.auxiliary.template.CategoryProfile;
-import com.df.masterdata.auxiliary.template.CategoryTemplate;
-import com.df.masterdata.entity.Category;
-import com.df.masterdata.service.contract.CategoryService;
+import com.df.masterdata.auxiliary.Category;
+import com.df.masterdata.auxiliary.CategoryLoader;
 
 @Path("/tenant/{tenantCode}/category/")
 @Produces("application/json;charset=UTF-8")
 @Component
 public class CategoryResource extends TenantResource {
 
-    @Inject
-    private CategoryService categoryService;
+	@Inject
+	private CategoryLoader categoryLoader;
 
-    @Inject
-    private CategoryTemplate categoryTemplate;
-
-    public void setCategoryService(CategoryService categoryService) {
-	this.categoryService = categoryService;
-    }
-
-    /**
-     * Get all categories in a tenant
-     * 
-     * @param tenantCode
-     *            The tenant code
-     * @return a list of category in a tenant.
-     */
-    @GET
-    @Path("/")
-    @TypeHint(Category.class)
-    public List<Category> getCategories(@PathParam("tenantCode") String tenantCode) {
-	injectTenantContext(tenantCode);
-	return categoryService.getCategories();
-    }
-
-    /**
-     * Get a list of predefined category profile from template.
-     * 
-     * @param tenantCode
-     *            The tenant code
-     * @return the predefined category list.
-     */
-    @GET
-    @Path("/template")
-    @TypeHint(CategoryProfile.class)
-    public CategoryProfile[] getCategoriesFromTemplate(@PathParam("tenantCode") String tenantCode) {
-	return categoryTemplate.getCategories();
-    }
-
-    /**
-     * Add categories for a tenant. <br>
-     * Tenant is only allowed to select categories from category template and
-     * add them to its own categories.
-     * 
-     * @param tenantCode
-     *            The tenant code
-     * @param categoryCodes
-     *            the category codes to be added. Multiple category code must be
-     *            separated with ",".
-     */
-    @POST
-    @Path("/{categoryCodes}")
-    public void addCategoryFromTemplate(@PathParam("tenantCode") String tenantCode,
-	    @PathParam("categoryCodes") String categoryCodes) {
-	if (categoryCodes == null || categoryCodes.length() == 0) {
-	    return;
+	public void setCategoryLoader(CategoryLoader categoryLoader) {
+		this.categoryLoader = categoryLoader;
 	}
-	try {
-	    String[] codesArray = categoryCodes.split(",");
-	    injectTenantContext(tenantCode);
-	    categoryService.newCategoryFromTemplate(codesArray);
-	} catch (PatternSyntaxException ex) {
-	    throw new InputValidationException(100000, "Multiple category code must be seperated with ,");
-	}
-    }
 
-    /**
-     * Remove a specified category from a tenant.
-     * 
-     * @param tenantCode
-     *            The tenant code
-     * @param categoryCode
-     *            the category code to be removed.
-     */
-    @DELETE
-    @Path("/{categoryCode}")
-    public void removeCategory(@PathParam("tenantCode") String tenantCode,
-	    @PathParam("categoryCode") String categoryCode) {
-	injectTenantContext(tenantCode);
-	categoryService.removeCategory(categoryCode);
-    }
+	/**
+	 * Get all categories in a tenant
+	 * 
+	 * @param tenantCode
+	 *            The tenant code
+	 * @return a list of category in a tenant.
+	 */
+	@GET
+	@Path("/")
+	@TypeHint(Category.class)
+	public Category[] getCategories(@PathParam("tenantCode") String tenantCode) {
+		injectTenantContext(tenantCode);
+		return categoryLoader.loadCategories();
+	}
+
 }

@@ -5,7 +5,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	version="2.4">
 	<mapped-superclass class="com.df.masterdata.entity.MasterData"/>
-	<entity class="com.df.masterdata.entity.Category" />
 	<entity class="com.df.masterdata.entity.Item"/>
 	<entity class="com.df.masterdata.entity.ItemTemplate"/>
 	<entity class="com.df.masterdata.entity.Store"/>
