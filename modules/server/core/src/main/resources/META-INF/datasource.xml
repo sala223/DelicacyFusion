@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
@@ -14,33 +14,55 @@
 		<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 			<property name="entityManagerFactory" ref="entityManagerFactory" />
 		</bean>
-		<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+		<bean id="entityManagerFactory"
+			class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
 			<property name="persistenceUnitName" value="delicacy-fusion" />
 		</bean>
 	</beans>
 	<beans profile="test">
-		<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-			p:driverClassName="com.mysql.jdbc.Driver" p:url="jdbc:mysql://localhost:3306/DELICACY_FUSION?profileSQL=false" 
-			p:username="root"
-			p:password="">
+		<bean id="propertyConfigurer"
+			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+			<property name="location">
+				<value>classpath:META-INF/test_env.properties</value>
+			</property>
+			<property name="fileEncoding" value="utf-8" />
 		</bean>
-		<bean id="dataSource-sqlServer" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-			p:driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" p:url="jdbc:sqlserver://10.58.81.202:1433;databaseName=DELICACY_FUSION"
-			p:username="sa"
-			p:password="Oba.2247d" lazy-init="true">
+		<bean id="dataSource"
+			class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+			p:driverClassName="com.mysql.jdbc.Driver"
+			p:url="jdbc:mysql://${db.host}:${db.port}/DELICACY_FUSION?profileSQL=false"
+			p:username="${db.uname}" p:password="${db.password}">
 		</bean>
-		<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect">
+		<bean id="dataSource-sqlServer"
+			class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+			p:driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			p:url="jdbc:sqlserver://10.58.81.202:1433;databaseName=DELICACY_FUSION"
+			p:username="sa" p:password="Oba.2247d" lazy-init="true">
+		</bean>
+		<bean id="jpaDialect"
+			class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect">
 			<property name="lazyDatabaseTransaction" value="true" />
 		</bean>
-		<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<bean id="entityManagerFactory"
+			class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 			<property name="dataSource" ref="dataSource" />
 			<property name="jpaDialect" ref="jpaDialect" />
 			<property name="persistenceUnitManager" ref="persistenceUnitManager" />
+			<property name="jpaProperties">
+				<props>
+					<prop key="eclipselink.ddl-generation">${eclipselink.ddl-generation}</prop>
+					<prop key="eclipselink.ddl-generation.output-mode">both</prop>
+					<prop key="eclipselink.drop-ddl-jdbc-file-name">drop.gen.sql</prop>
+					<prop key="eclipselink.create-ddl-jdbc-file-name">create.gen.sql</prop>
+				</props>
+			</property>
 		</bean>
-		<bean id="persistenceUnitManager" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
+		<bean id="persistenceUnitManager"
+			class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
 			<property name="defaultDataSource" ref="dataSource" />
 			<property name="dataSourceLookup">
-				<bean class="org.springframework.jdbc.datasource.lookup.SingleDataSourceLookup">
+				<bean
+					class="org.springframework.jdbc.datasource.lookup.SingleDataSourceLookup">
 					<constructor-arg index="0" ref="dataSource" />
 				</bean>
 			</property>

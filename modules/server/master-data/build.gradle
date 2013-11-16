@@ -1,6 +1,12 @@
+configurations{
+    coreTest
+}
+
 dependencies {
     compile project(':core')
     compile project(':blob-store')
+    coreTest project(':core').sourceSets.test.output
+    testRuntime project(':core').sourceSets.test.output
     compile ":javax.inject:1"
     compile ":spring-tx:4.0.0.M2"
     compile ":jackson-core-asl:1.9.12"
@@ -25,9 +31,9 @@ sourceSets {
 }
  
 eclipse {
-	classpath{
-    	defaultOutputDir=new File(project.buildDir.path+'/classes/main')
-	}
+    classpath {
+        minusConfigurations += configurations.coreTest 
+    }
 }
 
 classes.doLast{

@@ -10,6 +10,7 @@ subprojects {
 	version=1.0 
 	
 	configurations {
+		 
 	}
 	
 	sourceSets {
@@ -44,8 +45,7 @@ subprojects {
 				 "$jbossHome/modules/org/jboss/resteasy/resteasy-jackson-provider/main",
 				 "$jbossHome/modules/org/jboss/resteasy/resteasy-multipart-provider/main",
 				 "$jbossHome/modules/org/apache/commons/codec/main",
-				 "$jbossHome/modules/org/apache/httpcomponents/main"
-				 
+				 "$jbossHome/modules/org/apache/httpcomponents/main" 
     	}
 	}
 	
@@ -57,5 +57,11 @@ subprojects {
     jar {
 		duplicatesStrategy='EXCLUDE'
         manifest.attributes provider: 'www.delicacyfusion.com'
-    } 
+    }
+	 
+	eclipse {
+		classpath{
+			defaultOutputDir=new File(project.buildDir.path+'/classes/main')
+		}
+	}
 }
