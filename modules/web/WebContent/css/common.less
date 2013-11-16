@@ -13,6 +13,18 @@ html,body {
     background-color:#4A4D4E;
 }
 
+.transform(@scale:1;@rotate:0;@tx:0;@ty:0;@sx:0;@sy:0) {
+    -moz-transform:    scale(@scale) rotate(@rotate) translateX(@tx) translateY(@ty) skewX(@sx) skewY(@sy);
+    -webkit-transform: scale(@scale) rotate(@rotate) translateX(@tx) translateY(@ty) skewX(@sx) skewY(@sy);
+    -o-transform:      scale(@scale) rotate(@rotate) translateX(@tx) translateY(@ty) skewX(@sx) skewY(@sy);
+    -ms-transform:     scale(@scale) rotate(@rotate) translateX(@tx) translateY(@ty) skewX(@sx) skewY(@sy);
+    transform:         scale(@scale) rotate(@rotate) translateX(@tx) translateY(@ty) skewX(@sx) skewY(@sy);
+}
+
+.transform0 {
+    .transform() !important;
+}
+
 /*
 @button-height:30px;
 

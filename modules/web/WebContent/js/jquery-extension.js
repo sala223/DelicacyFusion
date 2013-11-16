@@ -12,6 +12,13 @@ _jQuery_static_members = {
 				$.each(vs,function(i,e){
 					inc.val(e).keypress();
 				});
+			},
+			imgview_val:function(pics){
+				$('>div.clearboth .img',this).remove();
+
+				$('>div.clearboth',this).append($.map(pics,function(e,i){
+					return '<div class="img" style="background-image:url('+e.imageLink+')"></div>';
+				}).join(''));
 			}
 		},
 		getter:{
@@ -22,6 +29,9 @@ _jQuery_static_members = {
 				return $('span.v',this).map(function(i,e){
 					return $(e).text();
 				}).get();
+			},
+			imgview_val:function(){
+				console.log('//To be implemented');
 			}
 		}
 	}
@@ -64,5 +74,52 @@ jQuery.fn.extend({
 		});
 
 		return data;
+	},
+
+	imageDropper:function(){
+		var dropTarget = this;
+
+		dropTarget.append([
+        '<span class="glyphicon glyphicon-plus"></span>',
+        '<div>',
+        '  <div class="ab">',
+        '    <span class="glyphicon glyphicon-ok"></span>',
+        '    <span class="glyphicon glyphicon-remove"></span>',
+        '  </div>',
+        '</div>'
+		].join(''));
+
+		dropTarget.addClass('image-dropper')
+		.children()
+		.on('dragover',function(ev){
+			$(ev.target).parent().addClass('dragover');
+			ev.preventDefault();
+		})
+		.on('dragleave',function(ev){
+			console.log('dragleave');
+			$(ev.target).parent().removeClass('dragover');
+			ev.preventDefault();
+		})
+		.on('drop',function(ev){
+			console.log('dropped');
+			
+			var preview = dropTarget.removeClass('dragover'),
+				file = ev.originalEvent.dataTransfer.files[0],
+			    reader = new FileReader();
+
+			$(reader).on('load',function (event) {
+				//event.target.result.replace(/^data:([\w-\.]+\/[\w-\.]+)?;base64,/,''));
+				preview.css('background-image','url('+event.target.result+')');
+				preview.addClass('dropped');
+			});
+
+			reader.readAsDataURL(file);
+			ev.preventDefault();
+			return false;
+		});
+
+		$('.glyphicon-remove',this).click(function(){
+			dropTarget.removeClass('dropped').css('backgroundImage','none');
+		});
 	}
 });

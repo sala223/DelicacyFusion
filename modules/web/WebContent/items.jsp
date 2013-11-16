@@ -13,11 +13,10 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" />
     <style>
     #edit {
-      width:0;
+      width:600px;
     }
     #edit > div {
       padding:20px;
-      width:600px;
     }
 
     ul.dropdown-menu.align-right li a {
@@ -109,6 +108,14 @@
               </div>
             </div>
 
+            <div class="form-group imgview" data-channel="imgview_val(pictureSet)">
+              <label class="control-label" data-i19="def">item_image</label>
+              <div class="clearboth">
+                <div class="imgcreator"></div>
+                <div class="img"></div>
+              </div>
+            </div>
+
             <div class="btn-group">
               <button type="button" class="btn btn-primary" id="btnOK">OK</button>
               <button type="button" class="btn btn-default" id="btnCancel">Cancel</button>
@@ -131,74 +138,21 @@
     	});
 
     	$('#btnCancel').click(function(){
-            $('#edit').animate({width:0});
-            $('#dishes').css({"right":0}).removeClass('min');
+            $('#edit').removeClass('transform0');
     	});
 
     	// slide in
     	$('#dishes').delegate('.tile > div','click',function(ev){
-    	    var innerWidth=$('#edit>div').outerWidth(),
-    	        dataIdx = parseInt($(ev.currentTarget).attr('data-idx'),10);
+    	    var dataIdx = parseInt($(ev.currentTarget).attr('data-idx'),10);
 
     		$('#edit')
     		.data('editingIdx',dataIdx)
     		.toDataView(memoryStorage['items'][dataIdx])
-    		.animate({width:innerWidth+'px'},{
-    			easing:'easeOutCubic',
-    			duration:400
-    		}).promise('fx').done(function(){
-    			/*
-    			$('#dishes')
-    			.css({
-    				"right":(panelWidth-minbarWidth)+'px'
-    			})
-    			.addClass('min');
-    		    */
-    		});
+    		.addClass('transform0');
+
     	});
 
     	// EOC - slide in
-
-    	// Pop out
-    	/*
-        $('#dishes').delegate('.tile > div','click',function(ev){
-        	var sp = $(ev.currentTarget).parent().position(),
-        	    ph = $('#panel').height(),
-        	    pw = $('#panel').width(),
-        	    origin = {
-                    //display:'none',
-                    left:(sp.left + 12)+'px',
-                    top:(sp.top + 12)+'px',
-                    right:(pw - sp.left - 112),
-                    bottom:(ph - sp.top - 112)
-                };
-
-        	$('#edit').css(origin).data('origin',origin)
-        	.show()
-        	.animate({
-        		left:'18px',
-                right:'18px',
-                top:'12px',
-                bottom:'12px'
-        	});
-
-        	$('#dishes').addClass('min');
-        });
-    	*/
-
-    	/*
-    	$('#edit').click(function(ev){
-            var me=$(this);
-
-            me.animate(me.data('origin')).animate({'opacity':0})
-            .promise().done(function(){
-            	me.hide().css({opacity:1});
-            	me.removeData('origin');
-            	$('#dishes').removeClass('min');
-            });
-    	});
-    	*/
-        // EOC - Pop out
 
         $('.dropdown-menu').delegate('a','click',function(ev){
             var dt = $(ev.delegateTarget),
@@ -231,6 +185,8 @@
     		$(ev.target).parent().remove();
     	});
         
+    	
+    	$('.imgcreator').imageDropper();
 
     	
     	$.ajax('latency/testdata/items.json',{applyElement:'#panel'})

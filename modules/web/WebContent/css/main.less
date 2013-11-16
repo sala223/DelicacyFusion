@@ -84,8 +84,9 @@
 
 
 #edit {
-
-// slide-in
+    .transform(1,0,100%,0,0,0);
+    .transition(400ms);
+    
     .docked-right(6px);
     right:0;
     width:0;
@@ -93,18 +94,18 @@
     -webkit-box-shadow:0 0px 8px 0px rgba(0, 0, 0, 0.4);
     background-color:white;
     border-radius:10px 0 0 10px;
-// EOC slide-in
 
-/*
-    display:none;
-    .docked-right(6px);
-    right:0;
-    box-shadow:0 0px 8px 0px rgba(0, 0, 0, 0.4);
-    -webkit-box-shadow:0 0px 8px 0px rgba(0, 0, 0, 0.4);
 
-    background-color:white;
-    border-radius:10px;
-*/
+    .form-group.imgview {
+        .img,
+        .imgcreator {
+            width:80px;
+            height:80px;
+            background:transparent no-repeat center center;
+            background-size : contain;
+            float:left;
+        }
+    }
 }
 
 
@@ -115,5 +116,82 @@
 
     textarea {
         resize:none;
+    }
+}
+
+
+.image-dropper {
+
+    position:relative;
+    @DefaultColor:#CCC;
+    color:@DefaultColor;
+    line-height:80px;
+    text-align:center;
+    font-size:2.5em;
+
+    >.glyphicon {
+        display:inline;
+    }
+
+    >div {
+        .docked-center();
+        border:4px dashed @DefaultColor;
+        border-radius:10px;
+        overflow:hidden;
+        background-color:transparent;
+
+        .ab {
+            .docked-bottom();
+            bottom:2px;
+            height:27px;
+            line-height:27px;
+
+            .transform(1,0,0,32px,0,0);
+            .transition(400ms);
+        }
+
+        .glyphicon {
+            cursor:pointer;
+        }
+
+        @okColor:#5CB85C;
+        .glyphicon-ok {
+            color:@okColor;
+        }
+    
+        .glyphicon-ok:hover {
+            color: darken(@okColor,10%);
+        }
+    
+        @cancelColor:#D9534F;
+        .glyphicon-remove {
+            color:@cancelColor;
+        }
+        .glyphicon-remove:hover {
+            color: darken(@cancelColor,10%);
+        }
+    }
+}
+
+.image-dropper.dragover {
+    @OverColor:#777;
+    color:@OverColor;
+
+    >div {
+        border-color:@OverColor;
+    }
+}
+
+.image-dropper.dropped {
+    >.glyphicon {
+        display:none;
+    }
+
+    >div {
+        background-color:rgba(255,255,255,0.7);
+
+        .ab {
+            .transform0();
+        }
     }
 }
