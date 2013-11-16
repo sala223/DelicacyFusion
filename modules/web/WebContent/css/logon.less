@@ -1,0 +1,51 @@
+@import "common.less";
+
+#page {
+
+    > div {
+        float:left;
+        position:absolute;
+        left:50%;
+        top:50%;
+    }
+}
+
+#logon {
+
+    float:left;
+    position:relative;
+    left:-50%;
+    top:-50px;
+
+
+    @field-height:30px;
+    @label-width:80px;
+
+    > .fieldbar {
+        height:@field-height;
+    }
+
+    label {
+        font-size:1.4em;
+        width:@label-width;
+        display:block;
+        text-align:right;
+        line-height:@field-height;
+        float:left;
+    }
+
+    input {
+        border:1px solid #ddd;
+        margin:4px 0 0 6px;
+        font-family:@font-family;
+        font-size:14px;
+    }
+    
+    .buttonbar {
+        margin-top:6px;
+        
+        button {
+            float:right;
+        }
+    }
+}
