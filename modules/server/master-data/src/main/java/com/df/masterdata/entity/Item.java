@@ -104,8 +104,9 @@ public class Item extends StoreAwareMasterData {
 	public boolean isEnabled() {
 		if (this.itemTemplate.isEnabled()) {
 			return super.isEnabled();
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 	public void createImageLink(ImageLinkCreator creator) {

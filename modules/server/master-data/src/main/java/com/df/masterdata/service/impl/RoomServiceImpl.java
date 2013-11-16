@@ -17,51 +17,54 @@ import com.df.masterdata.service.contract.StoreService;
 @Transactional
 public class RoomServiceImpl implements RoomService {
 
-    @Inject
-    private RoomDao roomDao;
+	@Inject
+	private RoomDao roomDao;
 
-    private StoreService storeService;
+	private StoreService storeService;
 
-    public void setRoomDao(RoomDao roomDao) {
-	this.roomDao = roomDao;
-    }
-
-    public void setStoreService(StoreService storeService) {
-	this.storeService = storeService;
-    }
-
-    @Override
-    public void newRoom(Room room) {
-	Store store = storeService.getStoreByCode(room.getStoreCode());
-	if (store == null) {
-	    throw StoreException.storeWithCodeNotExist(room.getStoreCode());
+	public void setRoomDao(RoomDao roomDao) {
+		this.roomDao = roomDao;
 	}
-	Room froom = roomDao.findRoomByRoomName(room.getCode(), room.getName());
-	if (froom != null) {
-	    throw RoomException.roomWithNameAlreadyExist(room.getName());
-	}
-	froom = roomDao.findRoomByRoomCode(room.getCode(), room.getCode());
-	if (froom != null) {
-	    throw RoomException.roomWithCodeNotExist(room.getCode());
-	}
-	roomDao.insert(room);
-    }
 
-    @Override
-    public List<Room> getRooms(String storeCode) {
-	return roomDao.all(storeCode, Room.class);
-    }
-
-    @Override
-    public void removeRoom(String storeCode, String roomCode) {
-	Room room = roomDao.findRoomByRoomCode(storeCode, roomCode);
-	if (room != null) {
-	    if (room.getDiningTables().size() > 0) {
-		throw RoomException.roomIsNotEmpty(roomCode);
-	    } else {
-		roomDao.remove(room);
-	    }
+	public void setStoreService(StoreService storeService) {
+		this.storeService = storeService;
 	}
-    }
+
+	@Override
+	public void newRoom(Room room) {
+		Store store = storeService.getStoreByCode(room.getStoreCode());
+		if (store == null) {
+			throw StoreException.storeWithCodeNotExist(room.getStoreCode());
+		}
+		Room froom = roomDao.findRoomByRoomName(room.getCode(), room.getName());
+		if (froom != null) {
+			throw RoomException.roomWithNameAlreadyExist(room.getName());
+		}
+		froom = roomDao.findRoomByRoomCode(room.getCode(), room.getCode());
+		if (froom != null) {
+			throw RoomException.roomWithCodeNotExist(room.getCode());
+		}
+		roomDao.insert(room);
+	}
+
+	@Override
+	public List<Room> getRooms(String storeCode) {
+		return roomDao.all(storeCode, Room.class);
+	}
+
+	@Override
+	public void removeRoom(String storeCode, String roomCode) {
+		Room room = roomDao.findRoomByRoomCode(storeCode, roomCode);
+		if (room != null) {
+			room.setStoreCode(storeCode);
+			roomDao.remove(room);
+		}
+	}
+
+	@Override
+	public void updateRoom(String storeCode, Room room) {
+		room.setStoreCode(storeCode);
+		roomDao.update(room);
+	}
 
 }

@@ -13,33 +13,42 @@ import com.df.masterdata.service.contract.DiningTableService;
 @Transactional
 public class DiningTableServiceImpl implements DiningTableService {
 
-    @Inject
-    private DiningTableDao diningTableDao;
+	@Inject
+	private DiningTableDao diningTableDao;
 
-    @Inject
-    private RoomDao roomDao;
+	@Inject
+	private RoomDao roomDao;
 
-    public void setDiningTableDao(DiningTableDao diningTableDao) {
-	this.diningTableDao = diningTableDao;
-    }
-
-    public void setRoomDao(RoomDao roomDao) {
-	this.roomDao = roomDao;
-    }
-
-    @Override
-    public void newDiningTable(String storeCode, String roomCode, DiningTable table) {
-	DiningTable t = diningTableDao.findDiningTableByNumber(storeCode, roomCode, table.getNumber());
-	if (t != null) {
-	    throw DiningTableException.tableWithNumberAlreadyExist(table.getNumber());
+	public void setDiningTableDao(DiningTableDao diningTableDao) {
+		this.diningTableDao = diningTableDao;
 	}
-	if (table.getBarCode() != null) {
-	    t = diningTableDao.findDiningTableByBarCode(table.getBarCode());
-	    if (t != null) {
-		throw DiningTableException.tableWithBarCodeAlreadyExist(table.getNumber());
-	    }
+
+	public void setRoomDao(RoomDao roomDao) {
+		this.roomDao = roomDao;
 	}
-	roomDao.addDiningTable(table, storeCode, roomCode);
-    }
+
+	@Override
+	public void newDiningTable(String storeCode, DiningTable table) {
+		DiningTable t = diningTableDao.findDiningTableByCode(storeCode, table.getCode());
+		if (t != null) {
+			throw DiningTableException.tableWithCodeAlreadyExist(table.getCode());
+		}
+		if (table.getBarCode() != null) {
+			t = diningTableDao.findDiningTableByBarCode(table.getBarCode());
+			if (t != null) {
+				throw DiningTableException.tableWithBarCodeAlreadyExist(table.getBarCode());
+			}
+		}
+	}
+
+	@Override
+	public void removeDiningTableByCode(String storeCode, String code) {
+		diningTableDao.removeDiningTableByCode(storeCode, code);
+	}
+
+	@Override
+	public void removeDiningTableByBarCode(String barCode) {
+		diningTableDao.removeDiningTableByBarCode(barCode);
+	}
 
 }

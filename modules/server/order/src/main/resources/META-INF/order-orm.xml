@@ -7,4 +7,5 @@
 	<entity class="com.df.order.entity.Order" />
 	<entity class="com.df.order.entity.Payment"/>
 	<entity class="com.df.order.entity.Delivery"/>
+	<entity class="com.df.order.entity.TableResource"/>
 </entity-mappings>

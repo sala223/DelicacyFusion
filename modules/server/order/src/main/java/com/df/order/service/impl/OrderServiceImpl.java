@@ -22,71 +22,70 @@ import com.df.order.service.contract.OrderService;
 @Transactional
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private OrderDao orderDao;
+	@Autowired
+	private OrderDao orderDao;
 
-    @Autowired
-    private ItemService itemService;
+	@Autowired
+	private ItemService itemService;
 
-    @Autowired
-    private PaymentCalculator paymentCalculator;
+	@Autowired
+	private PaymentCalculator paymentCalculator;
 
-    public void setOrderDao(OrderDao orderDao) {
-	this.orderDao = orderDao;
-    }
-
-    public void setItemService(ItemService itemService) {
-	this.itemService = itemService;
-    }
-
-    public void setPaymentCalculator(PaymentCalculator paymentCalculator) {
-	this.paymentCalculator = paymentCalculator;
-    }
-
-    @Override
-    public void createOrder(long userId, Order order) {
-	List<OrderLine> lines = order.getLines();
-	if (lines == null) {
-	    throw OrderException.emptyLinesException();
+	public void setOrderDao(OrderDao orderDao) {
+		this.orderDao = orderDao;
 	}
-	String storeCode = order.getStoreCode();
-	if (storeCode == null) {
-	    throw OrderException.storeIsNotSpecifiedException();
-	}
-	ArrayList<String> itemCodes = new ArrayList<String>();
-	for (OrderLine line : lines) {
-	    String item = line.getItemCode();
-	    itemCodes.add(item);
-	}
-	List<String> items = itemService.listUnavaliableItems(storeCode, itemCodes);
-	if (!items.isEmpty()) {
-	    throw new InvalidItemException(items.get(0));
-	}
-	order.setOwnerId(userId);
-	if (order.getStatus() == TransactionStatus.PRESERVED) {
-	    if (order.getDinnerTime() == null) {
-		throw OrderException.noDiningTimeForPreservedOrder();
-	    }
-	} else {
-	    order.setStatus(TransactionStatus.OPEN);
-	    if (order.getDinnerTime() == null) {
-		order.setDinnerTime(new Date());
-	    }
-	}
-	PaymentContext context = paymentCalculator.createContext();
-	context.setOrder(order);
-	paymentCalculator.calculateOrderPayment(context);
-	Promotion promotion = context.getOrderAppliedPromotion();
-	if (promotion != null) {
-	    order.setPromotionId(promotion.getId());
-	    order.setPromotionName(promotion.getName());
-	}
-	orderDao.insert(order);
-    }
 
-    @Override
-    public List<Order> getLatestOrders(long userId, int number) {
-	return orderDao.getLatestOrders(userId, number);
-    }
+	public void setItemService(ItemService itemService) {
+		this.itemService = itemService;
+	}
+
+	public void setPaymentCalculator(PaymentCalculator paymentCalculator) {
+		this.paymentCalculator = paymentCalculator;
+	}
+
+	@Override
+	public void createOrder(long userId, Order order) {
+		List<OrderLine> lines = order.getLines();
+		if (lines == null) {
+			throw OrderException.emptyLinesException();
+		}
+		String storeCode = order.getStoreCode();
+		if (storeCode == null) {
+			throw OrderException.storeIsNotSpecifiedException();
+		}
+		ArrayList<String> itemCodes = new ArrayList<String>();
+		for (OrderLine line : lines) {
+			String item = line.getItemCode();
+			itemCodes.add(item);
+		}
+		List<String> items = itemService.listUnavaliableItems(storeCode, itemCodes);
+		if (!items.isEmpty()) {
+			throw new InvalidItemException(items.get(0));
+		}
+		order.setOwnerId(userId);
+		if (order.getStatus() == TransactionStatus.PRESERVED) {
+			if (order.getDinnerTime() == null) {
+				throw OrderException.noDiningTimeForPreservedOrder();
+			}
+		} else {
+			order.setStatus(TransactionStatus.OPEN);
+			if (order.getDinnerTime() == null) {
+				order.setDinnerTime(new Date());
+			}
+		}
+		PaymentContext context = paymentCalculator.createContext();
+		context.setOrder(order);
+		paymentCalculator.calculateOrderPayment(context);
+		Promotion promotion = context.getOrderAppliedPromotion();
+		if (promotion != null) {
+			order.setPromotionName(promotion.getName());
+		}
+		orderDao.insert(order);
+	}
+
+	@Override
+	public List<Order> getLatestOrders(long userId, int number) {
+		return orderDao.getLatestOrders(userId, number);
+	}
 
 }

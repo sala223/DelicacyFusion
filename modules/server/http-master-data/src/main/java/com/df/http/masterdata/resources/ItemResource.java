@@ -6,6 +6,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -132,6 +134,24 @@ public class ItemResource extends TenantResource {
 		return createItemImageLink(itemService.getAvaliableItems(storeCode, firstResult, to));
 	}
 
+	@POST
+	@Path("/item")
+	@TypeHint(Item.class)
+	public Item createItem(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
+	        Item item) {
+		injectTenantContext(tenantCode);
+		itemService.newItem(storeCode, item);
+		return item;
+	}
+
+	@PUT
+	@Path("/item")
+	public void updateItem(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
+	        Item item) {
+		injectTenantContext(tenantCode);
+		itemService.updateItem(storeCode, item);
+	}
+
 	@GET
 	@Path("/item/{itemCode}/image/{imageId}")
 	/**
@@ -155,7 +175,7 @@ public class ItemResource extends TenantResource {
 			throw ItemException.itemWithCodeNotExist(itemCode);
 		}
 		for (ImageFormat format : ImageFormat.values()) {
-			if (imageId.endsWith("." + format.name().toLowerCase())) {
+			if (imageId.endsWith(format.getFileSuffix())) {
 				imageId = imageId.substring(0, imageId.length() - format.name().length() - 1);
 				break;
 			}

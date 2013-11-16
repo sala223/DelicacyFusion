@@ -35,10 +35,10 @@ public class StoreDaoTest extends MasterDataJPABaseTest {
 	store.setAddress(address);
 	storeDao.newStore(store);
 	storeDao.getEntityManager().flush();
-	Store found = storeDao.find(Store.class, store.getId());
+	Store found = storeDao.getStoreByCode(store.getCode());
 	TestCase.assertNotNull(found);
 	storeDao.remove(found);
-	found = storeDao.find(Store.class, store.getId());
+	found = storeDao.getStoreByCode(store.getCode());
 	TestCase.assertNull(found);
     }
 

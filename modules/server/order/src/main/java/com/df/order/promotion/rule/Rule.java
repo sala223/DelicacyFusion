@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.df.masterdata.entity.RuleParameter;
 
-public interface Rule<T> {
+public interface Rule<T> { 
 
     public static int DEFAULT_SCALE = 2;
 

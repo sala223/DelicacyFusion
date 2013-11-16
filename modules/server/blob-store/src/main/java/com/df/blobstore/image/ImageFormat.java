@@ -2,7 +2,7 @@ package com.df.blobstore.image;
 
 public enum ImageFormat {
 
-	JPG(1), PNG(2), TIF(3), GIF(4);
+	JPEG(1), PNG(2), TIF(3), GIF(4);
 
 	private int intValue;
 
@@ -20,10 +20,14 @@ public enum ImageFormat {
 	}
 
 	public String getMediaType() {
-		if (this == JPG) {
-			return "image/jpeg";
+		return "image/" + this.name().toLowerCase();
+	}
+
+	public String getFileSuffix() {
+		if (this == JPEG) {
+			return ".jpg";
 		} else {
-			return "image/" + this.name().toLowerCase();
+			return "." + this.name().toLowerCase();
 		}
 	}
 

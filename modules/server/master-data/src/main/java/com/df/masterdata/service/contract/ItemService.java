@@ -7,7 +7,7 @@ import com.df.masterdata.entity.Item;
 
 public interface ItemService {
 
-    void newItem(Item item);
+    void newItem(String storeCode,Item item);
 
     void disableItem(String storeCode, String itemCode);
 
@@ -31,5 +31,5 @@ public interface ItemService {
 
     Map<String, Long> getItemCountGroupByCategory(String storeCode);
 
-    void updateItem(Item item);
+    void updateItem(String storeCode,Item item);
 }

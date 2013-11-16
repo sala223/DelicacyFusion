@@ -20,53 +20,53 @@ import com.df.masterdata.entity.StoreAwareMasterData;
 
 public class StoreAwareMasterDataAccessFoundation extends MasterDataAccessFoundation {
 
-    public <T extends StoreAwareMasterData> List<T> all(String storeCode, Class<T> storeMasterDataType) {
-	return all(storeCode, storeMasterDataType, 0, Integer.MAX_VALUE, false);
-    }
-
-    public <T extends StoreAwareMasterData> int allCount(String storeCode, Class<T> storeMasterDataType,
-	    boolean includeDisabled) {
-	EntityManager em = this.getEntityManager();
-	ClassDescriptor cd = this.getClassDescrptor(storeMasterDataType);
-	String eql = "SELECT COUNT(O) FROM %s o WHERE o.%s=:STORE_CODE ";
-	if (!includeDisabled) {
-	    eql += "AND o." + Constants.MASTERDATA.IS_ENABLED_PROPERTY + "=:IS_ENABLED";
+	public <T extends StoreAwareMasterData> List<T> all(String storeCode, Class<T> storeMasterDataType) {
+		return all(storeCode, storeMasterDataType, 0, Integer.MAX_VALUE, false);
 	}
-	Query query = em.createQuery(String.format(eql, cd.getAlias(), getStoreCodePropertyName()));
-	if (!includeDisabled) {
-	    query.setParameter("IS_ENABLED", true);
+
+	public <T extends StoreAwareMasterData> int allCount(String storeCode, Class<T> storeMasterDataType,
+	        boolean includeDisabled) {
+		EntityManager em = this.getEntityManager();
+		ClassDescriptor cd = this.getClassDescrptor(storeMasterDataType);
+		String eql = "SELECT COUNT(O) FROM %s o WHERE o.%s=:STORE_CODE ";
+		if (!includeDisabled) {
+			eql += "AND o." + Constants.MASTERDATA.IS_ENABLED_PROPERTY + "=:IS_ENABLED";
+		}
+		Query query = em.createQuery(String.format(eql, cd.getAlias(), getStoreCodePropertyName()));
+		if (!includeDisabled) {
+			query.setParameter("IS_ENABLED", true);
+		}
+		query.setParameter("STORE_CODE", storeCode);
+		return (Integer) query.getSingleResult();
 	}
-	query.setParameter("STORE_CODE", storeCode);
-	return (Integer) query.getSingleResult();
-    }
 
-    public <T extends StoreAwareMasterData> List<T> all(String storeCode, Class<T> storeMasterDataType,
-	    int firstResult, int maxResult, boolean includeDisabled) {
-	CriteriaBuilder builder = createQueryBuilder();
-	CriteriaQuery<T> query = builder.createQuery(storeMasterDataType);
-	Root<T> root = query.from(storeMasterDataType);
-	List<Predicate> predicates = new ArrayList<Predicate>();
-	if (!includeDisabled) {
-	    predicates.add(builder.equal(root.get(Constants.MASTERDATA.IS_ENABLED_PROPERTY), true));
+	public <T extends StoreAwareMasterData> List<T> all(String storeCode, Class<T> storeMasterDataType,
+	        int firstResult, int maxResult, boolean includeDisabled) {
+		CriteriaBuilder builder = createQueryBuilder();
+		CriteriaQuery<T> query = builder.createQuery(storeMasterDataType);
+		Root<T> root = query.from(storeMasterDataType);
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		if (!includeDisabled) {
+			predicates.add(builder.equal(root.get(Constants.MASTERDATA.IS_ENABLED_PROPERTY), true));
+		}
+		Predicate storeCodeEqual = builder.equal(root.get(getStoreCodePropertyName()), storeCode);
+		predicates.add(storeCodeEqual);
+		query.where(predicates.toArray(new Predicate[0]));
+		TypedQuery<T> typeQuery = this.getEntityManager().createQuery(query);
+		typeQuery.setFirstResult(firstResult);
+		typeQuery.setMaxResults(maxResult);
+		return typeQuery.getResultList();
 	}
-	Predicate storeCodeEqual = builder.equal(root.get(getStoreCodePropertyName()), storeCode);
-	predicates.add(storeCodeEqual);
-	query.where(predicates.toArray(new Predicate[0]));
-	TypedQuery<T> typeQuery = this.getEntityManager().createQuery(query);
-	typeQuery.setFirstResult(firstResult);
-	typeQuery.setMaxResults(maxResult);
-	return typeQuery.getResultList();
-    }
 
-    protected String getStoreCodePropertyName() {
-	return STORE_AWARE_MASTERDATA.STORE_CODE_PROPERTY;
-    }
+	protected String getStoreCodePropertyName() {
+		return STORE_AWARE_MASTERDATA.STORE_CODE_PROPERTY;
+	}
 
-    protected <T extends StoreAwareMasterData> T findSingleEntityByProperty(Class<T> storeMasterDataType,
-	    String storeCode, String propertyName, Object propertyValue) {
-	Property<String> p1 = new Property<String>(getStoreCodePropertyName(), storeCode);
-	Property<Object> p2 = new Property<Object>(propertyName, propertyValue);
-	return this.findSingleEntityByProperties(storeMasterDataType, p1, p2);
-    }
+	protected <T extends StoreAwareMasterData> T findSingleEntityByProperty(Class<T> storeMasterDataType,
+	        String storeCode, String propertyName, Object propertyValue) {
+		Property<String> p1 = new Property<String>(getStoreCodePropertyName(), storeCode);
+		Property<Object> p2 = new Property<Object>(propertyName, propertyValue);
+		return this.findSingleEntityByProperties(storeMasterDataType, p1, p2);
+	}
 
 }

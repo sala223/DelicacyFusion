@@ -46,11 +46,11 @@ public class DefaultImageLinkCreator implements ImageLinkCreator {
 	@Override
 	public String createImageLink(ImageAttributes attributes) {
 		ImageKey key = keyResolver.hash(attributes);
-		String suffix = attributes.getFormat().name().toLowerCase();
+		String suffix = attributes.getFormat().getFileSuffix();
 		if (imageRequestPrefix != null) {
-			return imageRequestPrefix + "/" + key.toString() + "." + suffix;
+			return imageRequestPrefix + "/" + key.toString() + suffix;
 		} else {
-			return "/" + key.toString() + "." + suffix;
+			return "/" + key.toString() + suffix;
 		}
 	}
 }

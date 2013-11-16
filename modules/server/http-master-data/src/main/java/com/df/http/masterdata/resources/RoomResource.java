@@ -19,26 +19,26 @@ import com.df.masterdata.service.contract.RoomService;
 @Component
 public class RoomResource extends TenantResource {
 
-    @Inject
-    private RoomService roomService;
+	@Inject
+	private RoomService roomService;
 
-    public void setRoomService(RoomService roomService) {
-	this.roomService = roomService;
-    }
+	public void setRoomService(RoomService roomService) {
+		this.roomService = roomService;
+	}
 
-    /**
-     * Get all rooms for a specified store
-     * 
-     * @param tenantCode
-     *            The tenant code
-     * @param storeCode
-     *            The store code
-     * @return all rooms.
-     */
-    @GET
-    @Path("/")
-    public List<Room> getRooms(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
-	this.injectTenantContext(tenantCode);
-	return roomService.getRooms(storeCode);
-    }
+	/**
+	 * Get all rooms for a specified store
+	 * 
+	 * @param tenantCode
+	 *            The tenant code
+	 * @param storeCode
+	 *            The store code
+	 * @return all rooms.
+	 */
+	@GET
+	@Path("/")
+	public List<Room> getRooms(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
+		this.injectTenantContext(tenantCode);
+		return roomService.getRooms(storeCode);
+	}
 }

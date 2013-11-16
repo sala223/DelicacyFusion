@@ -27,189 +27,211 @@ import org.eclipse.persistence.annotations.JoinFetchType;
 @Table(name = "ORDERS")
 public class Order extends TransactionEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ORDER_ID_SEQUENCE")
-    @SequenceGenerator(name = "ORDER_ID_SEQUENCE", sequenceName = "ORDER_ID_SEQUENCE")
-    @Column(name = "ORDER_ID")
-    private long orderId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ORDER_ID_SEQUENCE")
+	@SequenceGenerator(name = "ORDER_ID_SEQUENCE", sequenceName = "ORDER_ID_SEQUENCE")
+	@Column(name = "ORDER_ID")
+	private long orderId;
 
-    @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(nullable = false, name = "DINNER_TIME")
-    private Date dinnerTime;
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column(nullable = false, name = "DINNER_TIME")
+	private Date dinnerTime;
 
-    @Column(name = "IS_TAKE_OUT")
-    private boolean isTakeOut;
+	@Column(name = "IS_TAKE_OUT")
+	private boolean isTakeOut;
 
-    @ElementCollection
-    @CollectionTable(name = "ORDER_LINE", joinColumns = @JoinColumn(name = "ORDER_ID"))
-    @JoinFetch(JoinFetchType.OUTER)
-    private List<OrderLine> lines;
+	@ElementCollection
+	@CollectionTable(name = "ORDER_LINE", joinColumns = @JoinColumn(name = "ORDER_ID"))
+	@JoinFetch(JoinFetchType.OUTER)
+	private List<OrderLine> lines;
 
-    @Column(name = "TOTAL_PAYMENT", scale = 2)
-    private BigDecimal totalPayment;
+	@Column(name = "TOTAL_PAYMENT", scale = 2)
+	private BigDecimal totalPayment;
 
-    @Column(name = "CURRENCY")
-    private String currency;
+	@Column(name = "TOTAL_PAYMENT_AFTER_DISCOUNT", scale = 2)
+	private BigDecimal totalPaymentAfterDiscount;
 
-    @Column(name = "DISCOUNT")
-    private BigDecimal discount;
+	@Column(name = "CURRENCY")
+	private String currency;
 
-    @Column(name = "DEPOSIT")
-    private float deposit;
+	@Column(name = "DISCOUNT")
+	private BigDecimal discount;
 
-    @Column(name = "SERVICE_FEE")
-    private float serviceFee;
+	@Column(name = "DEPOSIT")
+	private float deposit;
 
-    @Column(name = "OTHER_FEE")
-    private float otherFee;
+	@Column(name = "SERVICE_FEE")
+	private float serviceFee;
 
-    @Column(name = "PROMOTION_NAME", length = 128)
-    private String promotionName;
+	@Column(name = "OTHER_FEE")
+	private float otherFee;
 
-    @Column(name = "PROMOTION_ID")
-    private long promotionId;
+	@Column(name = "PROMOTION_NAME", length = 128)
+	private String promotionName;
 
-    @Column(name = "COMMENT")
-    private String comment;
+	@Column(name = "COMMENT")
+	private String comment;
 
-    @Override
-    public long getTransactionId() {
-	return orderId;
-    }
+	@Column(name = "MAIN_TABLE_NUMBER", length = 32)
+	private String mainTableNumber;
 
-    @Override
-    public void setTransactionId(long transactionId) {
-	this.orderId = transactionId;
-    }
-
-    public boolean isTakeOut() {
-	return isTakeOut;
-    }
-
-    public void setTakeOut(boolean isTakeOut) {
-	this.isTakeOut = isTakeOut;
-    }
-
-    public List<OrderLine> getLines() {
-	return lines;
-    }
-
-    void setLines(List<OrderLine> lines) {
-	this.lines = lines;
-    }
-
-    public BigDecimal getTotalPayment() {
-	return totalPayment;
-    }
-
-    public void setTotalPayment(BigDecimal totalPayment) {
-	this.totalPayment = totalPayment;
-    }
-
-    public Date getDinnerTime() {
-	return dinnerTime;
-    }
-
-    public void setDinnerTime(Date dinnerTime) {
-	this.dinnerTime = dinnerTime;
-    }
-
-    public BigDecimal getDiscount() {
-	return discount;
-    }
-
-    public float getDeposit() {
-	return deposit;
-    }
-
-    public void setDeposit(float deposit) {
-	this.deposit = deposit;
-    }
-
-    public String getPromotionName() {
-	return promotionName;
-    }
-
-    public void setPromotionName(String promotionName) {
-	this.promotionName = promotionName;
-    }
-
-    public long getPromotionId() {
-	return promotionId;
-    }
-
-    public void setPromotionId(long promotionId) {
-	this.promotionId = promotionId;
-    }
-
-    public String getComment() {
-	return comment;
-    }
-
-    public void setComment(String comment) {
-	this.comment = comment;
-    }
-
-    public int addOrderLine(OrderLine line) {
-	if (this.lines == null) {
-	    this.lines = new ArrayList<OrderLine>();
+	@Override
+	public long getTransactionId() {
+		return orderId;
 	}
-	int lineNumer = this.lines.size() + 1;
-	line.setLineNumber(lineNumer);
-	this.lines.add(line);
-	return lineNumer;
-    }
 
-    public float getServiceFee() {
-	return serviceFee;
-    }
+	public String getMainTableNumber() {
+		return mainTableNumber;
+	}
 
-    public void setServiceFee(float serviceFee) {
-	this.serviceFee = serviceFee;
-    }
+	public void setMainTableNumber(String mainTableNumber) {
+		this.mainTableNumber = mainTableNumber;
+	}
 
-    public float getOtherFee() {
-	return otherFee;
-    }
+	@Override
+	public void setTransactionId(long transactionId) {
+		this.orderId = transactionId;
+	}
 
-    public void setOtherFee(float otherFee) {
-	this.otherFee = otherFee;
-    }
+	public boolean isTakeOut() {
+		return isTakeOut;
+	}
 
-    public String getCurrency() {
-	return currency;
-    }
+	public void setTakeOut(boolean isTakeOut) {
+		this.isTakeOut = isTakeOut;
+	}
 
-    public void setCurrency(String currency) {
-	this.currency = currency;
-    }
+	public List<OrderLine> getLines() {
+		return lines;
+	}
 
-    public boolean removeOrderLine(int lineNumber) {
-	int foundIndex = -1;
-	if (this.lines == null) {
-	    for (int i = 0; i < lines.size(); ++i) {
-		if (lines.get(i).getLineNumber() == lineNumber) {
-		    foundIndex = i;
-		    continue;
+	void setLines(List<OrderLine> lines) {
+		this.lines = lines;
+	}
+
+	public BigDecimal getTotalPayment() {
+		return totalPayment;
+	}
+
+	public void setTotalPaymentAfterDiscount(BigDecimal totalPaymentAfterDiscount) {
+		this.totalPaymentAfterDiscount = totalPaymentAfterDiscount;
+	}
+
+	public BigDecimal getTotalPaymentAfterDiscount() {
+		if (this.totalPaymentAfterDiscount == null) {
+			return this.totalPayment;
+		} else {
+			return totalPaymentAfterDiscount;
 		}
-		if (foundIndex != -1) {
-		    lines.get(i).setLineNumber(i);
+	}
+
+	public Date getDinnerTime() {
+		return dinnerTime;
+	}
+
+	public void setDinnerTime(Date dinnerTime) {
+		this.dinnerTime = dinnerTime;
+	}
+
+	public BigDecimal getDiscount() {
+		return discount;
+	}
+
+	public float getDeposit() {
+		return deposit;
+	}
+
+	public void setDeposit(float deposit) {
+		this.deposit = deposit;
+	}
+
+	public String getPromotionName() {
+		return promotionName;
+	}
+
+	public void setPromotionName(String promotionName) {
+		this.promotionName = promotionName;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public int addOrderLine(OrderLine line) {
+		if (this.lines == null) {
+			this.lines = new ArrayList<OrderLine>();
 		}
-	    }
-	    if (foundIndex != -1) {
-		this.lines.remove(foundIndex);
-	    }
+		for (OrderLine lin : lines) {
+			if (lin.getItemCode().equals(line.getItemCode())) {
+				lin.setQuantity(lin.getQuantity() + line.getQuantity());
+				return lin.getLineNumber();
+			}
+		}
+		int lineNumer = this.lines.size() + 1;
+		line.setLineNumber(lineNumer);
+		this.lines.add(line);
+		return lineNumer;
 	}
-	return foundIndex != -1;
-    }
 
-    public void consolidateLine() {
-	if (this.lines == null) {
-	    this.lines = new ArrayList<OrderLine>();
+	public float getServiceFee() {
+		return serviceFee;
 	}
-    }
 
-    public void calculatePayment() {
+	public void setServiceFee(float serviceFee) {
+		this.serviceFee = serviceFee;
+	}
 
-    }
+	public float getOtherFee() {
+		return otherFee;
+	}
+
+	public void setOtherFee(float otherFee) {
+		this.otherFee = otherFee;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
+	public boolean removeOrderLine(int lineNumber) {
+		int foundIndex = -1;
+		if (this.lines == null) {
+			for (int i = 0; i < lines.size(); ++i) {
+				if (lines.get(i).getLineNumber() == lineNumber) {
+					foundIndex = i;
+					continue;
+				}
+				if (foundIndex != -1) {
+					lines.get(i).setLineNumber(i);
+				}
+			}
+			if (foundIndex != -1) {
+				this.lines.remove(foundIndex);
+			}
+		}
+		return foundIndex != -1;
+	}
+
+	public boolean hasPromotion() {
+		return this.promotionName != null;
+	}
+
+	public void calculatePayment() {
+		if (this.lines != null) {
+			for (OrderLine line : lines) {
+				this.totalPayment = this.totalPayment.add(line.getTotalPaymentAfterDiscount());
+			}
+		}
+		if (this.hasPromotion()) {
+			this.discount = this.totalPayment.subtract(this.getTotalPaymentAfterDiscount());
+		}
+	}
 }
