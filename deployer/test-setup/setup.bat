@@ -26,6 +26,6 @@ goto:eof
 	setLocal EnableDelayedExpansion
 	for /f "tokens=* delims= usebackq" %%a in ("%~1") do (
 	     echo %%a 
-		 %MYSQL% -u %DATABASE_USER% --database=%DATABASE% -e "%%a"
+		 %MYSQL% --host=%HOST% -u %DATABASE_USER% --password=%PASSWORD% --database=%DATABASE% -e "%%a"
 	)
 goto:eof 
