@@ -17,7 +17,7 @@ public class LatencyServlet extends HttpServlet {
         try {
             latency = Integer.parseInt(request.getHeader("x-latency"));
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+        	latency = 0;
         }
 
         try {
