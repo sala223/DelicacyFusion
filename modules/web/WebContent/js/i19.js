@@ -12,6 +12,7 @@ var i19={
 	item_desc:'详细描述',
 	item_unit:'计量单位',
 	item_category:'分类',
+	item_image:'产品图片',
 
 	unit_dish:'盘',
 	unit_jin:'斤',

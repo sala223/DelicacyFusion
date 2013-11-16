@@ -3,10 +3,11 @@
 <%@ taglib prefix="dev" uri="../dev-tags.tld"%>
 
 <dev:includeJS src="js/jquery-2.0.3.min.js" />
-<dev:includeJS src="js/jquery.easing.1.3.js" />
-<dev:includeJS src="js/jquery-extension.js" />
 <dev:includeJS src="js/bootstrap.min.js" />
+
+<dev:includeJS src="js/jquery-extension.js" />
 <dev:includeJS src="js/common.js" />
+
 <dev:includeJS src="js/i19.js" />
 <script type="text/javascript">
 $(document).ready(function() {
