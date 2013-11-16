@@ -3,7 +3,6 @@ dependencies {
     compile project(':blob-store')
     compile project(':master-data')
     compile project(':idm')
-	testRuntime project(':core').sourceSets.test.output
     compile ":spring-tx:4.0.0.M2"
     compile ":jackson-core-asl:1.9.12"
     compile ":jackson-mapper-asl:1.9.12"
