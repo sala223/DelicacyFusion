@@ -1,0 +1,40 @@
+.noanimation {
+    animation: none !important;
+    -webkit-animation: none !important;
+}
+
+.transition(@duration:1s linear) {
+    -webkit-transition: all @duration;
+    -moz-transition: all @duration;
+    -ms-transition: all @duration;
+    -o-transition: all @duration;
+    transition: all @duration;
+}
+
+.rorate36(@p){
+    -moz-transform: rotate(36deg * @p);
+    -webkit-transform: rotate(36deg * @p);
+    -o-transform: rotate(36deg * @p);
+    -ms-transform: rotate(36deg * @p);
+    transform: rotate(36deg * @p);
+}
+
+@keyframes rotate360 {
+    10%  {
+        .rorate36(1);
+    }
+
+    100% {
+        .rorate36(10)
+    }
+}
+
+@-webkit-keyframes rotate360 {
+    10%  {
+        .rorate36(1);
+    }
+
+    100% {
+        .rorate36(10)
+    }
+}

@@ -1,0 +1,70 @@
+/* require bootstap.css */
+
+.tagedit {
+    .input-group-addon {
+        > span {
+            margin-left:6px;
+            padding:2px 4px;
+            border-radius:3px;
+            
+            background-color:#555555;
+            color:white;
+            font-size:0.95em;
+
+            position:relative;
+        }
+        
+        > span:first-child {
+            margin-left:0;
+        }
+        
+        > span:hover .glyphicon {
+            color:white;
+        }
+
+        .glyphicon {
+            font-size:10px;
+            margin-left:3px;
+            color:#999999;
+            cursor:pointer;
+        }
+    }
+
+    .input-group-addon.full {
+        border: 1px solid #CCCCCC;
+        border-width:0 1px;
+        border-radius:0;
+        display:block;
+        width:inherit;
+        text-align:right;
+        padding-top:8px;
+        padding-bottom:8px;
+    }
+    
+    .input-group-addon.full:last-child {
+        border-radius:0 0 4px 4px;
+        border-bottom-width:1px;
+    }
+
+    .input-group:only-child {
+        .form-control {
+            border-bottom-left-radius:4px;
+        }
+        
+        .input-group-addon {
+            border-bottom-right-radius:4px;
+            border-bottom-color:#CCCCCC;
+        }
+    }
+    
+    .input-group {
+        .form-control {
+            border-bottom-left-radius:0;
+        }
+        
+        .input-group-addon {
+            border-bottom-right-radius:0;
+            border-bottom-color:#EEEEEE;
+        }
+    }
+}
