@@ -7,10 +7,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>DelicacyFusion Web</title>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-extension.css" />
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <jsp:include page="WEB-INF/jsptiles/setup.jsp" />
+
     <style>
     #edit {
       width:600px;
@@ -126,8 +124,7 @@
     </div>
 
     <script type="text/javascript">
-    var memoryStorage={};
-    function main(){
+    window.main.push(function(){
 
     	$('#btnOK').click(function(){
     		$('.tagedit input').keypress();
@@ -189,8 +186,8 @@
     	$('.tagedit').delegate('.input-group-addon span.glyphicon-remove','click',function(ev){
     		$(ev.target).parent().remove();
     	});
-        
-    	
+
+
     	$('.imgcreator').imageDropper();
 
     	
@@ -206,10 +203,7 @@
         .always(function() {
 
         });
-
-        //var m = maskup({applyElement:'#page',loadingText:transStr('loading')});
-        //window.setTimeout(function(){ m.complete({text:transStr('completed')}); },1200);
-    }
+    });
     </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />
   </body>

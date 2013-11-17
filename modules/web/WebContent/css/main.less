@@ -1,46 +1,93 @@
 @import "common.less";
+//@import "3d.less";
 
-@navi-width:160px;
+@nav-width:240px;
+@shower-width:32px;
+@nav-bgColor:#3B3E3E;
 
-#navi {
+#nav {
     .docked-left;
-    width:@navi-width;
-    background-color:#3B3E3E;
+    width:@nav-width;
+    color:white;
+    z-index:2;
 
-    > div {
-        .docked-left;
-        right:4px;
-        overflow-x:visible;
-        background-color:#4A4D4E;
+    .transform(1,0,0 - @nav-width,0,0,0);
+    .transition(400ms);
+
+    .header {
+        height:80px;
     }
 
-    .menu {
-        color:#F0F1F1;
-        width:@navi-width;
+    .content {
+        .docked-center;
+        background-color:@nav-bgColor;
     }
 
-    .menu.curr {
-        background-color:white;
-        color:#181919;
-        text-shadow: 1px 1px 0px #d9d9d9;
+    .group {
+        border-top : 1px dotted gray;
+        padding : (@shower-width - 12px) 0;
+        margin : 0 @shower-width;
+
+        .title {
+            font-size:1.7em;
+            letter-spacing:0.25em;
+            padding-bottom:10px;
+            font-weight:bold;
+        }
+
+        .item {
+            font-size:1.5em;
+            letter-spacing:0.08em;
+            padding:5px 0;
+            color:#999999;
+            cursor:pointer;
+
+            .transition(100ms;linear);
+        }
+        
+        .item:hover {
+            color:white;
+            background-color:#222;
+            padding-left:0.7em;
+        }
+    }
+}
+
+#nav-shower {
+    .docked-left;
+    width:@shower-width;
+    font-size:1.8em;
+    text-align:center;
+    .transition(400ms);
+    z-index:10;
+    opacity:1;
+
+    background-color:rgba(1,1,1,0.1);
+    color:fade(@nav-bgColor,60%);
+    text-shadow: 0px 2px 0px #ffffff;
+
+    span {
+        position : absolute;
+        top:50%;
+        left:6px;
+    }
+}
+
+#page.showmenu {
+
+    #nav {
+        .transform0;
     }
 
-    a {
-        color:inherit;
-        text-decoration:none;
-        font-size:1.6em;
-        display:block;
-        padding:14px 0;
-        text-align:center;
-        padding-right:4px;
-
-        //border-left: 8px solid #4A4D4E;
+    #nav-shower {
+        opacity:0;
     }
 }
 
 #panel {
-    .docked-right;
-    left:@navi-width;
+    .docked-center();
+    left:@shower-width;
+
     background-color:white;
     overflow:hidden;
 

@@ -42,10 +42,12 @@ $(document).ready(function() {
         if(urlParams.length>0){
             options.url = options.url+'?'+urlParams.join("&");
         }
-    	
+
     	console.log("ajax",options);
     });
 
-    (window.main||function(){}).apply();
+    $.each(window.main||[], function(i,e){
+    	e.apply();
+    });
 });
 </script>

@@ -2,10 +2,14 @@ var i19={
 	Username:'用户名',
 	Password:'密码',
 	Logon:'登陆',
-	page_items:'菜品管理',
-	page_restaurant:'门店管理',
-	page_menu:'菜单管理',
-	page_promotion:'促销管理',
+
+	"STORE":'门店',
+	"STORE MANAGEMENT":'门店管理',
+	"TABLE MANAGEMENT":'餐台管理',
+	"STORE LAYOUT DESIGN":'门店布局设计',
+	"DISH":'菜品',
+	"DISH MANAGEMENT":'菜品管理',
+	"MENU DESIGN":'菜单设计',
 
 	item_name:'品名',
 	item_code:'编号',
