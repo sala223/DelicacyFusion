@@ -60,7 +60,7 @@
                   </button>
                   <input type="hidden" id="val-unit" />
                   <ul class="dropdown-menu pull-right align-right" data-val-fld="val-unit" data-txt-fld="txt-unit">
-                    <li><a href="javascript:;" data-value="DISH" data-i19="def">unit_dish</a></li>
+                    <li><a href="javascript:;" data-value="DISK" data-i19="def">unit_disk</a></li>
                     <li><a href="javascript:;" data-value="JIN" data-i19="def">unit_jin</a></li>
                     <li><a href="javascript:;" data-value="KILOGRAM" data-i19="def">unit_kg</a></li>
                     <li><a href="javascript:;" data-value="BOTTLE" data-i19="def">unit_bottle</a></li>
@@ -83,8 +83,8 @@
                   </button>
                   <input type="hidden" id="val-type" />
                   <ul class="dropdown-menu pull-right align-right" data-val-fld="val-type" data-txt-fld="txt-type">
-                    <li><a href="javascript:;" data-value="FOODS" data-i19="def">type_foods</a></li>
-                    <li><a href="javascript:;" data-value="GOODS" data-i19="def">type_goods</a></li>
+                    <li><a href="javascript:;" data-value="FOOD" data-i19="def">type_foods</a></li>
+                    <li><a href="javascript:;" data-value="GOOD" data-i19="def">type_goods</a></li>
                   </ul>
                 </div>
               </div>
@@ -134,7 +134,12 @@
     		var edit = $('#edit'),idx=edit.data('editingIdx');
     		memoryStorage['items'][idx] = $.extend(memoryStorage['items'][idx],edit.toViewData());
 
-    		console.log(JSON.stringify(memoryStorage['items'][idx]));
+    		$.ajax('{prefix}/tenant/{tenant}/itpl/',{
+    			applyElement:'#panel',
+    			type:'PUT',
+    			contentType:'application/json',
+    			data:JSON.stringify(memoryStorage['items'][idx])
+    		});
     	});
 
     	$('#btnCancel').click(function(){
@@ -189,9 +194,9 @@
     	$('.imgcreator').imageDropper();
 
     	
-    	$.ajax('latency/testdata/items.json',{applyElement:'#panel'})
+    	$.ajax('{prefix}/tenant/{tenant}/itpl/',{applyElement:'#panel',urlParams:{rand:Math.random()}})
         .done(function(data){
-        	memoryStorage['items'] = JSON.parse(data);
+        	memoryStorage['items'] = typeof(data)==='object'?data:JSON.parse(data);
             $('#dishes').empty().append(memoryStorage['items'].map(function(e,i){
             	var x = [];
             	x.push('<div class="text">'+e.name+'</div>');

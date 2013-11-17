@@ -34,16 +34,7 @@
     <servlet-name>LatencyServlet</servlet-name>
     <url-pattern>/latency/*</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>RESTFulForwardingServlet</display-name>
-    <servlet-name>RESTFulForwardingServlet</servlet-name>
-    <servlet-class>rps.dev.web.RESTFulForwardingServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>RESTFulForwardingServlet</servlet-name>
-    <url-pattern>/rest/*</url-pattern>
-  </servlet-mapping>
+
   <servlet>
     <description></description>
     <display-name>MinifyJavaScriptServlet</display-name>
@@ -54,4 +45,5 @@
     <servlet-name>MinifyJavaScriptServlet</servlet-name>
     <url-pattern>*.js</url-pattern>
   </servlet-mapping>
+
 </web-app>

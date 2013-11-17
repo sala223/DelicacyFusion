@@ -1,3 +1,41 @@
+var emptyFn=function(){};
+
+/**
+ * Elements Translate
+ */
+function transStr(key){
+	var i19=window.i19||{}, tpl = i19[key]||key;
+
+	$(arguments).each(function(i,e){
+		i>0 && (tpl = tpl.replace('{'+(i-1)+'}',e));
+	});
+
+	return tpl;
+}
+
+_jQuery_static_translator={
+	SELECT:function(e){
+		var je=$(e),that=this;
+		$('option',je).each(function(oi,oe){
+			that.DEFAULT(oe);
+		});
+	},
+	DEFAULT:function(e){
+		var je=$(e);
+		je.text(i19[je.text()]);
+	}
+};
+jQuery.fn.extend({
+	translateText:function(){
+		this.each(function(i,e){
+			(_jQuery_static_translator[e.tagName]||_jQuery_static_translator.DEFAULT)(e);
+		});
+	}
+});
+
+/**
+ * Data Binding
+ */
 _jQuery_static_members = {
 	bindData:{
 		setter:{
@@ -74,8 +112,64 @@ jQuery.fn.extend({
 		});
 
 		return data;
-	},
+	}
+});
 
+/**
+ * Loading Mask
+ */
+jQuery.fn.extend({
+	mask:function(cfg){
+		var applyElement=this;
+
+	    var str=['<div class="loadmask">'];
+	    str.push('  <div class="inner">');
+	    str.push('    <div>');
+	    str.push('      <div>');
+	    str.push('        <div class="icon"></div>');
+		str.push('        <div class="text">'+(cfg.loadingText||'Loading')+'</div>');
+	    str.push('      </div>');
+	    str.push('    </div>');
+		str.push('  </div>');
+		str.push('</div>');
+
+		var loadmask = $(str.join('')).appendTo(applyElement);
+
+		return {
+			complete:function(cfg){
+				var that=this;
+				cfg=$.extend({
+					text:'Completed',
+					iconClass:'complete',
+					timeout:800,
+					fn:emptyFn
+				},cfg);
+
+				$('.inner>div>div',loadmask)
+					.animate({opacity:0},200,function(){
+						$('.icon',loadmask).addClass('noanimation '+cfg.iconClass);
+						$('.text',loadmask).text(cfg.text);
+					})
+					.animate({opacity:1},200)
+					.delay(cfg.timeout,'fx')
+					.promise('fx').done(function(){
+						that.dismiss();
+					});
+			},
+			dismiss:function(fn){
+				loadmask.animate({opacity:0},400,function(){
+					(fn||emptyFn).apply(this);
+					$(this).remove();
+				});
+			}
+		};
+	}
+});
+
+/**
+ * Image Dropper
+ */
+jQuery.fn.extend({
 	imageDropper:function(){
 		var dropTarget = this;
 
@@ -102,7 +196,7 @@ jQuery.fn.extend({
 		})
 		.on('drop',function(ev){
 			console.log('dropped');
-			
+
 			var preview = dropTarget.removeClass('dragover'),
 				file = ev.originalEvent.dataTransfer.files[0],
 			    reader = new FileReader();

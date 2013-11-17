@@ -4,27 +4,47 @@
 
 <dev:includeJS src="js/jquery-2.0.3.min.js" />
 <dev:includeJS src="js/bootstrap.min.js" />
-
 <dev:includeJS src="js/jquery-extension.js" />
-<dev:includeJS src="js/common.js" />
 
 <dev:includeJS src="js/i19.js" />
 <script type="text/javascript">
 $(document).ready(function() {
-    transPage();
+    $('*[data-i19]').translateText();
 
     // Register loadingMask for ajax
     $( document ).ajaxSend(function(event, jqXHR, ajaxOptions) {
-    	ajaxOptions.mask = maskup({
-    		applyElement:ajaxOptions.applyElement,
+    	ajaxOptions.mask = $(ajaxOptions.applyElement).mask({
     		loadingText:transStr( ajaxOptions.type==='GET'? 'loading':'saving' )
     	});
     })
-    .ajaxComplete(function(event, jqXHR, ajaxOptions) {
-    	//TODO Error Or Success
+    .ajaxError(function(event, jqXHR, ajaxSettings, thrownError){
+    	alert(thrownError);
+    })
+    .ajaxSuccess(function(event, jqXHR, ajaxOptions) {
     	ajaxOptions.mask && ajaxOptions.mask[ajaxOptions.type==='GET'? 'dismiss':'complete']();
     });
     // EOC - Register loadingMask for ajax
+    
+    
+    $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
+    	options.url = options.url
+    	.replace(/{prefix}/,'/dfweb/rest')
+    	.replace(/{tenant}/,'test')
+    	.replace(/{store}/,'s1');
+
+    	var k = "",urlParams=[];
+        for(k in options.urlParams){
+        	if(options.urlParams.hasOwnProperty(k)){
+                urlParams.push(k+'='+encodeURIComponent(options.urlParams[k]));
+        	}
+        }
+        
+        if(urlParams.length>0){
+            options.url = options.url+'?'+urlParams.join("&");
+        }
+    	
+    	console.log("ajax",options);
+    });
 
     (window.main||function(){}).apply();
 });

@@ -14,7 +14,7 @@ var i19={
 	item_category:'分类',
 	item_image:'产品图片',
 
-	unit_dish:'盘',
+	unit_disk:'盘',
 	unit_jin:'斤',
 	unit_kg:'公斤',
 	unit_bottle:'瓶',
