@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
-public class RESTFulForwardingServlet extends HttpServlet {
+public class RSForwardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private static final String HOST_APP = "/m-console", HOST_APP_RS_PATH = "/rs";
@@ -24,9 +24,7 @@ public class RESTFulForwardingServlet extends HttpServlet {
 			@Override
 			public String getRequestURI(){
 
-				String originURI = request.getRequestURI().substring((RESTFulForwardingServlet.this.getServletContext().getContextPath() + request.getServletPath()).length());
-				System.out.println(originURI);
-
+				String originURI = request.getRequestURI().substring((RSForwardServlet.this.getServletContext().getContextPath() + request.getServletPath()).length());
 				return HOST_APP + HOST_APP_RS_PATH + originURI;
 			}
 
