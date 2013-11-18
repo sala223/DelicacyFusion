@@ -32,10 +32,16 @@ window.main.push(function(){
 	$('#nav').on('transitionend',function(){
 		transitionenabled = false;
 	});
-	
+
+	var showDelay = 0;
 	$('#nav-shower').mouseover(function(ev){
-		transitionenabled = true;
-		$('#page').addClass('showmenu');
+		showDelay = setTimeout(function(){
+			transitionenabled = true;
+	 	    $('#page').addClass('showmenu');
+		},300);
+	})
+	.mouseout(function(){
+		clearTimeout(showDelay);
 	});
 
 	$('#panel').mouseover(function(){
