@@ -71,10 +71,6 @@ public class ItemTemplate extends MasterData {
 		return categories;
 	}
 
-	public void setCategories(List<String> categories) {
-		this.categories = categories;
-	}
-
 	public ItemType getType() {
 		return type;
 	}
