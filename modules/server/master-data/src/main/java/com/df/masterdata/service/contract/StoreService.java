@@ -6,13 +6,13 @@ import com.df.masterdata.entity.Store;
 
 public interface StoreService {
 
-    void newStore(Store store);
+	void newStore(Store store);
 
-    void disableStore(String storeCode);
+	void updateStore(Store storeCode);
 
-    void enableStore(String storeCode);
+ 	List<Store> getStoreList();
 
-    List<Store> getStoreList();
+	Store getStoreByCode(String storeCode);
 
-    Store getStoreByCode(String storeCode);
+	Store checkStore(String storeCode, boolean throwException);
 }

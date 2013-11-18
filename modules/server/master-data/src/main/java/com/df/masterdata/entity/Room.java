@@ -14,7 +14,6 @@ import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Indexes;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
-import com.df.masterdata.exception.RoomException;
 
 @XmlRootElement
 @Entity
@@ -31,8 +30,8 @@ public class Room extends StoreAwareMasterData {
 	@Column(length = 255, name = "DESCRIPTION")
 	private String description;
 
-	@Column(name = "TABLE_CAPACITY")
-	private int tableCapacity;
+	@Column(name = "CAPACITY")
+	private int capacity;
 
 	@Column(scale = 2, name = "MINIMUM_COST")
 	private double minimumCost;
@@ -59,12 +58,8 @@ public class Room extends StoreAwareMasterData {
 		this.description = description;
 	}
 
-	public int getTableCapacity() {
-		return tableCapacity;
-	}
-
-	public void setTableCapacity(int tableCapacity) {
-		this.tableCapacity = tableCapacity;
+	public int getCapacity() {
+		return capacity;
 	}
 
 	public double getMinimumCost() {
@@ -75,24 +70,24 @@ public class Room extends StoreAwareMasterData {
 		this.minimumCost = minimumCost;
 	}
 
+	public List<DiningTable> getTables() {
+		return tables;
+	}
+
 	public void addDiningTable(DiningTable table) {
 		if (this.tables == null) {
 			tables = new ArrayList<DiningTable>();
 		}
-		if (tables.size() >= this.getTableCapacity()) {
-			throw RoomException.exceedTableCapacity(this.getCode());
-		} else {
-			int index = Collections.binarySearch(tables, table, new Comparator<DiningTable>() {
 
-				@Override
-				public int compare(DiningTable t1, DiningTable t2) {
-					return t1.getCode().compareTo(t2.getCode());
-				}
-
-			});
-			if (index == -1) {
-				tables.add(table);
+		int index = Collections.binarySearch(tables, table, new Comparator<DiningTable>() {
+			@Override
+			public int compare(DiningTable t1, DiningTable t2) {
+				return t1.getCode().compareTo(t2.getCode());
 			}
+		});
+		if (index == -1) {
+			capacity += table.getCapacity();
+			tables.add(table);
 		}
 	}
 }
