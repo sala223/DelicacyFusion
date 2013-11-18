@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.df.blobstore.image.ImageAttributes;
 import com.df.blobstore.image.ImageKey;
@@ -19,6 +20,7 @@ import com.df.masterdata.entity.PictureRef;
 import com.df.masterdata.exception.ItemTemplateException;
 import com.df.masterdata.service.contract.ItemTemplateService;
 
+@Transactional
 public class ItemTemplateServiceImpl implements ItemTemplateService {
 
 	@Autowired
@@ -59,9 +61,16 @@ public class ItemTemplateServiceImpl implements ItemTemplateService {
 		if (itpl == null) {
 			throw ItemTemplateException.itemTemplateWithCodeDoesNotExist(itemTemplate.getCode());
 		}
-		itemTemplate.setChangedTime(new Date());
-		itemTemplate.setPictureSet(itpl.getPictureSet());
-		itemTemplateDao.update(itemTemplate);
+		itpl.setChangedTime(new Date());
+		itpl.setCategories(itemTemplate.getCategories().toArray(new String[0]));
+		itpl.setCurrency(itemTemplate.getCurrency());
+		itpl.setDescription(itemTemplate.getDescription());
+		itpl.setEnabled(itemTemplate.isEnabled());
+		itpl.setItemUnit(itemTemplate.getItemUnit());
+		itpl.setName(itemTemplate.getName());
+		itpl.setPrice(itemTemplate.getPrice());
+		itpl.setType(itemTemplate.getType());
+		itemTemplateDao.update(itpl);
 	}
 
 	@Override
