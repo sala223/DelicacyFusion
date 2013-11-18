@@ -1,6 +1,7 @@
 package com.df.masterdata.service.impl;
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import com.df.core.common.context.TenantContextHolder;
 import com.df.masterdata.dao.ItemTemplateDao;
 import com.df.masterdata.entity.ItemTemplate;
 import com.df.masterdata.entity.PictureRef;
+import com.df.masterdata.exception.ItemTemplateException;
 import com.df.masterdata.service.contract.ItemTemplateService;
 
 public class ItemTemplateServiceImpl implements ItemTemplateService {
@@ -53,6 +55,12 @@ public class ItemTemplateServiceImpl implements ItemTemplateService {
 
 	@Override
 	public void updateItemTemplate(ItemTemplate itemTemplate) {
+		ItemTemplate itpl = itemTemplateDao.getItemTemplateByCode(itemTemplate.getCode());
+		if (itpl == null) {
+			throw ItemTemplateException.itemTemplateWithCodeDoesNotExist(itemTemplate.getCode());
+		}
+		itemTemplate.setChangedTime(new Date());
+		itemTemplate.setPictureSet(itpl.getPictureSet());
 		itemTemplateDao.update(itemTemplate);
 	}
 

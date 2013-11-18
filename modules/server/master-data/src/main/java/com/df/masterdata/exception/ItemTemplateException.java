@@ -12,6 +12,8 @@ public class ItemTemplateException extends BusinessException {
 
 	public static final int ITEM_TPL_WITH_NAME_EXIST = 100001;
 
+	public static final int ITEM_TPL_WITH_CODE_NOT_EXIST = 100002;
+
 	public ItemTemplateException(Throwable cause, int errorCode) {
 		super(cause, REALM, errorCode);
 	}
@@ -26,6 +28,11 @@ public class ItemTemplateException extends BusinessException {
 
 	public static ItemTemplateException itemTemplateWithCodeExist(String code) {
 		return new ItemTemplateException(ITEM_TPL_WITH_CODE_EXIST, "ItemTemplate Code=%s already exist.", code);
+	}
+
+	public static ItemTemplateException itemTemplateWithCodeDoesNotExist(String code) {
+		return new ItemTemplateException(ITEM_TPL_WITH_CODE_NOT_EXIST, "ItemTemplate Code=%s does not exist.", code);
+
 	}
 
 	public static ItemTemplateException itemTemplateWithNameExist(String name) {

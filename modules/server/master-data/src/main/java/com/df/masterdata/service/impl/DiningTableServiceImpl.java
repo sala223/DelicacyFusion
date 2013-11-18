@@ -51,4 +51,10 @@ public class DiningTableServiceImpl implements DiningTableService {
 		return diningTableDao.all(storeCode, DiningTable.class);
 	}
 
+	@Override
+	public void updateDiningTable(String storeCode, DiningTable table) {
+		table.setStoreCode(storeCode);
+		diningTableDao.update(table);
+	}
+
 }

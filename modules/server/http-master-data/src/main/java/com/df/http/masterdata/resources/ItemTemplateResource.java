@@ -1,6 +1,7 @@
 package com.df.http.masterdata.resources;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.codehaus.enunciate.jaxrs.TypeHint;
+import org.jboss.resteasy.util.Base64;
 import org.springframework.stereotype.Component;
 
 import com.df.blobstore.image.http.ImageLinkCreator;
@@ -21,8 +23,6 @@ import com.df.http.masterdata.resources.exception.InputValidationException;
 import com.df.masterdata.entity.ItemTemplate;
 import com.df.masterdata.entity.PictureRef;
 import com.df.masterdata.service.contract.ItemTemplateService;
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 @Path("/tenant/{tenantCode}/itpl/")
 @Produces("application/json;charset=UTF-8")
@@ -60,7 +60,8 @@ public class ItemTemplateResource extends TenantResource {
 	 */
 	@PUT
 	@Path("/")
-	public void updateItemTemplate(ItemTemplate itemTemplateCode) {
+	public void updateItemTemplate(@PathParam("tenantCode") String tenantCode, ItemTemplate itemTemplateCode) {
+		this.injectTenantContext(tenantCode);
 		itplService.updateItemTemplate(itemTemplateCode);
 	}
 
@@ -91,7 +92,7 @@ public class ItemTemplateResource extends TenantResource {
 		byte[] imageBytes;
 		try {
 			imageBytes = Base64.decode(imageData);
-		} catch (Base64DecodingException ex) {
+		} catch (IOException ex) {
 			int code = InputValidationException.IMAGE_NOT_BASE64_ENCODED;
 			throw new InputValidationException(code, ex.getMessage());
 		}
