@@ -106,6 +106,14 @@
               </div>
             </div>
 
+            <div class="form-group" id="tagcloud">
+              <div>
+                <label class="control-label" data-i19="def">item_category</label>
+                <div class="tagselect form-control" data-channel="tag_option(categories)" >
+                </div>
+              </div>
+            </div>
+
             <div class="form-group imgview" data-channel="imgview_val(pictureSet)">
               <label class="control-label" data-i19="def">item_image</label>
               <div class="clearboth">
@@ -186,12 +194,16 @@
     	$('.tagedit').delegate('.input-group-addon span.glyphicon-remove','click',function(ev){
     		$(ev.target).parent().remove();
     	});
-
+    	
 
     	$('.imgcreator').imageDropper();
 
     	
-    	$.ajax('{prefix}/tenant/{tenant}/itpl/',{applyElement:'#panel',urlParams:{rand:Math.random()}})
+    	$('.tagselect').delegate('>span','click',function(ev){
+    		$(ev.target).toggleClass('selected');
+    	});
+
+    	$.ajax('{prefix}/tenant/{tenant}/itpl/',{applyElement:'#panel'})
         .done(function(data){
         	memoryStorage['items'] = typeof(data)==='object'?data:JSON.parse(data);
             $('#dishes').empty().append(memoryStorage['items'].map(function(e,i){
@@ -203,6 +215,13 @@
         .always(function() {
 
         });
+    	
+    	$.ajax('{prefix}/tenant/{tenant}/category',{applyElement:'#panel'})
+    	.done(function(data){
+    		$('#tagcloud .tagselect').empty().append(data.map(function(e){
+    			return '<span data-value="'+e.code+'">'+e.name+'</span>'; 
+    		}).join(''));
+    	});
     });
     </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />

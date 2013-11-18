@@ -1,4 +1,5 @@
 /* require bootstap.css */
+@import "common.less";
 
 .tagedit {
     .input-group-addon {
@@ -17,7 +18,7 @@
         > span:first-child {
             margin-left:0;
         }
-        
+
         > span:hover .glyphicon {
             color:white;
         }
@@ -66,5 +67,29 @@
             border-bottom-right-radius:0;
             border-bottom-color:#EEEEEE;
         }
+    }
+}
+
+.tagselect.form-control {
+
+    height:auto;
+    min-height:34px;
+    .user-select-none();
+
+    > span {
+        margin-right:6px;
+        padding:2px 4px;
+        border-radius:3px;
+        font-size:0.95em;
+        cursor:pointer;
+        .transition(0.2s;linear);
+
+        background-color:white;
+        color:black;
+    }
+    
+    > span.selected {
+        background-color:#555555;
+        color:white;
     }
 }

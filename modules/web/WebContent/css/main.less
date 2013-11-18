@@ -10,9 +10,7 @@
     width:@nav-width;
     color:white;
     z-index:2;
-
     .transform(1,0,0 - @nav-width,0,0,0);
-    .transition(400ms);
 
     .header {
         height:80px;
@@ -73,6 +71,10 @@
     }
 }
 
+#nav,#panel {
+    .transition(400ms);
+}
+
 #page.showmenu {
 
     #nav {
@@ -81,6 +83,10 @@
 
     #nav-shower {
         opacity:0;
+    }
+    
+    #panel {
+        .transform(1,0, @nav-width - @shower-width ,0,0,0);
     }
 }
 
@@ -92,11 +98,11 @@
     overflow:hidden;
 
     .tilecontainer {
-        @tile-spacing:12px;
-    
+        @tile-spacing:6px;
+
         .docked-center();
         overflow-y:auto;
-        padding-left:@tile-spacing;
+        padding-left:@tile-spacing * 2;
 
         .tile {
             float:left;
@@ -104,10 +110,25 @@
             width:180px + @tile-spacing * 2;
             height:120px + @tile-spacing * 2;
 
+
             > div {
                 .docked-center(@tile-spacing);
                 cursor:pointer;
-                background:transparent url('../img/chopsticks_bowl.png') no-repeat center center;
+                .transition(0.2s;linear);
+                 
+            }
+            
+            > div:before {
+                .docked-center();
+                content:'';
+                display:block;
+                opacity:0.1;
+                background:transparent url('../img/food.png') no-repeat center center;
+            }
+            
+            > div:hover {
+                -webkit-box-shadow:  0px 0px 8px 2px rgba(0, 0, 0, 0.3);
+                box-shadow:  0px 0px 8px 2px rgba(0, 0, 0, 0.3);
             }
 
             .text {
@@ -120,6 +141,7 @@
                 padding:4px;
                 overflow-x:hidden;
                 text-overflow:ellipsis;
+                letter-spacing:1px;
             }
         }
     }
@@ -164,6 +186,11 @@
     textarea {
         resize:none;
     }
+}
+
+.tagselect {
+    border:1px solid #CCCCCC;
+    border-radius:4px;
 }
 
 

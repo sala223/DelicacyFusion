@@ -51,6 +51,16 @@ _jQuery_static_members = {
 					inc.val(e).keypress();
 				});
 			},
+			tag_option:function(vs){
+				var options = {};
+				$('span',this).each(function(i,e){
+					var oe=$(e).removeClass('selected');
+					options[oe.attr('data-value')]=oe;
+				});
+				$.each(vs,function(i,e){
+					options[e].addClass('selected');
+				});
+			},
 			imgview_val:function(pics){
 				$('>div.clearboth .img',this).remove();
 
@@ -66,6 +76,11 @@ _jQuery_static_members = {
 			tag_val:function(){
 				return $('span.v',this).map(function(i,e){
 					return $(e).text();
+				}).get();
+			},
+			tag_option:function(){
+				return $('span.selected',this).map(function(i,e){
+					return $(e).attr('data-value');
 				}).get();
 			},
 			imgview_val:function(){
@@ -120,8 +135,14 @@ jQuery.fn.extend({
  */
 jQuery.fn.extend({
 	mask:function(config){
-		var applyElement=this,
-			cfg = $.extend({
+		var applyElement=this, maskdata=applyElement.data('mask');
+		if(maskdata!==undefined){
+			maskdata['_cc']+=1;
+			maskdata['_dc']+=1;
+			return maskdata;
+		}
+
+		var cfg = $.extend({
 				loadingText:'Loading'
 			},config);
 
@@ -138,9 +159,17 @@ jQuery.fn.extend({
 
 		var loadmask = $(str.join('')).appendTo(applyElement);
 
-		return {
+			maskdata = {
+			__cc:1,
+			__dc:1,
 			complete:function(cfg){
 				var that=this;
+
+				this.__cc--;
+				if(this.__cc > 0){
+					return;
+				}
+
 				cfg=$.extend({
 					text:'Completed',
 					iconClass:'ok',
@@ -163,12 +192,21 @@ jQuery.fn.extend({
 					});
 			},
 			dismiss:function(fn){
+				this.__cc--;
+				this.__dc--;
+				if(this.__dc > 0){
+					return;
+				}
+
 				loadmask.animate({opacity:0},400,function(){
 					(fn||emptyFn).apply(this);
 					$(this).remove();
 				});
 			}
 		};
+
+		applyElement.data('mask',maskdata);
+		return maskdata;
 	}
 });
 

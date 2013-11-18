@@ -17,14 +17,17 @@ $(document).ready(function() {
     		loadingText:transStr( ajaxOptions.type==='GET'? 'loading':'saving' )
     	});
     })
-    .ajaxError(function(event, jqXHR, ajaxSettings, thrownError){
-    	alert(thrownError);
+    .ajaxError(function(event, jqXHR, ajaxOptions, thrownError){
+    	ajaxOptions.mask && ajaxOptions.mask.complete({
+    		text:'Error',
+    		iconClass:'remove'
+    	});
     })
     .ajaxSuccess(function(event, jqXHR, ajaxOptions) {
     	ajaxOptions.mask && ajaxOptions.mask[ajaxOptions.type==='GET'? 'dismiss':'complete']();
     });
     // EOC - Register loadingMask for ajax
-    
+
     
     $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
     	options.url = options.url
