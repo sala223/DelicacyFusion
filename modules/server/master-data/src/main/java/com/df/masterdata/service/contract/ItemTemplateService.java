@@ -3,8 +3,8 @@ package com.df.masterdata.service.contract;
 import java.io.InputStream;
 import java.util.List;
 
-import com.df.blobstore.image.ImageKey;
 import com.df.masterdata.entity.ItemTemplate;
+import com.df.masterdata.entity.PictureRef;
 
 public interface ItemTemplateService {
 
@@ -14,9 +14,9 @@ public interface ItemTemplateService {
 
     ItemTemplate createItemTemplate(ItemTemplate itemTemplate);
 
-    void updateItemTemplate(ItemTemplate itemTemplate);
+    void updateItemTemplate(ItemTemplate itemTemplate); 
 
-    ImageKey uploadItemPicture(String itemCode, InputStream stream, String comment);
+    PictureRef uploadItemPicture(String itemCode, InputStream stream, String comment);
 
     void removeItemPicture(String itemCode, String imageId);
     

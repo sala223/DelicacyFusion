@@ -12,6 +12,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.eclipse.persistence.annotations.Index;
@@ -30,6 +31,7 @@ public abstract class MasterData {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "ID")
 	@JsonIgnore
+	@XmlTransient
 	private long id;
 
 	@Column(length = 255, name = "CODE")

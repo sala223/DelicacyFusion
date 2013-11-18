@@ -3,7 +3,10 @@ package com.df.http.masterdata.resources;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -40,5 +43,58 @@ public class RoomResource extends TenantResource {
 	public List<Room> getRooms(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
 		this.injectTenantContext(tenantCode);
 		return roomService.getRooms(storeCode);
+	}
+
+	/**
+	 * Add a room to a store.
+	 * 
+	 * @param tenantCode
+	 *            The tenant code
+	 * @param storeCode
+	 *            The store code
+	 * @param room
+	 *            The new room to be added.
+	 */
+	@POST
+	@Path("/")
+	public void addRoom(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode, Room room) {
+		this.injectTenantContext(tenantCode);
+		roomService.newRoom(room);
+	}
+
+	/**
+	 * Update a room.
+	 * 
+	 * @param tenantCode
+	 *            The tenant code
+	 * @param storeCode
+	 *            The store code
+	 * @param room
+	 *            The room with new information to be updated.
+	 */
+	@PUT
+	@Path("/")
+	public void updateRoom(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
+	        Room room) {
+		this.injectTenantContext(tenantCode);
+		roomService.updateRoom(storeCode, room);
+	}
+
+	/**
+	 * Delete a room in a store by the room code.
+	 * 
+	 * @param tenantCode
+	 *            The tenant code
+	 * @param storeCode
+	 *            The store code
+	 * @param roomCode
+	 *            The room to be removed.
+	 */
+	@DELETE
+	@Path("/{roomCode}")
+	public void removeRoom(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
+	        @PathParam("roomCode") String roomCode) {
+		this.injectTenantContext(tenantCode);
+		roomService.removeRoom(storeCode, roomCode);
 	}
 }

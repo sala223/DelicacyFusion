@@ -32,7 +32,7 @@ public class Room extends StoreAwareMasterData {
 	private String description;
 
 	@Column(name = "TABLE_CAPACITY")
-	private int tableCapacity = Integer.MAX_VALUE;
+	private int tableCapacity;
 
 	@Column(scale = 2, name = "MINIMUM_COST")
 	private double minimumCost;
@@ -95,5 +95,4 @@ public class Room extends StoreAwareMasterData {
 			}
 		}
 	}
-
 }

@@ -37,6 +37,8 @@ public class Item extends StoreAwareMasterData {
 		return itemTemplate;
 	}
 
+	@JsonProperty
+	@XmlElement
 	public float getPrice() {
 		if (this.price == null) {
 			return itemTemplate.getPrice();

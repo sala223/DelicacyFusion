@@ -54,11 +54,7 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public void removeRoom(String storeCode, String roomCode) {
-		Room room = roomDao.findRoomByRoomCode(storeCode, roomCode);
-		if (room != null) {
-			room.setStoreCode(storeCode);
-			roomDao.remove(room);
-		}
+		roomDao.removeRoomByCode(storeCode, roomCode);
 	}
 
 	@Override
