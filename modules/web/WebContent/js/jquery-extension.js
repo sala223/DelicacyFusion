@@ -119,14 +119,17 @@ jQuery.fn.extend({
  * Loading Mask
  */
 jQuery.fn.extend({
-	mask:function(cfg){
-		var applyElement=this;
+	mask:function(config){
+		var applyElement=this,
+			cfg = $.extend({
+				loadingText:'Loading'
+			},config);
 
 	    var str=['<div class="loadmask">'];
 	    str.push('  <div class="inner">');
 	    str.push('    <div>');
 	    str.push('      <div>');
-	    str.push('        <div class="icon"></div>');
+	    str.push('        <div class="icon"><span class="glyphicon glyphicon-refresh"></span></div>');
 		str.push('        <div class="text">'+(cfg.loadingText||'Loading')+'</div>');
 	    str.push('      </div>');
 	    str.push('    </div>');
@@ -140,14 +143,17 @@ jQuery.fn.extend({
 				var that=this;
 				cfg=$.extend({
 					text:'Completed',
-					iconClass:'complete',
+					iconClass:'ok',
 					timeout:800,
 					fn:emptyFn
 				},cfg);
 
 				$('.inner>div>div',loadmask)
 					.animate({opacity:0},200,function(){
-						$('.icon',loadmask).addClass('noanimation '+cfg.iconClass);
+						$('.icon .glyphicon',loadmask)
+						.removeClass('glyphicon-refresh')
+						.addClass('glyphicon-'+cfg.iconClass);
+
 						$('.text',loadmask).text(cfg.text);
 					})
 					.animate({opacity:1},200)

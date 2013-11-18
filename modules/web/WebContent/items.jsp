@@ -170,7 +170,7 @@
     		if((ev.which === 13 || ev.which === undefined) && t!==''){
     			if(ine.width()<=200){
                     cont = $('.input-group-addon.full',ine.parents('.tagedit'));
-    				
+
                     if(cont.length==0){
                         cont = $('<div class="input-group-addon full"></div>').appendTo(ine.parents('.tagedit'));
                     }

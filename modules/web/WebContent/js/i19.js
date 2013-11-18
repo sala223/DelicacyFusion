@@ -5,6 +5,7 @@ var i19={
 
 	"STORE":'门店',
 	"STORE MANAGEMENT":'门店管理',
+	"STAFF MANAGEMENT":'人员管理',
 	"TABLE MANAGEMENT":'餐台管理',
 	"STORE LAYOUT DESIGN":'门店布局设计',
 	"DISH":'菜品',

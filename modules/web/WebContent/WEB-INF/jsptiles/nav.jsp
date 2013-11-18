@@ -8,6 +8,7 @@
     <div class="group">
       <div class="title" data-i19="def">STORE</div>
       <div class="item" data-i19="def">STORE MANAGEMENT</div>
+      <div class="item" data-i19="def">STAFF MANAGEMENT</div>
       <div class="item" data-i19="def">TABLE MANAGEMENT</div>
       <div class="item" data-i19="def">STORE LAYOUT DESIGN</div>
     </div>
