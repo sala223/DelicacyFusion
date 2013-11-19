@@ -24,5 +24,6 @@
 		</constructor-arg>
 		<property name="resourceBaseSuffix" value="json" />
 	</bean>
+	<bean id="configurator" class="com.df.management.configuration.DefaultConfigurator" autowire="default"/>
 	<tx:annotation-driven/>
 </beans>
