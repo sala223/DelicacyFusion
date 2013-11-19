@@ -6,7 +6,7 @@ import com.df.masterdata.entity.Room;
 
 public interface RoomService {
 
-	void newRoom(Room room);
+	void newRoom(String storeCode,Room room);
 
 	List<Room> getRooms(String storeCode);
 

@@ -59,7 +59,7 @@ public class RoomResource extends TenantResource {
 	@Path("/")
 	public void addRoom(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode, Room room) {
 		this.injectTenantContext(tenantCode);
-		roomService.newRoom(room);
+		roomService.newRoom(storeCode, room);
 	}
 
 	/**

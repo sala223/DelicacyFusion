@@ -11,4 +11,5 @@
 	<entity class="com.df.masterdata.entity.Room"/>
 	<entity class="com.df.masterdata.entity.DiningTable"/>
 	<entity class="com.df.masterdata.entity.Promotion"/>
+	<entity class="com.df.management.configuration.entity.GlobalConfiguration"/>
 </entity-mappings>

@@ -60,9 +60,9 @@ public class ItemTemplateResource extends TenantResource {
 	 */
 	@PUT
 	@Path("/")
-	public void updateItemTemplate(@PathParam("tenantCode") String tenantCode, ItemTemplate itemTemplateCode) {
+	public void updateItemTemplate(@PathParam("tenantCode") String tenantCode, ItemTemplate itemTemplate) {
 		this.injectTenantContext(tenantCode);
-		itplService.updateItemTemplate(itemTemplateCode);
+		itplService.updateItemTemplate(itemTemplate);
 	}
 
 	/**

@@ -18,6 +18,10 @@ subprojects {
 			output.resourcesDir = project.buildDir.path+'/classes/test'
 			output.classesDir   = project.buildDir.path+'/classes/test'
 		}
+		main{
+			output.resourcesDir = project.buildDir.path+'/classes/main'
+			output.classesDir   = project.buildDir.path+'/classes/main'
+		}
 	}
 	
     test {
