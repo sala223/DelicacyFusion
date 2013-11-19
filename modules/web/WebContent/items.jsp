@@ -34,10 +34,15 @@
     .btn-group button {
       min-width:100px;
     }
+    
+    #edit .form-group:last-child {
+      margin-top:10px;
+      margin-left:12px;
+    }
     </style>
   </head>
   <body>
-    <div id="page">
+    <div id="page" class="showmenu">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
         <div id="dishes" class="tilecontainer"></div>
@@ -45,7 +50,7 @@
           <div>
             <div class="form-group">
               <div class="input-group">
-                <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(name)" />
+                <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(name)" tabindex="1" />
                 <label for="val-name" class="control-label" data-i19="def">item_name</label>
 
                 <div class="input-group-btn" data-channel="dropdown_val(itemUnit)" >
@@ -68,7 +73,7 @@
 
             <div class="form-group">
               <div class="input-group">
-                <input id="val-code" class="form-control" type="text" placeholder="Enter Code" data-channel="val(code)" />
+                <input id="val-code" class="form-control" type="text" placeholder="Enter Code" data-channel="val(code)" tabindex="2" />
                 <label for="val-code" class="control-label" data-i19="def">item_code</label>
 
                 <div class="input-group-btn" data-channel="dropdown_val(type)" >
@@ -86,9 +91,8 @@
             </div>
 
             <div class="form-group">
-              
               <!--<textarea id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(description)" ></textarea>-->
-              <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(description)" />
+              <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(description)" tabindex="3"/>
               <label for="val-desc" class="control-label" data-i19="def">item_desc</label>
             </div>
 
@@ -107,9 +111,11 @@
               <label class="control-label" data-i19="def">item_image</label>
             </div>
 
-            <div class="btn-group">
-              <button type="button" class="btn btn-primary" id="btnOK">OK</button>
-              <button type="button" class="btn btn-default" id="btnCancel">Cancel</button>
+            <div class="form-group">
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary" data-i19="def" id="btnOK">save</button>
+                <button type="button" class="btn btn-default" data-i19="def" id="btnCancel">cancel</button>
+              </div>
             </div>
           </div>
         </div>
@@ -124,11 +130,18 @@
     		var edit = $('#edit'),idx=edit.data('editingIdx');
     		memoryStorage['items'][idx] = $.extend(memoryStorage['items'][idx],edit.toViewData());
 
+    		var savemask = $('#edit').mask({loadingText:transStr('saving')});
     		$.ajax('{prefix}/tenant/{tenant}/itpl/',{
-    			applyElement:'#panel',
     			type:'PUT',
     			contentType:'application/json',
     			data:JSON.stringify(memoryStorage['items'][idx])
+    		}).done(function(){
+    			savemask.complete({text:transStr('completed'),fn:function(){
+    				$('#edit').removeClass('transform0');	
+    			}});
+    			
+    		}).fail(function(){
+    			savemask.complete({text:transStr('failure'),iconClass:'remove'});
     		});
     	});
 
@@ -167,6 +180,7 @@
     		$(ev.target).toggleClass('selected');
     	});
 
+    	var loadmask = $('#panel').mask({loadingText:transStr('loading')});
     	$.when($.ajax('{prefix}/tenant/{tenant}/itpl/'),$.ajax('{prefix}/tenant/{tenant}/category'))
     	.then(function(respTpl,respCategory){
     	    var itplData = respTpl[0],categoryData = respCategory[0];
@@ -180,8 +194,10 @@
             $('#tagcloud .tagselect').empty().append(categoryData.map(function(e){
                 return '<div data-value="'+e.code+'">'+e.name+'</div>'; 
             }).join(''));
+            
+            loadmask.dismiss();
     	},function(){
-    		
+    		loadmask.complete({text:transStr('failure'),iconClass:'remove'});
     	});
     });
     </script>

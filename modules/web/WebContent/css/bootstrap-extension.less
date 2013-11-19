@@ -1,6 +1,10 @@
 /* require bootstap.css */
 @import "common.less";
 
+.btn-group button.btn {
+    letter-spacing:3px;
+}
+
 .tagedit {
     .input-group-addon {
         > span {
@@ -88,17 +92,14 @@
         border-radius:3px;
         font-size:1em;
         cursor:pointer;
+        letter-spacing:1px;
         word-break:keep-all;
         .transition(0.2s;linear);
 
         background-color:white;
         color:black;
     }
-    
-    > *:last-child {
-        float:right;
-    }
-    
+
     > .selected {
         background-color:#555555;
         color:white;
@@ -121,21 +122,27 @@
 
 
 #edit {
+    @indicatorColor:#DDDDDD;
+
 
     .form-group {
-        margin-top:26px;
+        margin-top:30px;
         margin-bottom:2px;
         position:relative;
     }
 
     label {
-        color:#DDDDDD;
+        color:@indicatorColor;
         font-size:1.20em;
         .transition(0.2s;linear);
         
         position:absolute;
         left:13px;
         top:-13px;
+    }
+    
+    *::-webkit-input-placeholder {
+        color:@indicatorColor;
     }
 
     .form-control {
@@ -145,7 +152,8 @@
 
     .form-control:focus + label,
     .tagselect:hover + label,
-    .imageview:hover + label {
+    .imageview:hover + label,
+    .form-control:hover + label {
         color: #2D6CA2;
     }
     

@@ -1,4 +1,7 @@
 var emptyFn=function(){};
+RegExp.quote = function(str) {
+    return (str+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+};
 
 /**
  * Elements Translate
@@ -161,7 +164,8 @@ jQuery.fn.extend({
 					text:'Completed',
 					iconClass:'ok',
 					timeout:800,
-					fn:emptyFn
+					fn:emptyFn,
+					dismissFn:emptyFn
 				},cfg);
 
 				$('.inner>div>div',loadmask)
@@ -175,7 +179,8 @@ jQuery.fn.extend({
 				.animate({opacity:1},200)
 				.delay(cfg.timeout,'fx')
 				.promise('fx').done(function(){
-					that.dismiss();
+					cfg.fn.apply(loadmask);
+					that.dismiss(cfg.dismissFn);
 				});
 			},
 			dismiss:function(fn){

@@ -34,12 +34,13 @@
         }
 
         .item {
+            display:block;
             font-size:1.5em;
             letter-spacing:0.08em;
             padding:5px 0;
             color:#999999;
             cursor:pointer;
-
+            position:relative;
             .transition(100ms;linear);
         }
         
@@ -47,6 +48,16 @@
             color:white;
             background-color:#222;
             padding-left:0.7em;
+            text-decoration:none;
+        }
+        
+        .item.curr:after {
+            content:'\e062';
+            font-family:'Glyphicons Halflings';
+            position:absolute;
+            top:5px;
+            padding-left:6px;
+            color:white;
         }
     }
 }

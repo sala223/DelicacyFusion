@@ -4,6 +4,8 @@ var i19={
 	Logon:'登陆',
 
 	"STORE":'门店',
+	"CASHIER":'收银',
+	"PAYMENT":'结账',
 	"STORE MANAGEMENT":'门店管理',
 	"STAFF MANAGEMENT":'人员管理',
 	"TABLE MANAGEMENT":'餐台管理',
@@ -31,5 +33,8 @@ var i19={
 	completed:'已完成',
 	loading:'正在载入',
 	saving:'正在保存',
-	failure:'失败'
+	failure:'失败',
+
+	save:'保存',
+	cancel:'取消'
 };

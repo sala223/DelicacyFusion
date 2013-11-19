@@ -2,20 +2,28 @@
   contentType="text/html; charset=UTF-8"%>
 <%@ page import="rps.dev.web.DevUtil" %>
 
+<%!
+public String menulink(String url,String text, HttpServletRequest req) {
+	final String curr = DevUtil.extJsp2Html(req.getServletPath()).substring(1);
+    return "<a class=\"item"+(url.equals(curr)?" curr":"")+"\" data-i19=\"def\" href=\""+url+"\">"+text+"</a>";
+}
+%>
+
 <div id="nav">
   <div class="content">
     <div class="header"></div>
     <div class="group">
       <div class="title" data-i19="def">STORE</div>
-      <div class="item" data-i19="def">STORE MANAGEMENT</div>
-      <div class="item" data-i19="def">STAFF MANAGEMENT</div>
-      <div class="item" data-i19="def">TABLE MANAGEMENT</div>
-      <div class="item" data-i19="def">STORE LAYOUT DESIGN</div>
+      <%=menulink("cashier.html","CASHIER",request)%>
+      <%=menulink("#","STORE MANAGEMENT",request)%>
+      <%=menulink("#","STAFF MANAGEMENT",request)%>
+      <%=menulink("#","TABLE MANAGEMENT",request)%>
+      <%=menulink("#","STORE LAYOUT DESIGN",request)%>
     </div>
     <div class="group">
       <div class="title" data-i19="def">DISH</div>
-      <div class="item" data-i19="def">DISH MANAGEMENT</div>
-      <div class="item" data-i19="def">MENU DESIGN</div>
+      <%=menulink("items.html","DISH MANAGEMENT",request)%>
+      <%=menulink("#","MENU DESIGN",request)%>
     </div>
   </div>
 
@@ -52,5 +60,13 @@ window.main.push(function(){
 	.click(function(){
         $('#page').removeClass('showmenu');
 	});
+	
+	/*
+	var href = /[^/]+$/.exec(window.location.pathname)[0];
+	$('#nav .item').each(function(i,e){
+		var je=$(e);
+		href === je.attr('href') && je.addClass('curr');
+	});
+	*/
 });
 </script>
