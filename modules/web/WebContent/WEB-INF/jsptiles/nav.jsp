@@ -8,6 +8,7 @@
     <div class="group">
       <div class="title" data-i19="def">STORE</div>
       <div class="item" data-i19="def">STORE MANAGEMENT</div>
+      <div class="item" data-i19="def">STAFF MANAGEMENT</div>
       <div class="item" data-i19="def">TABLE MANAGEMENT</div>
       <div class="item" data-i19="def">STORE LAYOUT DESIGN</div>
     </div>
@@ -31,10 +32,16 @@ window.main.push(function(){
 	$('#nav').on('transitionend',function(){
 		transitionenabled = false;
 	});
-	
+
+	var showDelay = 0;
 	$('#nav-shower').mouseover(function(ev){
-		transitionenabled = true;
-		$('#page').addClass('showmenu');
+		showDelay = setTimeout(function(){
+			transitionenabled = true;
+	 	    $('#page').addClass('showmenu');
+		},300);
+	})
+	.mouseout(function(){
+		clearTimeout(showDelay);
 	});
 
 	$('#panel').mouseover(function(){

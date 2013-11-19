@@ -90,18 +90,14 @@
 
             <div class="form-group">
               <label for="val-desc" class="control-label" data-i19="def">item_desc</label>
-              <textarea id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(description)" ></textarea>
+              <!--<textarea id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(description)" ></textarea>-->
+              <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(description)" />
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="tagcloud">
               <div>
-                <label for="val-category" class="control-label" data-i19="def">item_category</label>
-
-                <div class="tagedit" data-channel="tag_val(categories)" >
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Enter Category">
-                    <div class="input-group-addon"></div>
-                  </div>
+                <label class="control-label" data-i19="def">item_category</label>
+                <div class="tagselect form-control" data-channel="tag_option(categories)" >
                 </div>
               </div>
             </div>
@@ -164,34 +160,17 @@
             tf.text(ct.text());
             vf.val(ct.attr('data-value'));
         });
+
     	
-    	$('.tagedit input').keypress(function(ev){
-    		var ine = $(ev.target),t = ine.val().trim(),cont;
-    		if((ev.which === 13 || ev.which === undefined) && t!==''){
-    			if(ine.width()<=200){
-                    cont = $('.input-group-addon.full',ine.parents('.tagedit'));
-    				
-                    if(cont.length==0){
-                        cont = $('<div class="input-group-addon full"></div>').appendTo(ine.parents('.tagedit'));
-                    }
-
-    			}else{
-    				cont = $('.input-group-addon',ine.parent());
-    			}
-    			cont.prepend($('<span></span>').append($('<span class="v"></span>').text(t)).append('<span class="glyphicon glyphicon-remove"></span>'));
-    			ine.val('');
-    		}
-    	});
-
-    	$('.tagedit').delegate('.input-group-addon span.glyphicon-remove','click',function(ev){
-    		$(ev.target).parent().remove();
-    	});
-
 
     	$('.imgcreator').imageDropper();
 
     	
-    	$.ajax('{prefix}/tenant/{tenant}/itpl/',{applyElement:'#panel',urlParams:{rand:Math.random()}})
+    	$('.tagselect').delegate('>span','click',function(ev){
+    		$(ev.target).toggleClass('selected');
+    	});
+
+    	$.ajax('{prefix}/tenant/{tenant}/itpl/',{applyElement:'#panel'})
         .done(function(data){
         	memoryStorage['items'] = typeof(data)==='object'?data:JSON.parse(data);
             $('#dishes').empty().append(memoryStorage['items'].map(function(e,i){
@@ -203,6 +182,13 @@
         .always(function() {
 
         });
+    	
+    	$.ajax('{prefix}/tenant/{tenant}/category',{applyElement:'#panel'})
+    	.done(function(data){
+    		$('#tagcloud .tagselect').empty().append(data.map(function(e){
+    			return '<span data-value="'+e.code+'">'+e.name+'</span>'; 
+    		}).join(''));
+    	});
     });
     </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />
