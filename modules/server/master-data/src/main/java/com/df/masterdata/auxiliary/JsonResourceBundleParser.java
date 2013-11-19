@@ -1,15 +1,14 @@
-package com.df.masterdata.service.impl;
+package com.df.masterdata.auxiliary;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.type.TypeReference;
 
-import com.df.masterdata.auxiliary.Category;
 import com.df.masterdata.exception.CategoryResourceBundleException;
 
 public class JsonResourceBundleParser implements ResourceBundleParser {
@@ -24,9 +23,9 @@ public class JsonResourceBundleParser implements ResourceBundleParser {
 
 	@Override
 	public Map<String, Category> parse(InputStream in) {
-		Map<String, Category> value = new HashMap<String, Category>();
+		Map<String, Category> value = new LinkedHashMap<String, Category>();
 		try {
-			value = objectMapper.readValue(in, new TypeReference<HashMap<String, Category>>() {
+			value = objectMapper.readValue(in, new TypeReference<LinkedHashMap<String, Category>>() {
 			});
 		} catch (Throwable ex) {
 			throw new CategoryResourceBundleException(ex);

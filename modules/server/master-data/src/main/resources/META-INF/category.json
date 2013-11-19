@@ -1,30 +1,106 @@
 {
 	"SYS00000":{
 		"code":"SYS00000",
-		"name":"All"
+		"name":"鲁菜"
 	},
 	"SYS00001":{
 		"code":"SYS00001",
-		"name":"CoolDish"
+		"name":"川菜"
 	},
 	"SYS00002":{
 		"code":"SYS00002",
-		"name":"HotDish"
+		"name":"粤菜"
 	},
 	"SYS00003":{
 		"code":"SYS00003",
-		"name":"Soup"
+		"name":"闽菜"
 	},
 	"SYS00004":{
 		"code":"SYS00004",
-		"name":"WineDrinking"
+		"name":"苏菜"
 	},
 	"SYS00005":{
 		"code":"SYS00005",
-		"name":"Desert"
+		"name":"浙菜"
 	},
 	"SYS00006":{
 		"code":"SYS00006",
-		"name":"SeaFood"
+		"name":"湘菜"
+	},
+	"SYS00007":{
+		"code":"SYS00007",
+		"name":"徽菜"
+	},
+	"SYS00008":{
+		"code":"SYS00008",
+		"name":"东北菜"
+	},
+	"SYS00009":{
+		"code":"SYS00009",
+		"name":"京菜"
+	},
+	"SYS00010":{
+		"code":"SYS00010",
+		"name":"西北菜"
+	},
+	"SYS00011":{
+		"code":"SYS00011",
+		"name":"冷菜"
+	},
+	"SYS00012":{
+		"code":"SYS00012",
+		"name":"热菜"
+	},
+	"SYS00013":{
+		"code":"SYS00013",
+		"name":"荤菜"
+	},
+	"SYS00014":{
+		"code":"SYS00014",
+		"name":"素菜"
+	},
+	"SYS00015":{
+		"code":"SYS00015",
+		"name":"羹汤"
+	},
+	"SYS00016":{
+		"code":"SYS00016",
+		"name":"点心甜品"
+	},
+	"SYS00017":{
+		"code":"SYS00017",
+		"name":"酒水饮料"
+	},
+	"SYS00018":{
+		"code":"SYS00018",
+		"name":"肉类"
+	},
+	"SYS00019":{
+		"code":"SYS00019",
+		"name":"禽蛋类"
+	},
+	"SYS00020":{
+		"code":"SYS00020",
+		"name":"海鲜"
+	},
+	"SYS00021":{
+		"code":"SYS00021",
+		"name":"河鲜"
+	},
+	"SYS00022":{
+		"code":"SYS00022",
+		"name":"面食"
+	},
+	"SYS00023":{
+		"code":"SYS00023",
+		"name":"辅菜"
+	},
+	"SYS00024":{
+		"code":"SYS00024",
+		"name":"主菜"
+	},
+    "SYS10000":{
+		"code":"SYS10000",
+		"name":"其他"
 	}
 }

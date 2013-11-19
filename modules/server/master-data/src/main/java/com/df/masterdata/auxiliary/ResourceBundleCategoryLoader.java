@@ -12,7 +12,6 @@ import org.springframework.core.io.ResourceLoader;
 
 import com.df.core.common.utils.LocalCache;
 import com.df.masterdata.exception.CategoryResourceBundleException;
-import com.df.masterdata.service.impl.ResourceBundleParser;
 
 public class ResourceBundleCategoryLoader implements CategoryLoader {
 

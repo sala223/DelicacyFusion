@@ -20,7 +20,7 @@
 	<bean id="tableServive" class="com.df.masterdata.service.impl.DiningTableServiceImpl" autowire="default"/>
 	<bean id="categoryLoader" class="com.df.masterdata.auxiliary.ResourceBundleCategoryLoader">
 		<constructor-arg index="0">
-					<bean class="com.df.masterdata.service.impl.JsonResourceBundleParser"/>
+					<bean class="com.df.masterdata.auxiliary.JsonResourceBundleParser"/>
 		</constructor-arg>
 		<property name="resourceBaseSuffix" value="json" />
 	</bean>

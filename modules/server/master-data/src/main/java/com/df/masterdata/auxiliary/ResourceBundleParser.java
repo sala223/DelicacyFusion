@@ -1,9 +1,7 @@
-package com.df.masterdata.service.impl;
+package com.df.masterdata.auxiliary;
 
 import java.io.InputStream;
 import java.util.Map;
-
-import com.df.masterdata.auxiliary.Category;
 
 public interface ResourceBundleParser {
 
