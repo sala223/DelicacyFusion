@@ -201,6 +201,8 @@ jQuery.fn.extend({
 				loadmask.animate({opacity:0},400,function(){
 					(fn||emptyFn).apply(this);
 					$(this).remove();
+
+					applyElement.removeData('mask');
 				});
 			}
 		};
