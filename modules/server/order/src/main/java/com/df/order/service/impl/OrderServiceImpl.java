@@ -12,12 +12,14 @@ import com.df.masterdata.service.contract.ItemService;
 import com.df.order.dao.OrderDao;
 import com.df.order.entity.Order;
 import com.df.order.entity.OrderLine;
+import com.df.order.entity.ServiceCard;
 import com.df.order.entity.TransactionStatus;
 import com.df.order.exception.InvalidItemException;
 import com.df.order.exception.OrderException;
 import com.df.order.price.PaymentCalculator;
 import com.df.order.price.PaymentContext;
 import com.df.order.service.contract.OrderService;
+import com.df.order.service.contract.ServiceCardService;
 
 @Transactional
 public class OrderServiceImpl implements OrderService {
@@ -31,6 +33,9 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private PaymentCalculator paymentCalculator;
 
+	@Autowired
+	private ServiceCardService serviceCardService;
+
 	public void setOrderDao(OrderDao orderDao) {
 		this.orderDao = orderDao;
 	}
@@ -43,15 +48,20 @@ public class OrderServiceImpl implements OrderService {
 		this.paymentCalculator = paymentCalculator;
 	}
 
+	public void setServiceCardService(ServiceCardService serviceCardService) {
+		this.serviceCardService = serviceCardService;
+	}
+
 	@Override
-	public void createOrder(long userId, Order order) {
+	public void createOrder(String storeCode, long userId, Order order) {
+		order.setStoreCode(storeCode);
+		Long serviceCardId = order.getServiceCardId();
+		if (serviceCardId != null) {
+			serviceCardService.validateServiceCardId(storeCode, serviceCardId, true);
+		}
 		List<OrderLine> lines = order.getLines();
 		if (lines == null) {
 			throw OrderException.emptyLinesException();
-		}
-		String storeCode = order.getStoreCode();
-		if (storeCode == null) {
-			throw OrderException.storeIsNotSpecifiedException();
 		}
 		ArrayList<String> itemCodes = new ArrayList<String>();
 		for (OrderLine line : lines) {
@@ -81,11 +91,51 @@ public class OrderServiceImpl implements OrderService {
 			order.setPromotionName(promotion.getName());
 		}
 		orderDao.insert(order);
+		if (serviceCardId != null) {
+			serviceCardService.associateServiceCardWithOrder(storeCode, serviceCardId, order);
+		}
 	}
 
 	@Override
-	public List<Order> getLatestOrders(long userId, int number) {
-		return orderDao.getLatestOrders(userId, number);
+	public List<Order> getOrdersWithServiceCard(String storeCode, long userId) {
+		List<ServiceCard> cards = serviceCardService.getAllServiceCard(storeCode);
+		ArrayList<Long> orderIds = new ArrayList<Long>();
+		for (ServiceCard card : cards) {
+			if (card.getOrderId() != null) {
+				orderIds.add(card.getOrderId());
+			}
+		}
+		return orderDao.getOrderList(storeCode, userId, orderIds);
+	}
+
+	@Override
+	public Order getOrderByTable(String storeCode, String tableCode) {
+		ServiceCard card = serviceCardService.getServiceCardByTable(storeCode, tableCode);
+		if (card == null) {
+			return null;
+		}
+		Long orderId = card.getOrderId();
+		if (orderId == null) {
+			return null;
+		}
+		return orderDao.getOrderById(storeCode, orderId);
+	}
+
+	@Override
+	public Order getOrderById(String storeCode, long orderId) {
+		return orderDao.getOrderById(storeCode, orderId);
+	}
+
+	@Override
+	public List<Order> getOrdersWithServiceCard(String storeCode) {
+		List<ServiceCard> cards = serviceCardService.getAllServiceCard(storeCode);
+		ArrayList<Long> orderIds = new ArrayList<Long>();
+		for (ServiceCard card : cards) {
+			if (card.getOrderId() != null) {
+				orderIds.add(card.getOrderId());
+			}
+		}
+		return orderDao.getOrderList(storeCode, orderIds);
 	}
 
 }
