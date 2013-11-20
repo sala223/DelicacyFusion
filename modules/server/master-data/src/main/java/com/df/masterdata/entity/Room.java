@@ -30,9 +30,6 @@ public class Room extends StoreAwareMasterData {
 	@Column(length = 255, name = "DESCRIPTION")
 	private String description;
 
-	@Column(name = "CAPACITY")
-	private int capacity;
-
 	@Column(scale = 2, name = "MINIMUM_COST")
 	private double minimumCost;
 
@@ -59,6 +56,13 @@ public class Room extends StoreAwareMasterData {
 	}
 
 	public int getCapacity() {
+		int capacity = 0;
+		if (tables != null) {
+			for (DiningTable table : tables) {
+				capacity += table.getCapacity();
+			}
+		}
+
 		return capacity;
 	}
 
@@ -86,7 +90,6 @@ public class Room extends StoreAwareMasterData {
 			}
 		});
 		if (index == -1) {
-			capacity += table.getCapacity();
 			tables.add(table);
 		}
 	}

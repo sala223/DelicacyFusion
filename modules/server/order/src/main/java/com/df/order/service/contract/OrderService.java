@@ -6,7 +6,13 @@ import com.df.order.entity.Order;
 
 public interface OrderService {
 
-    void createOrder(long userId, Order order);
+	void createOrder(String storeCode, long userId, Order order);
 
-    List<Order> getLatestOrders(long userId, int number);
+	Order getOrderByTable(String storeCode, String tableCode);
+
+	Order getOrderById(String storeCode, long orderId);
+
+	List<Order> getOrdersWithServiceCard(String storeCode);
+
+	List<Order> getOrdersWithServiceCard(String storeCode, long userId);
 }

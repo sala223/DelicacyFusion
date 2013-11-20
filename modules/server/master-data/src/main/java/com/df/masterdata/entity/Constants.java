@@ -12,12 +12,6 @@ public interface Constants {
 		public static final String STORE_CODE_PROPERTY = "storeCode";
 	}
 
-	public static interface CATEGORY extends MASTERDATA {
-		public static final String NAME_PROPERTY = "name";
-		public static final String CODE_PROPERTY = "code";
-		public static final String PARENT_ID_PROPERTY = "parent.id";
-	}
-
 	public static interface STORE extends MASTERDATA {
 		public static final String NAME_PROPERTY = "name";
 		public static final String CODE_PROPERTY = "code";

@@ -9,6 +9,8 @@
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 	<bean id="orderDao" class="com.df.order.dao.OrderDao" autowire="default" />
 	<bean id="orderService" class="com.df.order.service.impl.OrderServiceImpl" />
+	<bean id="serviceCardDao" class="com.df.order.dao.ServiceCardDao" />
+	<bean id="serviceCardService" class="com.df.order.service.impl.ServiceCardServiceImpl"/>
 	<bean id="paymentCalculator" class="com.df.order.price.PromotionRulePaymentCalculator">
 		<constructor-arg index="0" ref="promotionRepository" />
 		<constructor-arg index="1" ref="promotionExecutor" />

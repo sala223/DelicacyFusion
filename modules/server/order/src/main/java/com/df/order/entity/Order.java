@@ -29,7 +29,7 @@ public class Order extends TransactionEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ORDER_ID_SEQUENCE")
-	@SequenceGenerator(name = "ORDER_ID_SEQUENCE", sequenceName = "ORDER_ID_SEQUENCE")
+	@SequenceGenerator(initialValue = 1, name = "ORDER_ID_SEQUENCE", sequenceName = "ORDER_ID_SEQUENCE")
 	@Column(name = "ORDER_ID")
 	private long orderId;
 
@@ -72,20 +72,20 @@ public class Order extends TransactionEntity {
 	@Column(name = "COMMENT")
 	private String comment;
 
-	@Column(name = "MAIN_TABLE_NUMBER", length = 32)
-	private String mainTableNumber;
+	@Column(name = "SERVICE_CARD_ID")
+	private Long serviceCardId;
 
 	@Override
 	public long getTransactionId() {
 		return orderId;
 	}
 
-	public String getMainTableNumber() {
-		return mainTableNumber;
+	public Long getServiceCardId() {
+		return serviceCardId;
 	}
 
-	public void setMainTableNumber(String mainTableNumber) {
-		this.mainTableNumber = mainTableNumber;
+	public void setServiceCardId(Long serviceCardId) {
+		this.serviceCardId = serviceCardId;
 	}
 
 	@Override
