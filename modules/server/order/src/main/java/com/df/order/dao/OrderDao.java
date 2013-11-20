@@ -1,5 +1,6 @@
 package com.df.order.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -31,7 +32,10 @@ public class OrderDao extends TransactionDataAccessFoundation {
 
 	}
 
-	public List<Order> getOrderList(String storeCode,long userId, List<Long> orderIds) {
+	public List<Order> getOrderList(String storeCode, long userId, List<Long> orderIds) {
+		if (orderIds == null || orderIds.size() == 0) {
+			return new ArrayList<Order>();
+		}
 		CriteriaBuilder builder = createQueryBuilder();
 		CriteriaQuery<Order> query = builder.createQuery(Order.class);
 		Root<Order> root = query.from(Order.class);
@@ -39,20 +43,23 @@ public class OrderDao extends TransactionDataAccessFoundation {
 		Predicate inPredicate = inExpression.in(orderIds);
 		Predicate storeCodeEqal = builder.equal(root.get(ORDER.STORE_CODE), storeCode);
 		Predicate ownerIdEqual = builder.equal(root.get(ORDER.OWNER_ID), userId);
-		query.where(storeCodeEqal,ownerIdEqual, inPredicate);
+		query.where(storeCodeEqal, ownerIdEqual, inPredicate);
 		EntityManager em = getEntityManager();
 		TypedQuery<Order> tQuery = em.createQuery(query);
 		return tQuery.getResultList();
 	}
 
-	public List<Order> getOrderList(String storeCode,List<Long> orderIds) {
+	public List<Order> getOrderList(String storeCode, List<Long> orderIds) {
+		if (orderIds == null || orderIds.size() == 0) {
+			return new ArrayList<Order>();
+		}
 		CriteriaBuilder builder = createQueryBuilder();
 		CriteriaQuery<Order> query = builder.createQuery(Order.class);
 		Root<Order> root = query.from(Order.class);
 		Expression<Long> inExpression = root.get(ORDER.TRAN_ID);
 		Predicate inPredicate = inExpression.in(orderIds);
 		Predicate storeCodeEqal = builder.equal(root.get(ORDER.STORE_CODE), storeCode);
-		query.where(storeCodeEqal,inPredicate);
+		query.where(storeCodeEqal, inPredicate);
 		EntityManager em = getEntityManager();
 		TypedQuery<Order> tQuery = em.createQuery(query);
 		return tQuery.getResultList();

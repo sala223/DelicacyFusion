@@ -51,9 +51,9 @@ public class OrderResource extends TenantResource {
 	@TypeHint(Order.class)
 	@Path("/sc")
 	public List<Order> getOrdersWithServiceCard(@PathParam("tenantCode") String tenantCode,
-	        @PathParam("storeCode") String storeCode, @QueryParam("user") long userId) {
+	        @PathParam("storeCode") String storeCode) {
 		this.injectTenantContext(tenantCode);
-		return orderService.getOrdersWithServiceCard(storeCode, userId);
+		return orderService.getOrdersWithServiceCard(storeCode);
 	}
 
 	/**
