@@ -69,7 +69,7 @@ public class ServiceCardServiceImpl implements ServiceCardService {
 
 	@Override
 	public List<ServiceCard> getAllServiceCard(String storeCode) {
-		return serviceCardDao.all();
+		return serviceCardDao.all(storeCode);
 	}
 
 	@Override
@@ -87,5 +87,10 @@ public class ServiceCardServiceImpl implements ServiceCardService {
 		ArrayList<String> tableCodes = new ArrayList<String>();
 		tableCodes.add(tableCode);
 		return this.createServiceCard(storeCode, tableCodes);
+	}
+
+	@Override
+	public List<String> getOccupiedTables(String storeCode) {
+		return serviceCardDao.getOccupiedTables(storeCode);
 	}
 }

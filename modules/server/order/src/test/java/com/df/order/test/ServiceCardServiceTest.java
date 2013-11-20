@@ -1,5 +1,8 @@
 package com.df.order.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -35,10 +38,21 @@ public class ServiceCardServiceTest extends OrderBaseTest {
 	}
 
 	@Test
-	public void getServiceCardByTable() {
+	public void testGetServiceCardByTable() {
 		ServiceCard card = serviceCardService.createServiceCard("S1", "S1000001");
 		card = serviceCardService.getServiceCardByTable("S1", "S1000001");
 		TestCase.assertNotNull(card);
+	}
+
+	@Test 
+	public void testGetOccupiedTables() {
+		ArrayList<String> tableCodes = new ArrayList<String>();
+		tableCodes.add("S100001");
+		tableCodes.add("S100002");
+		serviceCardService.createServiceCard("S1", tableCodes);
+		serviceCardDao.flush();
+		List<String> tables = serviceCardService.getOccupiedTables("S1");
+		TestCase.assertEquals(tables.size(), 2);
 	}
 
 }

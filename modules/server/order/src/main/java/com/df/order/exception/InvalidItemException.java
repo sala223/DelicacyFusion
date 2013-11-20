@@ -4,7 +4,7 @@ public class InvalidItemException extends OrderException {
 
     private static final long serialVersionUID = 1L;
 
-    public static final int INVALID_ITEM = 100000;
+    public static final int INVALID_ITEM = 110000;
 
     private String itemCode;
 

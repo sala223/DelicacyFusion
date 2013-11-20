@@ -2,7 +2,7 @@ package com.df.order.dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -74,8 +74,22 @@ public class ServiceCardDao extends EclipseLinkDataAccessFoundation {
 		this.update(card);
 	}
 
-	public List<ServiceCard> all() {
-		return super.all(ServiceCard.class);
+	public List<ServiceCard> all(String storeCode) {
+		CriteriaBuilder builder = createQueryBuilder();
+		CriteriaQuery<ServiceCard> query = builder.createQuery(ServiceCard.class);
+		Root<ServiceCard> root = query.from(ServiceCard.class);
+		query.where(builder.equal(root.get(SERVICE_CARD.STORE_CODE), storeCode));
+		TypedQuery<ServiceCard> typeQuery = this.getEntityManager().createQuery(query);
+		return typeQuery.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getOccupiedTables(String storeCode) {
+		String eql = "SELECT distinct t from %s sc inner join sc.%s t where sc.%s=:STORE_CODE";
+		eql = String.format(eql, this.getEntityName(ServiceCard.class), SERVICE_CARD.TABLES, SERVICE_CARD.STORE_CODE);
+		Query query = this.getEntityManager().createQuery(eql);
+		query.setParameter("STORE_CODE", storeCode);
+		return (List<String>) query.getResultList();
 	}
 
 }
