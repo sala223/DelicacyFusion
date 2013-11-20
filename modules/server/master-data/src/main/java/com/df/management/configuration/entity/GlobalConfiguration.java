@@ -2,9 +2,12 @@ package com.df.management.configuration.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -16,34 +19,35 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
 import com.df.management.configuration.Domain;
 
 @XmlRootElement
-@Entity
-@Index(name = "IDX_GLOBAL_CONFIGURATION_T_DOMAIN_KEY", unique = true, columnNames = { "DOMAIN", "KEY",
+@Index(name = "IDX_GLOBAL_CONFIGURATION_T_DOMAIN_KEY", unique = true, columnNames = { "DOMAIN", "C_KEY",
         MultiTenantSupport.TENANT_COLUMN })
 @Table(name = "GLOBAL_CONFIGURATION")
+@Entity
 public class GlobalConfiguration extends MultiTenantSupport {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "ID")
 	@JsonIgnore
 	@XmlTransient
-	@Index
 	private long id;
 
-	@Column(name = "KEY", length = 128, nullable = false)
-	private String Key;
+	@Column(name = "C_KEY", length = 128, nullable = false)
+	private String key;
 
-	@Column(name = "domian", length = 128, nullable = false)
+	@Enumerated(EnumType.STRING)
+	@Column(name = "DOMAIN", length = 64, nullable = false)
 	private Domain domain;
 
-	@Column(name = "VALUE", length = 128, nullable = false)
+	@Column(name = "C_VALUE", nullable = true)
+	@Lob
 	private byte[] value;
 
 	public String getKey() {
-		return Key;
+		return key;
 	}
 
 	public void setKey(String key) {
-		Key = key;
+		this.key = key;
 	}
 
 	public Domain getDomain() {

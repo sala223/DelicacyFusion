@@ -1,16 +1,16 @@
 package com.df.management.android.customization;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.df.management.configuration.Domain;
-import com.df.management.configuration.JsonObjectConfigurable;
+import com.df.masterdata.auxiliary.Category;
 
-public class CategoryNavigationTabs extends JsonObjectConfigurable {
+public class CategoryNavigationTabs implements Serializable {
 
-	private List<CategoryNavigationTab> tabs;
+	private static final long serialVersionUID = 1L;
 
-	private static final String ANDROID_NAVIGATION_TABS = "ANDROID_NAVIGATION_TABS";
+	private List<CategoryNavigationTab> tabs = new ArrayList<CategoryNavigationTab>();
 
 	CategoryNavigationTabs() {
 	}
@@ -24,29 +24,52 @@ public class CategoryNavigationTabs extends JsonObjectConfigurable {
 	}
 
 	public void addTab(CategoryNavigationTab tab) {
-		if (tabs == null) {
-			tabs = new ArrayList<CategoryNavigationTab>();
-		}
 		if (!tabs.contains(tab)) {
 			tabs.add(tab);
 		}
 	}
 
-	@Override
-	public Domain getDomain() {
-		return Domain.ANDROID_UI;
+	public List<CategoryNavigationTab> getTabs() {
+		return tabs;
 	}
 
-	@Override
-	public String getConfigurationKey() {
-		return ANDROID_NAVIGATION_TABS;
-	}
+	public static class CategoryNavigationTab implements Serializable {
 
-	@Override
-	protected void mappingProperties(Object value) {
-		if (value != null && value instanceof CategoryNavigationTabs) {
-			CategoryNavigationTabs other = (CategoryNavigationTabs) value;
-			this.tabs = other.tabs;
+		private static final long serialVersionUID = 1L;
+
+		private String categoryCode;
+
+		private String display;
+
+		CategoryNavigationTab() {
+		}
+
+		public CategoryNavigationTab(Category category) {
+			this.categoryCode = category.getCode();
+			this.display = category.getName();
+		}
+
+		public String getCategoryCode() {
+			return categoryCode;
+		}
+
+		public String getDisplay() {
+			return display;
+		}
+
+		@Override
+		public int hashCode() {
+			return categoryCode.hashCode();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return categoryCode.equals(obj);
+		}
+
+		@Override
+		public String toString() {
+			return categoryCode;
 		}
 	}
 }

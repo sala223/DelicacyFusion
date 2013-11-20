@@ -8,7 +8,15 @@ public class ConfigurationException extends BusinessException {
 
 	private static final String REALM = "configuration";
 
-	public static final int CONFIGURABLE_MARSHALL_ERROR = 10000;
+	public static final int CONFIGURABLE_NO_DEFAULT_CONSTRUCTOR = 10000;
+
+	public static final int CONFIGURABLE_MARSHALL_ERROR = 10001;
+
+	public static final int CONFIGURABLE_UNMARSHALL_ERROR = 10002;
+
+	public static final int CONFIGURABLE_NOT_FOUND = 10003;
+
+	public static final int CONFIGURABLE_INITIALIZATION_ERROR = 10004;
 
 	public ConfigurationException(Throwable cause, int errorCode) {
 		super(cause, REALM, errorCode);

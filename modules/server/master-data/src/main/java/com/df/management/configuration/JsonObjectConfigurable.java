@@ -14,7 +14,7 @@ public abstract class JsonObjectConfigurable implements Configurable {
 
 	private static ObjectMapper objectMapper;
 
-	synchronized static ObjectMapper getObjectMapper() {
+	protected synchronized static ObjectMapper getObjectMapper() {
 		if (objectMapper == null) {
 			objectMapper = new ObjectMapper();
 			objectMapper.setDateFormat(SimpleDateSerializer.getDateFormat());
@@ -30,7 +30,11 @@ public abstract class JsonObjectConfigurable implements Configurable {
 
 	@Override
 	public void unmarshall(String encoded) throws Exception {
-		mappingProperties(this.parse(encoded));
+		if (encoded == null) {
+			this.initWithDefault();
+		} else {
+			mappingProperties(this.parse(encoded));
+		}
 	}
 
 	protected Object parse(String encoded) throws JsonParseException, JsonMappingException, IOException {
@@ -38,4 +42,6 @@ public abstract class JsonObjectConfigurable implements Configurable {
 	}
 
 	protected abstract void mappingProperties(Object value);
+
+	protected abstract void initWithDefault();
 }

@@ -21,3 +21,11 @@ dependencies {
     compile ":enunciate-core-annotations:1.27"
     runtime ":mysql-connector-java:5.1.26-bin"
 }
+
+
+task("copyTestResources", type: Copy){
+	from sourceSets.test.resources
+	into sourceSets.main.output.resourcesDir
+}
+
+jar.dependsOn copyTestResources
