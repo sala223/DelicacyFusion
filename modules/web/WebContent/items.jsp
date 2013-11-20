@@ -8,38 +8,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>DelicacyFusion Web</title>
     <jsp:include page="WEB-INF/jsptiles/setup.jsp" />
-
-    <style>
-    #edit {
-      width:600px;
-    }
-    #edit > div {
-      padding:20px;
-    }
-
-    ul.dropdown-menu.align-right li a {
-      text-align:right;
-    }
-
-    #txt-type,#txt-unit {
-      display:inline-block;
-      width:30px;
-      text-align:right;
-    }
-    
-    .input-group-btn button {
-      padding-right:8px;
-    }
-
-    .btn-group button {
-      min-width:100px;
-    }
-    
-    #edit .form-group:last-child {
-      margin-top:10px;
-      margin-left:12px;
-    }
-    </style>
   </head>
   <body>
     <div id="page" class="showmenu">
@@ -180,7 +148,7 @@
     		$(ev.target).toggleClass('selected');
     	});
 
-    	var loadmask = $('#panel').mask({loadingText:transStr('loading')});
+    	var loadmask = $('#page').mask({loadingText:transStr('loading')});
     	$.when($.ajax('{prefix}/tenant/{tenant}/itpl/'),$.ajax('{prefix}/tenant/{tenant}/category'))
     	.then(function(respTpl,respCategory){
     	    var itplData = respTpl[0],categoryData = respCategory[0];

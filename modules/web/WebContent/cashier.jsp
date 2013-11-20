@@ -8,64 +8,42 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Test - DelicacyFusion Web</title>
     <jsp:include page="WEB-INF/jsptiles/setup.jsp" />
-    <style>
-    </style>
   </head>
   <body>
     <div id="page" class="showmenu">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
-        <div id="edit">
-          <div class="form-group">
-            <div>
-              <label for="val-category" class="control-label" data-i19="def">item_category</label>
-
-              <div class="tagedit" data-channel="tag_val(categories)" >
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Enter Category">
-                  <div class="input-group-addon"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div id="tables" class="tilecontainer"></div>
+        <div id="edit"></div>
       </div>
     </div>
 
     <script type="text/javascript">
     window.main.push(function(){
-
-        
-        $('.tagedit input').keypress(function(ev){
-            var ine = $(ev.target),t = ine.val().trim(),cont;
-            if((ev.which === 13 || ev.which === undefined) && t!==''){
-                if(ine.width()<=200){
-                    cont = $('.input-group-addon.full',ine.parents('.tagedit'));
-
-                    if(cont.length==0){
-                        cont = $('<div class="input-group-addon full"></div>').appendTo(ine.parents('.tagedit'));
-                    }
-
-                }else{
-                    cont = $('.input-group-addon',ine.parent());
-                }
-                cont.prepend($('<span></span>').append($('<span class="v"></span>').text(t)).append('<span class="glyphicon glyphicon-remove"></span>'));
-                ine.val('');
-            }
-        });
-
-        $('.tagedit').delegate('.input-group-addon span.glyphicon-remove','click',function(ev){
-            $(ev.target).parent().remove();
-        });
     	
+    	$('#tables').delegate('.tile>div','click',function(ev){
+    		var je=$(ev.target);
+    		console.log(je[0]);
+    		$.ajax('{prefix}/tenant/{tenant}/store/{store}/order/table/'+je.attr('data-id'));
+    	});
     	
-    	var mask = $('#panel').mask();
-    	
-    	setTimeout(function(){
-    		mask.complete({
-    			iconClass:'remove'
-    		});
-    	},1000);
+    	// Loading tables
+    	var loadmask = $('#page').mask({loadingText:transStr('loading')});
+    	$.when($.ajax('{prefix}/tenant/{tenant}/store/{store}/table'))
+    	.then(function(tableData){
+    		memoryStorage['tables']=tableData;
+    		$('#tables').empty().append(memoryStorage['tables'].map(function(t,i){
+    			var str=['<div class="tile"><div data-id="'+t.barCode+'">'];
+    			str.push('<div class="code">'+t.code+'</div>');
+    			str.push('<div class="cap"><span class="glyphicon glyphicon-user"></span><span>'+t.capacity+'</span></div>');
+    			str.push('</div></div>');
+                return str.join('');
+            }).join(''));    		
+    		
+    		loadmask.dismiss();
+    	},function(){
+    		loadmask.complete({text:transStr('failure'),iconClass:'remove'});
+    	});
     });
     </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />
