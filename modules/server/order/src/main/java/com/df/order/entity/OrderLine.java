@@ -16,8 +16,11 @@ public class OrderLine implements Serializable {
 	@Column(nullable = false, name = "LINE_NUMBER")
 	private int lineNumber;
 
-	@Column(nullable = false, name = "ITEM_CODE")
+	@Column(nullable = false, name = "ITEM_CODE", length=255)
 	private String itemCode;
+
+	@Column(nullable = true, name = "ITEM_NAME", length=128)
+	private String itemName;
 
 	@Column(name = "TABLE_CODE")
 	private String tableCode;
@@ -142,6 +145,14 @@ public class OrderLine implements Serializable {
 
 	public boolean hasPromotion() {
 		return this.promotionName != null;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
 
 	public void calcuatePayment() {

@@ -8,6 +8,7 @@ import org.springframework.util.Assert;
 import com.df.idm.entity.User;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.entity.Promotion;
+import com.df.masterdata.exception.ItemException;
 import com.df.order.entity.Order;
 import com.df.order.entity.OrderLine;
 import com.df.order.promotion.PromotionRepository;
@@ -84,7 +85,11 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 			for (OrderLine line : lines) {
 				String itemCode = line.getItemCode();
 				Item item = this.getItemByItemCode(order.getStoreCode(), itemCode);
-				line.setPrice(item.getPrice()); 
+				if (item == null) {
+					throw ItemException.itemWithCodeNotExist(itemCode);
+				}
+				line.setItemName(item.getName());
+				line.setPrice(item.getPrice());
 				paymentContext.setItem(item);
 				BigDecimal price = this.calculateItemPayment(paymentContext);
 				Promotion promotion = paymentContext.getItemAppliedPromotion();

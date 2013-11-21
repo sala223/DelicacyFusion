@@ -56,7 +56,7 @@ public class TableOccupationResource extends TenantResource {
 
 	@DELETE
 	@Path("/{serviceCardId}")
-	public void acquireTables(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
+	public void releaseTables(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	        @PathParam("serviceCardId") long serviceCardId) {
 		this.injectTenantContext(tenantCode);
 		diningTableDistributor.releaseTables(storeCode, serviceCardId);

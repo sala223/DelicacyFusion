@@ -3,7 +3,9 @@ package com.df.order.entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -225,7 +227,7 @@ public class Order extends TransactionEntity {
 	}
 
 	public void calculatePayment() {
-		if(this.totalPayment == null){
+		if (this.totalPayment == null) {
 			this.totalPayment = new BigDecimal(0);
 		}
 		if (this.lines != null) {
