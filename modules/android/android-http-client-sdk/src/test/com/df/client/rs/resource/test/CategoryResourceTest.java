@@ -8,11 +8,11 @@ import com.google.gson.Gson;
 
 public class CategoryResourceTest extends AbstractResourceTest {
 
-    @MediumTest
-    public void testGetCategories() {
-	CategoryResource categoryResource = this.getClient().getResource(CategoryResource.class);
-	Category[] categories = categoryResource.getCategories();
-	Gson gson = new Gson();
-	this.logInfo(gson.toJson(categories));
-    }
+	@MediumTest
+	public void testGetCategories() {
+		CategoryResource categoryResource = this.getClient().getResource(CategoryResource.class);
+		Category[] categories = categoryResource.getCategories();
+		Gson gson = new Gson();
+		this.logInfo(gson.toJson(categories));
+	}
 }

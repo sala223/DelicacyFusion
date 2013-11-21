@@ -1,5 +1,7 @@
 package com.df.management.configuration.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +16,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.eclipse.persistence.annotations.Index;
+import org.eclipse.persistence.annotations.Multitenant;
+import org.eclipse.persistence.annotations.MultitenantType;
+import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 import com.df.management.configuration.Domain;
@@ -23,7 +28,11 @@ import com.df.management.configuration.Domain;
         MultiTenantSupport.TENANT_COLUMN })
 @Table(name = "GLOBAL_CONFIGURATION")
 @Entity
-public class GlobalConfiguration extends MultiTenantSupport {
+@Multitenant(MultitenantType.SINGLE_TABLE)
+@TenantDiscriminatorColumn(name = MultiTenantSupport.TENANT_COLUMN, length = 12, contextProperty = MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY)
+public class GlobalConfiguration implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "ID")

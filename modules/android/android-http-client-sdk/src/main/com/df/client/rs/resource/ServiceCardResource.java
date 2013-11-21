@@ -4,14 +4,14 @@ import java.util.List;
 
 import com.df.client.rs.model.ServiceCard;
 
-public interface ServiceCardResource {
+public interface ServiceCardResource extends Resource {
 
-	public ServiceCard[] getTableOccupation(String storeCode);
+	public ServiceCard[] getTableOccupation();
 
-	public String[] getAvaliableTables(String storeCode);
+	public String[] getAvaliableTables();
 
-	ServiceCard acquireTables(String storeCode, List<String> tables);
+	ServiceCard acquireTables(List<String> tables);
 
-	void releaseTables(String storeCode, long serviceCardId);
+	void releaseTables(long serviceCardId);
 
 }
