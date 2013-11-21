@@ -19,14 +19,14 @@ public class OrderLine implements Serializable {
 	@Column(nullable = false, name = "ITEM_CODE")
 	private String itemCode;
 
-	@Column(name = "TABLE_NUMBER")
-	private String tableNumber;
+	@Column(name = "TABLE_CODE")
+	private String tableCode;
 
 	@Column(name = "PRICE", scale = 2)
 	private float price;
 
 	@Column(name = "PROMOTION_PRICE", scale = 2)
-	private float promotionPrice;
+	private Float promotionPrice;
 
 	@Column(name = "DISCOUNT", scale = 2)
 	private BigDecimal discount;
@@ -55,10 +55,9 @@ public class OrderLine implements Serializable {
 		this.price = item.getPrice();
 	}
 
-	public OrderLine(String itemCode, float price, int quantity) {
+	public OrderLine(String itemCode, int quantity) {
 		this.itemCode = itemCode;
 		this.quantity = quantity;
-		this.price = price;
 	}
 
 	public String getItemCode() {
@@ -117,7 +116,7 @@ public class OrderLine implements Serializable {
 		this.promotionName = promotionName;
 	}
 
-	public float getPromotionPrice() {
+	public Float getPromotionPrice() {
 		return promotionPrice;
 	}
 
@@ -125,12 +124,12 @@ public class OrderLine implements Serializable {
 		this.promotionPrice = promotionPrice;
 	}
 
-	public String getTableNumber() {
-		return tableNumber;
+	public String getTableCode() {
+		return tableCode;
 	}
 
-	public void setTableNumber(String tableNumber) {
-		this.tableNumber = tableNumber;
+	public void setTableCode(String tableCode) {
+		this.tableCode = tableCode;
 	}
 
 	public BigDecimal getTotalPaymentAfterDiscount() {

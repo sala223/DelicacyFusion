@@ -4,36 +4,36 @@ import java.io.Serializable;
 
 public class DiningTable implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private String number;
+	private String code;
 
-    private String barCode;
+	private String barCode;
 
-    private int capacity;
+	private int capacity;
 
-    public String getNumber() {
-	return number;
-    }
+	public String getBarCode() {
+		return barCode;
+	}
 
-    public void setNumber(String number) {
-	this.number = number;
-    }
+	public void setBarCode(String barCode) {
+		this.barCode = barCode;
+	}
 
-    public String getBarCode() {
-	return barCode;
-    }
+	public int getCapacity() {
+		return capacity;
+	}
 
-    public void setBarCode(String barCode) {
-	this.barCode = barCode;
-    }
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
 
-    public int getCapacity() {
-	return capacity;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setCapacity(int capacity) {
-	this.capacity = capacity;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 }

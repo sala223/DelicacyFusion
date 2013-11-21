@@ -84,6 +84,7 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 			for (OrderLine line : lines) {
 				String itemCode = line.getItemCode();
 				Item item = this.getItemByItemCode(order.getStoreCode(), itemCode);
+				line.setPrice(item.getPrice()); 
 				paymentContext.setItem(item);
 				BigDecimal price = this.calculateItemPayment(paymentContext);
 				Promotion promotion = paymentContext.getItemAppliedPromotion();
@@ -110,6 +111,7 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 				context.setOrderAppliedPromotion(appliedPromotion);
 			}
 			order.setTotalPaymentAfterDiscount(total);
+			order.calculatePayment();
 		}
 	}
 }

@@ -1,6 +1,5 @@
 package com.df.order.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,15 +18,17 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.eclipse.persistence.annotations.MultitenantType;
+import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @Entity
-@Table(name="SERVICE_CARD")
+@Table(name = "SERVICE_CARD")
+@Multitenant(MultitenantType.SINGLE_TABLE)
 @TenantDiscriminatorColumn(name = MultiTenantSupport.TENANT_COLUMN, length = 12, contextProperty = MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY)
-public class ServiceCard implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class ServiceCard {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -1,5 +1,8 @@
 package com.df.order.test;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import junit.framework.TestCase;
 
 import org.junit.Before;
@@ -9,13 +12,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.df.masterdata.dao.ItemDao;
 import com.df.masterdata.dao.ItemTemplateDao;
+import com.df.masterdata.dao.PromotionDao;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.entity.ItemTemplate;
 import com.df.masterdata.entity.ItemType;
 import com.df.masterdata.entity.ItemUnit;
+import com.df.masterdata.entity.Promotion;
+import com.df.masterdata.entity.RuleDefinition;
+import com.df.masterdata.entity.RuleParameter;
+import com.df.masterdata.entity.Promotion.PromotionType;
 import com.df.order.entity.Order;
 import com.df.order.entity.OrderLine;
 import com.df.order.entity.ServiceCard;
+import com.df.order.promotion.rule.ItemDiscountRule;
 import com.df.order.service.contract.OrderService;
 import com.df.order.service.contract.ServiceCardService;
 
@@ -33,6 +42,9 @@ public class OrderServiceTest extends OrderBaseTest {
 
 	@Autowired
 	private ItemTemplateDao templateDao;
+
+	@Autowired
+	private PromotionDao promotionDao;
 
 	@Before
 	public void sampleItems() {
@@ -86,7 +98,7 @@ public class OrderServiceTest extends OrderBaseTest {
 	public void testCreateOrder() {
 		Order order = new Order();
 		order.setStoreCode("S1");
-		OrderLine line = new OrderLine("TESTA0001", 12, 12);
+		OrderLine line = new OrderLine("TESTA0001", 12);
 		order.addOrderLine(line);
 		orderService.createOrder("S1", 0, order);
 	}
@@ -97,24 +109,56 @@ public class OrderServiceTest extends OrderBaseTest {
 		itemDao.getEntityManager().flush();
 		Order order = new Order();
 		order.setStoreCode("S1");
-		OrderLine line = new OrderLine("TESTA0001", 12, 12);
+		OrderLine line = new OrderLine("TESTA0001", 12);
 		order.addOrderLine(line);
 		order.setServiceCardId(card.getId());
 		orderService.createOrder("S1", 0, order);
 	}
-	
+
 	@Test
 	public void testGetOrderByTable() {
 		ServiceCard card = serviceCardService.createServiceCard("S1", "S1000001");
 		itemDao.getEntityManager().flush();
 		Order order = new Order();
 		order.setStoreCode("S1");
-		OrderLine line = new OrderLine("TESTA0001", 12, 12);
+		OrderLine line = new OrderLine("TESTA0001", 12);
 		order.addOrderLine(line);
 		order.setServiceCardId(card.getId());
 		orderService.createOrder("S1", 0, order);
-	    itemDao.getEntityManager().flush();
-	    Order found = orderService.getOrderByTable("S1", "S1000001"); 
-	    TestCase.assertNotNull(found); 
+		itemDao.getEntityManager().flush();
+		Order found = orderService.getOrderByTable("S1", "S1000001");
+		TestCase.assertNotNull(found);
+	}
+
+	@Test
+	public void testCreateOrderWithPromotionAndServiceCard() {
+		Promotion promotion = new Promotion();
+		promotion.setCode("NAT_5_DIS");
+		promotion.setName("National day 50% discount");
+		promotion.setItems("TESTA0001");
+		promotion.setDetails("Food TESTA0001 with 50% discount in national day.");
+		promotion.setType(PromotionType.ITEM);
+		promotion.setStoreCode("S1");
+		RuleDefinition rule = new RuleDefinition("itemDiscount");
+		rule.addParameter(new RuleParameter(ItemDiscountRule.DISCOUNT_PAR, "5"));
+		promotion.setRule(rule);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DAY_OF_YEAR, 10);
+		promotion.setValidTo(calendar.getTime());
+		promotionDao.insert(promotion);
+		ServiceCard card = serviceCardService.createServiceCard("S1", "S1000001");
+		itemDao.getEntityManager().flush();
+		Order order = new Order();
+		order.setStoreCode("S1");
+		OrderLine line = new OrderLine("TESTA0001", 2);
+		OrderLine line2 = new OrderLine("TESTA0002", 2);
+		order.addOrderLine(line);
+		order.addOrderLine(line2);
+		order.setServiceCardId(card.getId());
+		orderService.createOrder("S1", 0, order);
+		itemDao.getEntityManager().flush();
+		Order found = orderService.getOrderByTable("S1", "S1000001");
+		TestCase.assertNotNull(found);
 	}
 }

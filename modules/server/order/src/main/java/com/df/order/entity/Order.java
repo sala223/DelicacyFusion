@@ -166,7 +166,7 @@ public class Order extends TransactionEntity {
 			this.lines = new ArrayList<OrderLine>();
 		}
 		for (OrderLine lin : lines) {
-			if (lin.getItemCode().equals(line.getItemCode())) {
+			if (line.getTableCode() == null && lin.getItemCode().equals(line.getItemCode())) {
 				lin.setQuantity(lin.getQuantity() + line.getQuantity());
 				return lin.getLineNumber();
 			}
@@ -225,6 +225,9 @@ public class Order extends TransactionEntity {
 	}
 
 	public void calculatePayment() {
+		if(this.totalPayment == null){
+			this.totalPayment = new BigDecimal(0);
+		}
 		if (this.lines != null) {
 			for (OrderLine line : lines) {
 				this.totalPayment = this.totalPayment.add(line.getTotalPaymentAfterDiscount());
