@@ -144,19 +144,16 @@ jQuery.fn.extend({
 			},config);
 
 	    var str=['<div class="loadmask">'];
-	    str.push('  <div class="inner">');
-	    str.push('    <div>');
-	    str.push('      <div>');
-	    str.push('        <div class="icon"><span class="glyphicon glyphicon-refresh"></span></div>');
-		str.push('        <div class="text">'+(cfg.loadingText||'Loading')+'</div>');
-	    str.push('      </div>');
-	    str.push('    </div>');
-		str.push('  </div>');
+	    str.push('  <div><div>');
+	    str.push('    <div class="icon"><span class="glyphicon glyphicon-refresh"></span></div>');
+		str.push('    <div class="text">'+(transStr(cfg.loadingText))+'</div>');
+	    str.push('  </div></div>');
 		str.push('</div>');
 
 		var loadmask = $(str.join('')).appendTo(applyElement);
 
-			maskdata = {
+		return {
+			maskElement:loadmask[0],
 			complete:function(cfg){
 				var that=this;
 
@@ -174,7 +171,7 @@ jQuery.fn.extend({
 					.removeClass('glyphicon-refresh')
 					.addClass('glyphicon-'+cfg.iconClass);
 
-					$('.text',loadmask).text(cfg.text);
+					$('.text',loadmask).text(transStr(cfg.text));
 				})
 				.animate({opacity:1},200)
 				.delay(cfg.timeout,'fx')
@@ -192,9 +189,6 @@ jQuery.fn.extend({
 				});
 			}
 		};
-
-		applyElement.data('mask',maskdata);
-		return maskdata;
 	}
 });
 

@@ -98,18 +98,18 @@
     		var edit = $('#edit'),idx=edit.data('editingIdx');
     		memoryStorage['items'][idx] = $.extend(memoryStorage['items'][idx],edit.toViewData());
 
-    		var savemask = $('#edit').mask({loadingText:transStr('saving')});
+    		var savemask = $('#edit').mask({loadingText:'saving'});
     		$.ajax('{prefix}/tenant/{tenant}/itpl/',{
     			type:'PUT',
     			contentType:'application/json',
     			data:JSON.stringify(memoryStorage['items'][idx])
     		}).done(function(){
-    			savemask.complete({text:transStr('completed'),fn:function(){
-    				$('#edit').removeClass('transform0');	
+    			savemask.complete({text:'completed',fn:function(){
+    				$('#edit').removeClass('transform0');
     			}});
     			
     		}).fail(function(){
-    			savemask.complete({text:transStr('failure'),iconClass:'remove'});
+    			savemask.complete({text:'failure',iconClass:'remove'});
     		});
     	});
 
@@ -148,7 +148,7 @@
     		$(ev.target).toggleClass('selected');
     	});
 
-    	var loadmask = $('#page').mask({loadingText:transStr('loading')});
+    	var loadmask = $('#page').mask({loadingText:'loading'});
     	$.when($.ajax('{prefix}/tenant/{tenant}/itpl/'),$.ajax('{prefix}/tenant/{tenant}/category'))
     	.then(function(respTpl,respCategory){
     	    var itplData = respTpl[0],categoryData = respCategory[0];
@@ -165,7 +165,7 @@
             
             loadmask.dismiss();
     	},function(){
-    		loadmask.complete({text:transStr('failure'),iconClass:'remove'});
+    		loadmask.complete({text:'failure',iconClass:'remove'});
     	});
     });
     </script>
