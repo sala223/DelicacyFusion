@@ -67,6 +67,7 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 			((PaymentContextImpl) paymentContext).setItemAppliedPromotion(appliedPromotion);
 			return total;
 		} else {
+			((PaymentContextImpl) paymentContext).setItemAppliedPromotion(null);
 			return new BigDecimal(item.getPrice());
 		}
 	}
