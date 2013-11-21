@@ -1,4 +1,7 @@
 var emptyFn=function(){};
+RegExp.quote = function(str) {
+    return (str+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+};
 
 /**
  * Elements Translate
@@ -53,7 +56,7 @@ _jQuery_static_members = {
 			},
 			tag_option:function(vs){
 				var options = {};
-				$('span',this).each(function(i,e){
+				this.children().each(function(i,e){
 					var oe=$(e).removeClass('selected');
 					options[oe.attr('data-value')]=oe;
 				});
@@ -62,9 +65,9 @@ _jQuery_static_members = {
 				});
 			},
 			imgview_val:function(pics){
-				$('>div.clearboth .img',this).remove();
+				$('.img',this).remove();
 
-				$('>div.clearboth',this).append($.map(pics,function(e,i){
+				this.append($.map(pics,function(e,i){
 					return '<div class="img" style="background-image:url('+e.imageLink+')"></div>';
 				}).join(''));
 			}
@@ -79,7 +82,7 @@ _jQuery_static_members = {
 				}).get();
 			},
 			tag_option:function(){
-				return $('span.selected',this).map(function(i,e){
+				return $('*.selected',this).map(function(i,e){
 					return $(e).attr('data-value');
 				}).get();
 			},
@@ -135,13 +138,7 @@ jQuery.fn.extend({
  */
 jQuery.fn.extend({
 	mask:function(config){
-		var applyElement=this, maskdata=applyElement.data('mask');
-		if(maskdata!==undefined){
-			maskdata['_cc']+=1;
-			maskdata['_dc']+=1;
-			return maskdata;
-		}
-
+		var applyElement=this;
 		var cfg = $.extend({
 				loadingText:'Loading'
 			},config);
@@ -160,44 +157,33 @@ jQuery.fn.extend({
 		var loadmask = $(str.join('')).appendTo(applyElement);
 
 			maskdata = {
-			__cc:1,
-			__dc:1,
 			complete:function(cfg){
 				var that=this;
-
-				this.__cc--;
-				if(this.__cc > 0){
-					return;
-				}
 
 				cfg=$.extend({
 					text:'Completed',
 					iconClass:'ok',
 					timeout:800,
-					fn:emptyFn
+					fn:emptyFn,
+					dismissFn:emptyFn
 				},cfg);
 
 				$('.inner>div>div',loadmask)
-					.animate({opacity:0},200,function(){
-						$('.icon .glyphicon',loadmask)
-						.removeClass('glyphicon-refresh')
-						.addClass('glyphicon-'+cfg.iconClass);
+				.animate({opacity:0},200,function(){
+					$('.icon .glyphicon',loadmask)
+					.removeClass('glyphicon-refresh')
+					.addClass('glyphicon-'+cfg.iconClass);
 
-						$('.text',loadmask).text(cfg.text);
-					})
-					.animate({opacity:1},200)
-					.delay(cfg.timeout,'fx')
-					.promise('fx').done(function(){
-						that.dismiss();
-					});
+					$('.text',loadmask).text(cfg.text);
+				})
+				.animate({opacity:1},200)
+				.delay(cfg.timeout,'fx')
+				.promise('fx').done(function(){
+					cfg.fn.apply(loadmask);
+					that.dismiss(cfg.dismissFn);
+				});
 			},
 			dismiss:function(fn){
-				this.__cc--;
-				this.__dc--;
-				if(this.__dc > 0){
-					return;
-				}
-
 				loadmask.animate({opacity:0},400,function(){
 					(fn||emptyFn).apply(this);
 					$(this).remove();

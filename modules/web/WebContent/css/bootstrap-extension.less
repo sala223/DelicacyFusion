@@ -1,6 +1,10 @@
 /* require bootstap.css */
 @import "common.less";
 
+.btn-group button.btn {
+    letter-spacing:3px;
+}
+
 .tagedit {
     .input-group-addon {
         > span {
@@ -74,39 +78,83 @@
 
     height:auto;
     min-height:34px;
+    padding-left:8px;
+    padding-right:8px;
     .user-select-none();
 
-    > span {
+    > * {
+        float:left;
+
         margin-right:6px;
+        margin-bottom:4px;
+
         padding:2px 4px;
         border-radius:3px;
-        font-size:0.95em;
+        font-size:1em;
         cursor:pointer;
+        letter-spacing:1px;
+        word-break:keep-all;
         .transition(0.2s;linear);
 
         background-color:white;
         color:black;
     }
-    
-    > span.selected {
+
+    > .selected {
         background-color:#555555;
         color:white;
     }
 }
 
+.imageview.form-control {
+    height:auto;
+
+    .img,
+    .imgcreator {
+        width:80px;
+        height:80px;
+        background:transparent no-repeat center center;
+        background-size : contain;
+        float:left;
+    }
+}
+
+
+
 #edit {
+    @indicatorColor:#DDDDDD;
+
 
     .form-group {
-        margin-bottom:20px;
+        margin-top:30px;
+        margin-bottom:2px;
+        position:relative;
     }
 
     label {
-        display:none;
+        color:@indicatorColor;
+        font-size:1.20em;
+        .transition(0.2s;linear);
+        
+        position:absolute;
+        left:13px;
+        top:-13px;
+    }
+    
+    *::-webkit-input-placeholder {
+        color:@indicatorColor;
     }
 
     .form-control {
         border-color:transparent transparent #CCC transparent;
         box-shadow:none;
+    }
+
+    .form-control:focus + label,
+    .tagselect:hover + label,
+    .imageview:hover + label,
+    .form-control:hover + label {
+        color: #2D6CA2;
     }
     
     .input-group-btn button {

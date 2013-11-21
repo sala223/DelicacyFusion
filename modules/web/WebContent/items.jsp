@@ -8,48 +8,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>DelicacyFusion Web</title>
     <jsp:include page="WEB-INF/jsptiles/setup.jsp" />
-
-    <style>
-    #edit {
-      width:600px;
-    }
-    #edit > div {
-      padding:20px;
-    }
-
-    ul.dropdown-menu.align-right li a {
-      text-align:right;
-    }
-
-    #txt-type,#txt-unit {
-      display:inline-block;
-      width:30px;
-      text-align:right;
-    }
-    
-    .input-group-btn button {
-      padding-right:8px;
-    }
-    
-    .btn-group {
-      margin-top:10px;
-    }
-    .btn-group button {
-      min-width:100px;
-    }
-    </style>
   </head>
   <body>
-    <div id="page">
+    <div id="page" class="showmenu">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
         <div id="dishes" class="tilecontainer"></div>
         <div id="edit">
           <div>
             <div class="form-group">
-              <label for="val-name" class="control-label" data-i19="def">item_name</label>
               <div class="input-group">
-                <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(name)" />
+                <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(name)" tabindex="1" />
+                <label for="val-name" class="control-label" data-i19="def">item_name</label>
 
                 <div class="input-group-btn" data-channel="dropdown_val(itemUnit)" >
                   <button id="btn-unit" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -70,9 +40,9 @@
             </div>
 
             <div class="form-group">
-              <label for="val-code" class="control-label" data-i19="def">item_code</label>
               <div class="input-group">
-                <input id="val-code" class="form-control" type="text" placeholder="Enter Code" data-channel="val(code)" />
+                <input id="val-code" class="form-control" type="text" placeholder="Enter Code" data-channel="val(code)" tabindex="2" />
+                <label for="val-code" class="control-label" data-i19="def">item_code</label>
 
                 <div class="input-group-btn" data-channel="dropdown_val(type)" >
                   <button id="btn-type" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -89,30 +59,31 @@
             </div>
 
             <div class="form-group">
-              <label for="val-desc" class="control-label" data-i19="def">item_desc</label>
               <!--<textarea id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(description)" ></textarea>-->
-              <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(description)" />
+              <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(description)" tabindex="3"/>
+              <label for="val-desc" class="control-label" data-i19="def">item_desc</label>
             </div>
 
             <div class="form-group" id="tagcloud">
               <div>
+                <div class="tagselect form-control clearboth" data-channel="tag_option(categories)" ></div>
                 <label class="control-label" data-i19="def">item_category</label>
-                <div class="tagselect form-control" data-channel="tag_option(categories)" >
-                </div>
               </div>
             </div>
 
-            <div class="form-group imgview" data-channel="imgview_val(pictureSet)">
-              <label class="control-label" data-i19="def">item_image</label>
-              <div class="clearboth">
+            <div class="form-group">
+              <div class="imageview form-control clearboth" data-channel="imgview_val(pictureSet)">
                 <div class="imgcreator"></div>
                 <div class="img"></div>
               </div>
+              <label class="control-label" data-i19="def">item_image</label>
             </div>
 
-            <div class="btn-group">
-              <button type="button" class="btn btn-primary" id="btnOK">OK</button>
-              <button type="button" class="btn btn-default" id="btnCancel">Cancel</button>
+            <div class="form-group">
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary" data-i19="def" id="btnOK">save</button>
+                <button type="button" class="btn btn-default" data-i19="def" id="btnCancel">cancel</button>
+              </div>
             </div>
           </div>
         </div>
@@ -127,11 +98,18 @@
     		var edit = $('#edit'),idx=edit.data('editingIdx');
     		memoryStorage['items'][idx] = $.extend(memoryStorage['items'][idx],edit.toViewData());
 
+    		var savemask = $('#edit').mask({loadingText:transStr('saving')});
     		$.ajax('{prefix}/tenant/{tenant}/itpl/',{
-    			applyElement:'#panel',
     			type:'PUT',
     			contentType:'application/json',
     			data:JSON.stringify(memoryStorage['items'][idx])
+    		}).done(function(){
+    			savemask.complete({text:transStr('completed'),fn:function(){
+    				$('#edit').removeClass('transform0');	
+    			}});
+    			
+    		}).fail(function(){
+    			savemask.complete({text:transStr('failure'),iconClass:'remove'});
     		});
     	});
 
@@ -166,28 +144,28 @@
     	$('.imgcreator').imageDropper();
 
     	
-    	$('.tagselect').delegate('>span','click',function(ev){
+    	$('.tagselect').delegate('>*','click',function(ev){
     		$(ev.target).toggleClass('selected');
     	});
 
-    	$.ajax('{prefix}/tenant/{tenant}/itpl/',{applyElement:'#panel'})
-        .done(function(data){
-        	memoryStorage['items'] = typeof(data)==='object'?data:JSON.parse(data);
+    	var loadmask = $('#page').mask({loadingText:transStr('loading')});
+    	$.when($.ajax('{prefix}/tenant/{tenant}/itpl/'),$.ajax('{prefix}/tenant/{tenant}/category'))
+    	.then(function(respTpl,respCategory){
+    	    var itplData = respTpl[0],categoryData = respCategory[0];
+    		memoryStorage['items'] = typeof(itplData)==='object'? itplData : JSON.parse(itplData);
             $('#dishes').empty().append(memoryStorage['items'].map(function(e,i){
-            	var x = [];
-            	x.push('<div class="text">'+e.name+'</div>');
+                var x = [];
+                x.push('<div class="text">'+e.name+'</div>');
                 return '<div class="tile"><div data-idx="'+i+'">'+x.join('')+'</div></div>';
             }).join(''));
-        })
-        .always(function() {
 
-        });
-    	
-    	$.ajax('{prefix}/tenant/{tenant}/category',{applyElement:'#panel'})
-    	.done(function(data){
-    		$('#tagcloud .tagselect').empty().append(data.map(function(e){
-    			return '<span data-value="'+e.code+'">'+e.name+'</span>'; 
-    		}).join(''));
+            $('#tagcloud .tagselect').empty().append(categoryData.map(function(e){
+                return '<div data-value="'+e.code+'">'+e.name+'</div>'; 
+            }).join(''));
+            
+            loadmask.dismiss();
+    	},function(){
+    		loadmask.complete({text:transStr('failure'),iconClass:'remove'});
     	});
     });
     </script>
