@@ -91,7 +91,7 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 					line.setPromotionPrice(price.floatValue());
 				}
 				line.calcuatePayment();
-				total.add(line.getTotalPaymentAfterDiscount());
+				total = total.add(line.getTotalPaymentAfterDiscount());
 			}
 			context.setItem(null);
 			context.setItemAppliedPromotion(null);
