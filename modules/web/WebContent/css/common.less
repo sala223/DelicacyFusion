@@ -73,37 +73,45 @@ html,body {
 
 
 @import "animation.less";
+@loadmaskZIndex:10000;
 .loadmask {
     .docked-center;
-
-    z-index: 10000;
+    z-index: @loadmaskZIndex;
     background-color:rgba(0, 0, 0, 0.3);
 
-    .inner {
-        color:white;
-        float:left;
+    > div {
+        @maskWidth:130px;
+        @maskHeight:140px;
+        @iconHeight:110px;
+
         position:absolute;
-        left:50%;
         top:50%;
+        left:50%;
 
         > div {
+            color:white;
             border-radius:8px;
             background-color:rgba(0, 0, 0, 0.3);
-            float:left;
+            width:@maskWidth;
+            height:@maskHeight;
             position:relative;
-            left:-50%;
-            top:-70px;
+            top: -@maskHeight / 2;
+            left: -@maskWidth / 2;
         }
 
         .icon {
-            width:150px;
-            height:120px;
             text-align:center;
+            height:@iconHeight;
 
             span.glyphicon {
                 font-size:5em;
                 position:relative;
                 top:40px;
+            }
+            
+            span.glyphicon:before {
+                position:relative;
+                top:1px;
             }
 
             span.glyphicon.glyphicon-refresh {
@@ -113,14 +121,21 @@ html,body {
         }
 
         .text {
-            @height:30px;
-
-            font-size:1.8em;
-            font-weight:600;
+            font-size:1.4em;
             text-shadow: 0px -1px 0px #000000;
             text-align:center;
-            height:@height;
+            height:@maskHeight - @iconHeight;
             //line-height:@height;
         }
     }
+}
+
+@-moz-document url-prefix() {
+    .loadmask > div .icon span.glyphicon:before {
+        top:0;
+    }
+}
+
+.above-loadmask {
+    z-index:@loadmaskZIndex + 1;
 }

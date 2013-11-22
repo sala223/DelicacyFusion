@@ -14,7 +14,7 @@
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
         <div id="tables" class="tilecontainer"></div>
-        <div id="edit"></div>
+        <div id="edit" class="above-loadmask"></div>
       </div>
     </div>
 
@@ -23,23 +23,39 @@
     	
     	$('#tables').delegate('.tile>div','click',function(ev){
     		var je=$(ev.target);
-    		console.log(je[0]);
-    		$.ajax('{prefix}/tenant/{tenant}/store/{store}/order/table/'+je.attr('data-id'));
+
+    		var mask = $('#panel').mask({loadingText:transStr('loadingOrder')});
+    		$.ajax('{prefix}/tenant/{tenant}/store/{store}/order/table/'+je.attr('data-id'))
+    		.done(function(data){
+    			console.log(data);
+
+    			$('#edit').append('<table>'+data.lines.map(function(e,i){
+    				var orderline=['<tr data-index="'+i+'" data-code="'+e.itemCode+'">'];
+    				orderline.push('<td>'+e.lineNumber+'</td>');
+    				orderline.push('<td><span>'+e.itemName+'</span></td>');
+    				orderline.push('<td>'+e.price.toFixed(2)+'</td>');
+    				orderline.push('</tr>');
+    				return orderline.join('');
+    			}).join('')+'</table>');
+
+    			$('#edit').addClass('transform0');	
+    		});
     	});
-    	
+
     	// Loading tables
-    	var loadmask = $('#page').mask({loadingText:transStr('loading')});
+    	var loadmask = $('#panel').mask({loadingText:transStr('loading')});
     	$.when($.ajax('{prefix}/tenant/{tenant}/store/{store}/table'))
     	.then(function(tableData){
     		memoryStorage['tables']=tableData;
+
     		$('#tables').empty().append(memoryStorage['tables'].map(function(t,i){
-    			var str=['<div class="tile"><div data-id="'+t.barCode+'">'];
+    			var str=['<div class="tile"><div data-id="'+t.code+'">'];
     			str.push('<div class="code">'+t.code+'</div>');
     			str.push('<div class="cap"><span class="glyphicon glyphicon-user"></span><span>'+t.capacity+'</span></div>');
     			str.push('</div></div>');
                 return str.join('');
             }).join(''));    		
-    		
+
     		loadmask.dismiss();
     	},function(){
     		loadmask.complete({text:transStr('failure'),iconClass:'remove'});

@@ -32,6 +32,7 @@ var i19={
 
 	completed:'已完成',
 	loading:'正在载入',
+	loadingOrder:'正在读取订单',
 	saving:'正在保存',
 	failure:'失败',
 
