@@ -1,0 +1,24 @@
+project.ext.set('sourceCompatibility', 1.5)
+project.ext.set("jbossHome", "../../dependencies/jboss")
+
+apply plugin: 'war'
+
+repositories {
+	flatDir {
+		dirs "$jbossHome/modules/javax/servlet/api/main",
+		     "$jbossHome/modules/javax/servlet/jsp/api/main",
+		     "src/main/webapp/WEB-INF/lib"
+	}
+}
+
+dependencies {
+	compile ":jboss-servlet-api_3.0_spec-1.0.0.Final:"
+	compile ":jboss-jsp-api_2.2_spec-1.0.0.Final:"
+	compile ":antlr-runtime-3.4:"
+	compile ":commons-beanutils-core-1.8.3:"
+	compile ":commons-io-2.3:"
+	compile ":commons-logging-1.1.1:"
+	compile ":jericho-html-3.3:"
+	compile ":less4j-1.2.0:"
+	compile ":yuicompressor-2.4.8:"
+}
