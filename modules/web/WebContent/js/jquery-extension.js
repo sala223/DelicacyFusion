@@ -158,14 +158,14 @@ jQuery.fn.extend({
 				var that=this;
 
 				cfg=$.extend({
-					text:'Completed',
+					text:'completed',
 					iconClass:'ok',
 					timeout:800,
 					fn:emptyFn,
 					dismissFn:emptyFn
 				},cfg);
 
-				$('.inner>div>div',loadmask)
+				$('>div>div',loadmask)
 				.animate({opacity:0},200,function(){
 					$('.icon .glyphicon',loadmask)
 					.removeClass('glyphicon-refresh')
@@ -179,6 +179,9 @@ jQuery.fn.extend({
 					cfg.fn.apply(loadmask);
 					that.dismiss(cfg.dismissFn);
 				});
+			},
+			clearIndicator:function(){
+				loadmask.children().remove();
 			},
 			dismiss:function(fn){
 				loadmask.animate({opacity:0},400,function(){

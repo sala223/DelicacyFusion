@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ch">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Test - DelicacyFusion Web</title>
+    <title>Cashier - DelicacyFusion Web</title>
     <jsp:include page="WEB-INF/jsptiles/setup.jsp" />
   </head>
   <body>
@@ -20,11 +20,11 @@
 
     <script type="text/javascript">
     window.main.push(function(){
-    	
+
     	$('#tables').delegate('.tile>div','click',function(ev){
     		var je=$(ev.target);
 
-    		var mask = $('#panel').mask({loadingText:transStr('loadingOrder')});
+    		var mask = $('#panel').mask({loadingText:transStr('loading_order')});
     		$.ajax('{prefix}/tenant/{tenant}/store/{store}/order/table/'+je.attr('data-id'))
     		.done(function(data){
     			console.log(data);
@@ -38,7 +38,16 @@
     				return orderline.join('');
     			}).join('')+'</table>');
 
+    			mask.clearIndicator();
     			$('#edit').addClass('transform0');	
+    		})
+    		.fail(function( jqXHR, textStatus, errorThrown ){
+    			var errorData = jqXHR.responseJSON;
+    			if(errorData.errorCode===100003){
+    				mask.complete({text:'no_order_on_table',iconClass:'exclamation-sign'});
+    			}else{
+    				mask.complete({text:'unknown_error',iconClass:'remove'});
+    			}
     		});
     	});
 

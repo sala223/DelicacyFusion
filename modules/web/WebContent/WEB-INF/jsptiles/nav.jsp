@@ -42,10 +42,13 @@ window.main.push(function(){
 	});
 
 	var showDelay = 0;
-	$('#nav-shower').mouseover(function(ev){
+	$('#nav-shower').click(function(){
+		transitionenabled = true;
+        $('#page').addClass('showmenu');
+	})
+	.mouseover(function(ev){
 		showDelay = setTimeout(function(){
-			transitionenabled = true;
-	 	    $('#page').addClass('showmenu');
+			$(ev.target).click();
 		},300);
 	})
 	.mouseout(function(){

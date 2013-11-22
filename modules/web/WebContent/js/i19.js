@@ -32,8 +32,10 @@ var i19={
 
 	completed:'已完成',
 	loading:'正在载入',
-	loadingOrder:'正在读取订单',
+	loading_order:'正在读取订单',
+	no_order_on_table:'没有查询到订单',
 	saving:'正在保存',
+	unknown_error:'未知错误',
 	failure:'失败',
 
 	save:'保存',
