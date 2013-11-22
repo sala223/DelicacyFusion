@@ -5,8 +5,11 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 import com.df.masterdata.entity.Item;
+import com.df.masterdata.entity.ItemUnit;
 
 @Embeddable
 public class OrderLine implements Serializable {
@@ -16,11 +19,15 @@ public class OrderLine implements Serializable {
 	@Column(nullable = false, name = "LINE_NUMBER")
 	private int lineNumber;
 
-	@Column(nullable = false, name = "ITEM_CODE", length=255)
+	@Column(nullable = false, name = "ITEM_CODE", length = 255)
 	private String itemCode;
 
-	@Column(nullable = true, name = "ITEM_NAME", length=128)
+	@Column(nullable = true, name = "ITEM_NAME", length = 128)
 	private String itemName;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "ITEM_UNIT", length = 32)
+	private ItemUnit itemUnit;
 
 	@Column(name = "TABLE_CODE")
 	private String tableCode;
@@ -85,6 +92,14 @@ public class OrderLine implements Serializable {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public ItemUnit getItemUnit() {
+		return itemUnit;
+	}
+
+	public void setItemUnit(ItemUnit itemUnit) {
+		this.itemUnit = itemUnit;
 	}
 
 	public BigDecimal getTotalPayment() {

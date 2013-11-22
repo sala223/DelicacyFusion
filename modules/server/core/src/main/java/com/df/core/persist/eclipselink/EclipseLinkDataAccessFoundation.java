@@ -138,9 +138,9 @@ public class EclipseLinkDataAccessFoundation extends JPADataAccessFoundation {
 			for (int i = 0; i < rootProperties.length; ++i) {
 				String pname = rootProperties[i].getName();
 				if (i != 0) {
-					eql += " AND " + pname + "=:" + pname.toUpperCase();
+					eql += " AND e." + pname + "=:" + pname.toUpperCase();
 				} else {
-					eql += pname + "=:" + pname.toUpperCase();
+					eql += "e."+pname + "=:" + pname.toUpperCase();
 				}
 			}
 			eql = String.format(eql, entityName);

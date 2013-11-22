@@ -90,6 +90,7 @@ public abstract class AbstractPaymentCalculator implements PaymentCalculator {
 				}
 				line.setItemName(item.getName());
 				line.setPrice(item.getPrice());
+				line.setItemUnit(item.getItemUnit()); 
 				paymentContext.setItem(item);
 				BigDecimal price = this.calculateItemPayment(paymentContext);
 				Promotion promotion = paymentContext.getItemAppliedPromotion();
