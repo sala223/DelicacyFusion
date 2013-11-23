@@ -41,6 +41,17 @@ jQuery.fn.extend({
  */
 _jQuery_static_members = {
 	bindData:{
+		getImageView:function(data){
+			return [
+			    '<div class="img" style="background-image:url(/m-console'+data.imageLink+')" ',
+			    'data-imageid="'+data.imageId+'" ',
+			    'data-imagelink="'+data.imageLink+'" ',
+			    'data-imagewidth="'+data.width+'" ',
+			    'data-imageheight="'+data.heigth+'" ',
+			    'data-imageformat="'+data.format+'" ',
+			    '></div>'].join('');
+		},
+
 		setter:{
 			dropdown_val:function(v){
 				$('a[data-value='+v+']',this).click();
@@ -68,8 +79,14 @@ _jQuery_static_members = {
 				$('.img',this).remove();
 
 				this.append($.map(pics,function(e,i){
-					return '<div class="img" style="background-image:url('+e.imageLink+')"></div>';
+					return _jQuery_static_members.bindData.getImageView(e);
 				}).join(''));
+			},
+			money_text:function(v){
+				if(typeof(v)==='string'){
+					v = parseFloat(v);
+				}
+				this.text(v.toFixed(2));
 			}
 		},
 		getter:{
@@ -87,7 +104,16 @@ _jQuery_static_members = {
 				}).get();
 			},
 			imgview_val:function(){
-				console.log('//To be implemented');
+				return $('.img',this).map(function(i,e){
+					var je = $(e);
+					return {
+						imageId:je.attr('data-imageid'),
+						imageLink:je.attr('data-imagelink'),
+						format:je.attr('data-format'),
+						heigth:parseInt(je.attr('data-imageheight'),10),
+						width:parseInt(je.attr('data-imagewidth'),10)
+					};
+				}).get();
 			}
 		}
 	}
@@ -96,16 +122,17 @@ _jQuery_static_members = {
 jQuery.fn.extend({
 	toDataView:function(data){
 		$('*[data-channel]',this).each(function(i,e){
-			var je = $(e),dc = /^(\w+)\((\w*)\)$/.exec(je.attr('data-channel'));
+			var je = $(e),dc = /^(\w+)\((.*)\)$/.exec(je.attr('data-channel'));
 			if(dc===null){
 				return;
 			}
 
 			var fn = je[dc[1]];
+				vl = new Function('data','return '+dc[2]+';').call(data, data);
 			if(typeof(fn)==='function'){
-				fn.call(je,data[dc[2]]);
+				fn.call(je,vl);
 			}else{
-				_jQuery_static_members.bindData.setter[dc[1]].call(je,data[dc[2]]);
+				_jQuery_static_members.bindData.setter[dc[1]].call(je,vl);
 			}
 		});
 
@@ -114,7 +141,7 @@ jQuery.fn.extend({
 	toViewData:function(){
 		var data={};
 		$('*[data-channel]',this).each(function(i,e){
-			var je = $(e),dc = /^(\w+)\((\w*)\)$/.exec(je.attr('data-channel'));
+			var je = $(e),dc = /^(\w+)\((.*)\)$/.exec(je.attr('data-channel'));
 			if(dc===null){
 				return;
 			}
@@ -126,7 +153,7 @@ jQuery.fn.extend({
 				v = _jQuery_static_members.bindData.getter[dc[1]].call(je);
 			}
 
-			data[dc[2]] = v;
+			data[dc[2].replace(/^(this|data)\./,'')] = v;
 		});
 
 		return data;
@@ -153,7 +180,7 @@ jQuery.fn.extend({
 		var loadmask = $(str.join('')).appendTo(applyElement);
 
 		return {
-			maskElement:loadmask[0],
+			element:loadmask,
 			complete:function(cfg){
 				var that=this;
 
@@ -200,7 +227,11 @@ jQuery.fn.extend({
  */
 jQuery.fn.extend({
 	imageDropper:function(){
-		var dropTarget = this;
+		var dropTarget = this, ret = {
+			clearImage:function(){
+				$('.glyphicon-remove',dropTarget).click();
+			}
+		};
 
 		dropTarget.append([
         '<span class="glyphicon glyphicon-plus"></span>',
@@ -224,14 +255,13 @@ jQuery.fn.extend({
 			ev.preventDefault();
 		})
 		.on('drop',function(ev){
-			console.log('dropped');
-
 			var preview = dropTarget.removeClass('dragover'),
 				file = ev.originalEvent.dataTransfer.files[0],
 			    reader = new FileReader();
 
 			$(reader).on('load',function (event) {
 				//event.target.result.replace(/^data:([\w-\.]+\/[\w-\.]+)?;base64,/,''));
+				ret.imageContent = event.target.result;
 				preview.css('background-image','url('+event.target.result+')');
 				preview.addClass('dropped');
 			});
@@ -244,5 +274,7 @@ jQuery.fn.extend({
 		$('.glyphicon-remove',this).click(function(){
 			dropTarget.removeClass('dropped').css('backgroundImage','none');
 		});
+
+		return ret;
 	}
 });

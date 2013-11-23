@@ -172,8 +172,8 @@
     background-color:white;
     border-radius:10px 0 0 10px;
     
-    > div {
-        padding:20px;
+    > div:not(.loadmask) {
+        .docked-center(20px);
     }
 }
 
@@ -214,6 +214,7 @@
             bottom:2px;
             height:27px;
             line-height:27px;
+            font-size:26px;
 
             .transform(1,0,0,32px,0,0);
             .transition(400ms);
