@@ -1,7 +1,14 @@
-project.ext.set('sourceCompatibility', 1.5)
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+project.ext.set('sourceCompatibility', 1.6)
+project.ext.set('targetCompatibility', 1.6)
 project.ext.set("jbossHome", "../../dependencies/jboss")
 
-apply plugin: 'war'
+compileJava {
+	sourceCompatibility = 1.6
+	targetCompatibility = 1.6
+}
 
 repositories {
 	flatDir {
@@ -21,4 +28,8 @@ dependencies {
 	compile ":jericho-html-3.3:"
 	compile ":less4j-1.2.0:"
 	compile ":yuicompressor-2.4.8:"
+}
+
+jettyRun {
+    httpPort = 11080
 }

@@ -27,13 +27,14 @@
     		var mask = $('#panel').mask({loadingText:transStr('loading_order')});
     		$.ajax('{prefix}/tenant/{tenant}/store/{store}/order/table/'+je.attr('data-id'))
     		.done(function(data){
-    			console.log(data);
 
     			$('#edit').append('<table>'+data.lines.map(function(e,i){
     				var orderline=['<tr data-index="'+i+'" data-code="'+e.itemCode+'">'];
-    				orderline.push('<td>'+e.lineNumber+'</td>');
-    				orderline.push('<td><span>'+e.itemName+'</span></td>');
-    				orderline.push('<td>'+e.price.toFixed(2)+'</td>');
+    				orderline.push('<td class="ln">'+e.lineNumber+'</td>');
+    				orderline.push('<td class="itemname"><span>'+e.itemName+'</span></td>');
+    				orderline.push('<td class="quantity">x<span>'+e.quantity+'</span><span>'+transStr('unit_'+(e.itemUnit||'DISK').toLowerCase())+'</span></td>');
+    				orderline.push('<td class="totalBef">'+e.totalPayment.toFixed(2)+'</td>');
+    				orderline.push('<td class="totalDis">'+(e.totalPaymentAfterDiscount - e.totalPayment).toFixed(2)+'</td>');
     				orderline.push('</tr>');
     				return orderline.join('');
     			}).join('')+'</table>');
