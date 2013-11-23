@@ -9,6 +9,7 @@ import com.df.client.android.http.rs.resource.impl.ItemResourceImpl;
 import com.df.client.android.http.rs.resource.impl.OrderResourceImpl;
 import com.df.client.android.http.rs.resource.impl.ServiceCardResourceImpl;
 import com.df.client.android.http.rs.resource.impl.StoreResourceImpl;
+import com.df.client.android.http.rs.resource.impl.TableResourceImpl;
 import com.df.client.http.ResourceContext;
 import com.df.client.http.ResourceFactory;
 import com.df.client.rs.resource.CategoryResource;
@@ -18,6 +19,7 @@ import com.df.client.rs.resource.OrderResource;
 import com.df.client.rs.resource.Resource;
 import com.df.client.rs.resource.ServiceCardResource;
 import com.df.client.rs.resource.StoreResource;
+import com.df.client.rs.resource.TableResource;
 import com.df.client.rs.resource.exception.ResourceInstantiateError;
 
 public class ResourceFactoryImpl extends ResourceFactory {
@@ -34,6 +36,7 @@ public class ResourceFactoryImpl extends ResourceFactory {
 		typeMapping.put(OrderResource.class, OrderResourceImpl.class);
 		typeMapping.put(ConfigurationResource.class, ConfigurationResourceImpl.class);
 		typeMapping.put(ServiceCardResource.class, ServiceCardResourceImpl.class);
+		typeMapping.put(TableResource.class, TableResourceImpl.class);
 	}
 
 	public static <T extends Resource> void registerResourceType(Class<T> resourceType, Class<T> implType) {
