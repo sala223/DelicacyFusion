@@ -3,8 +3,6 @@ package com.df.android.ui;
 import java.util.LinkedList;
 import java.util.Vector;
 
-import com.df.android.R;
-
 import signaturesdk.acquisition.AuthenticationListener;
 import signaturesdk.acquisition.SignatureAndroidView;
 import signaturesdk.beans.AcquisitionSignWord;
@@ -19,9 +17,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import com.df.android.R;
 
 public class AuthenticationDialog extends Dialog {
 
@@ -48,7 +47,7 @@ public class AuthenticationDialog extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         requestWindowFeature(Window.FEATURE_PROGRESS);
-        setContentView(R.layout.auth_dialog);
+        setContentView(R.layout.login);
           
         p = getWindow().getAttributes();  //获取对话框当前的参数值   
         p.height = 320;//(int) (d.getHeight() * 0.4);   //高度设置为屏幕的0.4 
@@ -69,8 +68,7 @@ public class AuthenticationDialog extends Dialog {
         });
         mView.requestFocus();
           
-        Button btnCancel = (Button)findViewById(R.id.tablet_cancel);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
               
             @Override
             public void onClick(View v) {

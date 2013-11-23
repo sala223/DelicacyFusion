@@ -11,9 +11,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import com.df.android.GlobalSettings;
 import com.df.android.R;
 import com.df.android.entity.ItemCategory;
-import com.df.android.entity.Shop;
+import com.df.android.entity.Store;
 import com.df.android.menu.MenuPagerAdapter;
 
 public class MenuView extends LinearLayout {
@@ -22,22 +23,17 @@ public class MenuView extends LinearLayout {
 
 	public MenuView(Context context) {
 		super(context);
+		initView();
 	}
 
 	public MenuView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		initView();
 	}
 
-	private Shop shop;
-
-	public void setShop(final Shop shop) {
-		this.shop = shop;
-		loadMenu();
-	}
-
-	private void loadMenu() {
+	private void initView() {
 		Log.d(getClass().getName(), "Refreshing shop menu");
-		
+
 		LayoutInflater li = LayoutInflater.from(this.getContext());
 
 		// Add menu navigator
@@ -49,32 +45,24 @@ public class MenuView extends LinearLayout {
 			menuNavigator.removeAllViews();
 		}
 
-		for (ItemCategory category : shop.getNavigatableMenuItemCategories()) {
-			RadioButton rb = (RadioButton) li.inflate(R.layout.menunavigatorbutton, menuNavigator, false);
-			rb.setText(getContext().getResources().getString(
-					getContext().getResources().getIdentifier(
-							getContext().getPackageName() + ":string/"
-									+ category.toString(), null, null)));
-		}
-		
 		int i = 0;
-		for (ItemCategory category : shop.getNavigatableMenuItemCategories()) {
-			RadioButton rb = (RadioButton) li.inflate(R.layout.menunavigatorbutton,
-					menuNavigator, false);
+		Store store = GlobalSettings.instance().getCurrentStore();
+		for (ItemCategory category : store.getNavigatableMenuItemCategories()) {
+			RadioButton rb = (RadioButton) li.inflate(
+					R.layout.menunavigatorbutton, menuNavigator, false);
 			rb.setId(i++);
-			rb.setText(getContext().getResources().getString(getContext().getResources().getIdentifier(getContext().getPackageName() + ":string/" + category.toString(), null, null)));
+			rb.setText(category.getName());
 			menuNavigator.addView(rb);
 		}
 
 		// Add menu pager
 		if (menuPager == null) {
 			menuPager = (ViewPager) li.inflate(R.layout.menupager, this, false);
-			MenuPagerAdapter menuPagerAdapter = new MenuPagerAdapter(
-					this.getContext(), shop);
-			menuPager.setAdapter(menuPagerAdapter);
+			MenuPagerAdapter adpater = new MenuPagerAdapter(this.getContext(),
+					store);
+			menuPager.setAdapter(adpater);
 			this.addView(menuPager);
 			menuPager.setOnPageChangeListener(new OnPageChangeListener() {
-
 				@Override
 				public void onPageScrollStateChanged(int position) {
 
@@ -87,8 +75,8 @@ public class MenuView extends LinearLayout {
 
 				@Override
 				public void onPageSelected(int position) {
-					if (menuNavigator.getCheckedRadioButtonId() != position + 1)
-						menuNavigator.check(position + 1);
+					if (menuNavigator.getCheckedRadioButtonId() != position)
+						menuNavigator.check(position);
 				}
 
 			});
@@ -99,48 +87,13 @@ public class MenuView extends LinearLayout {
 						@Override
 						public void onCheckedChanged(RadioGroup view,
 								int position) {
-							if (menuPager.getCurrentItem() != position - 1)
-								menuPager.setCurrentItem(position - 1);
+							if (menuPager.getCurrentItem() != position)
+								menuPager.setCurrentItem(position);
 						}
 
 					});
 
 			menuNavigator.check(0);
 		}
-
-		final ViewPager menuPager = (ViewPager) li.inflate(R.layout.menupager,
-				this, false);
-		MenuPagerAdapter menuPagerAdapter = new MenuPagerAdapter(this.getContext(), shop);
-		menuPager.setAdapter(menuPagerAdapter);
-
-		menuPager.setOnPageChangeListener(new OnPageChangeListener() {
-
-			@Override
-			public void onPageScrollStateChanged(int position) {
-				
-			}
-
-			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				
-			}
-
-			@Override
-			public void onPageSelected(int position) {
-				if(menuNavigator.getCheckedRadioButtonId() != position)
-					menuNavigator.check(position);
-			}
-			
-		});
-
-		menuNavigator.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-			@Override
-			public void onCheckedChanged(RadioGroup view, int checkedId) {
-				if(menuPager.getCurrentItem() != checkedId)
-					menuPager.setCurrentItem(checkedId);
-			}
-
-		});
 	}
 }

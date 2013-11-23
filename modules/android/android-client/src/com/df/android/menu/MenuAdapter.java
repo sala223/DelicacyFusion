@@ -1,6 +1,5 @@
 package com.df.android.menu;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,42 +16,38 @@ import android.graphics.Rect;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.DragShadowBuilder;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.df.android.GlobalSettings;
 import com.df.android.R;
 import com.df.android.entity.Item;
 import com.df.android.entity.ItemCategory;
-import com.df.android.entity.Shop;
+import com.df.android.entity.Store;
 
 public class MenuAdapter extends BaseAdapter {
-	private Shop shop;
+	// private Store store;
 	private Context context;
 	private List<Item> items = new ArrayList<Item>();
 	private ItemCategory itemCategory;
 
-	public MenuAdapter(Context context, Shop shop, ItemCategory category) {
+	public MenuAdapter(Context context, Store store, ItemCategory category) {
 		super();
-		this.shop = shop;
 		this.context = context;
 		this.itemCategory = category;
 
-		if (category == ItemCategory.All)
-			items = shop.getMenu().getItems();
-		else {
-			for (Item item : shop.getMenu().getItems())
-				if (item.getCategories().contains(category))
-					items.add(item);
+		for (Item item : store.getMenu().getItems()) {
+			if ("SYS00000".equals(category.getCode())
+					|| item.getCategories().contains(category.getCode())) {
+				items.add(item);
+			}
 		}
 	}
-	
+
 	public ItemCategory getMenuItemType() {
 		return itemCategory;
 	}
@@ -81,6 +76,8 @@ public class MenuAdapter extends BaseAdapter {
 		if (view == null)
 			view = inflator.inflate(R.layout.menuitem, null);
 
+		final Item item = items.get(position);
+
 		final TextView tvName = (TextView) view.findViewById(R.id.menuItemName);
 		final ImageView ivImage = (ImageView) view
 				.findViewById(R.id.menuItemImage);
@@ -88,22 +85,39 @@ public class MenuAdapter extends BaseAdapter {
 				.findViewById(R.id.menuItemPrevPrice);
 		final TextView tvPrice = (TextView) view
 				.findViewById(R.id.menuItemPrice);
+		view.findViewById(R.id.btnMenuItemOrder).setOnClickListener(
+				new OnClickListener() {
 
-		final Item item = items.get(position);
+					@Override
+					public void onClick(View view) {
+						MenuEventDispatcher.sendEvent(new ItemOrderEvent(item));
+					}
+
+				});
+
 		tvName.setText(item.getName());
 		tvPrevPrice.setText("" + item.getPrice());
-		tvPrevPrice.setPaintFlags(tvPrevPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+		tvPrevPrice.setPaintFlags(tvPrevPrice.getPaintFlags()
+				| Paint.STRIKE_THRU_TEXT_FLAG);
 		tvPrevPrice.setVisibility(View.VISIBLE);
-		tvPrice.setText("" + item.getActualPrice());
+		tvPrice.setText("" + item.getPrice());
+
 		String imageFile = item.getImage();
-		try {
-			ivImage.setImageBitmap(BitmapFactory.decodeStream(context
-					.getAssets()
-					.open("cache/" + shop.getId() + "/" + imageFile)));
-		} catch (IOException e) {
-			Log.e(getClass().getName(), "Fail to load image file '" + imageFile
-					+ "'");
-		}
+		if (imageFile != null && !"".equals(imageFile)) {
+			String tmp = context.getExternalCacheDir() + "/"
+					+ GlobalSettings.instance().getCurrentStore().getCode()
+					+ "/image/" + imageFile;
+			Log.d(getClass().getName(), "image of " + item.getCode() + ": "
+					+ tmp);
+
+			// ivImage.setImageURI(Uri.parse("file:/" + context
+			// .getExternalCacheDir()
+			// + "/"
+			// + GlobalSettings.instance().getCurrentStore().getCode()
+			// + "/" + imageFile));
+			ivImage.setImageBitmap(BitmapFactory.decodeFile(tmp));
+		} else
+			ivImage.setImageResource(R.drawable.no_pic);
 
 		ivImage.setOnClickListener(new OnClickListener() {
 
@@ -114,16 +128,16 @@ public class MenuAdapter extends BaseAdapter {
 
 		});
 
-		ivImage.setOnLongClickListener(new OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View view) {
-				DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
-						view);
-				view.setTag(item);
-				view.startDrag(null, shadowBuilder, view, 0);
-				return false;
-			}
-		});
+		// ivImage.setOnLongClickListener(new OnLongClickListener() {
+		// @Override
+		// public boolean onLongClick(View view) {
+		// DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
+		// view);
+		// view.setTag(item);
+		// view.startDrag(null, shadowBuilder, view, 0);
+		// return false;
+		// }
+		// });
 
 		return view;
 	}
@@ -143,20 +157,27 @@ public class MenuAdapter extends BaseAdapter {
 				.setText(item.getName());
 		((TextView) activity.findViewById(R.id.tvMenuItemDetailPrice))
 				.setText("" + item.getPrice());
-		final View expandedView = activity
-				.findViewById(R.id.menuItemDetail);
+		final View expandedView = activity.findViewById(R.id.menuItemDetail);
 		final ImageView expandedImageView = (ImageView) activity
 				.findViewById(R.id.enlargedImage);
-		String imageFile = "cache/" + shop.getId() + "/" + item.getImage(); 
-		try {
-			expandedImageView.setImageBitmap(BitmapFactory.decodeStream(context
-					.getAssets().open(imageFile)));
-		} catch (IOException e) {
-			Log.e(getClass().getName(), "Fail to load image file '" + imageFile
-					+ "'");
-		}
-		((Button) activity.findViewById(R.id.btnMenuItemDetailOrder))
-				.setOnClickListener(new OnClickListener() {
+
+		String imageFile = item.getImage();
+		if (imageFile != null && !"".equals(imageFile)) {
+			try {
+				expandedImageView.setImageBitmap(BitmapFactory
+						.decodeFile(context.getExternalCacheDir()
+								+ "/"
+								+ GlobalSettings.instance().getCurrentStore()
+										.getCode() + "/image/" + imageFile));
+			} catch (Exception e) {
+				Log.e(getClass().getName(), "Fail to load image file '"
+						+ imageFile + "'");
+			}
+		} else
+			expandedImageView.setImageResource(R.drawable.no_pic);
+
+		activity.findViewById(R.id.btnMenuItemDetailOrder).setOnClickListener(
+				new OnClickListener() {
 
 					@Override
 					public void onClick(View view) {

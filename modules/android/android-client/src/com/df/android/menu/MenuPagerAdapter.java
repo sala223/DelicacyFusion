@@ -6,28 +6,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 
 import com.df.android.R;
-import com.df.android.entity.Shop;
+import com.df.android.entity.Store;
 
 public class MenuPagerAdapter extends PagerAdapter {
     Context context;
-    Shop shop;
+    Store store;
     
-    public MenuPagerAdapter(Context context, Shop shop) {
+    public MenuPagerAdapter(Context context, Store store) {
         this.context = context;
-        this.shop = shop;
+        this.store = store;
     }
 
     @Override
     public int getCount() {
-        return shop.getNavigatableMenuItemCategories().size();
+        return store.getNavigatableMenuItemCategories().size();
     }
  
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return view == ((LinearLayout) object);
+        return view == ((View) object);
     }
  
     @Override
@@ -36,7 +35,7 @@ public class MenuPagerAdapter extends PagerAdapter {
         View itemView = inflator.inflate(R.layout.menupage, container, false);
  
         GridView gvMenu = (GridView)itemView.findViewById(R.id.gvMenu);
-        gvMenu.setAdapter(new MenuAdapter(context, shop, shop.getNavigatableMenuItemCategories().get(position)));
+        gvMenu.setAdapter(new MenuAdapter(context, store, store.getNavigatableMenuItemCategories().get(position)));
 
         container.addView(itemView);
  
@@ -45,7 +44,7 @@ public class MenuPagerAdapter extends PagerAdapter {
  
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((LinearLayout)object);
+        container.removeView((View)object);
  
     }
 }

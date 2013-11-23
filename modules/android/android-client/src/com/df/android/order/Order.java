@@ -1,131 +1,170 @@
 package com.df.android.order;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.util.Log;
+public class Order {
 
-import com.df.android.entity.Table;
+    private long id;
 
-public abstract class Order {
-	protected String id;
+    private Date dinnerTime;
 
-	public String getId() {
-		return id;
-	}
+    private boolean isTakeOut;
 
-	public Date getCreateTime() {
-		return createTime;
-	}
+    private List<OrderLine> lines = new ArrayList<OrderLine>();
 
-	protected Date createTime;
-	protected List<OrderLine> lines = new ArrayList<OrderLine>();
-	private int headCount = 0;
-	
-	
-	private Table table = null;
-	public Table getTable() {
-		return table;
-	}
+    private BigDecimal totalPayment;
 
-	public void setTable(Table table) {
-		this.table = table;
-	}
+    private String currency;
 
-	public Order(String id) {
-		this.id = id;
-	}
+    private BigDecimal discount;
 
-	public void addLine(OrderLine line) { 
-		Log.d(getClass().getName(), "Line " + line + " adding");
-		
-		int index = lines.indexOf(line);
-		if(index >= 0) { 
-			OrderLine l = lines.get(index);
-			if(l != null)
-				l.setQuantity(l.getQuantity() + 1);
-		}
-		else
-			lines.add(line);
-		
-		onLineAdded(line);
-	}
+    private float deposit;
 
-	public void removeLine(OrderLine line) {
-		int index = lines.indexOf(line);
-		if(index < 0)
-			return;
-		
-		OrderLine l = lines.get(index);
-		if(l == null || l.getQuantity() <= 1)
-			lines.remove(line);
-		else
-			l.setQuantity(l.getQuantity() - 1);
-		
-		onLineRemoved(line);
-	}
+    private float serviceFee;
 
-	public float getTotal() {
-		float total = 0;
-		for (OrderLine line : lines)
-			total += line.getTotal();
+    private float otherFee;
 
-		return total;
-	}
+    private String promotionName;
 
-	public int getLineCount() {
-		return lines.size();
-	}
+    private long promotionId;
 
-	public int getItemCount() {
-		int count = 0;
+    private String comment;
+
+    public boolean isTakeOut() {
+	return isTakeOut;
+    }
+
+    public void setTakeOut(boolean isTakeOut) {
+	this.isTakeOut = isTakeOut;
+    }
+
+    public List<OrderLine> getLines() {
+	return lines;
+    }
+
+    void setLines(List<OrderLine> lines) {
+	this.lines = lines;
+    }
+    
+    public int getItemCount() {
+    	int count = 0;
 		for (OrderLine line : lines)
 			count += line.getQuantity();
 
 		return count;
+    }
+
+    public BigDecimal getTotalPayment() {
+	return totalPayment;
+    }
+
+    public Date getDinnerTime() {
+	return dinnerTime;
+    }
+
+    public void setDinnerTime(Date dinnerTime) {
+	this.dinnerTime = dinnerTime;
+    }
+
+    public BigDecimal getDiscount() {
+	return discount;
+    }
+
+    public float getDeposit() {
+	return deposit;
+    }
+
+    public void setDeposit(float deposit) {
+	this.deposit = deposit;
+    }
+
+    public String getPromotionName() {
+	return promotionName;
+    }
+
+    public long getPromotionId() {
+	return promotionId;
+    }
+
+    public String getComment() {
+	return comment;
+    }
+
+    public void setComment(String comment) {
+	this.comment = comment;
+    }
+
+//    public int addOrderLine(OrderLine line) {
+//	if (this.lines == null) {
+//	    this.lines = new ArrayList<OrderLine>();
+//	}
+//	int lineNumer = this.lines.size() + 1;
+//	line.setLineNumber(lineNumer);
+//	this.lines.add(line);
+//	return lineNumer;
+//    }
+
+    public float getServiceFee() {
+	return serviceFee;
+    }
+
+    public void setServiceFee(float serviceFee) {
+	this.serviceFee = serviceFee;
+    }
+
+    public float getOtherFee() {
+	return otherFee;
+    }
+
+    public void setOtherFee(float otherFee) {
+	this.otherFee = otherFee;
+    }
+
+    public String getCurrency() {
+	return currency;
+    }
+
+    public void setCurrency(String currency) {
+	this.currency = currency;
+    }
+
+//    public boolean removeOrderLine(int lineNumber) {
+//	int foundIndex = -1;
+//	if (this.lines == null) {
+//	    for (int i = 0; i < lines.size(); ++i) {
+//		if (lines.get(i).getLineNumber() == lineNumber) {
+//		    foundIndex = i;
+//		    continue;
+//		}
+//		if (foundIndex != -1) {
+//		    lines.get(i).setLineNumber(i);
+//		}
+//	    }
+//	    if (foundIndex != -1) {
+//		this.lines.remove(foundIndex);
+//	    }
+//	}
+//	return foundIndex != -1;
+//    }
+
+    public void consolidateLine() {
+	if (this.lines == null) {
+	    this.lines = new ArrayList<OrderLine>();
+	}
+    }
+
+    public void calculatePayment() {
+
+    }
+
+	public long getId() {
+		return id;
 	}
 
-	public List<OrderLine> getLines() {
-		return lines;
-	}
-
-	private List<OrderChangeListener> changeListeners = new ArrayList<OrderChangeListener>();
-
-	public void registerChangeListener(OrderChangeListener listener) {
-		changeListeners.add(listener);
-	}
-
-	private void onLineAdded(OrderLine line) {
-		for (OrderChangeListener listener : changeListeners) {
-			listener.onLineAdded(line);
-		}
-	}
-
-	private void onLineRemoved(OrderLine line) {
-		for (OrderChangeListener listener : changeListeners) {
-			listener.onLineRemoved(line);
-		}
-	}
-
-	public String toString() {
-		String ret = "Order{";
-
-		ret += "id:" + id + ",";
-		ret += "lines:" + "{";
-		for (OrderLine line : lines)
-			ret += line;
-		ret += "}";
-		ret += "}";
-
-		return ret;
-	}
-
-	public int getHeadCount() {
-		return headCount;
-	}
-
-	public void setHeadCount(int headCount) {
-		this.headCount = headCount;
+	public void setId(long id) {
+		this.id = id;
 	}
 }

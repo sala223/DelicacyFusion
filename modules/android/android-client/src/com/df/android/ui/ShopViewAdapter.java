@@ -1,14 +1,12 @@
 package com.df.android.ui;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,31 +15,36 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.df.android.entity.Dish;
+import com.df.android.GlobalSettings;
+import com.df.android.entity.Floor;
 import com.df.android.entity.Item;
 import com.df.android.entity.ItemCategory;
-import com.df.android.entity.Shop;
-import com.df.android.entity.Table;
 import com.df.android.menu.Menu;
+import com.df.client.rs.model.DiningTable;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class ShopViewAdapter {
-	private Shop shop = null;
 	ShopChangeListener shopChangeListener;
 	Context cxt;
 
 	public ShopViewAdapter(Context cxt) {
 		this.cxt = cxt;
+
+		updateShop();
+
 		BroadcastReceiver receiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				Bundle bundle = intent.getExtras();
 				if (bundle != null) {
-					String shopId = bundle.getString("SHOPID");
-//					int resultCode = bundle.getInt("RESULT");
-//					if (resultCode == Activity.RESULT_OK) {
-						updateShop(shopId);
-						shopChangeListener.onChange(shop);
-//					} 
+					// String shopId = bundle.getString("SHOPID");
+					// int resultCode = bundle.getInt("RESULT");
+					// if (resultCode == Activity.RESULT_OK) {
+					updateShop();
+					shopChangeListener.onChange(GlobalSettings.instance()
+							.getCurrentStore());
+					// }
 				}
 			}
 		};
@@ -52,127 +55,109 @@ public class ShopViewAdapter {
 		this.shopChangeListener = listener;
 	}
 
-	public Shop getShop() {
-		return shop;
-	}
+	private void updateShop() {
+		String shopId = GlobalSettings.instance().getClient().getStoreCode();
 
-	private void updateShop(String shopId) {
-		if (shop == null)
-			shop = new Shop(shopId);
-
-		// Load menus
-		Menu menu = buildMenuFromMetaFile(cxt.getExternalCacheDir() + "/" + shopId + "/menu.xml");
-		shop.setMenu(menu);
-
-		// Load tables
-		List<Table> tables = buildTablesFromMetaFile(cxt.getExternalCacheDir() + "/" + shopId
-				+ "/tables.xml");
-
-		shop.setTables(tables);
-
-		// Load default configurations
-		initShopConfigurations(shop);
-	}
-
-	private void initShopConfigurations(final Shop shop) {
-		String metaFile = cxt.getExternalCacheDir() + "/" + shop.getId() + "/shop.xml";
-
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document dom = builder.parse("file://" + metaFile);
-			Element root = dom.getDocumentElement();
-			NodeList confNodes = root.getChildNodes();
-			for (int i = 0; i < confNodes.getLength(); i++) {
-				if ("menuCategories".equals(confNodes.item(i).getNodeName())) {
-					List<ItemCategory> categories = new ArrayList<ItemCategory>();
+			// Load default configurations
+			loadConfigurations();
 
-					NodeList xmlItems = root.getElementsByTagName("category");
-					for (int j = 0; j < xmlItems.getLength(); j++) {
-						categories.add(ItemCategory.valueOf(xmlItems.item(j)
-								.getTextContent()));
-					}
+			// Load menus
+			loadMenu(shopId);
 
-					shop.setNavigatableMenuItemCategories(categories);
-				}
-			}
-		} catch (Exception e) {
-			Log.e(getClass().getName(),
-					"Fail to initialize shop configurations due to " + e);
+			// Load tables
+			loadTables(shopId);
+
+		} catch (Exception ex) {
+			Log.e(getClass().getName(), "Fail to update shop due to " + ex);
 		}
-	}
-
-	private Menu buildMenuFromMetaFile(String metaFile) {
-		Menu menu = new Menu();
-
-		Log.d(getClass().getName(), "Building menu from " + metaFile);
-
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		try {
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document dom = builder.parse("file://" + metaFile);
-			Element root = dom.getDocumentElement();
-			NodeList xmlItems = root.getElementsByTagName("item");
-
-			Log.d(getClass().getName(), "Found " + xmlItems.getLength()
-					+ " items");
-
-			for (int i = 0; i < xmlItems.getLength(); i++) {
-				Element xmlItem = (Element) xmlItems.item(i);
-				String id = xmlItem.getAttribute("id");
-				String name = xmlItem.getAttribute("name");
-				Item item = new Dish(id, name);
-
-				String image = xmlItem.getAttribute("image");
-				float price = Float.parseFloat(xmlItem.getAttribute("price"));
-				item.setPrice(price);
-				item.setImage(image);
-
-				NodeList xmlCategories = xmlItem
-						.getElementsByTagName("category");
-				for (int j = 0; j < xmlCategories.getLength(); j++) {
-					item.addCategory(ItemCategory.valueOf(xmlCategories.item(j)
-							.getTextContent()));
-				}
-
-				menu.addItem(item);
-			}
-		} catch (Exception e) {
-			Log.e(getClass().getName(),
-					"Fail to load menu from meta file due to " + e);
-		}
-
-		return menu;
 	}
 	
-	private List<Table> buildTablesFromMetaFile(String metaFile) {
-		List<Table> tables = new ArrayList<Table>();
-
-		Log.i(getClass().getName(), "Building tables from " + metaFile);
-
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	private void loadConfigurations() {
+		Log.d(getClass().getName(), "Loading configuration ...");
+		
 		try {
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document dom = builder.parse("file://" + metaFile);
-			Element root = dom.getDocumentElement();
-			NodeList xmlItems = root.getElementsByTagName("table");
+			Gson json = new Gson();
+			final BufferedReader reader = new BufferedReader(
+					new InputStreamReader(new FileInputStream(
+							new File(cxt.getExternalCacheDir() + "/"
+									+ GlobalSettings.instance().getCurrentStore().getCode()
+									+ "/configuration.json"))));
+			Type type = new TypeToken<List<String>>() {
+			}.getType();
+			List<String> catCodes = json.fromJson(reader, type);
 
-			Log.d(getClass().getName(), "Found " + xmlItems.getLength()
-					+ " tables");
-
-			for (int i = 0; i < xmlItems.getLength(); i++) {
-				Element xmlItem = (Element) xmlItems.item(i);
-				String id = xmlItem.getAttribute("id");
-				int capacity = Integer.parseInt(xmlItem
-						.getAttribute("capacity"));
-
-				tables.add(new Table(id, capacity));
+			List<ItemCategory> categories = new ArrayList<ItemCategory>();
+			for (String code : catCodes) {
+				ItemCategory category = GlobalSettings.instance().getCategoryDictionary()
+						.getCategoryByCode(code);
+				if (category != null)
+					categories.add(category);
 			}
+			GlobalSettings.instance().getCurrentStore()
+					.setNavigatableMenuItemCategories(categories);
+			
+			Log.d(getClass().getName(), "Configuration loaded");
 		} catch (Exception e) {
 			Log.e(getClass().getName(),
-					"Fail to load menu from meta file due to " + e);
+					"Fail to load configurations due to " + e);
 		}
+	}
 
-		return tables;
+	private void loadMenu(String shopId) {
+		Log.d(getClass().getName(), "Loading menu ...");
+
+		try {
+			Gson json = new Gson();
+			final BufferedReader reader = new BufferedReader(
+					new InputStreamReader(new FileInputStream(
+							new File(cxt.getExternalCacheDir() + "/"
+									+ shopId + "/menu.json"))));
+			Type type = new TypeToken<List<Item>>() {
+			}.getType();
+			List<Item> items = json.fromJson(reader, type);
+			Menu menu = GlobalSettings.instance().getCurrentStore().getMenu();
+			for (Item item : items)
+				menu.addItem(item);
+			
+			Log.d(getClass().getName(), "Menu loaded");
+		} catch (Exception e) {
+			Log.e(getClass().getName(),
+					"Fail to load menu due to " + e);
+		}
+	}
+	
+	private void loadTables(String shopId) {
+		Log.d(getClass().getName(), "Loading table ...");
+
+		try {
+			Gson json = new Gson();
+			final BufferedReader reader = new BufferedReader(
+					new InputStreamReader(new FileInputStream(
+							new File(cxt.getExternalCacheDir() + "/"
+									+ shopId + "/table.json"))));
+			Type type = new TypeToken<List<DiningTable>>() {
+			}.getType();
+			List<DiningTable> tables = json.fromJson(reader, type);
+
+			List<Floor> floors = new ArrayList<Floor>();
+			for (int i = 0; i < 3; i++) {
+				Floor floor = new Floor();
+				floor.setFloor(i + 1);
+				floors.add(floor);
+			}
+
+			for (Floor floor : floors) {
+				for (DiningTable table : tables) {
+					floor.addTable(table);
+				}
+				GlobalSettings.instance().getCurrentStore().getFloors().add(floor);
+			}
+
+			Log.d(getClass().getName(), "Tables loaded");
+		} catch (Exception e) {
+			Log.e(getClass().getName(),
+					"Fail to load table due to " + e);
+		}
 	}
 }

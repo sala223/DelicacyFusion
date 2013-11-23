@@ -1,18 +1,23 @@
 package com.df.android.menu;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.df.android.entity.Item;
 
 public class Menu {
-	private List<Item> items = new ArrayList<Item>();
+	private Map<String, Item> items = new HashMap<String, Item>();
 	
 	public void addItem(Item item) {
-		items.add(item);
+		items.put(item.getCode(), item);
 	}
 	
-	public List<Item> getItems() { 
-		return items;
+	public Collection<Item> getItems() { 
+		return items.values();
+	}
+	
+	public Item getItemByCode(String itemCode) {
+		return items.get(itemCode);
 	}
 }

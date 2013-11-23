@@ -1,27 +1,58 @@
 package com.df.android.order;
 
-import com.df.android.entity.Item;
-import com.df.android.entity.Table;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
-public class OrderLine {
-	private Item item;
-	private float price = 0.0f;
-	private int quantity = 1;
-	private String comments;
-	private Table table; 
-	
+import com.df.android.entity.Item;
+
+public class OrderLine implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private int lineNumber;
+
+	 private Item item;
+
+	private String roomCode;
+
+	private String tableNumber;
+
+	private float price;
+
+	private float promotionPrice;
+
+	private BigDecimal discount;
+
+	private int quantity;
+
+	private BigDecimal totalPayment;
+
+	private BigDecimal promotionTotalPayment;
+
+	private String comment;
+
+	private Long promotionId;
+
+	private String promotionName;
+
+	OrderLine() {
+	}
+
 	public OrderLine(Item item) {
-		this(item, item.getPrice());
+		this(item, 1);
 	}
-	
-	public OrderLine(Item item, float price) {
-		this(item, price, null);
-	}
-	
-	public OrderLine(Item item, float price, String comments) {
+
+	public OrderLine(Item item, int quantity) {
 		this.item = item;
-		this.price = price;
-		this.comments = comments;
+		this.quantity = quantity;
+	}
+
+	public String getRoomCode() {
+		return roomCode;
+	}
+
+	public void setRoomCode(String roomCode) {
+		this.roomCode = roomCode;
 	}
 
 	public Item getItem() {
@@ -29,14 +60,11 @@ public class OrderLine {
 	}
 
 	public float getPrice() {
-		if(price <= 0) 
-			return item.getPrice();
-		
 		return price;
 	}
 
-	public String getComments() {
-		return comments;
+	public void setPrice(float price) {
+		this.price = price;
 	}
 
 	public int getQuantity() {
@@ -46,36 +74,86 @@ public class OrderLine {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
-	public float getTotal() {
-		return getPrice()*quantity;
+
+	public BigDecimal getTotalPayment() {
+		return totalPayment;
 	}
-	
-	public void setTable(Table table) {
-		this.table = table;
+
+	public String getComment() {
+		return comment;
 	}
-	public Table getTable() {
-		return table;
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
-	
-	public int compare(OrderLine another) {
-		int ret = table.getId().compareToIgnoreCase(another.getTable().getId());
-		
-		return ret;
+
+	public int getLineNumber() {
+		return lineNumber;
 	}
-	
+
+	public void setLineNumber(int lineNumber) {
+		this.lineNumber = lineNumber;
+	}
+
+	public long getPromotionId() {
+		return promotionId;
+	}
+
+	public void setPromotionId(long promotionId) {
+		this.promotionId = promotionId;
+	}
+
+	public BigDecimal getDiscount() {
+		return discount;
+	}
+
+	public String getPromotionName() {
+		return promotionName;
+	}
+
+	public void setPromotionName(String promotionName) {
+		this.promotionName = promotionName;
+	}
+
+	public float getPromotionPrice() {
+		return promotionPrice;
+	}
+
+	public void setPromotionPrice(float promotionPrice) {
+		this.promotionPrice = promotionPrice;
+	}
+
+	public String getTableNumber() {
+		return tableNumber;
+	}
+
+	public void setTableNumber(String tableNumber) {
+		this.tableNumber = tableNumber;
+	}
+
+	public BigDecimal getPromotionTotalPayment() {
+		return promotionTotalPayment;
+	}
+
+	public boolean hasPromotion() {
+		return this.promotionId != null && promotionId.longValue() != 1l;
+	}
+
+	public void calcuatePayment() {
+		this.totalPayment = new BigDecimal(this.price).multiply(new BigDecimal(
+				quantity));
+		if (this.hasPromotion()) {
+			this.promotionTotalPayment = new BigDecimal(this.promotionPrice)
+					.multiply(new BigDecimal(quantity));
+			this.discount = this.totalPayment
+					.subtract(this.promotionTotalPayment);
+		}
+	}
+
 	@Override
 	public boolean equals(Object o) {
-		return o != null && table.equals(((OrderLine)o).getTable()) && item.equals(((OrderLine)o).getItem());
-	}
-	
-	public String toString() {
-		String ret = "Line{";
-		
-		ret += "item:" + item + ",";
-		ret += "price:" + getPrice() + ",";
-		ret += "quantity:" + quantity + ",";
-		
-		return ret;
+		return o != null
+				&& tableNumber.equals(((OrderLine) o).getTableNumber())
+				&& item.equals(((OrderLine) o).getItem());
 	}
 }

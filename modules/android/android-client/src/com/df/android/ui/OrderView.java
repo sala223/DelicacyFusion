@@ -1,10 +1,6 @@
 package com.df.android.ui;
 
-import java.util.UUID;
-
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,25 +11,24 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.df.android.GlobalSettings;
 import com.df.android.R;
 import com.df.android.entity.Item;
-import com.df.android.entity.Shop;
-import com.df.android.entity.Table;
 import com.df.android.menu.ItemOrderListener;
 import com.df.android.menu.MenuEventDispatcher;
 import com.df.android.order.Order;
 import com.df.android.order.OrderChangeListener;
 import com.df.android.order.OrderCreateListener;
-import com.df.android.order.OrderFactory;
 import com.df.android.order.OrderLine;
+import com.df.android.order.OrderMgr;
+import com.df.android.utils.WebTask;
+import com.df.client.rs.resource.OrderResource;
 
 public class OrderView extends LinearLayout implements ItemOrderListener,
 		OrderCreateListener, OrderChangeListener {
 	private RelativeLayout orderListView = null;
 	private FrameLayout controlPanelView = null;
-	private Shop shop;
 
 	public OrderView(Context context) {
 		super(context);
@@ -43,10 +38,6 @@ public class OrderView extends LinearLayout implements ItemOrderListener,
 	public OrderView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initView();
-	}
-
-	public void setShop(final Shop shop) {
-		this.shop = shop;
 	}
 
 	private void initView() {
@@ -101,8 +92,7 @@ public class OrderView extends LinearLayout implements ItemOrderListener,
 					new OnClickListener() {
 						@Override
 						public void onClick(View view) {
-							sendOrder(OrderFactory.currentOrder());
-							OrderFactory.clearCurrentOrder();
+							sendOrder(OrderMgr.currentOrder());
 						}
 					});
 
@@ -113,100 +103,112 @@ public class OrderView extends LinearLayout implements ItemOrderListener,
 		if (controlPanelView == null) {
 			controlPanelView = (FrameLayout) li.inflate(R.layout.controlpanel,
 					this, false);
-			((TextView) controlPanelView.findViewById(R.id.orderCount)).setText("0");
+			((TextView) controlPanelView.findViewById(R.id.orderCount))
+					.setText("0");
 			this.addView(controlPanelView);
 		}
 
 		MenuEventDispatcher.registerItemOrderListener(this);
-		OrderFactory.registerOrderCreateListener(this);
+		OrderMgr.registerOrderCreateListener(this);
 	}
 
 	private void sendOrder(final Order order) {
+		final OrderResource oResource = GlobalSettings.instance().getClient()
+				.getResource(OrderResource.class);
+
+		new WebTask<com.df.client.rs.model.Order>() {
+			@Override
+			protected com.df.client.rs.model.Order doInBackground(
+					String... arg0) {
+				try {
+					com.df.client.rs.model.Order o2 = new com.df.client.rs.model.Order();
+					for(OrderLine line : order.getLines()) {
+						com.df.client.rs.model.OrderLine sLine = new com.df.client.rs.model.OrderLine(line.getItem().getCode());
+						sLine.setPrice(line.getPrice());
+						sLine.setQuantity(line.getQuantity());
+						o2.getLines().add(sLine);
+					}
+					com.df.client.rs.model.Order o3 = oResource.createOrder(o2);
+					Log.d(getClass().getName(), "Return order: " + o3);
+					return o3;
+				} catch (Exception ex) {
+					Log.e(getClass().getName(), "Fail to create order due to "
+							+ ex);
+				}
+				OrderMgr.clearCurrentOrder();
+				return null;
+			}
+
+			@Override
+			protected void onPostExecute(com.df.client.rs.model.Order o) {
+				clearOrderView();
+			}
+		}.execute();
+
+	}
+
+	private void clearOrderView() {
 		final View leftContentPane = findViewById(R.id.leftContentPane);
 		if (leftContentPane.getVisibility() == View.VISIBLE)
 			leftContentPane.setVisibility(View.GONE);
 
 		((TextView) findViewById(R.id.orderCount)).setText("0");
+		final ListView lstOrder = (ListView) orderListView
+				.findViewById(R.id.lstOrder);
+		((OrderListViewAdapter)lstOrder.getAdapter()).clear();
 	}
 
 	@Override
 	public void onLineAdded(OrderLine line) {
 		Log.d(getClass().getName(), "Line " + line + " added");
 		((TextView) findViewById(R.id.orderCount)).setText(""
-				+ OrderFactory.currentOrder().getItemCount());
+				+ OrderMgr.currentOrder().getItemCount());
 		((TextView) findViewById(R.id.orderTotal)).setText(""
-				+ OrderFactory.currentOrder().getTotal());
+				+ OrderMgr.currentOrder().getTotalPayment());
 	}
 
 	@Override
 	public void onLineRemoved(OrderLine line) {
 		((TextView) findViewById(R.id.orderCount)).setText(""
-				+ OrderFactory.currentOrder().getItemCount());
+				+ OrderMgr.currentOrder().getItemCount());
 		((TextView) findViewById(R.id.orderTotal)).setText(""
-				+ OrderFactory.currentOrder().getTotal());
+				+ OrderMgr.currentOrder().getTotalPayment());
 	}
 
 	@Override
 	public void onOrderCreated(Order order) {
 		Log.d(getClass().getName(), "onOrderCreated");
 
-		order.registerChangeListener(this);
+		OrderMgr.registerChangeListener(this);
 
 		final ListView lstOrder = (ListView) orderListView
 				.findViewById(R.id.lstOrder);
 		OrderListViewAdapter orderAdapter = new OrderListViewAdapter(
 				this.getContext(), order);
-		order.registerChangeListener(orderAdapter);
+		OrderMgr.registerChangeListener(orderAdapter);
 
 		lstOrder.setAdapter(orderAdapter);
 
-		((TextView) orderListView.findViewById(R.id.orderId)).setText(order
-				.getId());
+		((TextView) orderListView.findViewById(R.id.orderId)).setText(""
+				+ order.getId());
+		// ((TextView) orderListView.findViewById(R.id.headCount)).setText("" +
+		// order.getHeadCount());
+		// if(order.getTable() != null)
+		// ((TextView)
+		// orderListView.findViewById(R.id.tableId)).setText(order.get);
 	}
 
 	@Override
 	public void onItemOrdered(final Item item) {
-		if (OrderFactory.currentOrder() != null) {
-			OrderLine line = new OrderLine(item);
-			line.setTable(OrderFactory.currentOrder().getTable());
-			OrderFactory.currentOrder().addLine(line);
-			return;
+		Order order = OrderMgr.currentOrder();
+		if (order == null) {
+			Log.d(getClass().getName(), "Creating a new order");
+			order = OrderMgr.createOrder();
 		}
 
-		final Context cxt = this.getContext();
-		final CreateOrderDialog chooseTableDialog = new CreateOrderDialog(cxt,
-				shop);
-		chooseTableDialog.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				final Table table = chooseTableDialog.getSelectedTable();
-				if (table == null) {
-					Toast.makeText(
-							cxt,
-							cxt.getResources()
-									.getString(
-											cxt.getResources()
-													.getIdentifier(
-															cxt.getPackageName()
-																	+ ":string/user_cancel_create_order",
-															null, null)),
-							Toast.LENGTH_LONG).show();
-					return;
-				}
-
-				Log.d(getClass().getName(), "Creating a new order");
-
-				Order order = OrderFactory.createOnsiteOrder(UUID.randomUUID()
-						.toString().substring(0, 10), table,
-						chooseTableDialog.getHeadCount());
-				
-				OrderLine line = new OrderLine(item);
-				line.setTable(table);
-				order.addLine(line);
-			}
-
-		});
-		chooseTableDialog.show();
+		OrderLine line = new OrderLine(item);
+		line.setTableNumber("001");
+		line.setPrice(item.getPrice());
+		OrderMgr.addOrderLine(order, line);
 	}
 }

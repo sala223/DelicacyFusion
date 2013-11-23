@@ -4,16 +4,15 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.df.android.GlobalSettings;
 import com.df.android.R;
-import com.df.android.entity.Shop;
+import com.df.android.entity.Store;
 
 public class ShopView extends FrameLayout {
 	private Context cxt;
-	private View shopView = null;
+	private boolean initialized = false;
 
 	public ShopView(Context context) {
 		super(context);
@@ -28,40 +27,33 @@ public class ShopView extends FrameLayout {
 	}
 
 	private void initView() {
-		LayoutInflater li = LayoutInflater.from(cxt);
+		Log.d(getClass().getName(), "Init shop view");
+		ShopViewAdapter adapter = new ShopViewAdapter(cxt);
 
-		if (GlobalSettings.getCurrentShop() == null)
-			this.addView(li.inflate(R.layout.initshopview, this, false));
+		Store store = GlobalSettings.instance().getCurrentStore(); 
+		if (store == null || store.getMenu() == null) {
+			initialized = false;
+			LayoutInflater.from(cxt).inflate(R.layout.initshopview, this);
+		} 
 		else
-			refreshShopView(GlobalSettings.getCurrentShop());
+			refreshShopView(GlobalSettings.instance().getCurrentStore());
 
-		new ShopViewAdapter(cxt)
-				.setOnShopChangeListener(new ShopChangeListener() {
-
-					@Override
-					public void onChange(Shop shop) {
-						Log.d(getClass().getName(),
-								"Received shop change message");
-
-						refreshShopView(shop);
-					}
-				});
+		adapter.setOnShopChangeListener(new ShopChangeListener() {
+			@Override
+			public void onChange(Store store) {
+				refreshShopView(store);
+			}
+		});
 
 	}
 
-	private void refreshShopView(final Shop shop) {
+	private void refreshShopView(final Store store) {
 		Log.d(getClass().getName(), "Refreshing shop view");
-		LayoutInflater li = LayoutInflater.from(cxt);
-		if (shopView == null) { 
+		if (!initialized) {
 			this.removeAllViews();
-
-			shopView = li.inflate(R.layout.shopview, this, false);
-
-			this.addView(shopView);
+			LayoutInflater.from(cxt).inflate(R.layout.shopview, this);
+			initialized = true;
 		}
-
-		((MenuView) shopView.findViewById(R.id.menuView)).setShop(shop);
-		((OrderView) shopView.findViewById(R.id.orderView)).setShop(shop);
 	}
 
 }
