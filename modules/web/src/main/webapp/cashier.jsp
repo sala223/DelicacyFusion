@@ -28,6 +28,7 @@
                   <td data-i19="def" colspan="2">dinner_person_count</td>
                   <td></td>
                 </tr>
+                <tr><td></tr>
 		        <tr class="line">
 		          <td class="ln" data-i19="def">number</td>
 		          <td class="itemname" data-i19="def">item_name</td>

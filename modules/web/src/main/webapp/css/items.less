@@ -2,6 +2,23 @@
     background:transparent url('../img/food.png') no-repeat center center;
 }
 
+#dishes .tile > div[data-idx=NaN]:hover {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+#dishes .tile > div[data-idx=NaN]:before {
+    background-image:none;
+    content: "\2b";
+    font-size:5em;
+    text-align:center;
+    line-height:108px;
+    font-family: 'Glyphicons Halflings';
+    opacity:0.5;
+    border:6px dashed #CCC;
+    border-radius:20px;
+}
+
 ul.dropdown-menu.align-right li a {
     text-align:right;
 }
