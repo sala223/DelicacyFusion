@@ -150,13 +150,12 @@ public class LoginActivity extends Activity {
 		new WebTask<String[]>() {
 			@Override
 			protected String[] doInBackground(String... params) {
-				GlobalSettings.instance().setUserCode(userName);
-				LoginContext lc = new LoginContext(GlobalSettings.instance().getCurrentTenantCode(), userName, pwd);
-				GlobalSettings.instance().setClient(new DFClient(lc,
-						GlobalSettings.instance().getServerUrl()));
-
 				String[] roles = {};
 				try {
+					GlobalSettings.instance().setUserCode(userName);
+					LoginContext lc = new LoginContext(GlobalSettings.instance().getCurrentTenantCode(), userName, pwd);
+					GlobalSettings.instance().setClient(new DFClient(lc,
+							GlobalSettings.instance().getServerUrl()));
 					GlobalSettings.instance().getClient().login();
 				} catch (Exception e) {
 					Log.e(getClass().getName(), "Fail to login due to " + e);
