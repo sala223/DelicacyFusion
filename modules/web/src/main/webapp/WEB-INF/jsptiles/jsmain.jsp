@@ -31,7 +31,7 @@ $(document).ready(function() {
     
     $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
     	options.url = options.url
-    	.replace(/{prefix}/,'/dfweb/rs')
+    	.replace(/{prefix}/,'/m-console/rs')
     	.replace(/{tenant}/,'test')
     	.replace(/{store}/,'s1');
 

@@ -26,9 +26,13 @@ var i19={
 	unit_kg:'公斤',
 	unit_bottle:'瓶',
 	unit_cup:'杯',
+	unit_ea:'个',
 
 	type_foods:'菜品',
 	type_goods:'货品',
+
+	in_eat:'堂吃',
+	take_out:'外带',
 
 	completed:'已完成',
 	loading:'正在载入',
