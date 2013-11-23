@@ -15,36 +15,44 @@
       <div id="panel">
         <div id="tables" class="tilecontainer"></div>
         <div id="edit" class="above-loadmask">
-            <div>
-            
-	            <table>
-	                <thead>
-	                    <tr class="line">
-	                        <td class="ln" data-i19="def">number</td>
-	                        <td class="itemname" data-i19="def">item_name</td>
-	                        <td class="quantity" data-i19="def">quantity</td>
-	                        <td class="totalBef" data-i19="def">total_amount</td>
-	                        <td class="totalDis" data-i19="def">total_discount</td>
-	                    </tr>
-	                </thead>
-	                <tbody>
-	                </tbody>
-	                <tfoot>
-	                   <tr class="totalline">
-	                       <td colspan="4" data-i19="def">order_total_amount</td>
-	                       <td data-channel="money_text(this.totalPayment)"></td>
-	                   </tr>
-	                   <tr class="totalline">
-                           <td colspan="4" data-i19="def">order_total_discount</td>
-                           <td data-channel="money_text(data.totalPaymentAfterDiscount-data.totalPayment)"></td>
-                       </tr>
-                       <tr class="totalline">
-                           <td colspan="4" data-i19="def">order_total_payment</td>
-                           <td data-channel="money_text(data.totalPaymentAfterDiscount)"></td>
-                       </tr>
-	                </tfoot>
-	            </table>
-            </div>
+          <div>
+		    <table>
+		      <thead>
+		        <tr class="titleline">
+		          <td data-i19="def">store</td>
+		          <td data-channel="text(this.storeCode)"></td>
+		        </tr>
+                <tr class="titleline">
+                  <td data-i19="def">table_code</td>
+                  <td></td>
+                  <td data-i19="def" colspan="2">dinner_person_count</td>
+                  <td></td>
+                </tr>
+		        <tr class="line">
+		          <td class="ln" data-i19="def">number</td>
+		          <td class="itemname" data-i19="def">item_name</td>
+		          <td class="quantity" data-i19="def">quantity</td>
+		          <td class="totalBef" data-i19="def">total_amount</td>
+		          <td class="totalDis" data-i19="def">total_discount</td>
+		        </tr>
+		      </thead>
+		      <tbody></tbody>
+		      <tfoot>
+		        <tr class="totalline">
+		          <td colspan="4" data-i19="def">order_total_amount</td>
+		          <td data-channel="money_text(this.totalPayment)"></td>
+		        </tr>
+		        <tr class="totalline">
+		          <td colspan="4" data-i19="def">order_total_discount</td>
+		          <td data-channel="money_text(data.totalPaymentAfterDiscount-data.totalPayment)"></td>
+		        </tr>
+		        <tr class="totalline">
+		          <td colspan="4" data-i19="def">order_total_payment</td>
+		          <td data-channel="money_text(data.totalPaymentAfterDiscount)"></td>
+		        </tr>
+		      </tfoot>
+		    </table>
+          </div>
         </div>
       </div>
     </div>

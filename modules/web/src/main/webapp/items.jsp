@@ -73,7 +73,6 @@
             <div class="form-group">
               <div class="imageview form-control clearboth" data-channel="imgview_val(this.pictureSet)">
                 <div class="imgcreator"></div>
-                <div class="img"></div>
               </div>
               <label class="control-label" data-i19="def">item_image</label>
             </div>
@@ -138,9 +137,20 @@
             vf.val(ct.attr('data-value'));
         });
 
-    	
 
-    	$('.imgcreator').imageDropper();
+    	var imageDropper = $('.imgcreator').imageDropper();
+    	$('.imgcreator').delegate('.glyphicon-ok','click',function(ev){
+    		
+    		$.ajax({
+    			type:'PUT',
+    			url:'{prefix}/tenant/{tenant}/itpl/'+memoryStorage['items'][$('#edit').data('editingIdx')].code+'/image',
+    			data:imageDropper.imageContent.replace(/^data:([\w-\.]+\/[\w-\.]+)?;base64,/,'')
+    		}).done(function(data){
+    			imageDropper.clearImage();
+    			$('.imgcreator').after( _jQuery_static_members.bindData.getImageView(data) );
+    			
+    		});
+    	});
 
     	
     	$('.tagselect').delegate('>*','click',function(ev){
