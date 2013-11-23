@@ -7,15 +7,15 @@ echo setup environment variables.
 call %CWD%/env.bat
 if %DROP_DB_FIRST% == 1 (
     echo drop database %DATABASE%
-	%MYSQL% -u %DATABASE_USER% -e "DROP DATABASE %DATABASE%"
-    %MYSQL% -u %DATABASE_USER% --verbose < %CWD%/../db-init/create-db.sql
+	%MYSQL% --host=%HOST% -u %DATABASE_USER% --password=%PASSWORD% -e "DROP DATABASE %DATABASE%"
+    %MYSQL% --host=%HOST% -u %DATABASE_USER% --password=%PASSWORD% --verbose < %CWD%/../db-init/create-db.sql
 	call :executeSqlFile %CWD%/../db-init/create.sql
 )else (
 	echo DROP_DB_FIRST is set to %DROP_DB_FIRST%, ignore drop datbase %DATABASE%
 )
 
 echo Begin to prepare sample data
-%MYSQL% -u %DATABASE_USER% --verbose --default-character-set=utf8 %DATABASE% < %CWD%/sample/sample.sql
+%MYSQL% --host=%HOST% -u %DATABASE_USER% --password=%PASSWORD% --verbose --default-character-set=utf8 %DATABASE% < %CWD%/sample/sample.sql
 echo Done prepare sample data.
 pause
 
