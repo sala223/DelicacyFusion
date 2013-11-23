@@ -33,6 +33,13 @@ var i19={
 
 	in_eat:'堂吃',
 	take_out:'外带',
+	number:'序号',
+	quantity:'数量',
+	total_amount:'总价',
+	total_discount:'折扣',
+	order_total_amount:'订单总价',
+	order_total_discount:'订单总折扣',
+	order_total_payment:'订单实付金额',
 
 	completed:'已完成',
 	loading:'正在载入',

@@ -18,10 +18,10 @@
           <div>
             <div class="form-group">
               <div class="input-group">
-                <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(name)" tabindex="1" />
+                <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(this.name)" tabindex="1" />
                 <label for="val-name" class="control-label" data-i19="def">item_name</label>
 
-                <div class="input-group-btn" data-channel="dropdown_val(itemUnit)" >
+                <div class="input-group-btn" data-channel="dropdown_val(this.itemUnit)" >
                   <button id="btn-unit" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span id="txt-unit"></span>
                     <span class="caret"></span>
@@ -41,10 +41,10 @@
 
             <div class="form-group">
               <div class="input-group">
-                <input id="val-code" class="form-control" type="text" placeholder="Enter Code" data-channel="val(code)" tabindex="2" />
+                <input id="val-code" class="form-control" type="text" placeholder="Enter Code" data-channel="val(this.code)" tabindex="2" />
                 <label for="val-code" class="control-label" data-i19="def">item_code</label>
 
-                <div class="input-group-btn" data-channel="dropdown_val(type)" >
+                <div class="input-group-btn" data-channel="dropdown_val(this.type)" >
                   <button id="btn-type" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <span id="txt-type"></span>
                     <span class="caret"></span>
@@ -59,20 +59,19 @@
             </div>
 
             <div class="form-group">
-              <!--<textarea id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(description)" ></textarea>-->
-              <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(description)" tabindex="3"/>
+              <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(this.description)" tabindex="3"/>
               <label for="val-desc" class="control-label" data-i19="def">item_desc</label>
             </div>
 
             <div class="form-group" id="tagcloud">
               <div>
-                <div class="tagselect form-control clearboth" data-channel="tag_option(categories)" ></div>
+                <div class="tagselect form-control clearboth" data-channel="tag_option(this.categories)" ></div>
                 <label class="control-label" data-i19="def">item_category</label>
               </div>
             </div>
 
             <div class="form-group">
-              <div class="imageview form-control clearboth" data-channel="imgview_val(pictureSet)">
+              <div class="imageview form-control clearboth" data-channel="imgview_val(this.pictureSet)">
                 <div class="imgcreator"></div>
                 <div class="img"></div>
               </div>

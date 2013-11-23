@@ -27,7 +27,36 @@
 }
 
 #panel #edit {
+    font-size:1.4em;
+
     table {
-        font-size:1.4em;
+        width:100%;
+
+        > * {
+            width:100%;
+        }
+
+        td {
+            padding:3px 6px;
+            vertical-align:middle;
+        }
+        td.ln { width:50px; }
+        td.itemname {}
+        td.quantity {
+            width:60px;
+            
+            span {
+                margin-left:3px;
+            }
+        }
+        td.totalBef { width:60px; }
+        td.totalDis, .totalline td { width:60px; }
+        
+        td.ln,
+        td.totalBef,
+        td.totalDis,
+        .totalline td {
+            text-align:right;
+        }
     }
 }

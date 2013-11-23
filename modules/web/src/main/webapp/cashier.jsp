@@ -14,7 +14,38 @@
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
         <div id="tables" class="tilecontainer"></div>
-        <div id="edit" class="above-loadmask"></div>
+        <div id="edit" class="above-loadmask">
+            <div>
+            
+	            <table>
+	                <thead>
+	                    <tr class="line">
+	                        <td class="ln" data-i19="def">number</td>
+	                        <td class="itemname" data-i19="def">item_name</td>
+	                        <td class="quantity" data-i19="def">quantity</td>
+	                        <td class="totalBef" data-i19="def">total_amount</td>
+	                        <td class="totalDis" data-i19="def">total_discount</td>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                </tbody>
+	                <tfoot>
+	                   <tr class="totalline">
+	                       <td colspan="4" data-i19="def">order_total_amount</td>
+	                       <td data-channel="money_text(this.totalPayment)"></td>
+	                   </tr>
+	                   <tr class="totalline">
+                           <td colspan="4" data-i19="def">order_total_discount</td>
+                           <td data-channel="money_text(data.totalPaymentAfterDiscount-data.totalPayment)"></td>
+                       </tr>
+                       <tr class="totalline">
+                           <td colspan="4" data-i19="def">order_total_payment</td>
+                           <td data-channel="money_text(data.totalPaymentAfterDiscount)"></td>
+                       </tr>
+	                </tfoot>
+	            </table>
+            </div>
+        </div>
       </div>
     </div>
 
@@ -28,18 +59,29 @@
     		$.ajax('{prefix}/tenant/{tenant}/store/{store}/order/table/'+je.attr('data-id'))
     		.done(function(data){
 
-    			$('#edit').append('<table>'+data.lines.map(function(e,i){
-    				var orderline=['<tr data-index="'+i+'" data-code="'+e.itemCode+'">'];
-    				orderline.push('<td class="ln">'+e.lineNumber+'</td>');
-    				orderline.push('<td class="itemname"><span>'+e.itemName+'</span></td>');
-    				orderline.push('<td class="quantity">x<span>'+e.quantity+'</span><span>'+transStr('unit_'+(e.itemUnit||'DISK').toLowerCase())+'</span></td>');
-    				orderline.push('<td class="totalBef">'+e.totalPayment.toFixed(2)+'</td>');
-    				orderline.push('<td class="totalDis">'+(e.totalPaymentAfterDiscount - e.totalPayment).toFixed(2)+'</td>');
-    				orderline.push('</tr>');
+    			$('#edit').toDataView(data);
+
+    			$('#edit tbody').empty()
+    			.append(data.lines.map(function(e,i){
+    				var orderline=[
+		                '<tr data-index="'+i+'" data-code="'+e.itemCode+'">'
+	    			   ,'<td class="ln">'+e.lineNumber+'</td>'
+	    			   ,'<td class="itemname"><span>'+e.itemName+'</span></td>'
+	    			   ,'<td class="quantity">x<span>'+e.quantity+transStr('unit_'+(e.itemUnit||'DISK').toLowerCase())+'</span></td>'
+	    			   ,'<td class="totalBef">'+e.totalPayment.toFixed(2)+'</td>'
+	    			   ,'<td class="totalDis">'+(e.totalPaymentAfterDiscount - e.totalPayment).toFixed(2)+'</td>'
+	    			   ,'</tr>'];
     				return orderline.join('');
-    			}).join('')+'</table>');
+   			    }).join(''));
 
     			mask.clearIndicator();
+    			setTimeout(function(){
+	    			mask.element.click(function(){
+	    				$('#edit').removeClass('transform0');
+	    				mask.dismiss();
+	    			});
+    			},400);
+
     			$('#edit').addClass('transform0');	
     		})
     		.fail(function( jqXHR, textStatus, errorThrown ){

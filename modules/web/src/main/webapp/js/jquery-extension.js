@@ -70,6 +70,12 @@ _jQuery_static_members = {
 				this.append($.map(pics,function(e,i){
 					return '<div class="img" style="background-image:url('+e.imageLink+')"></div>';
 				}).join(''));
+			},
+			money_text:function(v){
+				if(typeof(v)==='string'){
+					v = parseFloat(v);
+				}
+				this.text(v.toFixed(2));
 			}
 		},
 		getter:{
@@ -96,16 +102,17 @@ _jQuery_static_members = {
 jQuery.fn.extend({
 	toDataView:function(data){
 		$('*[data-channel]',this).each(function(i,e){
-			var je = $(e),dc = /^(\w+)\((\w*)\)$/.exec(je.attr('data-channel'));
+			var je = $(e),dc = /^(\w+)\((.*)\)$/.exec(je.attr('data-channel'));
 			if(dc===null){
 				return;
 			}
 
 			var fn = je[dc[1]];
+				vl = new Function('data','return '+dc[2]+';').call(data, data);
 			if(typeof(fn)==='function'){
-				fn.call(je,data[dc[2]]);
+				fn.call(je,vl);
 			}else{
-				_jQuery_static_members.bindData.setter[dc[1]].call(je,data[dc[2]]);
+				_jQuery_static_members.bindData.setter[dc[1]].call(je,vl);
 			}
 		});
 
@@ -114,7 +121,7 @@ jQuery.fn.extend({
 	toViewData:function(){
 		var data={};
 		$('*[data-channel]',this).each(function(i,e){
-			var je = $(e),dc = /^(\w+)\((\w*)\)$/.exec(je.attr('data-channel'));
+			var je = $(e),dc = /^(\w+)\((.*)\)$/.exec(je.attr('data-channel'));
 			if(dc===null){
 				return;
 			}
@@ -126,7 +133,7 @@ jQuery.fn.extend({
 				v = _jQuery_static_members.bindData.getter[dc[1]].call(je);
 			}
 
-			data[dc[2]] = v;
+			data[dc[2].replace(/^(this|data)\./,'')] = v;
 		});
 
 		return data;
@@ -153,7 +160,7 @@ jQuery.fn.extend({
 		var loadmask = $(str.join('')).appendTo(applyElement);
 
 		return {
-			maskElement:loadmask[0],
+			element:loadmask,
 			complete:function(cfg){
 				var that=this;
 
