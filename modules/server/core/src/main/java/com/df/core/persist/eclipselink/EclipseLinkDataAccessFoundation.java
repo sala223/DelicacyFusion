@@ -14,6 +14,7 @@ import javax.persistence.criteria.Root;
 
 import org.eclipse.persistence.config.QueryHints;
 import org.eclipse.persistence.descriptors.ClassDescriptor;
+import org.eclipse.persistence.jpa.JpaCache;
 import org.eclipse.persistence.queries.FetchGroup;
 import org.eclipse.persistence.sessions.Session;
 
@@ -28,6 +29,11 @@ public class EclipseLinkDataAccessFoundation extends JPADataAccessFoundation {
 		query.from(entityType);
 		TypedQuery<T> typeQuery = this.getEntityManager().createQuery(query);
 		return typeQuery.getResultList();
+	}
+
+	protected void clearCache(Class<?> entityType) {
+		JpaCache cache = (JpaCache) this.getEntityManager().getEntityManagerFactory().getCache();
+		cache.clear(entityType);
 	}
 
 	public void bulkInsert(List<?> objects) {
@@ -140,7 +146,7 @@ public class EclipseLinkDataAccessFoundation extends JPADataAccessFoundation {
 				if (i != 0) {
 					eql += " AND e." + pname + "=:" + pname.toUpperCase();
 				} else {
-					eql += "e."+pname + "=:" + pname.toUpperCase();
+					eql += "e." + pname + "=:" + pname.toUpperCase();
 				}
 			}
 			eql = String.format(eql, entityName);
