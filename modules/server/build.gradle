@@ -1,4 +1,4 @@
-project.ext.set('sourceCompatibility', 1.5)
+project.ext.set('sourceCompatibility', 1.6)
 project.ext.set("version", "1.0")
 project.ext.set("jbossHome", "../../../dependencies/jboss")
 
@@ -11,6 +11,11 @@ subprojects {
 	
 	configurations {
 		 
+	}
+	
+	compileJava {
+		sourceCompatibility = 1.6
+		targetCompatibility = 1.6
 	}
 	
 	sourceSets {
