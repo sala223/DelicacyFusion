@@ -1,0 +1,66 @@
+* url_root = http://<server>
+
+=============================================================
+Sys Admin
+=============================================================
+Create a tenant
+URL: <url_root>/tenant
+POST: 
+	tenant data
+Response:
+	- Success or failure
+	- Created tenantId
+
+=============================================================
+Tenant operations
+=============================================================
+Authentication
+URL: <url_root>/login
+POST: 
+	storeId - Store to login; null if login as sys admin
+	userName - User to login
+	pwd - Password
+Response:
+	valid sessionId if authentication succeeds
+
+Create/Update a store
+URL: <url_root>/tenant/tenantId/store
+POST: 
+	store data
+Response:
+	- Success or failure
+	- Created storeId
+	
+List stores of a tenant
+URL: <url_root>/tenant/tenantId/store
+GET
+Response:
+	JSON with following info:
+	- storeId
+	- store name
+	
+Retrieve a store (may divide to multi requests for menu, table etc respectively)
+URL: <url_root>/tenant/tenantId/store/storeId
+GET
+Response:
+	JSON with following info:
+	- Menu info (item, image, price)
+	- Table info
+	- Promotion info?
+	- Configuration info (default menu categories etc)
+
+Create/Update an order
+URL: <url_root>/tenant/tenantId/store/storeId/order
+POST:
+	Order in JSON format
+Response:
+	- Success or failure
+	- Created orderId
+
+Retrieve an order
+URL: <url_root>/tenant/tenantId/store/storeId/order/orderId
+GET
+Response:
+	Order in JSON format
+
+	
