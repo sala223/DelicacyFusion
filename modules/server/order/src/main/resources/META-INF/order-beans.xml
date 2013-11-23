@@ -10,8 +10,11 @@
 	<bean id="orderDao" class="com.df.order.dao.OrderDao" autowire="default" />
 	<bean id="orderService" class="com.df.order.service.impl.OrderServiceImpl" />
 	<bean id="serviceCardDao" class="com.df.order.dao.ServiceCardDao" />
-	<bean id="serviceCardService" class="com.df.order.service.impl.ServiceCardServiceImpl"/>
-	<bean id="diningTableDistributor" class="com.df.order.table.occupation.DiningTableDistributorImpl"/>
+	<bean id="serviceCardService" class="com.df.order.service.impl.ServiceCardServiceImpl" />
+	<bean id="paymentDao" class="com.df.order.dao.PaymentDao" />
+	<bean id="paymentService" class="com.df.order.service.impl.PaymentServiceImpl" />
+	<bean id="diningTableDistributor"
+		class="com.df.order.table.occupation.DiningTableDistributorImpl" />
 	<bean id="paymentCalculator" class="com.df.order.price.PromotionRulePaymentCalculator">
 		<constructor-arg index="0" ref="promotionRepository" />
 		<constructor-arg index="1" ref="promotionExecutor" />

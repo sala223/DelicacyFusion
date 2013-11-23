@@ -23,7 +23,8 @@ public interface Constants {
 		public static final String ORDER_ID = "orderId";
 	}
 
-	public static interface TABLE_RESOURCE {
-		public static final String STORE_CODE = "storeCode";
+	public static interface PAYMENT extends TTAN_ENTITY {
+		public static final String TRAN_ID = "paymentId";
+		public static final String ORDER_ID = "orderId";
 	}
 }

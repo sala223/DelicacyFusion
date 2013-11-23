@@ -11,8 +11,6 @@ public class ServiceCard implements Serializable {
 
 	private List<String> tables;
 
-	private String storeCode;
-
 	private Long orderId;
 
 	private Date createdTime;
@@ -35,14 +33,6 @@ public class ServiceCard implements Serializable {
 
 	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
-	}
-
-	public String getStoreCode() {
-		return storeCode;
-	}
-
-	public void setStoreCode(String storeCode) {
-		this.storeCode = storeCode;
 	}
 
 	public Date getCreatedTime() {
