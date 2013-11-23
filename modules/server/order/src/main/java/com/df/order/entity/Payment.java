@@ -1,6 +1,7 @@
 package com.df.order.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
@@ -20,73 +21,97 @@ import org.eclipse.persistence.annotations.JoinFetchType;
 @XmlRootElement
 @Entity
 public class Payment extends TransactionEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAYMENT_ID_SEQUENCE")
-    @SequenceGenerator(name = "PAYMENT_ID_SEQUENCE", sequenceName = "PAYMENT_ID_SEQUENCE")
-    @Column(name = "PAYMENT_ID")
-    private long paymentId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAYMENT_ID_SEQUENCE")
+	@SequenceGenerator(name = "PAYMENT_ID_SEQUENCE", sequenceName = "PAYMENT_ID_SEQUENCE")
+	@Column(name = "PAYMENT_ID")
+	private long paymentId;
 
-    @Column(name = "ORDER_ID", nullable = false)
-    private Long orderId;
+	@Column(name = "ORDER_ID", nullable = false)
+	private Long orderId;
 
-    @Column(name = "CURRENCY")
-    private String currency;
+	@Column(name = "CURRENCY")
+	private String currency;
 
-    @Column(name = "TOTAL", scale = 2)
-    private BigDecimal total;
+	@Column(name = "TOTAL_AMOUNT", scale = 2)
+	private BigDecimal totalAmount;
 
-    @ElementCollection
-    @CollectionTable(name = "PAYMENT_LINE", joinColumns = @JoinColumn(name = "PAYMENT_ID"))
-    @JoinFetch(JoinFetchType.OUTER)
-    private List<PaymentLine> lines;
+	@Column(name = "SPECIAL_DISCOUNT", scale = 2)
+	private BigDecimal specialDiscount;
 
-    @Override
-    public long getTransactionId() {
-	return paymentId;
-    }
+	@ElementCollection
+	@CollectionTable(name = "PAYMENT_LINE", joinColumns = @JoinColumn(name = "PAYMENT_ID"))
+	@JoinFetch(JoinFetchType.OUTER)
+	private List<PaymentLine> lines;
 
-    @Override
-    public void setTransactionId(long transactionId) {
-	this.paymentId = transactionId;
-    }
+	@Override
+	public long getTransactionId() {
+		return paymentId;
+	}
 
-    public List<PaymentLine> getLines() {
-	return lines;
-    }
+	@Override
+	public void setTransactionId(long transactionId) {
+		this.paymentId = transactionId;
+	}
 
-    public void setLines(List<PaymentLine> lines) {
-	this.lines = lines;
-    }
+	public List<PaymentLine> getLines() {
+		return lines;
+	}
 
-    public long getPaymentId() {
-	return paymentId;
-    }
+	public void setLines(List<PaymentLine> lines) {
+		this.lines = lines;
+	}
 
-    public void setPaymentId(long paymentId) {
-	this.paymentId = paymentId;
-    }
+	public String getCurrency() {
+		return currency;
+	}
 
-    public String getCurrency() {
-	return currency;
-    }
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 
-    public void setCurrency(String currency) {
-	this.currency = currency;
-    }
+	public BigDecimal getTotalAmount() {
+		return totalAmount;
+	}
 
-    public BigDecimal getTotal() {
-	return total;
-    }
+	public void setTotalAmount(BigDecimal total) {
+		this.totalAmount = total;
+	}
 
-    public void setTotal(BigDecimal total) {
-	this.total = total;
-    }
+	public Long getOrderId() {
+		return orderId;
+	}
 
-    public Long getOrderId() {
-	return orderId;
-    }
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
 
-    public void setOrderId(Long orderId) {
-	this.orderId = orderId;
-    }
+	public BigDecimal getSpecialDiscount() {
+		return specialDiscount;
+	}
+
+	public void setSpecialDiscount(BigDecimal specialDiscount) {
+		this.specialDiscount = specialDiscount;
+	}
+
+	public int addPaymentLine(PaymentLine line) {
+		if (this.lines == null) {
+			this.lines = new ArrayList<PaymentLine>();
+		}
+		int lineNumer = this.lines.size() + 1;
+		line.setLineNumber(lineNumer);
+		this.lines.add(line);
+		return lineNumer;
+	}
+
+	public BigDecimal getLineTotalAmount() {
+		if (this.lines == null) {
+			this.lines = new ArrayList<PaymentLine>();
+		}
+		BigDecimal lineTotal = new BigDecimal(0);
+		for (PaymentLine line : lines) {
+			lineTotal = lineTotal.add(line.getAmount());
+		}
+		return lineTotal;
+	}
 }

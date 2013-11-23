@@ -138,4 +138,13 @@ public class OrderServiceImpl implements OrderService {
 		return orderDao.getOrderList(storeCode, orderIds);
 	}
 
+	@Override
+	public void updateOrderStatus(String storeCode, Order order, TransactionStatus status) {
+		order.setStoreCode(storeCode); 
+		order.setStatus(status);
+		if(status == TransactionStatus.CLOSED){
+			order.setCloseTime(new Date()); 
+		}
+		orderDao.update(order);
+	}
 }

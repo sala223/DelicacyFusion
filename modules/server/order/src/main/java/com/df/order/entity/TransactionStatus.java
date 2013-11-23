@@ -1,5 +1,5 @@
 package com.df.order.entity;
 
 public enum TransactionStatus {
-    PRESERVED, OPEN, EXPIRED, CLOSED;
+    PRESERVED, OPEN, WAIT_TO_PAY, EXPIRED, CLOSED;
 }

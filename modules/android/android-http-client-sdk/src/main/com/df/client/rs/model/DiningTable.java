@@ -12,6 +12,8 @@ public class DiningTable implements Serializable {
 
 	private int capacity;
 
+	private ServiceCard serviceCard;
+
 	public String getBarCode() {
 		return barCode;
 	}
@@ -36,4 +38,11 @@ public class DiningTable implements Serializable {
 		this.code = code;
 	}
 
+	public ServiceCard getServiceCard() {
+		return serviceCard;
+	}
+
+	public void setServiceCard(ServiceCard serviceCard) {
+		this.serviceCard = serviceCard;
+	}
 }

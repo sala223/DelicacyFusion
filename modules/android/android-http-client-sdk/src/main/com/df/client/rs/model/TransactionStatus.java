@@ -1,5 +1,5 @@
 package com.df.client.rs.model;
 
 public enum TransactionStatus {
-    OPEN, EXPIRED, CLOSED;
+    PRESERVED, OPEN, WAIT_TO_PAY, EXPIRED, CLOSED;
 }
