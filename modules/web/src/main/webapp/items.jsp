@@ -93,14 +93,18 @@
 
     	$('#btnOK').click(function(){
     		$('.tagedit input').keypress();
-    		var edit = $('#edit'),idx=edit.data('editingIdx');
-    		memoryStorage['items'][idx] = $.extend(memoryStorage['items'][idx],edit.toViewData());
+    		var edit = $('#edit'),idx=parseInt(edit.data('editingIdx')),
+    		    data = edit.toViewData();
+
+    		if(!isNaN(idx)){
+    			memoryStorage['items'][idx] = $.extend(memoryStorage['items'][idx],data);
+    		}
 
     		var savemask = $('#edit').mask({loadingText:'saving'});
     		$.ajax('{prefix}/tenant/{tenant}/itpl/',{
-    			type:'PUT',
+    			type:isNaN(idx)?'POST':'PUT',
     			contentType:'application/json',
-    			data:JSON.stringify(memoryStorage['items'][idx])
+    			data:JSON.stringify(data)
     		}).done(function(){
     			savemask.complete({text:'completed',fn:function(){
     				$('#edit').removeClass('transform0');
@@ -121,9 +125,22 @@
 
     		$('#edit')
     		.data('editingIdx',dataIdx)
-    		.toDataView(memoryStorage['items'][dataIdx])
+    		.toDataView(isNaN(dataIdx)?{
+   			    "code": "",
+   			    "createdTime": "2013-09-15 08:09:21 +0800",
+   			    "changedTime": "2013-11-23 19:44:32 +0800",
+   			    "createdBy": 0,
+   			    "name": "",
+   			    "type": "FOOD",
+   			    "categories": [],
+   			    "pictureSet": [],
+   			    "description": "",
+   			    "price": 10.0,
+   			    "currency": "RMB",
+   			    "itemUnit": "CUP",
+   			    "enabled": true
+    		}:memoryStorage['items'][dataIdx])
     		.addClass('transform0');
-
     	});
 
     	// EOC - slide in
@@ -152,7 +169,6 @@
     		});
     	});
 
-    	
     	$('.tagselect').delegate('>*','click',function(ev){
     		$(ev.target).toggleClass('selected');
     	});
@@ -166,7 +182,8 @@
                 var x = [];
                 x.push('<div class="text">'+e.name+'</div>');
                 return '<div class="tile"><div data-idx="'+i+'">'+x.join('')+'</div></div>';
-            }).join(''));
+            }).join('') +
+            ['<div class="tile"><div data-idx="NaN"></div></div>'].join(''));
 
             $('#tagcloud .tagselect').empty().append(categoryData.map(function(e){
                 return '<div data-value="'+e.code+'">'+e.name+'</div>'; 

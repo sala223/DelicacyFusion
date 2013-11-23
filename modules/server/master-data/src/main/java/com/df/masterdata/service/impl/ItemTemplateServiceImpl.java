@@ -79,12 +79,12 @@ public class ItemTemplateServiceImpl implements ItemTemplateService {
 		ImageKey key = imageService.uploadImage(stream, TenantContextHolder.getTenant().getTenantCode());
 		ImageAttributes attribute = imageService.getImageKeyResolver().resolveImageAttributes(key);
 		PictureRef picture = new PictureRef();
-		picture.setImageId(key.toString()); 
+		picture.setImageId(key.toString());
 		picture.setFormat(attribute.getFormat().name());
 		picture.setWidth(attribute.getWidth());
 		picture.setHeigth(attribute.getHeigth());
 		itemTemplate.getPictureSet().add(picture);
-		itemTemplateDao.update(itemTemplate);
+		itemTemplateDao.merge(itemTemplate);
 		return picture;
 	}
 
@@ -112,9 +112,9 @@ public class ItemTemplateServiceImpl implements ItemTemplateService {
 	@Override
 	public List<ItemTemplate> all(boolean includeDisabled) {
 		if (includeDisabled) {
-			return itemTemplateDao.all(ItemTemplate.class, 0, Integer.MAX_VALUE, true);
+			return itemTemplateDao.all(ItemTemplate.class, 0, Integer.MAX_VALUE, true,true);
 		} else {
-			return itemTemplateDao.all(ItemTemplate.class, 0, Integer.MAX_VALUE, false);
+			return itemTemplateDao.all(ItemTemplate.class, 0, Integer.MAX_VALUE, false,true);
 		}
 	}
 

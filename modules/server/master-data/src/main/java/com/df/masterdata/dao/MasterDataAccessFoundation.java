@@ -75,6 +75,11 @@ public class MasterDataAccessFoundation extends EclipseLinkDataAccessFoundation 
 
 	public <T extends MasterData> List<T> all(Class<T> entityType, int firstResult, int maxResult,
 	        boolean includeDisabled) {
+		return all(entityType, firstResult, maxResult, includeDisabled, false);
+	}
+
+	public <T extends MasterData> List<T> all(Class<T> entityType, int firstResult, int maxResult,
+	        boolean includeDisabled, boolean refreshCache) {
 		CriteriaBuilder builder = createQueryBuilder();
 		CriteriaQuery<T> query = builder.createQuery(entityType);
 		Root<T> root = query.from(entityType);
@@ -84,6 +89,9 @@ public class MasterDataAccessFoundation extends EclipseLinkDataAccessFoundation 
 		TypedQuery<T> typeQuery = this.getEntityManager().createQuery(query);
 		typeQuery.setFirstResult(firstResult);
 		typeQuery.setMaxResults(maxResult);
+		if (refreshCache) {
+			typeQuery.setHint("javax.persistence.cache.storeMode", "REFRESH");
+		}
 		return typeQuery.getResultList();
 	}
 }
