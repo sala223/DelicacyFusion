@@ -32,18 +32,15 @@
             android:orientation="horizontal"
             android:visibility="invisible" >
 
-            <Button
+            <ImageButton
+                android:contentDescription="@string/order"
                 android:id="@+id/btnMenuItemDetailOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_margin="10dp"
-                android:background="#008800"
-                android:padding="10dp"
-                android:text="@string/order"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp" />
+                android:src="@drawable/cart5"
+                android:layout_margin="10dp"/>
 
             <TextView
                 android:id="@+id/tvMenuItemDetailName"

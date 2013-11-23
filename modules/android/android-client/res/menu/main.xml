@@ -1,6 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/menu_tablelayout"
+        android:orderInCategory="100"
+        android:icon="@drawable/table"
+        android:showAsAction="ifRoom"
+        android:title="@string/table_layout"/>
+
+    <item
         android:id="@+id/menu_settings"
         android:orderInCategory="100"
         android:icon="@drawable/settings"

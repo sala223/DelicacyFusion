@@ -1,38 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
+    android:padding="10dp"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/serverAddrCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:paddingRight="5dp"
+        android:text="@string/server_addr" />
+
+    <EditText
+        android:inputType="textAutoCorrect"
+        android:id="@+id/serverAddr"
+        android:layout_toRightOf="@id/serverAddrCaption"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/server_addr"/>
-        
-        <EditText
-            android:id="@+id/etServerAddr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        </LinearLayout>
-
+    <TextView
+        android:id="@+id/userCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/serverAddr"
+        android:paddingRight="5dp"/>
+    
+    <TextView
+        android:id="@+id/tenantName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/userCode"
+        android:layout_below="@id/serverAddr"
+        android:text="@string/no_tenant_specified"
+        android:paddingRight="5dp"/>
+    
+    <TextView
+        android:id="@+id/storeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/serverAddr"
+        android:layout_toRightOf="@id/tenantName"
+        android:text="@string/no_store_specified"
+        android:paddingRight="5dp"/>
+    
     <Button
+        android:id="@+id/btnSyncShop"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tenantName"
+        android:text="@string/sync_shop"/>
+    
+    <ImageButton
+        android:contentDescription="@string/ok"
         android:id="@+id/btnConfirmSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
         android:layout_margin="10dp"
-        android:background="#008800"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:text="@string/ok"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp" />
+        android:padding="20dp"
+        android:src="@drawable/ok"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
 
-</LinearLayout>
+</RelativeLayout>

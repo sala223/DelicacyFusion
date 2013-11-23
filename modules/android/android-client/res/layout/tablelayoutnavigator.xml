@@ -1,5 +1,5 @@
 <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/menuNavigator"
+    android:id="@+id/tableNavigator"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#DDDDDD"

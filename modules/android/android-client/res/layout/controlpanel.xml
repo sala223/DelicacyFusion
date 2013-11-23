@@ -3,14 +3,12 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:layout_width="20dp"
+    <ImageView
+        android:contentDescription="@string/my_order" 
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@drawable/clip"
-        android:gravity="center_vertical"
-        android:text="@string/my_order"
-        android:textColor="#FFFFFF" >
-    </TextView>
+        android:src="@drawable/to_right"
+        android:gravity="center_vertical"/>
 
     <TextView
         android:id="@+id/orderCount"
