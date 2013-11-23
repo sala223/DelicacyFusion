@@ -79,6 +79,7 @@ public class ItemTemplateServiceImpl implements ItemTemplateService {
 		ImageKey key = imageService.uploadImage(stream, TenantContextHolder.getTenant().getTenantCode());
 		ImageAttributes attribute = imageService.getImageKeyResolver().resolveImageAttributes(key);
 		PictureRef picture = new PictureRef();
+		picture.setImageId(key.toString()); 
 		picture.setFormat(attribute.getFormat().name());
 		picture.setWidth(attribute.getWidth());
 		picture.setHeigth(attribute.getHeigth());
