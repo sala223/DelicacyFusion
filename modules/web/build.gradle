@@ -1,8 +1,14 @@
-project.ext.set('sourceCompatibility', 1.5)
-project.ext.set("jbossHome", "../../dependencies/jboss")
-
 apply plugin: 'war'
 apply plugin: 'jetty'
+
+project.ext.set('sourceCompatibility', 1.6)
+project.ext.set('targetCompatibility', 1.6)
+project.ext.set("jbossHome", "../../dependencies/jboss")
+
+compileJava {
+	sourceCompatibility = 1.6
+	targetCompatibility = 1.6
+}
 
 repositories {
 	flatDir {
