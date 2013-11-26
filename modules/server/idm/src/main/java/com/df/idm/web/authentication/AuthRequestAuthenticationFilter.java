@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
-import com.df.idm.authentication.UserPropertyAuthenticationToken;
+import com.df.idm.authentication.UserObjectPropertyAuthenticationToken;
 
 public class AuthRequestAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -41,7 +41,7 @@ public class AuthRequestAuthenticationFilter extends AbstractAuthenticationProce
 			password = "";
 		}
 		userId = userId.trim();
-		UserPropertyAuthenticationToken authRequest = new UserPropertyAuthenticationToken(userId, password);
+		UserObjectPropertyAuthenticationToken authRequest = new UserObjectPropertyAuthenticationToken(userId, password);
 		return this.getAuthenticationManager().authenticate(authRequest);
 	}
 

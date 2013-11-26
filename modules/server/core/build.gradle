@@ -22,10 +22,8 @@ dependencies {
     runtime ":mysql-connector-java:5.1.26-bin"
 }
 
-
-task("copyTestResources", type: Copy){
+jar {
+	from sourceSets.main.resources
 	from sourceSets.test.resources
-	into sourceSets.main.output.resourcesDir
-}
-
-jar.dependsOn copyTestResources
+    exclude('META-INF/persistence.xml') 
+} 

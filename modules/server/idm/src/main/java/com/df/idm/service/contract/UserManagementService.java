@@ -2,7 +2,7 @@ package com.df.idm.service.contract;
 
 import com.df.idm.entity.User;
 
-public interface IUserManagementService {
+public interface UserManagementService {
 
 	void createUser(User user);
 

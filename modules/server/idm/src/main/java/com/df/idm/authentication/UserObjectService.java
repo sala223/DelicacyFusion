@@ -2,7 +2,7 @@ package com.df.idm.authentication;
 
 public interface UserObjectService {
 
-	UserObject getUserByEmailOrTelephone(String emailOrTelehone);
+	UserObject getUserByEmail(String email);
 
-	UserObject getUserByWeiboAccount(String weiboAccount);
+	UserObject getUserByCellPhone(String cellphone);
 }

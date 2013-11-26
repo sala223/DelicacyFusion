@@ -1,4 +1,4 @@
-package com.df.crm.tenant;
+package com.df.crm.entity;
 
 import java.io.Serializable;
 

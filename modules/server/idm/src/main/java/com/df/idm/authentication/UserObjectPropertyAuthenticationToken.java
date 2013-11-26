@@ -5,7 +5,9 @@ import java.util.Collection;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
-public class UserPropertyAuthenticationToken extends AbstractAuthenticationToken {
+import com.df.core.common.utils.StringUtils;
+
+public class UserObjectPropertyAuthenticationToken extends AbstractAuthenticationToken {
 
 	private static final long serialVersionUID = 1L;
 
@@ -13,14 +15,14 @@ public class UserPropertyAuthenticationToken extends AbstractAuthenticationToken
 
 	private Object credentials;
 
-	public UserPropertyAuthenticationToken(Object principal, Object credentials) {
+	public UserObjectPropertyAuthenticationToken(Object principal, Object credentials) {
 		super(null);
 		this.principal = principal;
 		this.credentials = credentials;
 		this.setAuthenticated(false);
 	}
 
-	public UserPropertyAuthenticationToken(Object principal, Collection<? extends GrantedAuthority> authorities) {
+	public UserObjectPropertyAuthenticationToken(Object principal, Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
 		this.principal = principal;
 		this.setAuthenticated(true);
@@ -40,6 +42,10 @@ public class UserPropertyAuthenticationToken extends AbstractAuthenticationToken
 	@Override
 	public Object getPrincipal() {
 		return principal;
+	}
+
+	public boolean isMailAccount() {
+		return StringUtils.isValidEmail(principal.toString());
 	}
 
 }

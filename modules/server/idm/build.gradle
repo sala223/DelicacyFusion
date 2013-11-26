@@ -9,7 +9,7 @@ dependencies {
     compile ":jackson-mapper-asl:1.9.12"
     testRuntime ":mysql-connector-java:5.1.26-bin"
     testRuntime ":spring-test:4.0.0.M2"
-    runtime ":spring-aop:4.0.0.M2"
+    compile ":spring-aop:4.0.0.M2"
     runtime ":spring-expression:4.0.0.M2"
     runtime ":spring-jdbc:4.0.0.M2"
     runtime ":com.springsource.org.aopalliance:1.0.0"

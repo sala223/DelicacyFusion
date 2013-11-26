@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,15 +21,16 @@ import org.eclipse.persistence.annotations.Index;
 
 @Cache
 @Entity
-@Table(name="USERS")
+@Table(name = "USERS")
 @FetchGroup(name = "AuthenticationInfo", attributes = { @FetchAttribute(name = "password"),
-		@FetchAttribute(name = "weiboAccount"), @FetchAttribute(name = "email"), @FetchAttribute(name = "telephone"), })
+        @FetchAttribute(name = "weiboAccount"), @FetchAttribute(name = "email"), @FetchAttribute(name = "telephone"), })
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_ID_SEQUENCE")
+	@SequenceGenerator(initialValue = 10000, name = "USER_ID_SEQUENCE", sequenceName = "USER_ID_SEQUENCE")
 	@Column
 	private long Id;
 
@@ -38,7 +40,7 @@ public class User implements Serializable {
 	@Column(length = 56)
 	private String lastName;
 
-	@Column(length = 256)
+	@Column(length = 256, nullable = false)
 	private String password;
 
 	@Column(length = 128)
@@ -49,31 +51,38 @@ public class User implements Serializable {
 
 	@Column(length = 20)
 	@Index(unique = true)
-	private String telephone;
+	private String cellPhone;
 
 	@Column(length = 512)
 	private String imageId;
 
-	@Column(length = 20)
-	private String gender;
+	@Column(length = 8)
+	private Gender gender;
 
-	@Column(length = 128)
+	@Column(length = 128, updatable = false, nullable = false)
 	@Index(unique = true)
 	private String email;
 
 	@Column(unique = true)
+	@Index(unique = true)
 	private String weiboAccount;
 
 	@Column
 	private boolean locked;
 
-	@Temporal(value = TemporalType.DATE)
-	@Column(nullable = false)
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column(name = "CREATED_TIME", nullable = false)
 	private Date createdTime;
 
-	@Temporal(value = TemporalType.DATE)
-	@Column
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column(name = "CHANGED_TIME")
 	private Date changedTime;
+
+	@Column(name = "IS_TENANT_OWNER")
+	private boolean isTenantOwner;
+
+	@Column(name = "TENANT_CODE")
+	private String tenantCode;
 
 	public long getId() {
 		return Id;
@@ -99,12 +108,12 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	public String getTelephone() {
-		return telephone;
+	public String getCellPhone() {
+		return cellPhone;
 	}
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
+	public void setCellPhone(String cellPhone) {
+		this.cellPhone = cellPhone;
 	}
 
 	public String getImage() {
@@ -123,11 +132,11 @@ public class User implements Serializable {
 		this.age = age;
 	}
 
-	public String getGender() {
+	public Gender getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 
@@ -200,5 +209,25 @@ public class User implements Serializable {
 		if (this.createdTime == null) {
 			this.setCreatedTime(new Date());
 		}
+	}
+
+	public boolean isTenantOwner() {
+		return isTenantOwner;
+	}
+
+	public void setTenantOwner(boolean isTenantOwner) {
+		this.isTenantOwner = isTenantOwner;
+	}
+
+	public String getTenantCode() {
+		return tenantCode;
+	}
+
+	public void setTenantCode(String tenantCode) {
+		this.tenantCode = tenantCode;
+	}
+
+	public static enum Gender {
+		MALE, FEMALE
 	}
 }

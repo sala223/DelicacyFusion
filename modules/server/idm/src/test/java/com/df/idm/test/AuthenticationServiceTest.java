@@ -11,9 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.df.idm.authentication.UserObject;
-import com.df.idm.authentication.UserPropertyAuthenticationToken;
+import com.df.idm.authentication.UserObjectPropertyAuthenticationToken;
 import com.df.idm.entity.User;
-import com.df.idm.service.contract.IUserManagementService;
+import com.df.idm.service.contract.UserManagementService;
 
 @Transactional
 public class AuthenticationServiceTest extends IdmBaseTest {
@@ -22,7 +22,7 @@ public class AuthenticationServiceTest extends IdmBaseTest {
 	private AuthenticationProvider authProvider;
 
 	@Inject
-	private IUserManagementService userManagementService;
+	private UserManagementService userManagementService;
 
 	@Test
 	public void testAuthenticationProviderWithEmailAccount() {
@@ -31,16 +31,16 @@ public class AuthenticationServiceTest extends IdmBaseTest {
 		String password = "Oba.2247d";
 		User user = new User();
 		user.setEmail(email);
-		user.setTelephone(telephone);
+		user.setCellPhone(telephone);
 		user.setPassword(password);
 		userManagementService.createUser(user);
-		UserPropertyAuthenticationToken authToken = new UserPropertyAuthenticationToken(email, password);
+		UserObjectPropertyAuthenticationToken authToken = new UserObjectPropertyAuthenticationToken(email, password);
 		Authentication authentication = authProvider.authenticate(authToken);
-		TestCase.assertTrue(authentication instanceof UserPropertyAuthenticationToken);
-		UserPropertyAuthenticationToken token = (UserPropertyAuthenticationToken) authentication;
+		TestCase.assertTrue(authentication instanceof UserObjectPropertyAuthenticationToken);
+		UserObjectPropertyAuthenticationToken token = (UserObjectPropertyAuthenticationToken) authentication;
 		TestCase.assertEquals(token.getPrincipal().getClass(), UserObject.class);
 		UserObject userObject = (UserObject) token.getPrincipal();
-		TestCase.assertEquals(userObject.getTelephone(), telephone);
+		TestCase.assertEquals(userObject.getCellphone(), telephone);
 		userManagementService.deleteUser(user.getId());
 	}
 
@@ -51,16 +51,16 @@ public class AuthenticationServiceTest extends IdmBaseTest {
 		String password = "Oba.2247d";
 		User user = new User();
 		user.setEmail(email);
-		user.setTelephone(telephone);
+		user.setCellPhone(telephone);
 		user.setPassword(password);
 		userManagementService.createUser(user);
-		UserPropertyAuthenticationToken authToken = new UserPropertyAuthenticationToken(telephone, password);
+		UserObjectPropertyAuthenticationToken authToken = new UserObjectPropertyAuthenticationToken(telephone, password);
 		Authentication authentication = authProvider.authenticate(authToken);
-		TestCase.assertTrue(authentication instanceof UserPropertyAuthenticationToken);
-		UserPropertyAuthenticationToken token = (UserPropertyAuthenticationToken) authentication;
+		TestCase.assertTrue(authentication instanceof UserObjectPropertyAuthenticationToken);
+		UserObjectPropertyAuthenticationToken token = (UserObjectPropertyAuthenticationToken) authentication;
 		TestCase.assertEquals(token.getPrincipal().getClass(), UserObject.class);
 		UserObject userObject = (UserObject) token.getPrincipal();
-		TestCase.assertEquals(userObject.getTelephone(), telephone);
+		TestCase.assertEquals(userObject.getCellphone(), telephone);
 		userManagementService.deleteUser(user.getId());
 	}
 
@@ -71,15 +71,14 @@ public class AuthenticationServiceTest extends IdmBaseTest {
 		String password = "Oba.2247d";
 		User user = new User();
 		user.setEmail(email);
-		user.setTelephone(telephone);
+		user.setCellPhone(telephone);
 		user.setPassword(password);
 		userManagementService.createUser(user);
-		UserPropertyAuthenticationToken authToken = new UserPropertyAuthenticationToken("errorAccount", password);
+		UserObjectPropertyAuthenticationToken authToken = new UserObjectPropertyAuthenticationToken("errorAccount", password);
 		try {
 			authProvider.authenticate(authToken);
 			TestCase.fail();
-		}
-		catch (BadCredentialsException ex) {
+		} catch (BadCredentialsException ex) {
 		}
 		userManagementService.deleteUser(user.getId());
 	}

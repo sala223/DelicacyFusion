@@ -6,7 +6,7 @@ import com.df.core.persist.eclipselink.EclipseLinkDataAccessFoundation;
 import com.df.idm.entity.Constants;
 import com.df.idm.entity.User;
 
-public class UserDAL extends EclipseLinkDataAccessFoundation implements Constants {
+public class UserDao extends EclipseLinkDataAccessFoundation implements Constants {
 
 	public User getUserById(long id) {
 		return this.find(User.class, id);
