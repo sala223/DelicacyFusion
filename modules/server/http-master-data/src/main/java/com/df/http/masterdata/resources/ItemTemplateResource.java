@@ -47,9 +47,9 @@ public class ItemTemplateResource extends TenantResource {
 	 */
 	@POST
 	@Path("/")
-	public void createItemTemplate(@PathParam("tenantCode") String tenantCode, ItemTemplate itpl) {
+	public ItemTemplate createItemTemplate(@PathParam("tenantCode") String tenantCode, ItemTemplate itpl) {
 		this.injectTenantContext(tenantCode);
-		itplService.createItemTemplate(itpl);
+		return itplService.createItemTemplate(itpl);
 	}
 
 	/**
