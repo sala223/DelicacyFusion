@@ -21,6 +21,7 @@ import com.df.android.network.NetworkStatusChangeListener;
 import com.df.android.network.NetworkStatusMonitor;
 import com.df.android.ui.SettingsDialog;
 import com.df.android.ui.TableLayoutDlg;
+import com.df.android.utils.CacheMgr;
 import com.google.gson.Gson;
 
 public class Main extends Activity implements NetworkStatusChangeListener {
@@ -42,23 +43,7 @@ public class Main extends Activity implements NetworkStatusChangeListener {
 	}
 	
 	private void init() {
-		Log.d(getClass().getName(), "Initialize category dictionary");
-		
-		try {
-			Gson json = new Gson();
-			final BufferedReader reader = new BufferedReader(
-					new InputStreamReader(new FileInputStream(
-							new File(getExternalCacheDir() + "/catdic.json"))));
-
-			CategoryDictionary catDic = json.fromJson(reader, CategoryDictionary.class);
-
-			GlobalSettings.instance().setCategoryDictionary(catDic);
-			
-			Log.d(getClass().getName(), "Category dictionary initialized");
-		} catch (Exception e) {
-			Log.e(getClass().getName(),
-					"Fail to initialize dictionary initialized due to " + e);
-		}
+		CacheMgr.instance().loadCategoryDictionary();
 	}
 
 //	private void startServices() {

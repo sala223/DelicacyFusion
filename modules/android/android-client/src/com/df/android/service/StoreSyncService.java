@@ -2,11 +2,8 @@ package com.df.android.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +18,7 @@ import com.df.android.GlobalSettings;
 import com.df.android.entity.Item;
 import com.df.android.entity.ItemCategory;
 import com.df.android.menu.CategoryDictionary;
+import com.df.android.utils.CacheMgr;
 import com.df.android.utils.WebTask;
 import com.df.client.rs.model.Category;
 import com.df.client.rs.model.CategoryNavigationTabs;
@@ -31,7 +29,6 @@ import com.df.client.rs.resource.CategoryResource;
 import com.df.client.rs.resource.ConfigurationResource;
 import com.df.client.rs.resource.ItemResource;
 import com.df.client.rs.resource.TableResource;
-import com.google.gson.Gson;
 
 public class StoreSyncService extends Service {
 	// private final static int SYNC_INTERVAL = 10000;
@@ -50,7 +47,7 @@ public class StoreSyncService extends Service {
 			@Override
 			public void run() {
 				syncCategoryDictionary();
-				int result = syncShop();
+				syncShop();
 
 				// try {
 				// Log.d(getClass().getName(), "Waiting for sync finish ...");
@@ -110,7 +107,7 @@ public class StoreSyncService extends Service {
 						return Integer.valueOf(-1);
 					}
 
-					saveCategoryDictionary(categoryDictionary);
+					CacheMgr.instance().saveCategoryDictionary(categoryDictionary);
 					// syncLatch.countDown();
 					Log.d(getClass().getName(), "Category dictionary updated");
 
@@ -123,32 +120,12 @@ public class StoreSyncService extends Service {
 
 	}
 
-	private void saveCategoryDictionary(CategoryDictionary dic) {
-		Log.d(getClass().getName(), "Saving category dictionary");
-
-		File file = new File(getExternalCacheDir() + "/catdic.json");
-
-		FileOutputStream fileos = null;
-		try {
-			file.createNewFile();
-			fileos = new FileOutputStream(file);
-
-			Gson json = new Gson();
-			String content = json.toJson(dic);
-			fileos.write(content.getBytes("UTF-8"));
-			fileos.close();
-			Log.d(getClass().getName(), "Category dictionary saved");
-		} catch (Exception e) {
-			Log.e(getClass().getName(), "Fail to save category dictionary");
-		}
-	}
-
 	private void syncConfiguration() {
 		try {
 			new WebTask<Integer>() {
 				@Override
 				protected Integer doInBackground(String... params) {
-					Log.d(getClass().getName(), "Retrieving categories ...");
+					Log.d(getClass().getName(), "Retrieving configuration ...");
 					ConfigurationResource res = GlobalSettings.instance()
 							.getClient()
 							.getResource(ConfigurationResource.class);
@@ -161,7 +138,7 @@ public class StoreSyncService extends Service {
 								cateCodes.add(tab.getCategoryCode());
 							}
 
-							saveConfiguration(cateCodes);
+							CacheMgr.instance().saveConfiguration(cateCodes);
 
 							return Integer.valueOf(cateCodes.size());
 						}
@@ -176,33 +153,6 @@ public class StoreSyncService extends Service {
 			}.execute();
 		} catch (Exception ex) {
 			Log.e(getClass().getName(), "Fail to run web task due to " + ex);
-		}
-	}
-
-	private void saveConfiguration(List<String> catCodes) {
-		Log.d(getClass().getName(), "Saving configuration");
-
-		String shopId = GlobalSettings.instance().getClient().getStoreCode();
-		String rootFolder = getExternalCacheDir() + "/" + shopId;
-
-		File cacheFolder = new File(rootFolder);
-		if (!cacheFolder.exists())
-			cacheFolder.mkdirs();
-
-		File file = new File(rootFolder + "/configuration.json");
-
-		FileOutputStream fileos = null;
-		try {
-			file.createNewFile();
-			fileos = new FileOutputStream(file);
-
-			Gson json = new Gson();
-			String content = json.toJson(catCodes);
-			fileos.write(content.getBytes("UTF-8"));
-			fileos.close();
-			Log.d(getClass().getName(), "Configuration synced");
-		} catch (Exception e) {
-			Log.e(getClass().getName(), "Fail to save configurate");
 		}
 	}
 
@@ -251,7 +201,7 @@ public class StoreSyncService extends Service {
 						cItems.add(cItem);
 					}
 
-					saveItems(cItems);
+					CacheMgr.instance().saveItems(cItems);
 					// syncLatch.countDown();
 					Log.d(getClass().getName(), "countdown in item sync");
 
@@ -263,8 +213,6 @@ public class StoreSyncService extends Service {
 			Log.e(getClass().getName(), "Fail to retrieve store");
 		}
 	}
-
-	private static final long MAX_BYTES = 1024 * 1024;
 
 	private void syncImages(ItemResource res,
 			com.df.client.rs.model.Item[] sItems) {
@@ -287,8 +235,7 @@ public class StoreSyncService extends Service {
 				InputStream ifSrc = null;
 				try {
 					byte[] bytes = res.getItemImage(sItem, pic.getImageId());
-					saveImage(new ByteArrayInputStream(bytes), imageFolder
-							+ "/" + sItem.getCode() + "." + pic.getFormat());
+					CacheMgr.instance().saveImage(new ByteArrayInputStream(bytes), sItem.getCode() + "." + pic.getFormat());
 				} catch (Exception e) {
 					Log.e(getClass().getName(), "Fail to save image due to "
 							+ e);
@@ -304,51 +251,6 @@ public class StoreSyncService extends Service {
 		Log.d(getClass().getName(), "Images retrieved");
 	}
 
-	private void saveImage(InputStream ifSrc, String tgtFile)
-			throws IOException {
-		Log.d(getClass().getName(), "Save image to " + tgtFile);
-
-		FileOutputStream fos = null;
-		FileChannel oc = null;
-		try {
-			fos = new FileOutputStream(tgtFile);
-			oc = fos.getChannel();
-			oc.transferFrom(Channels.newChannel(ifSrc), 0, MAX_BYTES);
-		} catch (IOException e) {
-		} finally {
-			if (oc != null)
-				oc.close();
-			if (fos != null)
-				fos.close();
-		}
-	}
-
-	private void saveItems(List<Item> items) {
-		String shopId = GlobalSettings.instance().getClient().getStoreCode();
-		String rootFolder = getExternalCacheDir() + "/" + shopId;
-		Log.d(getClass().getName(), "cache dir: " + rootFolder);
-
-		File cacheFolder = new File(rootFolder);
-		if (!cacheFolder.exists())
-			cacheFolder.mkdirs();
-
-		File file = new File(rootFolder + "/menu.json");
-
-		FileOutputStream fileos = null;
-		try {
-			file.createNewFile();
-			fileos = new FileOutputStream(file);
-
-			Gson json = new Gson();
-			String content = json.toJson(items);
-			fileos.write(content.getBytes("UTF-8"));
-			fileos.close();
-			Log.d(getClass().getName(), "Items updated");
-		} catch (Exception e) {
-			Log.e(getClass().getName(), "Fail to save items");
-		}
-	}
-
 	private void syncTables() {
 		try {
 			new WebTask<Integer>() {
@@ -360,7 +262,7 @@ public class StoreSyncService extends Service {
 							.getResource(TableResource.class);
 					try {
 						DiningTable[] tables = res.getTables();
-							saveTables(tables);
+							CacheMgr.instance().saveTables(tables);
 
 							return Integer.valueOf(tables.length);
 					} catch (Exception e) {
@@ -377,32 +279,6 @@ public class StoreSyncService extends Service {
 		}
 	}
 
-	private void saveTables(DiningTable[] tables) {
-		String shopId = GlobalSettings.instance().getClient().getStoreCode();
-		String rootFolder = getExternalCacheDir() + "/" + shopId;
-		Log.d(getClass().getName(), "cache dir: " + rootFolder);
-
-		File cacheFolder = new File(rootFolder);
-		if (!cacheFolder.exists())
-			cacheFolder.mkdirs();
-
-		File file = new File(rootFolder + "/table.json");
-
-		FileOutputStream fileos = null;
-		try {
-			file.createNewFile();
-			fileos = new FileOutputStream(file);
-
-			Gson json = new Gson();
-			String content = json.toJson(tables);
-			fileos.write(content.getBytes("UTF-8"));
-			fileos.close();
-			Log.d(getClass().getName(), "Tables updated");
-		} catch (Exception e) {
-			Log.e(getClass().getName(), "Fail to save tables");
-		}
-	}
-	
 	@Override
 	public IBinder onBind(Intent arg0) {
 		return null;
