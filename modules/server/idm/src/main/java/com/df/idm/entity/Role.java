@@ -21,7 +21,6 @@ import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "ROLES")
-@Indexes({ @Index(name = "IDX_D_NAME", unique = true) })
 public class Role implements GrantedAuthority {
 
 	private static final long serialVersionUID = 1L;

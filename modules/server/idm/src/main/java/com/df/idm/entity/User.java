@@ -23,7 +23,7 @@ import org.eclipse.persistence.annotations.Index;
 @Entity
 @Table(name = "USERS")
 @FetchGroup(name = "AuthenticationInfo", attributes = { @FetchAttribute(name = "password"),
-        @FetchAttribute(name = "weiboAccount"), @FetchAttribute(name = "email"), @FetchAttribute(name = "telephone"), })
+        @FetchAttribute(name = "weiboAccount"), @FetchAttribute(name = "email"), @FetchAttribute(name = "cellPhone"), })
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
