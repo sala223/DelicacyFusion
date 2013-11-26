@@ -30,7 +30,7 @@
 		<bean id="dataSource"
 			class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 			p:driverClassName="com.mysql.jdbc.Driver"
-			p:url="jdbc:mysql://${db.host}:${db.port}/DELICACY_FUSION?profileSQL=false"
+			p:url="jdbc:mysql://${db.host}:${db.port}/DELICACY_FUSION?profileSQL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8"
 			p:username="${db.uname}" p:password="${db.password}">
 		</bean>
 		<bean id="dataSource-sqlServer"

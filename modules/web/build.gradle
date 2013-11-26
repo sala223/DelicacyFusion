@@ -10,6 +10,10 @@ compileJava {
 	targetCompatibility = 1.6
 }
 
+war {
+	archiveName = "dfweb.war"
+}
+
 repositories {
 	flatDir {
 		dirs "$jbossHome/modules/javax/servlet/api/main",
@@ -19,15 +23,15 @@ repositories {
 }
 
 dependencies {
-	compile ":jboss-servlet-api_3.0_spec-1.0.0.Final:"
-	compile ":jboss-jsp-api_2.2_spec-1.0.0.Final:"
-	compile ":antlr-runtime-3.4:"
-	compile ":commons-beanutils-core-1.8.3:"
-	compile ":commons-io-2.3:"
-	compile ":commons-logging-1.1.1:"
-	compile ":jericho-html-3.3:"
-	compile ":less4j-1.2.0:"
-	compile ":yuicompressor-2.4.8:"
+	providedCompile ":jboss-servlet-api_3.0_spec-1.0.0.Final:"
+	providedCompile ":jboss-jsp-api_2.2_spec-1.0.0.Final:"
+	providedCompile ":antlr-runtime-3.4:"
+	providedCompile ":commons-beanutils-core-1.8.3:"
+	providedCompile ":commons-io-2.3:"
+	providedCompile ":commons-logging-1.1.1:"
+	providedCompile ":jericho-html-3.3:"
+	providedCompile ":less4j-1.2.0:"
+	providedCompile ":yuicompressor-2.4.8:"
 }
 
 jettyRun {

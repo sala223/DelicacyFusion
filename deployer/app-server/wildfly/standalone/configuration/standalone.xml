@@ -90,7 +90,7 @@
 		<subsystem xmlns="urn:jboss:domain:datasources:1.0">
 			<datasources>
 				<datasource jndi-name="java:jboss/datasources/df" pool-name="df-data-source" enabled="true" use-java-context="true">
-					<connection-url>jdbc:mysql://${db.host}:3306/DELICACY_FUSION</connection-url>
+					<connection-url>jdbc:mysql://${db.host}:3306/DELICACY_FUSION?useUnicode=true&amp;characterEncoding=UTF-8</connection-url>
 					<driver>mysql</driver>
 					<transaction-isolation>TRANSACTION_READ_COMMITTED</transaction-isolation>
 					<pool>
