@@ -35,7 +35,8 @@
     <servlet-name>LatencyServlet</servlet-name>
     <url-pattern>/latency/*</url-pattern>
   </servlet-mapping>
-
+  
+  <!-- 
   <servlet>
     <description></description>
     <display-name>MinifyJavaScriptServlet</display-name>
@@ -46,5 +47,15 @@
     <servlet-name>MinifyJavaScriptServlet</servlet-name>
     <url-pattern>*.js</url-pattern>
   </servlet-mapping>
-
+  -->
+  <servlet>
+    <description></description>
+    <display-name>JavaScript2JSPServlet</display-name>
+    <servlet-name>JavaScript2JSPServlet</servlet-name>
+    <servlet-class>rps.dev.web.JavaScript2JSPServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JavaScript2JSPServlet</servlet-name>
+    <url-pattern>*.js</url-pattern>
+  </servlet-mapping>
 </web-app>

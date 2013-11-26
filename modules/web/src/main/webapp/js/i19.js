@@ -14,12 +14,14 @@ var i19={
 	"DISH MANAGEMENT":'菜品管理',
 	"MENU DESIGN":'菜单设计',
 
+	new_item:'新菜品',
 	item_name:'品名',
 	item_code:'编号',
 	item_desc:'详细描述',
 	item_unit:'计量单位',
 	item_category:'分类',
 	item_image:'产品图片',
+	price:'售价',
 
 	unit_disk:'盘',
 	unit_jin:'斤',
@@ -30,6 +32,8 @@ var i19={
 
 	type_foods:'菜品',
 	type_goods:'货品',
+
+	new_table:'新餐台',
 
 	in_eat:'堂吃',
 	take_out:'外带',

@@ -17,7 +17,7 @@ public String menulink(String url,String text, HttpServletRequest req) {
       <%=menulink("cashier.html","CASHIER",request)%>
       <%=menulink("#","STORE MANAGEMENT",request)%>
       <%=menulink("#","STAFF MANAGEMENT",request)%>
-      <%=menulink("#","TABLE MANAGEMENT",request)%>
+      <%=menulink("tables.html","TABLE MANAGEMENT",request)%>
       <%=menulink("#","STORE LAYOUT DESIGN",request)%>
     </div>
     <div class="group">

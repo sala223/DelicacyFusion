@@ -34,6 +34,11 @@ html,body {
     bottom:@padding;
 }
 
+.docked-top(@padding:0px) {
+    .docked-center(@padding);
+    bottom:auto;
+}
+
 .docked-bottom(@padding:0px) {
     .docked-center(@padding);
     top:auto;

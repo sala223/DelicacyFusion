@@ -4,6 +4,7 @@
 @nav-width:240px;
 @shower-width:32px;
 @nav-bgColor:#3B3E3E;
+@header-height:80px;
 
 #nav {
     .docked-left;
@@ -13,7 +14,7 @@
     .transform(1,0,0 - @nav-width,0,0,0);
 
     .header {
-        height:80px;
+        height:@header-height;
     }
 
     .content {
@@ -108,10 +109,44 @@
     background-color:white;
     overflow:hidden;
 
+    .tiletoolbar {
+        .docked-top();
+        height:@header-height;
+        -webkit-box-shadow:  0px 1px 10px 0px rgba(0, 0, 0, 0.1);
+        box-shadow:  0px 1px 10px 0px rgba(0, 0, 0, 0.1);
+
+        .tool {
+            position:relative;
+            width:120px;
+            height:@header-height;
+            line-height:@header-height;
+            text-align:center;
+            font-size:1.4em;
+            float:left;
+            .user-select-none();
+
+            span:first-child {
+                margin-right:5px;
+            }
+        }
+
+        .tool:after {
+            content:'';
+            .docked-center(20px);
+            right:0;
+            border-right:1px solid #EEE;
+        }
+        .tool:last-child:after {
+            //border-right:0 none;
+        }
+    }
+
     .tilecontainer {
         @tile-spacing:6px;
 
         .docked-center();
+        top:@header-height;
+
         overflow-y:auto;
         padding-left:@tile-spacing * 2;
 
@@ -171,9 +206,19 @@
     -webkit-box-shadow:0 0px 8px 0px rgba(0, 0, 0, 0.4);
     background-color:white;
     border-radius:10px 0 0 10px;
-    
+
+    input[data-constraint=integer] {
+        ime-mode: disabled;
+        -webkit-ime-mode: disabled;
+        -ms-ime-mode: disabled;
+    }
+
     > div:not(.loadmask) {
         .docked-center(20px);
+    }
+
+    .btn-group button {
+        min-width:100px;
     }
 }
 

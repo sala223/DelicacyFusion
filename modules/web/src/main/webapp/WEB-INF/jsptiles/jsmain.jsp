@@ -54,6 +54,8 @@ $(document).ready(function() {
     	console.log("ajax",options);
     });
 
+    $('#edit').attachConstraint();
+    
     $.each(window.main||[], function(i,e){
     	e.apply();
     });
