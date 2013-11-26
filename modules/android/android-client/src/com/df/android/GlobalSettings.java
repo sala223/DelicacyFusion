@@ -37,34 +37,39 @@ public class GlobalSettings {
 
 	public String getServerUrl() {
 		if (serverUrl == null)
-			serverUrl = readServerUrlFromPersistence();
+			serverUrl = readFromPersistence("SERVER_URL", null);
 
 		return serverUrl;
 	}
 
-	private String readServerUrlFromPersistence() {
-		return PreferenceManager.getDefaultSharedPreferences(cxt).getString(
-				"SERVERURL", "http://www.delicacyfusion.com");
+	private String readFromPersistence(String key, String defaultValue) {
+		return PreferenceManager.getDefaultSharedPreferences(cxt).getString(key, defaultValue);
 	}
 
 	public void setServerUrl(String serverUrl) {
 		this.serverUrl = serverUrl;
-		applySetting("SERVERURL", serverUrl);
+		applySetting("SERVER_URL", serverUrl);
 	}
 
 	private String userCode;
 
 	public String getUserCode() {
+		if (userCode == null)
+			userCode = readFromPersistence("USER_CODE", null);
+
 		return userCode;
 	}
 
 	public void setUserCode(String userCode) {
 		this.userCode = userCode;
+		applySetting("USER_CODE", userCode);
 	}
 
 	private String tenantCode;
 
 	public String getCurrentTenantCode() {
+		if (tenantCode == null)
+			tenantCode = readFromPersistence("TENANT_CODE", null);
 		return tenantCode;
 	}
 
@@ -73,16 +78,20 @@ public class GlobalSettings {
 		applySetting("TENANT_CODE", tenantCode);
 	}
 
-	private Store currentStore = null;
-
-	public Store getCurrentStore() {
-		return currentStore;
+	private String storeCode;
+	public String getCurrentStoreCode() {
+		if (storeCode == null)
+			storeCode = readFromPersistence("STORE_CODE", null);
+		return storeCode;
 	}
 
-	public void setCurrentStore(Store currentStore) {
-		this.currentStore = currentStore;
-		applySetting("STORE_CODE", currentStore.getCode());
+	public void setCurrentStoreCode(String storeCode) {
+		this.storeCode = storeCode;
+		applySetting("STORE_CODE", storeCode);
 	}
+	
+	private Store currentStore;
+	
 
 	private DFClient client;
 
@@ -98,5 +107,13 @@ public class GlobalSettings {
 		Editor edit = PreferenceManager.getDefaultSharedPreferences(cxt).edit();
 		edit.putString(key, value);
 		edit.apply();
+	}
+
+	public Store getCurrentStore() {
+		return currentStore;
+	}
+
+	public void setCurrentStore(Store currentStore) {
+		this.currentStore = currentStore;
 	}
 }

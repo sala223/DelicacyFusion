@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.df.android.entity.Store;
+import com.df.android.utils.CacheMgr;
 import com.df.android.utils.ResourceUtils;
 import com.df.android.utils.WebTask;
 import com.df.client.http.DFClient;
@@ -53,17 +54,23 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login);
 
 		GlobalSettings.newInstance(this);
+		CacheMgr.newInstance(this);
+		
+		String tenantCode = GlobalSettings.instance().getCurrentTenantCode();
+		String storeCode = GlobalSettings.instance().getCurrentStoreCode();
+		Store store = CacheMgr.instance().loadStore(tenantCode, storeCode);
+		if(store != null) {
+			onStoreLoaded(store);
+			
+			return;
+		}
         
-//        Spinner spinner2 = (Spinner) findViewById(R.id.storeName);
-//    	List<String> list = new ArrayList<String>();
-//    	list.add("望湘园龙阳路");
-//    	list.add("望湘园正大广场");
-//    	list.add("望湘园浦三路");
-//    	ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
-//    	dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//    	spinner2.setAdapter(dataAdapter);
-    	
-        p = getWindow().getAttributes();  //获取对话框当前的参数值   
+        initView();
+
+    }
+
+	private void initView() {
+		p = getWindow().getAttributes();  //获取对话框当前的参数值   
         p.height = 320;//(int) (d.getHeight() * 0.4);   //高度设置为屏幕的0.4 
         p.width = 480;//(int) (d.getWidth() * 0.6);    //宽度设置为屏幕的0.6           
         getWindow().setAttributes(p);     //设置生效
@@ -97,21 +104,18 @@ public class LoginActivity extends Activity {
                 finish();
             }
         });
-
-    }
+	}
     
     private void demo() {
 		GlobalSettings.instance().setCurrentTenantCode("demo");
+		GlobalSettings.instance().setCurrentStoreCode("demo1");
     	
+		login("demo", "demo");
     }
     
     private void login() {
 		GlobalSettings.instance().setCurrentTenantCode("test");
-
-		if(!verifySignature()) {
-			Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show();
-			return;
-		}
+		GlobalSettings.instance().setCurrentStoreCode("S1");
 
 		login("testuser", "testpassword");
     }
@@ -147,6 +151,17 @@ public class LoginActivity extends Activity {
     }
 
 	private void login(final String userName, final String pwd) {
+		if(!verifySignature()) {
+			Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+		Store store = CacheMgr.instance().loadStore(GlobalSettings.instance().getCurrentTenantCode(), GlobalSettings.instance().getCurrentStoreCode());
+		if(store != null) {
+			onStoreLoaded(store);
+			return;
+		}
+
 		new WebTask<String[]>() {
 			@Override
 			protected String[] doInBackground(String... params) {
@@ -204,8 +219,16 @@ public class LoginActivity extends Activity {
 				Log.d(getClass().getName(), "stores: " + stores);
 				if (stores == null || stores.length <= 0)
 					onStoreNotFound();
-				else 
-					onStoreLoaded(stores[0]);
+				else {
+					Store cStore = new Store(
+							stores[0].getCode(), stores[0].getName());
+					GlobalSettings.instance().setCurrentStoreCode(cStore.getCode());
+					GlobalSettings.instance().getClient().setStore(cStore.getCode());
+					
+					CacheMgr.instance().saveStore(GlobalSettings.instance().getCurrentTenantCode(), cStore);
+					
+					onStoreLoaded(cStore);
+				}
 			}
 		}.execute();
 	}
@@ -216,13 +239,8 @@ public class LoginActivity extends Activity {
 				Toast.LENGTH_LONG).show();
 	}
 
-	private void onStoreLoaded(com.df.client.rs.model.Store store) {
-		GlobalSettings.instance().getClient().setStore(store.getCode());
-
-		Store nativeStore = new Store(
-				store.getCode(), store.getName());
-		GlobalSettings.instance().setCurrentStore(nativeStore);
-		
+	private void onStoreLoaded(Store store) {
+		GlobalSettings.instance().setCurrentStore(store);
 		startActivity(new Intent(this, Main.class));
 	}
     

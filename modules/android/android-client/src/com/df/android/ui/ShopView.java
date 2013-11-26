@@ -30,12 +30,12 @@ public class ShopView extends FrameLayout {
 		Log.d(getClass().getName(), "Init shop view");
 		ShopViewAdapter adapter = new ShopViewAdapter(cxt);
 
-		Store store = GlobalSettings.instance().getCurrentStore(); 
-		if (store == null || store.getMenu() == null) {
-			initialized = false;
-			LayoutInflater.from(cxt).inflate(R.layout.initshopview, this);
-		} 
-		else
+//		Store store = GlobalSettings.instance().getCurrentStore(); 
+//		if (store == null || store.getMenu() == null) {
+//			initialized = false;
+//			LayoutInflater.from(cxt).inflate(R.layout.initshopview, this);
+//		} 
+//		else
 			refreshShopView(GlobalSettings.instance().getCurrentStore());
 
 		adapter.setOnShopChangeListener(new ShopChangeListener() {
