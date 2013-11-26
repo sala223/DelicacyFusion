@@ -5,15 +5,19 @@ jQuery.fn.extend({
 	mask:function(config){
 		var applyElement=this;
 		var cfg = $.extend({
-				loadingText:'Loading'
+				loadingText:'Loading',
+				noIndicator:false
 			},config);
 
 	    var str=['<div class="loadmask">'];
-	    str.push('  <div><div>');
-	    str.push('    <div class="icon"><span class="glyphicon glyphicon-refresh"></span></div>');
-		str.push('    <div class="text">'+(transStr(cfg.loadingText))+'</div>');
-	    str.push('  </div></div>');
-		str.push('</div>');
+
+        if(!cfg.noIndicator){
+	        str.push('  <div><div>');
+	        str.push('    <div class="icon"><span class="glyphicon glyphicon-refresh"></span></div>');
+		    str.push('    <div class="text">'+(transStr(cfg.loadingText))+'</div>');
+	        str.push('  </div></div>');
+		    str.push('</div>');
+	    }
 
 		var loadmask = $(str.join('')).appendTo(applyElement);
 

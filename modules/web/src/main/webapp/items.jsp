@@ -17,7 +17,7 @@
           <div class="tool" id="btnCreate"><span class="glyphicon glyphicon-plus"></span><span data-i19="def">new_item</span></div>
         </div>
         <div id="dishes" class="tilecontainer"></div>
-        <div id="edit">
+        <div id="edit" class="above-loadmask">
           <div>
             <div class="form-group">
               <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(this.name)" tabindex="1" />
@@ -113,15 +113,32 @@
             "description": "",
             "price": 1.0,
             "currency": "RMB",
-            "itemUnit": "CUP",
+            "itemUnit": "DISK",
             "enabled": true
         };
 
-        $('#btnCreate').click(function(ev){
+        var editmask = null;
+        var showItemDetails = function(idx,data){
             $('#edit')
-            .data('editingIdx','NaN')
-            .toDataView(defaultItem)
+            .data('editingIdx',idx)
+            .toDataView(data)
             .addClass('transform0');
+
+            editmask = $('#panel').mask({noIndicator:true}); 
+            editmask.element.click(function(){
+                hideItemDetails();
+            });
+        };
+
+        var hideItemDetails = function(){
+            $('#edit')
+            .removeData('editingIdx')
+            .removeClass('transform0');
+            editmask.dismiss();
+        };
+
+        $('#btnCreate').click(function(ev){
+            showItemDetails('NaN',defaultItem);
         });
 
     	$('#btnOK').click(function(){
@@ -142,7 +159,7 @@
     			data:JSON.stringify(data)
     		}).done(function(serverData){
     			savemask.complete({text:'completed',fn:function(){
-    				$('#edit').removeClass('transform0');
+    			    hideItemDetails();
 
                     if(!isNaN(idx)){
                         //TODO update tile
@@ -159,17 +176,13 @@
     	});
 
     	$('#btnCancel').click(function(){
-            $('#edit').removeClass('transform0');
+            hideItemDetails();
     	});
 
     	// slide in
     	$('#dishes').delegate('.tile > div','click',function(ev){
     	    var dataIdx = parseInt($(ev.currentTarget).attr('data-idx'),10);
-
-    		$('#edit')
-    		.data('editingIdx',dataIdx)
-    		.toDataView(memoryStorage['items'][dataIdx])
-    		.addClass('transform0');
+    		showItemDetails(dataIdx,memoryStorage['items'][dataIdx]);
     	});
 
     	// EOC - slide in
