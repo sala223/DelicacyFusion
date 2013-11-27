@@ -37,6 +37,11 @@
             </div>
 
             <div class="form-group">
+              <input type="text" id="val-addr" class="form-control" placeholder="Enter Address" data-channel="val(this.address)" tabindex="3"/>
+              <label for="val-addr" class="control-label" data-i19="def">store_address</label>
+            </div>
+
+            <div class="form-group">
               <input type="text" id="val-tel1" class="form-control" placeholder="Enter Tel 1" data-channel="val(this.telephone1)" tabindex="4"/>
               <label for="val-tel1" class="control-label" data-i19="def">telephone_1</label>
             </div>
