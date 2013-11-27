@@ -28,7 +28,7 @@
                   <td data-i19="def" colspan="2">dinner_person_count</td>
                   <td></td>
                 </tr>
-                <tr><td></tr>
+                <tr><td colspan="5" class="rowspacing"></td></tr>
 		        <tr class="line">
 		          <td class="ln" data-i19="def">number</td>
 		          <td class="itemname" data-i19="def">item_name</td>
@@ -39,6 +39,7 @@
 		      </thead>
 		      <tbody></tbody>
 		      <tfoot>
+		        <tr><td colspan="5" class="rowspacing"></td></tr>
 		        <tr class="totalline">
 		          <td colspan="4" data-i19="def">order_total_amount</td>
 		          <td data-channel="money_text(this.totalPayment)"></td>
@@ -62,7 +63,7 @@
     window.main.push(function(){
 
     	$('#tables').delegate('.tile>div','click',function(ev){
-    		var je=$(ev.target);
+    		var je=$(ev.currentTarget);
 
     		var mask = $('#panel').mask({loadingText:transStr('loading_order')});
     		$.ajax('{prefix}/tenant/{tenant}/store/{store}/order/table/'+je.attr('data-id'))
