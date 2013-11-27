@@ -44,6 +44,8 @@ var i19={
 	order_total_amount:'订单总价',
 	order_total_discount:'订单总折扣',
 	order_total_payment:'订单实付金额',
+	pay_by_cash:'现金支付',
+	pay_by_card:'信用卡支付',
 
 	store:'门店',
 	table_code:'桌号',

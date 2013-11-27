@@ -35,12 +35,21 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1383729813575</id>
+			<id>1385555179310</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-.hg</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1385555179326</id>
+			<name></name>
+			<type>30</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-webroot</arguments>
 			</matcher>
 		</filter>
 	</filteredResources>

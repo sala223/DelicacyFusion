@@ -6,7 +6,7 @@
         height:auto;
         width: auto;
         padding:6px;
-        
+
         > div {
             position:static;
             padding:12px;
@@ -23,6 +23,10 @@
             }
         }
 
+    }
+    
+    .tile.occupied > div {
+        background-color:red;
     }
 }
 
@@ -62,6 +66,14 @@
         td.totalDis,
         .totalline td {
             text-align:right;
+        }
+    }
+    
+    .btn-group {
+        .docked-bottom();
+    
+        button.btn {
+            letter-spacing:0;
         }
     }
 }
