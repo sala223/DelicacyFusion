@@ -52,6 +52,13 @@ var i19={
 	dinner_person_count:'用餐人数',
 	order_time:'下单时间',
 
+	new_store:'新门店',
+	store_name:'门店名',
+	store_code:'门店号',
+	store_desc:'门店介绍',
+	telephone_1:'联系电话(主要)',
+	telephone_2:'联系电话(备用)',
+	business_hours:'营业时间',
 
 	completed:'已完成',
 	loading:'正在载入',
