@@ -5,6 +5,7 @@ dependencies {
     compile ":spring-security-core:3.2.0.RC1"
     compile ":spring-security-acl:3.2.0.RC1"
     compile ":spring-security-web:3.2.0.RC1"
+    compile ":spring-security-config:3.2.0.RC1"
     compile ":jackson-core-asl:1.9.12"
     compile ":jackson-mapper-asl:1.9.12"
     testRuntime ":mysql-connector-java:5.1.26-bin"

@@ -20,7 +20,6 @@ import com.df.order.payment.Biller;
 import com.df.order.payment.CashBiller;
 import com.df.order.service.contract.OrderService;
 import com.df.order.service.contract.PaymentService;
-import com.df.order.table.occupation.DiningTableDistributor;
 
 @Transactional
 public class PaymentServiceImpl implements PaymentService {
@@ -31,19 +30,12 @@ public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	private PaymentDao paymentDao;
 	
-	@Autowired
-	private DiningTableDistributor tableDistributor;
-
 	public void setOrderService(OrderService orderService) {
 		this.orderService = orderService;
 	}
 
 	public void setPaymentDao(PaymentDao paymentDao) {
 		this.paymentDao = paymentDao;
-	}
-
-	public void setDiningTableDistributor(DiningTableDistributor tableDistributor) {
-		this.tableDistributor = tableDistributor;
 	}
 
 	@Override
@@ -111,9 +103,6 @@ public class PaymentServiceImpl implements PaymentService {
 		payment.setCloseTime(new Date()); 
 		paymentDao.update(payment);
 		orderService.updateOrderStatus(storeCode, order, TransactionStatus.CLOSED);
-		if(order.getServiceCardId() != null){
-			tableDistributor.releaseTables(storeCode,order.getServiceCardId());
-		}
 		return payment;
 	}
 
