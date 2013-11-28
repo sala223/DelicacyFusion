@@ -1,10 +1,107 @@
 @import "common.less";
 //@import "3d.less";
 
-@nav-width:240px;
-@shower-width:32px;
-@nav-bgColor:#3B3E3E;
-@header-height:80px;
+html,body {
+    padding:0;
+    margin:0;
+    font: normal normal 10px @font-family;
+    font-stretch:normal;
+    font-variant:normal;
+
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    
+    //background-color:#4A4D4E;
+}
+
+.transform0 {
+    .transform() !important;
+}
+
+.clearboth:after {
+    content: "."; 
+    display: block;
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+    font-size:0;
+}
+
+
+#page {
+    .docked-center;
+    .transition(200ms);
+}
+
+
+@import "animation.less";
+.loadmask {
+    .docked-center;
+    z-index: @loadmaskZIndex;
+    background-color:rgba(0, 0, 0, 0.3);
+
+    > div {
+        @maskWidth:130px;
+        @maskHeight:140px;
+        @iconHeight:110px;
+
+        position:absolute;
+        top:50%;
+        left:50%;
+
+        > div {
+            color:white;
+            border-radius:8px;
+            background-color:rgba(0, 0, 0, 0.3);
+            width:@maskWidth;
+            height:@maskHeight;
+            position:relative;
+            top: -@maskHeight / 2;
+            left: -@maskWidth / 2;
+        }
+
+        .icon {
+            text-align:center;
+            height:@iconHeight;
+
+            span.glyphicon {
+                font-size:5em;
+                position:relative;
+                top:40px;
+            }
+            
+            span.glyphicon:before {
+                position:relative;
+                top:1px;
+            }
+
+            span.glyphicon.glyphicon-refresh {
+                animation: rotate360 1s infinite linear;
+                -webkit-animation: rotate360 1s infinite linear;
+            }
+        }
+
+        .text {
+            font-size:1.4em;
+            text-shadow: 0px -1px 0px #000000;
+            text-align:center;
+            height:@maskHeight - @iconHeight;
+            //line-height:@height;
+        }
+    }
+}
+
+@-moz-document url-prefix() {
+    .loadmask > div .icon span.glyphicon:before {
+        top:0;
+    }
+}
+
+.above-loadmask {
+    z-index:@loadmaskZIndex + 1;
+}
+
 
 #nav {
     .docked-left;
@@ -80,6 +177,11 @@
         position : absolute;
         top:50%;
         left:6px;
+    }
+    
+    span:before {
+        position: relative;
+        top:-11px;
     }
 }
 

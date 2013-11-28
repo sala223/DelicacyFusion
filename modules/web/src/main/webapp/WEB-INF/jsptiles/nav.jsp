@@ -27,6 +27,7 @@ public String menulink(String url,String text, HttpServletRequest req) {
     </div>
   </div>
 
+  <a href="landing.html" style="display:none;"></a>
   <a href="logon.html" style="display:none;"></a>
 </div>
 <div id="nav-shower">
