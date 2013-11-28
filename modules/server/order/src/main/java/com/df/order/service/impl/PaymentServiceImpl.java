@@ -29,7 +29,7 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Autowired
 	private PaymentDao paymentDao;
-	
+
 	public void setOrderService(OrderService orderService) {
 		this.orderService = orderService;
 	}
@@ -87,32 +87,35 @@ public class PaymentServiceImpl implements PaymentService {
 			String message = "Order " + orderId + " is not found";
 			throw OrderException.orderNotFound(message);
 		}
+		if (order.getStatus() == TransactionStatus.CLOSED) {
+			throw OrderException.orderIsClosed("Cannot pay for a closed order");
+		}
 		Payment payment = paymentDao.getPaymentByOrder(storeCode, orderId);
 		if (payment != null) {
 			BigDecimal totalAmount = payment.getTotalAmount();
 			BigDecimal lineTotalAmount = payment.getLineTotalAmount();
 			BigDecimal leftAmount = totalAmount.subtract(lineTotalAmount);
 			this.bill(storeCode, payment.getTransactionId(), leftAmount, method);
- 		} else {
+		} else {
 			payment = this.createPayment(storeCode, orderId);
 			paymentDao.flush();
 			long paymentId = payment.getTransactionId();
 			this.bill(storeCode, paymentId, order.getTotalPaymentAfterDiscount(), method);
 		}
 		payment.setStatus(TransactionStatus.CLOSED);
-		payment.setCloseTime(new Date()); 
+		payment.setCloseTime(new Date());
 		paymentDao.update(payment);
 		orderService.updateOrderStatus(storeCode, order, TransactionStatus.CLOSED);
 		return payment;
 	}
 
 	@Override
-    public Payment getPaymentById(String storeCode, long paymentId) {
-	    return paymentDao.getPaymentById(storeCode, paymentId);
-    }
+	public Payment getPaymentById(String storeCode, long paymentId) {
+		return paymentDao.getPaymentById(storeCode, paymentId);
+	}
 
 	@Override
-    public List<Payment> listTodayOpenPayments(String storeCode, Locale locale) {
-	    return paymentDao.listTodayOpenPayments(storeCode,Locale.CHINESE);
-    }
+	public List<Payment> listTodayOpenPayments(String storeCode, Locale locale) {
+		return paymentDao.listTodayOpenPayments(storeCode, Locale.CHINESE);
+	}
 }

@@ -15,6 +15,8 @@ public class OrderException extends BusinessException {
 
 	public static final int ORDER_NOT_FOUND = 100003;
 
+	public static final int ORDER_IS_CLOSED = 100004;
+
 	public OrderException(Throwable cause, int errorCode) {
 		super(cause, REALM, errorCode);
 	}
@@ -37,5 +39,9 @@ public class OrderException extends BusinessException {
 
 	public static OrderException orderNotFound(String message) {
 		return new OrderException(ORDER_NOT_FOUND, message);
+	}
+
+	public static OrderException orderIsClosed(String message) {
+		return new OrderException(ORDER_IS_CLOSED, message);
 	}
 }
