@@ -15,15 +15,17 @@
       <div id="panel">
         <div>
           <div>
-            <div class="head"></div>
-            <div class="actionbar">
-              <div id="action-sm" data-i19="def">STORE MANAGEMENT</div>
-              <div id="action-dm" data-i19="def">DISH MANAGEMENT</div>
-              <div id="action-md" data-i19="def">MENU DESIGN</div>
+            <div class="head">
+              <span>Tenant Name</span>
             </div>
             <div class="actionbar">
-              <div></div>
-              <div></div>
+              <a id="action-sm" data-i19="def" href="stores.html">STORE MANAGEMENT</a>
+              <a id="action-dm" data-i19="def" href="items.html">DISH MANAGEMENT</a>
+              <a id="action-md" data-i19="def">MENU DESIGN</a>
+              <a></a>
+            </div>
+            <div class="actionbar">
+              <a></a>
             </div>
             <div class="foot"></div>
           </div>
