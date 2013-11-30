@@ -58,7 +58,9 @@
             <div class="form-group">
               <div class="btn-group">
                 <button type="button" class="btn btn-primary" data-i19="def" id="btnOK">save</button>
+                <%--
                 <button type="button" class="btn btn-default" data-i19="def" id="btnCancel">cancel</button>
+                --%>
               </div>
             </div>
           </div>
@@ -95,10 +97,11 @@
             showStoreDetail(dataIdx,memoryStorage['stores'][dataIdx]);
         });
 
-        // Buttons
+        <%--
         $('#btnCancel').click(function(){
             hideStoreDetail();
         });
+        --%>
         
         var loadmask = $('#page').mask({loadingText:'loading'});
         $.ajax('{prefix}/tenant/{tenant}/store')

@@ -98,7 +98,9 @@
             <div class="form-group">
               <div class="btn-group">
                 <button type="button" class="btn btn-primary" data-i19="def" id="btnOK">save</button>
+                <%--
                 <button type="button" class="btn btn-default" data-i19="def" id="btnCancel">cancel</button>
+                --%>
               </div>
             </div>
           </div>
@@ -200,9 +202,11 @@
     		});
     	});
 
+        <%--
     	$('#btnCancel').click(function(){
             hideItemDetails();
     	});
+    	--%>
 
     	// slide in
     	$('#dishes').delegate('.tile > div','click',function(ev){
