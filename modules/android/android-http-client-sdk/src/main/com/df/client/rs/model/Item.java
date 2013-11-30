@@ -49,6 +49,13 @@ public class Item extends MasterData {
 	public Set<PictureRef> getPictureSet() {
 		return pictureSet;
 	}
+	
+	public PictureRef getHeadPicture(){
+		if(pictureSet !=null && pictureSet.size()>0){
+			return pictureSet.toArray(new PictureRef[0])[0];
+		}
+		return null;
+	}
 
 	public void setPictureSet(Set<PictureRef> pictureSet) {
 		this.pictureSet = pictureSet;
