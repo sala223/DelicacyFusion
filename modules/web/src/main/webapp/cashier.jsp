@@ -13,6 +13,8 @@
     <div id="page">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
+        <div class="titlebar">
+        </div>
         <div id="tables" class="tilecontainer"></div>
         <div id="edit" class="above-loadmask">
           <div>
