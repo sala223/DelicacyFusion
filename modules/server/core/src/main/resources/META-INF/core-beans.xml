@@ -6,6 +6,47 @@
 	<import resource="classpath:META-INF/datasource.xml" />
 	<bean id="businessExceptionMapper" class="com.df.core.rs.BusinessExceptionMapper" />
 	<bean id="jacksonContextResolver" class="com.df.core.json.ext.JacksonContextResolver" />
+	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />
+	<bean id="fmHtmlEscape" class="freemarker.template.utility.HtmlEscape" />
+	<bean id="freemarkerConfiguration"
+		class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+		<property name="templateLoaderPaths">
+			<list>
+				<value>classpath:/</value>
+			</list>
+		</property>
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="datetime_format">MM/dd/yyyy</prop>
+				<prop key="number_format">#</prop>
+				<prop key="whitespace_stripping">true</prop>
+				<prop key="default_encoding">UTF-8</prop>
+				<prop key="output_encoding">UTF-8</prop>
+			</props>
+		</property>
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="xml_escape" value-ref="fmXmlEscape" />
+				<entry key="html_escape" value-ref="fmHtmlEscape" />
+			</map>
+		</property>
+	</bean>
+	<bean id="freeMarkerMailSender" class="com.df.core.mail.FreeMarkerMailSender">
+		<constructor-arg index="0" ref="freemarkerConfiguration" />
+		<constructor-arg index="1" ref="mailSender" />
+	</bean>
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.163.com" />
+		<property name="port" value="25" />
+		<property name="username" value="delicacy_fusion" />
+		<property name="password" value="5223856xjp" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
 	<beans profile="test">
 		<bean id="responseSampleLogInterceptor" class="com.df.core.rs.ResponseSampleLogInterceptor">
 			<property name="enabled" value="true" />

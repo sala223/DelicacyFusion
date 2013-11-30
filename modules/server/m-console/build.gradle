@@ -1,3 +1,6 @@
+apply plugin: 'eclipse-wtp'
+apply plugin: 'war'
+
 dependencies {
     compile project(':core')
     compile project(':blob-store')
@@ -13,5 +16,9 @@ dependencies {
     runtime ":jboss-logmanager:1.2.2.GA"
     
 }
-apply plugin: 'eclipse-wtp'
-apply plugin: 'war'
+
+war {
+	classpath = classpath.filter { File file -> 
+		!file.name.startsWith( ('jboss-servlet-api_3.0_spec-1.0.0.Final') ) 
+	} 
+}

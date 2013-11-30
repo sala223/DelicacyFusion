@@ -7,6 +7,7 @@
         http://www.springframework.org/schema/security 
         http://www.springframework.org/schema/security/spring-security.xsd">
 	<import resource="classpath:META-INF/idm-beans.xml" />
+	<sec:debug />
 	<sec:global-method-security
 		secured-annotations="enabled" jsr250-annotations="enabled" />
 	<bean id="secureChannelProcessor"
@@ -101,14 +102,13 @@
 	</bean>
 	<sec:filter-security-metadata-source
 		id="securityInterceptorMetadataSource" use-expressions="true">
-		<sec:intercept-url pattern="/rs" access="isAuthenticated()" />
+		<sec:intercept-url pattern="/rs/**" access="isAuthenticated()" />
 	</sec:filter-security-metadata-source>
 	<sec:filter-security-metadata-source
 		id="channelMetadataSource">
-		<sec:intercept-url pattern="/rs" access="REQUIRES_SECURE_CHANNEL" />
-		<sec:intercept-url pattern="/login" access="REQUIRES_SECURE_CHANNEL" />
+		<sec:intercept-url pattern="/secure/**" access="REQUIRES_SECURE_CHANNEL" />
 	</sec:filter-security-metadata-source>
-	<bean id="springFilterChain" class="org.springframework.security.web.FilterChainProxy">
+	<bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
 		<sec:filter-chain-map path-type="ant">
 			<sec:filter-chain pattern="/**/*.jpg" filters="none" />
 			<sec:filter-chain pattern="/**/*.gif" filters="none" />
@@ -117,10 +117,10 @@
 			<sec:filter-chain pattern="/image/**" filters="none" />
 			<sec:filter-chain pattern="/**/*.js" filters="none" />
 			<sec:filter-chain pattern="/**/*.css" filters="none" />
-			<sec:filter-chain pattern="/login"
+			<sec:filter-chain pattern="/login/**"
 				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,EXCEPTION_TRANSLATION_FILTER" />
-			<sec:filter-chain pattern="/rs"
-				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,CSRF_FILTER, LOCALE_CONTEXT_FILTER,FILTER_SECURITY_INTERCEPTOR,EXCEPTION_TRANSLATION_FILTER" />
+			<sec:filter-chain pattern="/rs/**"
+				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,EXCEPTION_TRANSLATION_FILTER" />
 		</sec:filter-chain-map>
 	</bean>
 </beans>

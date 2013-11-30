@@ -83,6 +83,11 @@ public class User implements Serializable {
 
 	@Column(name = "TENANT_CODE")
 	private String tenantCode;
+	@Column(name = "IS_EMAIL_VERIFIED")
+	private boolean isEmailVerified;
+	
+	@Column(name = "IS_CELL_PHONE_VERIFIED")
+	private boolean isCellphoneVerified;
 
 	public long getId() {
 		return Id;

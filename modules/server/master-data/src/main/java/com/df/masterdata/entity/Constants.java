@@ -36,6 +36,11 @@ public interface Constants {
 		public static final String NAME_PROPERTY = "name";
 	}
 
+	public static interface EMPLOYEE extends MASTERDATA {
+		public static final String EMAIL_PROPERTY = "email";
+		public static final String CELL_PHONE_PROPERTY = "cellPhone";
+	}
+
 	public static interface PROMOTION extends STORE_AWARE_MASTERDATA {
 		public static final String NAME_PROPERTY = "name";
 

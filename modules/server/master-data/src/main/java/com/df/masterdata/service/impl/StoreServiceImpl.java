@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.df.masterdata.dao.StoreDao;
 import com.df.masterdata.entity.Store;
@@ -25,6 +26,18 @@ public class StoreServiceImpl implements StoreService {
 
 	@Override
 	public void newStore(Store store) {
+		if (StringUtils.isEmpty(store.getCode())) {
+			throw StoreException.valiationError("Store code must not be empty");
+		}
+		if (StringUtils.isEmpty(store.getName())) {
+			throw StoreException.valiationError("Store name must not be empty");
+		}
+		if (StringUtils.isEmpty(store.getTelephone1())) {
+			throw StoreException.valiationError("Store telephone1 must not be empty");
+		}
+		if (storeDao.getStoreByCode(store.getCode()) != null) {
+			throw StoreException.storeWithCodeAlreadyExist(store.getCode());
+		}
 		if (storeDao.getStoreByName(store.getName()) != null) {
 			throw StoreException.storeWithNameAlreadyExist(store.getName());
 		} else {
