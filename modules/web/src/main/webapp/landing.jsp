@@ -10,24 +10,26 @@
     <jsp:include page="WEB-INF/jsptiles/setup.jsp" />
   </head>
   <body>
-    <div id="page" class="showmenu" >
+    <div id="page" >
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
-        <div>
+        <div class="titlebar"></div>
+        <div class="tilecontainer">
           <div>
-            <div class="head">
-              <span>Tenant Name</span>
+            <div>
+              <div class="actionbar">
+                <a id="action-sm" data-i19="def" href="stores.html">STORE MANAGEMENT</a>
+                <a id="action-dm" data-i19="def" href="items.html">DISH MANAGEMENT</a>
+                <a id="action-md" data-i19="def">MENU DESIGN</a>
+              </div>
+              <%-- 
+              <div class="actionbar">
+                <a></a>
+                <a></a>
+                <a></a>
+              </div>
+              --%>
             </div>
-            <div class="actionbar">
-              <a id="action-sm" data-i19="def" href="stores.html">STORE MANAGEMENT</a>
-              <a id="action-dm" data-i19="def" href="items.html">DISH MANAGEMENT</a>
-              <a id="action-md" data-i19="def">MENU DESIGN</a>
-              <a></a>
-            </div>
-            <div class="actionbar">
-              <a></a>
-            </div>
-            <div class="foot"></div>
           </div>
         </div>
       </div>

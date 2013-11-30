@@ -211,36 +211,13 @@ html,body {
     background-color:white;
     overflow:hidden;
 
-    .tiletoolbar {
+    .titlebar {
         .docked-top();
         height:@header-height;
-        -webkit-box-shadow:  0px 1px 10px 0px rgba(0, 0, 0, 0.1);
-        box-shadow:  0px 1px 10px 0px rgba(0, 0, 0, 0.1);
+        background-color:#F5F6F7;
+        -webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
 
-        .tool {
-            position:relative;
-            width:120px;
-            height:@header-height;
-            line-height:@header-height;
-            text-align:center;
-            font-size:1.4em;
-            float:left;
-            .user-select-none();
-
-            span:first-child {
-                margin-right:5px;
-            }
-        }
-
-        .tool:after {
-            content:'';
-            .docked-center(20px);
-            right:0;
-            border-right:1px solid #EEE;
-        }
-        .tool:last-child:after {
-            //border-right:0 none;
-        }
     }
 
     .tilecontainer {
@@ -255,7 +232,7 @@ html,body {
         .tile {
             float:left;
             position:relative;
-            width:180px + @tile-spacing * 2;
+            width:170px + @tile-spacing * 2;
             height:120px + @tile-spacing * 2;
 
             > div {
@@ -281,7 +258,7 @@ html,body {
                 background-color:rgba(0,0,0,0.4);
                 color:white;
                 text-align:center;
-                font-size:1.3em;
+                font-size:1.5em;
                 line-height:1em;
                 padding:4px;
                 overflow-x:hidden;
@@ -303,7 +280,7 @@ html,body {
     .docked-right(6px);
     right:0;
 
-    width:600px;
+    width:700px;
     box-shadow:0 0px 8px 0px rgba(0, 0, 0, 0.4);
     -webkit-box-shadow:0 0px 8px 0px rgba(0, 0, 0, 0.4);
     background-color:white;
@@ -339,7 +316,6 @@ table .rowspacing {
     padding:0;
     height:10px;
 }
-
 
 .image-dropper {
 

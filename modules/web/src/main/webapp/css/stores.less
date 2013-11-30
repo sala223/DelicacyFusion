@@ -2,15 +2,27 @@
 
 #panel #stores {
 
+    @tile-width:240px;
+    @tile-height:120px;
+    @tile-rowcap:3;
+
+    > div {
+        width:@tile-width * @tile-rowcap;
+        margin:0 auto;
+        padding:5px 0;
+    }
+
     .tile {
-        height:auto;
-        width: auto;
+        height:@tile-height;
+        width: @tile-width;
         padding:6px;
-        font-size:1.4em;
+        font-size:1.6em;
 
         > div {
-            position:static;
-            padding:12px;
+            border:1px solid #CCC;
+            border-radius:8px;
+            line-height:@tile-height - 12px;
+            text-align:center;
         }
     }
 }

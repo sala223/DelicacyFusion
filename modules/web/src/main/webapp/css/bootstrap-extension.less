@@ -86,9 +86,11 @@
         float:left;
 
         margin-right:6px;
-        margin-bottom:4px;
+        margin-bottom:2px;
 
-        padding:2px 4px;
+        height:28px;
+        line-height:31px;
+        padding:0 4px;
         border-radius:3px;
         font-size:1em;
         cursor:pointer;
@@ -133,12 +135,12 @@
 
     label {
         color:@indicatorColor;
-        font-size:1.20em;
+        font-size:1.4em;
         .transition(0.2s;linear);
         
         position:absolute;
         left:13px;
-        top:-13px;
+        top:-16px;
     }
     
     *::-webkit-input-placeholder {
@@ -148,6 +150,7 @@
     .form-control {
         border-color:transparent transparent #CCC transparent;
         box-shadow:none;
+        font-size:16px;
     }
 
     .form-control:focus + label,
@@ -160,5 +163,9 @@
     .input-group-btn button {
         background:transparent none;
         border-color:transparent transparent #CCC transparent;
+    }
+    
+    .btn-group {
+        float:right;
     }
 }
