@@ -13,7 +13,7 @@
     <div id="page" >
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
-        <div class="tiletoolbar"></div>
+        <div class="titlebar"></div>
         <div class="tilecontainer">
           <div>
             <div>

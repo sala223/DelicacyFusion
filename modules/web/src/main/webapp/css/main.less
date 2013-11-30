@@ -211,37 +211,13 @@ html,body {
     background-color:white;
     overflow:hidden;
 
-    .tiletoolbar {
+    .titlebar {
         .docked-top();
         height:@header-height;
         background-color:#F5F6F7;
-        -webkit-box-shadow:  0px 1px 10px 0px rgba(0, 0, 0, 0.1);
-        box-shadow:  0px 1px 10px 0px rgba(0, 0, 0, 0.1);
+        -webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
 
-        .tool {
-            position:relative;
-            width:120px;
-            height:@header-height;
-            line-height:@header-height;
-            text-align:center;
-            font-size:1.4em;
-            float:left;
-            .user-select-none();
-
-            span:first-child {
-                margin-right:5px;
-            }
-        }
-
-        .tool:after {
-            content:'';
-            .docked-center(20px);
-            right:0;
-            border-right:1px solid #EEE;
-        }
-        .tool:last-child:after {
-            //border-right:0 none;
-        }
     }
 
     .tilecontainer {

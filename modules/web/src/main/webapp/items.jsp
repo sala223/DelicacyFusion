@@ -13,7 +13,7 @@
     <div id="page">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
-        <div class="tiletoolbar">
+        <div class="titlebar">
         </div>
         <div id="dishes" class="tilecontainer"></div>
         <div id="edit" class="above-loadmask">
@@ -185,12 +185,14 @@
     			    hideItemDetails();
 
                     if(!isNaN(idx)){
-                        //TODO update tile
+                        // TODO Update tile
                         memoryStorage['items'][idx] = data;
                         $('.text',$('#dishes').children()[idx]).text(data.name);
                     }else{
                         memoryStorage['items'].push(serverData);
-                        $('#dishes').append('<div class="tile"><div data-idx="'+(memoryStorage['items'].length-1)+'"><div class="text">'+serverData.name+'</div></div></div>');
+
+                        $('<div class="tile"><div data-idx="'+(memoryStorage['items'].length-1)+'"><div class="text">'+serverData.name+'</div></div></div>')
+                        .insertBefore($('#dishes').children().last());
                     }
     			}});
     		}).fail(function(){

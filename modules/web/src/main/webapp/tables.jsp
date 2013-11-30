@@ -13,9 +13,7 @@
     <div id="page" class="showmenu">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
-        <div class="tiletoolbar">
-          <div class="tool"><span class="glyphicon glyphicon-plus"></span><span data-i19="def">new_table</span></div>
-          <div class="tool" data-i19="def">new_table 22</div>
+        <div class="titlebar">
         </div>
         <div id="tables" class="tilecontainer"></div>
         <div id="edit" class="above-loadmask">

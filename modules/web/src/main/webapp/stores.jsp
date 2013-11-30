@@ -12,13 +12,12 @@
     </style>
   </head>
   <body>
-    <div id="page" class="showmenu">
+    <div id="page">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
-        <div class="tiletoolbar">
-          <div class="tool" id="btnCreate"><span class="glyphicon glyphicon-plus"></span><span data-i19="def">new_store</span></div>
+        <div class="titlebar">
         </div>
-        <div id="stores" class="tilecontainer"></div>
+        <div id="stores" class="tilecontainer"><div class="clearboth"></div></div>
         <div id="edit" class="above-loadmask">
           <div>
             <div class="form-group">
@@ -106,7 +105,7 @@
         .done(function(data){
             memoryStorage['stores'] = data;
 
-            $('#stores').empty().append(memoryStorage['stores'].map(function(s,i){
+            $('#stores>div').empty().append(memoryStorage['stores'].map(function(s,i){
                 return '<div class="tile"><div data-idx="'+i+'">'+s.name+'</div></div>';
             }).join(''));
             
