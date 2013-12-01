@@ -48,6 +48,11 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public void updateStore(Store store) {
 		Store found = this.checkStore(store.getCode(), true);
+		if (!found.getName().equals(store.getName())) {
+			if (storeDao.getStoreByName(store.getName()) != null) {
+				throw StoreException.storeWithNameAlreadyExist(store.getName());
+			}
+		}
 		found.setAddress(store.getAddress());
 		found.setBusinessHourFrom(store.getBusinessHourFrom());
 		found.setBusinessHourTo(store.getBusinessHourTo());
@@ -69,6 +74,10 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public Store getStoreByCode(String storeCode) {
 		return storeDao.getStoreByCode(storeCode);
+	}
+
+	public void deleteStore(String storeCode) {
+		storeDao.disableMasterData(Store.class, storeCode);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.df.http.masterdata.resources;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -70,4 +71,18 @@ public class StoreResource extends TenantLevelResource {
 		return store;
 	}
 
+	/**
+	 * Create a new store in a tenant.
+	 * 
+	 * @param tenantCode
+	 *            the tenant code
+	 * @return return the refreshed new store object.
+	 */
+	@PUT
+	@Path("/")
+	public Store updateStore(@PathParam("tenantCode") String tenantCode, Store store) {
+		injectTenantContext(tenantCode);
+		storeService.updateStore(store);
+		return store;
+	}
 }
