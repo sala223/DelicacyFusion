@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.df.core.rs.TenantResource;
+import com.df.core.rs.TenantLevelResource;
 import com.df.management.android.customization.CategoryNavigationTabs;
 import com.df.management.android.customization.CategoryNavigationTabs.CategoryNavigationTab;
 import com.df.management.android.customization.NavigationTabsDescriptor;
@@ -23,7 +23,7 @@ import com.df.masterdata.auxiliary.CategoryLoader;
 @Path("/tenant/{tenantCode}/configuration")
 @Produces("application/json;charset=UTF-8")
 @Component
-public class ConfigurationResource extends TenantResource {
+public class ConfigurationResource extends TenantLevelResource {
 
 	@Autowired
 	private Configurator configurator;

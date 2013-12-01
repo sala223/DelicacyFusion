@@ -1,5 +1,6 @@
 SET SQL_SAFE_UPDATES=0; 
 USE `delicacy_fusion`;
+INSERT INTO `tenant` (`CODE`, IS_ENABLED, `DESCRIPTION`, `NAME`, `CREATED_BY`, `ADDRESS`, `CITY`, `COUNTRY`, `COUNTY`, `PROVINCE`, `TWON`, CREATED_TIME) VALUES ('TEST', 1, '', '望湘园餐饮有限公司', '1', '某某路', '上海市', '杨浦区', '五角场', '上海市', '五角场','2013-01-02 09:22:22');
 DELETE FROM `store_address`;
 DELETE FROM `store`;
 INSERT INTO `store` (`ID`, `TENANT_ID`, `BUSINESS_HOUR_FROM`, `BUSINESS_HOUR_TO`, `CODE`, `CREATED_BY`, `CREATED_TIME`, `IS_ENABLED`, `NAME`, `TELEPHONE1`) VALUES ('1', 'TEST', '480', '1320', 'S1', '0', '2013-01-02 09:22:22', '1', ' 望湘园龙阳路店', '13345453232');

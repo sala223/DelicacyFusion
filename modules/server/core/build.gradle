@@ -30,4 +30,15 @@ jar {
 	from sourceSets.main.resources
 	from sourceSets.test.resources
     exclude('META-INF/persistence.xml') 
-} 
+}
+
+task copyTestResource(type: Copy){
+    description="copy test resource from " + sourceSets.test.output.resourcesDir + " to " + sourceSets.main.output.resourcesDir
+    from sourceSets.test.output.resourcesDir
+    into sourceSets.main.output.resourcesDir
+}
+
+processTestResources.doLast{
+    println copyTestResource.description
+	copyTestResource.execute() 
+}

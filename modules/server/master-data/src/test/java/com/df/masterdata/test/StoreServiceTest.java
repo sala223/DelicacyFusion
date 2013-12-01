@@ -20,6 +20,7 @@ public class StoreServiceTest extends MasterDataJPABaseTest {
     public void newStoreTest() {
 	Store store = new Store();
 	store.setName("DanceQueue");
+	store.setCode("OMG"); 
 	store.setTelephone1("0731-34343433");
 	store.setBusinessHourFrom(8);
 	store.setBusinessHourFrom(22);

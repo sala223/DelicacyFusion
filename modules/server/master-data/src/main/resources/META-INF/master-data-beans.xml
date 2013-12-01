@@ -25,5 +25,8 @@
 		<property name="resourceBaseSuffix" value="json" />
 	</bean>
 	<bean id="configurator" class="com.df.management.configuration.DefaultConfigurator" autowire="default"/>
+	<tx:annotation-driven />
+	<bean id="tenantDao" class="com.df.crm.dao.TenantDao" />
+	<bean id="tenantService" class="com.df.crm.service.impl.TenantServiceImpl" />
 	<tx:annotation-driven/>
 </beans>

@@ -12,4 +12,5 @@
 	<entity class="com.df.masterdata.entity.DiningTable"/>
 	<entity class="com.df.masterdata.entity.Promotion"/>
 	<entity class="com.df.management.configuration.entity.GlobalConfiguration"/>
+	<entity class="com.df.crm.entity.Tenant"/>
 </entity-mappings>

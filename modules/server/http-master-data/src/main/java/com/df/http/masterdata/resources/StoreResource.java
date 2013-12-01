@@ -9,14 +9,14 @@ import javax.ws.rs.Produces;
 
 import org.springframework.stereotype.Component;
 
-import com.df.core.rs.TenantResource;
+import com.df.core.rs.TenantLevelResource;
 import com.df.masterdata.entity.Store;
 import com.df.masterdata.service.contract.StoreService;
 
 @Path("/tenant/{tenantCode}/store")
 @Produces("application/json;charset=UTF-8")
 @Component
-public class StoreResource extends TenantResource {
+public class StoreResource extends TenantLevelResource {
 
 	@Inject
 	private StoreService storeService;

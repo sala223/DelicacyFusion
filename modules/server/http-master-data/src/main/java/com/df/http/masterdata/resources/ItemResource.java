@@ -27,7 +27,7 @@ import com.df.blobstore.image.ImageFormat;
 import com.df.blobstore.image.ImageKey;
 import com.df.blobstore.image.ImageService;
 import com.df.blobstore.image.http.ImageLinkCreator;
-import com.df.core.rs.TenantResource;
+import com.df.core.rs.TenantLevelResource;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.entity.PictureRef;
 import com.df.masterdata.exception.ItemException;
@@ -36,7 +36,7 @@ import com.df.masterdata.service.contract.ItemService;
 @Path("/tenant/{tenantCode}/store/{storeCode}")
 @Produces("application/json;charset=UTF-8")
 @Component
-public class ItemResource extends TenantResource {
+public class ItemResource extends TenantLevelResource { 
 	@Inject
 	private ItemService itemService;
 
