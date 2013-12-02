@@ -19,6 +19,12 @@ _jQuery_static_translator={
 			that.DEFAULT(oe);
 		});
 	},
+	INPUT:function(e){
+    	var je=$(e), placeholder = je.attr('placeholder');
+    	if(placeholder!==undefined && placeholder!==''){
+    		je.attr('placeholder',i19[placeholder]||placeholder);
+		}
+	},
 	DEFAULT:function(e){
 		var je=$(e);
 		je.text(i19[je.text()]);

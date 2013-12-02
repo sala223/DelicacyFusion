@@ -13,6 +13,23 @@ var i19={
 	"DISH":'菜品',
 	"DISH MANAGEMENT":'菜品管理',
 	"MENU DESIGN":'菜单设计',
+	"TENANT INFO":"公司信息",
+
+	"30-Days Free Trial Application":"30天免费试用申请",
+	"TENANT NAME":"公司名称",
+	"STORE INFO":"门店信息",
+	"ADMIN NAME":"管理员姓名",
+	"ADMIN EMAIL/CP":"管理员邮箱或手机",
+	"TENANT ADDRESS":"公司地址",
+	CAPTCHA:"验证码",
+	"Mandatory":"必填",
+    "Mandatory,used for sign-in and receiving initial password":"必填，用于登陆和接收初始密码",
+    "Please enter the CAPTCHA":"请输入验证码",
+
+    "Province,AR,MU":"省 / 自治区 / 直辖市",
+    "city":"市",
+    "district":"区",
+    "street address":"街区详细地址",
 
 	new_item:'新菜品',
 	item_name:'品名',
@@ -70,5 +87,6 @@ var i19={
 	failure:'失败',
 
 	save:'保存',
+	submit:'提交',
 	cancel:'取消'
 };

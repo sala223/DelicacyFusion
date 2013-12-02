@@ -72,13 +72,5 @@ window.main.push(function(){
 		href === je.attr('href') && je.addClass('curr');
 	});
 	*/
-	
-	/* rewrite page url */
-	$('#nav a').each(function(i,e){
-		var je=$(e);
-		je.attr('href',
-			je.attr('href')+'?'+
-			['tenant='+queryParams.tenant,'store='+queryParams.store].join('&'));
-	});
 });
 </script>

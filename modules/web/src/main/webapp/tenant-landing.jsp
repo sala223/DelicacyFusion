@@ -22,13 +22,10 @@
                 <a id="action-dm" data-i19="def" href="items.html">DISH MANAGEMENT</a>
                 <a id="action-md" data-i19="def">MENU DESIGN</a>
               </div>
-              <%-- 
+
               <div class="actionbar">
-                <a></a>
-                <a></a>
-                <a></a>
+                <a id="action-info" data-i19="def">TENANT INFO</a>
               </div>
-              --%>
             </div>
           </div>
         </div>

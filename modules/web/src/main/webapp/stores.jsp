@@ -94,7 +94,12 @@
 
         $('#stores').delegate('.tile > div','click',function(ev){
             var dataIdx = parseInt($(ev.currentTarget).attr('data-idx'),10);
-            showStoreDetail(dataIdx,memoryStorage['stores'][dataIdx]);
+            if(isNaN(dataIdx)){
+                showStoreDetail(dataIdx,memoryStorage['stores'][dataIdx]);
+            }else{
+                window.location = "store-landing.html"+'?'+
+			    ['tenant='+queryParams.tenant,'store='+memoryStorage['stores'][dataIdx].code].join('&');
+            }
         });
 
         <%--
@@ -109,9 +114,13 @@
             memoryStorage['stores'] = data;
 
             $('#stores>div').empty().append(memoryStorage['stores'].map(function(s,i){
-                return '<div class="tile"><div data-idx="'+i+'">'+s.name+'</div></div>';
-            }).join(''));
-            
+                var sb = ['<div class="tile"><div data-idx="'+i+'">'];
+                sb.push(s.name);
+                sb.push('</div></div>');
+                return sb.join('');
+            }).join('') +
+            '<div class="tile"><div data-idx="NaN"></div></div>');
+
             loadmask.dismiss();
         })
         .fail(function(){
