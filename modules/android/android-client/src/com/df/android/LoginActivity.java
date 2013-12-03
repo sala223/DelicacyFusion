@@ -107,13 +107,18 @@ public class LoginActivity extends Activity {
 	}
     
     private void demo() {
-		GlobalSettings.instance().setCurrentTenantCode("demo");
-		GlobalSettings.instance().setCurrentStoreCode("demo1");
+		GlobalSettings.instance().setCurrentTenantCode("DEMO");
+		GlobalSettings.instance().setCurrentStoreCode("S1");
     	
 		login("demo", "demo");
     }
     
     private void login() {
+		if(!verifySignature()) {
+			Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
 		GlobalSettings.instance().setCurrentTenantCode("test");
 		GlobalSettings.instance().setCurrentStoreCode("S1");
 
@@ -151,11 +156,6 @@ public class LoginActivity extends Activity {
     }
 
 	private void login(final String userName, final String pwd) {
-		if(!verifySignature()) {
-			Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		
 		Store store = CacheMgr.instance().loadStore(GlobalSettings.instance().getCurrentTenantCode(), GlobalSettings.instance().getCurrentStoreCode());
 		if(store != null) {
 			onStoreLoaded(store);

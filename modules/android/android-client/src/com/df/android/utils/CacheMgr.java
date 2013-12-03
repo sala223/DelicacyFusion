@@ -56,6 +56,18 @@ public class CacheMgr {
 
 		return new File(dir).exists();
 	}
+	
+	public boolean cleanCache(String tenantCode, String storeCode) {
+		String rootDir = cxt.getExternalCacheDir() + "/" + tenantCode + "/" + storeCode;
+		
+		boolean ret = false;
+		
+		File tempDir = new File(rootDir);
+		if (tempDir.exists())
+			ret = tempDir.delete();
+		
+		return ret;
+	}
 
 	public void saveStore(String tenantCode, Store store) {
 		Log.d(getClass().getName(), "Saving store ...");
@@ -79,7 +91,7 @@ public class CacheMgr {
 			fileos.close();
 			Log.d(getClass().getName(), "Store synced");
 		} catch (Exception e) {
-			Log.e(getClass().getName(), "Fail to save store");
+			Log.e(getClass().getName(), "Fail to save store due to " + e);
 		}
 	}
 
@@ -143,7 +155,7 @@ public class CacheMgr {
 			fileos.close();
 			Log.d(getClass().getName(), "Category dictionary saved");
 		} catch (Exception e) {
-			Log.e(getClass().getName(), "Fail to save category dictionary");
+			Log.e(getClass().getName(), "Fail to save category dictionary due to " + e);
 		}
 	}
 
@@ -171,7 +183,7 @@ public class CacheMgr {
 			fileos.close();
 			Log.d(getClass().getName(), "Configuration synced");
 		} catch (Exception e) {
-			Log.e(getClass().getName(), "Fail to save configurate");
+			Log.e(getClass().getName(), "Fail to save configuration due to " + e);
 		}
 	}
 
@@ -226,7 +238,7 @@ public class CacheMgr {
 			fileos.close();
 			Log.d(getClass().getName(), "Items updated");
 		} catch (Exception e) {
-			Log.e(getClass().getName(), "Fail to save items");
+			Log.e(getClass().getName(), "Fail to save items due to " + e);
 		}
 	}
 
@@ -252,7 +264,7 @@ public class CacheMgr {
 			fileos.close();
 			Log.d(getClass().getName(), "Tables updated");
 		} catch (Exception e) {
-			Log.e(getClass().getName(), "Fail to save tables");
+			Log.e(getClass().getName(), "Fail to save tables due to " + e);
 		}
 	}
 
