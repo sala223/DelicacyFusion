@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ch">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Tenant Application - DelicacyFusion Web</title>
     <jsp:include page="WEB-INF/jsptiles/setup.jsp" />
   </head>
@@ -15,7 +14,7 @@
         <div class="titlebar"></div>
         <div class="main">
           <div>
-            <form class="form-horizontal">
+            <div class="form-horizontal">
               <div class="form-group">
                 <label class="col-sm-12 form-title" data-i19="def">30-Days Free Trial Application</label>
               </div>
@@ -68,10 +67,10 @@
 
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" class="btn btn-primary" data-i19="def">submit</button>
+                  <button type="button" class="btn btn-primary" data-i19="def">submit</button>
                 </div>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>

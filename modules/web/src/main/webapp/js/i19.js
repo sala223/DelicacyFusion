@@ -1,7 +1,12 @@
 var i19={
 	Username:'用户名',
 	Password:'密码',
-	Logon:'登陆',
+	"Sign-In Password":'登录密码',
+	Logon:'登录',
+	"System Sign-In":"系统登录",
+	"Forgot Password?":"忘记密码了?",
+	"Trial Application":"试用申请",
+	"Auto Sign-In Next Time":"下次自动登录",
 
 	"STORE":'门店',
 	"CASHIER":'收银',
@@ -19,11 +24,12 @@ var i19={
 	"TENANT NAME":"公司名称",
 	"STORE INFO":"门店信息",
 	"ADMIN NAME":"管理员姓名",
-	"ADMIN EMAIL/CP":"管理员邮箱或手机",
+	"ADMIN EMAIL/CP":"管理员邮箱/手机",
+	"EMAIL/CP":"邮箱/手机",
 	"TENANT ADDRESS":"公司地址",
 	CAPTCHA:"验证码",
 	"Mandatory":"必填",
-    "Mandatory,used for sign-in and receiving initial password":"必填，用于登陆和接收初始密码",
+    "Mandatory,used for sign-in and receiving initial password":"必填，用于登录和接收初始密码",
     "Please enter the CAPTCHA":"请输入验证码",
 
     "Province,AR,MU":"省 / 自治区 / 直辖市",

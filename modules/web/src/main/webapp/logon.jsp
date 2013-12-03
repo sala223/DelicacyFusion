@@ -7,30 +7,52 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>DelicacyFusion Web</title>
-    <link rel="stylesheet" type="text/css" href="css/logon.css" />
+    <jsp:include page="WEB-INF/jsptiles/setup.jsp" />
   </head>
   <body>
     <div id="page">
-      <div>
-        <div id="logon">
-          <div class="fieldbar">
-            <label for="fusername" data-i19="def">Username</label>
-            <input type="text" id="fusername" />
-          </div>
-          <div class="fieldbar">
-            <label for="fpassword" data-i19="def">Password</label>
-            <input type="password" id="fpassword" />
-          </div>
-          <div class="buttonbar">
-            <button onclick="javascript:alert(123)" data-i19="def">Logon</button>
+      <div id="panel">
+        <div class="titlebar"></div>
+        <div class="main">
+          <div>
+            <div class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-12 form-title" data-i19="def">System Sign-In</label>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <input type="text" class="form-control" id="input-username" placeholder="EMAIL/CP" data-i19="def" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <input type="password" class="form-control" id="input-password" placeholder="Sign-In Password" data-i19="def" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-sm-7">
+                  <input type="checkbox" id="chk-autosignin" />
+                  <label for="chk-autosignin" data-i19="def" class="slim-label">Auto Sign-In Next Time</label>
+                </div>
+                <div class="col-sm-5">
+                  <a href="#" data-i19="def">Forgot Password?</a>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <button type="button" class="btn btn-primary" data-i19="def">Logon</button>
+                  <button type="button" class="btn btn-default" data-i19="def">Trial Application</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <dev:includeJS src="js/jquery-2.0.3.min.js" />
-    <dev:includeJS src="js/common.js" />
-    <dev:includeJS src="js/i19.js" />
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />
   </body>
 </html>
