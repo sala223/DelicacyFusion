@@ -28,6 +28,10 @@ html,body {
     font-size:0;
 }
 
+::-webkit-input-placeholder { color:@placeholder-color; }
+::-moz-placeholder { color:@placeholder-color; } /* firefox 19+ */
+:-ms-input-placeholder { color:@placeholder-color; } /* ie */
+input:-moz-placeholder { color:@placeholder-color; }
 
 #page {
     .docked-center;
