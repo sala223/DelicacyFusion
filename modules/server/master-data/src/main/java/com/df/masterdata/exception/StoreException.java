@@ -14,6 +14,8 @@ public class StoreException extends BusinessException {
 
 	public static final int STORE_WITH_CODE_NOT_EXIST = 100002;
 
+	public static final int STORE_VALIDATION_ERROR = 100003;
+
 	public StoreException(Throwable cause, int errorCode) {
 		super(cause, REALM, errorCode);
 	}
@@ -36,5 +38,9 @@ public class StoreException extends BusinessException {
 
 	public static StoreException storeWithCodeNotExist(String storeCode) {
 		return new StoreException(STORE_WITH_CODE_NOT_EXIST, "Store Code=%s does not exist.", storeCode);
+	}
+
+	public static StoreException valiationError(String msg) {
+		return new StoreException(STORE_VALIDATION_ERROR, msg);
 	}
 }

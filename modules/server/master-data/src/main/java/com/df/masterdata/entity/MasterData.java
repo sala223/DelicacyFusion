@@ -34,7 +34,7 @@ public abstract class MasterData {
 	@XmlTransient
 	private long id;
 
-	@Column(length = 255, name = "CODE")
+	@Column(length = 255, name = "CODE", updatable=false)
 	@Index
 	private String code;
 

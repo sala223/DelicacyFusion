@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/tx
-	http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	http://www.springframework.org/schema/tx/spring-tx.xsd
 	http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
-	<bean id="userDAL" class="com.df.idm.dal.UserDAL" autowire="default"/>
-	<bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder"/>
-	<bean id="userManagementService" class="com.df.idm.service.UserManagementService">
-		<constructor-arg index="0" ref="userDAL" />
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="userDao" class="com.df.idm.dal.UserDao" autowire="default" />
+	<bean id="passwordEncoder"
+		class="org.springframework.security.crypto.password.StandardPasswordEncoder" />
+	<bean id="userManagementService" class="com.df.idm.service.UserManagementServiceImpl">
+		<constructor-arg index="0" ref="userDao" />
 		<constructor-arg index="1" ref="passwordEncoder" />
 	</bean>
 	<bean id="userObjectService" class="com.df.idm.authentication.UserObjectServiceImpl">
 		<constructor-arg index="0" ref="userManagementService" />
 	</bean>
-	<bean id="authenticationProvider" class="com.df.idm.authentication.InternalAuthenticationProvider">
+	<bean id="authenticationProvider"
+		class="com.df.idm.authentication.InternalAuthenticationProvider">
 		<constructor-arg index="0" ref="userObjectService" />
 		<property name="passwordEncoder" ref="passwordEncoder" />
 	</bean>
-	<tx:annotation-driven/>
+	<bean id="randomTokenRepository" class="com.df.idm.registration.InMemoryRandomTokenRepository" />
+	<bean id="userRegistrationVerifier" class="com.df.idm.registration.RegistrationMailVerifier">
+		<constructor-arg index="0" ref="freeMarkerMailSender" />
+		<constructor-arg index="1" ref="randomTokenRepository" />
+	</bean>
+	<tx:annotation-driven />
 </beans>

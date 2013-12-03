@@ -1,0 +1,76 @@
+@import "common.less";
+
+#panel {
+
+    @actionbar-height:160px;
+    @actionbar-count:2;
+    @actionitem-width:240px;
+    @actionbar-rowcap:3;
+
+    .tilecontainer {
+        overflow:hidden;
+
+        > div {
+            position:absolute !important;
+            top:50%;
+            left:0;right:0;
+
+            > div {
+                position:relative;
+                top:-(@actionbar-count * @actionbar-height) / 2;
+            }
+        }
+
+        .actionbar {
+            height:@actionbar-height;
+            width:@actionitem-width * @actionbar-rowcap;
+            margin:0 auto;
+
+            a {
+                display:block;
+                width:@actionitem-width;
+                height:100%;
+                float:left;
+                position:relative;
+                text-align:center;
+                font-size:2em;
+                letter-spacing:1px;
+                font-weight:bold;
+                color:#555;
+                text-shadow: 1px 1px 0px #CCC;
+                line-height:@actionbar-height / 10 * 16;
+                text-decoration:none;
+                opacity:0.7;
+            }
+
+            a:before {
+                content:'';
+                .docked-center(5px);
+                border:1px solid #999;
+                border-radius:12px;
+                background:transparent none no-repeat center (@actionbar-height / 2 - 54px);
+            }
+
+            a[href]:hover {
+                opacity:1;
+            }
+            
+            a[href]:hover:before {
+                -webkit-box-shadow:  0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+                box-shadow:  0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+            }
+        }
+        
+
+        #action-sm:before {
+            background-image:url(../img/store_m.png);
+        }
+        #action-dm:before {
+            background-image:url(../img/dish_m.png);
+        }
+        #action-md:before {
+            background-position: center (@actionbar-height / 2 - 64px);
+            background-image:url(../img/menu_m.png);
+        }
+    }
+}

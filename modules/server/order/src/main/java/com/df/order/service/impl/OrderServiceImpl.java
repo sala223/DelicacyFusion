@@ -144,6 +144,9 @@ public class OrderServiceImpl implements OrderService {
 		order.setStatus(status);
 		if(status == TransactionStatus.CLOSED){
 			order.setCloseTime(new Date()); 
+			if(order.getServiceCardId() != null){
+				serviceCardService.deleteServiceCard(storeCode, order.getServiceCardId());
+			}
 		}
 		orderDao.update(order);
 	}

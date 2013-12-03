@@ -12,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 
 import com.df.idm.exception.UserNotFoundException;
@@ -31,19 +32,22 @@ public abstract class UserObjectAuthenticationProvider implements Authentication
 	protected MessageSourceAccessor messages = SecurityMessageSource.getAccessor();
 
 	protected abstract void additionalAuthenticationChecks(UserObject user,
-			UserPropertyAuthenticationToken authentication) throws AuthenticationException;
+	        UserObjectPropertyAuthenticationToken authentication) throws AuthenticationException;
 
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		String message = "Only UserPropertyAuthenticationToken is supported";
-		Assert.isInstanceOf(UserPropertyAuthenticationToken.class, authentication, message);
-		UserPropertyAuthenticationToken mtat = (UserPropertyAuthenticationToken) authentication;
+		String message = "Only UserMailOrPhoneAuthenticationToken is supported";
+		Assert.isInstanceOf(UserObjectPropertyAuthenticationToken.class, authentication, message);
+		UserObjectPropertyAuthenticationToken mtat = (UserObjectPropertyAuthenticationToken) authentication;
 		String userId = (authentication.getPrincipal() == null) ? "" : authentication.getName();
 		UserObject user = null;
 		try {
-			user = retrieveUser(userId, mtat);
+			if (mtat.isMailAccount()) {
+				user = this.retrieveUserByEmail(userId, mtat);
+			} else {
+				user = this.retrieveUserByCellPhone(userId, mtat);
+			}
 			mtat.setDetails(user);
-		}
-		catch (UserNotFoundException notFound) {
+		} catch (UserNotFoundException notFound) {
 			String msg = messages.getMessage("authentication.badCredentials", "Bad Credential");
 			throw new BadCredentialsException(msg);
 		}
@@ -59,11 +63,13 @@ public abstract class UserObjectAuthenticationProvider implements Authentication
 	}
 
 	protected Authentication createSuccessAuthentication(Object principal, Authentication authentication,
-			UserObject user) {
+	        UserObject user) {
 		Collection<? extends GrantedAuthority> mapAuthorities = authoritiesMapper.mapAuthorities(user.getAuthorities());
-		UserPropertyAuthenticationToken result = new UserPropertyAuthenticationToken(principal, mapAuthorities);
+		UserObjectPropertyAuthenticationToken result = new UserObjectPropertyAuthenticationToken(principal,
+		        mapAuthorities);
 		result.setAuthenticated(true);
 		result.setDetails(user);
+		SecurityContextHolder.getContext().setAuthentication(result); 
 		return result;
 	}
 
@@ -71,11 +77,14 @@ public abstract class UserObjectAuthenticationProvider implements Authentication
 		return forcePrincipalAsString;
 	}
 
-	protected abstract UserObject retrieveUser(String userId, UserPropertyAuthenticationToken authentication)
-			throws AuthenticationException;
+	protected abstract UserObject retrieveUserByEmail(String email, UserObjectPropertyAuthenticationToken authentication)
+	        throws AuthenticationException;
+
+	protected abstract UserObject retrieveUserByCellPhone(String cellPhone,
+	        UserObjectPropertyAuthenticationToken authentication) throws AuthenticationException;
 
 	public boolean supports(Class<?> authentication) {
-		return (UserPropertyAuthenticationToken.class.isAssignableFrom(authentication));
+		return (UserObjectPropertyAuthenticationToken.class.isAssignableFrom(authentication));
 	}
 
 	protected UserObjectChecker getPreAuthenticationChecks() {

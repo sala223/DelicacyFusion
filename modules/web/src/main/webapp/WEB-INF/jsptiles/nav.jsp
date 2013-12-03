@@ -15,9 +15,9 @@ public String menulink(String url,String text, HttpServletRequest req) {
     <div class="group">
       <div class="title" data-i19="def">STORE</div>
       <%=menulink("cashier.html","CASHIER",request)%>
-      <%=menulink("#","STORE MANAGEMENT",request)%>
+      <%=menulink("stores.html","STORE MANAGEMENT",request)%>
       <%=menulink("#","STAFF MANAGEMENT",request)%>
-      <%=menulink("#","TABLE MANAGEMENT",request)%>
+      <%=menulink("tables.html","TABLE MANAGEMENT",request)%>
       <%=menulink("#","STORE LAYOUT DESIGN",request)%>
     </div>
     <div class="group">
@@ -27,6 +27,7 @@ public String menulink(String url,String text, HttpServletRequest req) {
     </div>
   </div>
 
+  <a href="landing.html" style="display:none;"></a>
   <a href="logon.html" style="display:none;"></a>
 </div>
 <div id="nav-shower">
@@ -71,13 +72,5 @@ window.main.push(function(){
 		href === je.attr('href') && je.addClass('curr');
 	});
 	*/
-	
-	/* rewrite page url */
-	$('#nav a').each(function(i,e){
-		var je=$(e);
-		je.attr('href',
-			je.attr('href')+'?'+
-			['tenant='+queryParams.tenant,'store='+queryParams.store].join('&'));
-	});
 });
 </script>

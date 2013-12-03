@@ -10,9 +10,11 @@
     <jsp:include page="WEB-INF/jsptiles/setup.jsp" />
   </head>
   <body>
-    <div id="page" class="showmenu">
+    <div id="page">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
+        <div class="titlebar">
+        </div>
         <div id="tables" class="tilecontainer"></div>
         <div id="edit" class="above-loadmask">
           <div>
@@ -28,7 +30,7 @@
                   <td data-i19="def" colspan="2">dinner_person_count</td>
                   <td></td>
                 </tr>
-                <tr><td></tr>
+                <tr><td colspan="5" class="rowspacing"></td></tr>
 		        <tr class="line">
 		          <td class="ln" data-i19="def">number</td>
 		          <td class="itemname" data-i19="def">item_name</td>
@@ -39,6 +41,7 @@
 		      </thead>
 		      <tbody></tbody>
 		      <tfoot>
+		        <tr><td colspan="5" class="rowspacing"></td></tr>
 		        <tr class="totalline">
 		          <td colspan="4" data-i19="def">order_total_amount</td>
 		          <td data-channel="money_text(this.totalPayment)"></td>
@@ -53,6 +56,12 @@
 		        </tr>
 		      </tfoot>
 		    </table>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary" data-i19="def" id="btnCash">pay_by_cash</button>
+              <button type="button" class="btn btn-default" data-i19="def" id="btnCard">pay_by_card</button>
+              <button type="button" class="btn btn-default" data-i19="def" id="btnCancel">cancel</button>
+            </div>
           </div>
         </div>
       </div>
@@ -61,14 +70,30 @@
     <script type="text/javascript">
     window.main.push(function(){
 
-    	$('#tables').delegate('.tile>div','click',function(ev){
-    		var je=$(ev.target);
+        var receiptMask = undefined,
+            hideReceiptPanel = function(){
+	            $('#edit')
+                .removeData('orderId')
+	            .removeClass('transform0');
 
-    		var mask = $('#panel').mask({loadingText:transStr('loading_order')});
+	            (receiptMask||{dismiss:emptyFn}).dismiss();
+	            receiptMask = undefined;
+	        };
+
+        $('#btnCancel').click(function(){
+            hideReceiptPanel();
+        });
+
+    	$('#tables').delegate('.tile>div','click',function(ev){
+    		var je=$(ev.currentTarget);
+
+    		receiptMask = $('#panel').mask({loadingText:transStr('loading_order')});
     		$.ajax('{prefix}/tenant/{tenant}/store/{store}/order/table/'+je.attr('data-id'))
     		.done(function(data){
 
-    			$('#edit').toDataView(data);
+    			$('#edit')
+    			.data('orderId',data.transactionId)
+    			.toDataView(data);
 
     			$('#edit tbody').empty()
     			.append(data.lines.map(function(e,i){
@@ -83,11 +108,10 @@
     				return orderline.join('');
    			    }).join(''));
 
-    			mask.clearIndicator();
+    			receiptMask.clearIndicator();
     			setTimeout(function(){
-	    			mask.element.click(function(){
-	    				$('#edit').removeClass('transform0');
-	    				mask.dismiss();
+    			    receiptMask.element.click(function(){
+	    			    hideReceiptPanel();
 	    			});
     			},400);
 
@@ -96,21 +120,56 @@
     		.fail(function( jqXHR, textStatus, errorThrown ){
     			var errorData = jqXHR.responseJSON;
     			if(errorData.errorCode===100003){
-    				mask.complete({text:'no_order_on_table',iconClass:'exclamation-sign'});
+    			    receiptMask.complete({text:'no_order_on_table',iconClass:'exclamation-sign'});
     			}else{
-    				mask.complete({text:'unknown_error',iconClass:'remove'});
+    			    receiptMask.complete({text:'unknown_error',iconClass:'remove'});
     			}
     		});
     	});
 
+    	// Payments
+        $('#btnCash').click(function(){
+            $.ajax('{prefix}/tenant/{tenant}/store/{store}/payment/bill/cash/'+$('#edit').data('orderId'),{
+                type:"POST"
+            });
+        });
+
+        // Occupation
+        var fetchOccupation=function(){
+            setTimeout(function(){
+                $.ajax('{prefix}/tenant/{tenant}/store/{store}/table/occupation')
+                .done(function(data){
+                    memoryStorage['occupation'] = data;
+                    refreshOccupation();
+                })
+                .always(function(){
+                    fetchOccupation();
+                });
+            },10000);
+        };
+
+        var refreshOccupation = function(){
+            $('#panel .tile').removeClass('occupied');
+            $.each(memoryStorage['occupation'],function(i,o){
+                $.each(o.tables,function(i,t){
+                    $('#'+memoryStorage['tablesIndex'][t]).addClass('occupied');
+                });
+            });
+        };
+
     	// Loading tables
     	var loadmask = $('#panel').mask({loadingText:transStr('loading')});
-    	$.when($.ajax('{prefix}/tenant/{tenant}/store/{store}/table'))
-    	.then(function(tableData){
-    		memoryStorage['tables']=tableData;
+    	$.when($.ajax('{prefix}/tenant/{tenant}/store/{store}/table'),$.ajax('{prefix}/tenant/{tenant}/store/{store}/table/occupation'))
+    	.then(function(tableData,occupData){
+    		memoryStorage['tables']=tableData[0];
+    		memoryStorage['occupation'] = occupData[0];
+    		memoryStorage['tablesIndex']={};
 
     		$('#tables').empty().append(memoryStorage['tables'].map(function(t,i){
-    			var str=['<div class="tile"><div data-id="'+t.code+'">'];
+    		    var tileId = 'tile-'+i;
+    		    memoryStorage['tablesIndex'][t.code] = tileId;
+
+    			var str=['<div class="tile" id="'+tileId+'"><div data-id="'+t.code+'">'];
     			str.push('<div class="code">'+t.code+'</div>');
     			str.push('<div class="cap"><span class="glyphicon glyphicon-user"></span><span>'+t.capacity+'</span></div>');
     			str.push('</div></div>');
@@ -118,6 +177,9 @@
             }).join(''));    		
 
     		loadmask.dismiss();
+    		
+    		refreshOccupation();
+    		fetchOccupation();
     	},function(){
     		loadmask.complete({text:transStr('failure'),iconClass:'remove'});
     	});

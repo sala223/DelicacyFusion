@@ -1,22 +1,7 @@
+@import "common.less";
+
 #dishes .tile > div:before {
     background:transparent url('../img/food.png') no-repeat center center;
-}
-
-#dishes .tile > div[data-idx=NaN]:hover {
-    -webkit-box-shadow: none;
-    box-shadow: none;
-}
-
-#dishes .tile > div[data-idx=NaN]:before {
-    background-image:none;
-    content: "\2b";
-    font-size:5em;
-    text-align:center;
-    line-height:108px;
-    font-family: 'Glyphicons Halflings';
-    opacity:0.5;
-    border:6px dashed #CCC;
-    border-radius:20px;
 }
 
 ul.dropdown-menu.align-right li a {
@@ -33,12 +18,45 @@ ul.dropdown-menu.align-right li a {
 .input-group-btn button {
     padding-right:8px;
 }
-
-.btn-group button {
-    min-width:100px;
-}
-
+/*
 #edit .form-group:last-child {
     margin-top:10px;
     margin-left:12px;
+}
+*/
+
+.row-layout {
+    position:relative;
+
+    > div {
+        float:left;
+        width:50%;
+    }
+
+    > div:first-child {
+        width:55%;
+    }
+    
+    > div:last-child {
+        width:45%;
+    }
+}
+
+.menuimage {
+    .docked-right();
+
+    > div {
+        .docked-center(10px);
+        bottom:0;
+        right:0;
+        left:20px;
+    }
+    
+    > div:after {
+        content:"";
+        .docked-center();
+        border:2px solid #DDD;
+        border-radius:10px;
+        background:transparent url(../img/food.png) no-repeat center center;
+    }
 }

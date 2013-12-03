@@ -9,14 +9,14 @@ import javax.ws.rs.Produces;
 import org.codehaus.enunciate.jaxrs.TypeHint;
 import org.springframework.stereotype.Component;
 
-import com.df.core.rs.TenantResource;
+import com.df.core.rs.TenantLevelResource;
 import com.df.masterdata.auxiliary.Category;
 import com.df.masterdata.auxiliary.CategoryLoader;
 
 @Path("/tenant/{tenantCode}/category/")
 @Produces("application/json;charset=UTF-8")
 @Component
-public class CategoryResource extends TenantResource {
+public class CategoryResource extends TenantLevelResource {
 
 	@Inject
 	private CategoryLoader categoryLoader;

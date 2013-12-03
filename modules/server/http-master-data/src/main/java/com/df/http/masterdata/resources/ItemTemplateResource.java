@@ -18,7 +18,7 @@ import org.jboss.resteasy.util.Base64;
 import org.springframework.stereotype.Component;
 
 import com.df.blobstore.image.http.ImageLinkCreator;
-import com.df.core.rs.TenantResource;
+import com.df.core.rs.TenantLevelResource;
 import com.df.http.masterdata.resources.exception.InputValidationException;
 import com.df.masterdata.entity.ItemTemplate;
 import com.df.masterdata.entity.PictureRef;
@@ -27,7 +27,7 @@ import com.df.masterdata.service.contract.ItemTemplateService;
 @Path("/tenant/{tenantCode}/itpl/")
 @Produces("application/json;charset=UTF-8")
 @Component
-public class ItemTemplateResource extends TenantResource {
+public class ItemTemplateResource extends TenantLevelResource {
 
 	@Inject
 	private ItemTemplateService itplService;
@@ -47,9 +47,9 @@ public class ItemTemplateResource extends TenantResource {
 	 */
 	@POST
 	@Path("/")
-	public void createItemTemplate(@PathParam("tenantCode") String tenantCode, ItemTemplate itpl) {
+	public ItemTemplate createItemTemplate(@PathParam("tenantCode") String tenantCode, ItemTemplate itpl) {
 		this.injectTenantContext(tenantCode);
-		itplService.createItemTemplate(itpl);
+		return itplService.createItemTemplate(itpl);
 	}
 
 	/**

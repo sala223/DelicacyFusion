@@ -54,6 +54,19 @@ $(document).ready(function() {
     	console.log("ajax",options);
     });
 
+    $('#edit').attachConstraint();
+
+	
+  	/* rewrite page url */
+  	$('a').each(function(i,e){
+  		var je=$(e), href=je.attr('href');
+  		if(href!==undefined){
+  		    je.attr('href',
+  			    je.attr('href')+'?'+
+  			    ['tenant='+queryParams.tenant,'store='+queryParams.store].join('&'));
+  	    }
+  	});
+
     $.each(window.main||[], function(i,e){
     	e.apply();
     });

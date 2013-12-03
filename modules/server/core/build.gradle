@@ -6,6 +6,9 @@ dependencies {
     compile "org.springframework:spring-web:4.0.0.M2"
     compile "org.springframework:spring-test:4.0.0.M2"
     compile "org.springframework:spring-orm:4.0.0.M2"
+    compile "org.springframework:spring-context-support:4.0.0.M2"
+    compile ":freemarker:"
+    compile ":mail:"
     compile "org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final"
     compile "org.jboss.resteasy:jaxrs-api:3.0.4.Final"
     compile "org.jboss.resteasy:resteasy-jaxrs:3.0.4.Final"
@@ -19,13 +22,23 @@ dependencies {
 	compile "org.codehaus.jackson:jackson-core-asl:1.9.12"
     compile "org.codehaus.jackson:jackson-mapper-asl:1.9.12"
     compile ":enunciate-core-annotations:1.27"
+    runtime "commons-codec:commons-codec:1.4" 
     runtime ":mysql-connector-java:5.1.26-bin"
 }
 
-
-task("copyTestResources", type: Copy){
+jar {
+	from sourceSets.main.resources
 	from sourceSets.test.resources
-	into sourceSets.main.output.resourcesDir
+    exclude('META-INF/persistence.xml') 
 }
 
-jar.dependsOn copyTestResources
+task copyTestResource(type: Copy){
+    description="copy test resource from " + sourceSets.test.output.resourcesDir + " to " + sourceSets.main.output.resourcesDir
+    from sourceSets.test.output.resourcesDir
+    into sourceSets.main.output.resourcesDir
+}
+
+processTestResources.doLast{
+    println copyTestResource.description
+	copyTestResource.execute() 
+}

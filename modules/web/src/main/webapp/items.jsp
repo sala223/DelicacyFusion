@@ -10,57 +10,75 @@
     <jsp:include page="WEB-INF/jsptiles/setup.jsp" />
   </head>
   <body>
-    <div id="page" class="showmenu">
+    <div id="page">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
+        <div class="titlebar">
+        </div>
         <div id="dishes" class="tilecontainer"></div>
-        <div id="edit">
+        <div id="edit" class="above-loadmask">
           <div>
-            <div class="form-group">
-              <div class="input-group">
-                <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(this.name)" tabindex="1" />
-                <label for="val-name" class="control-label" data-i19="def">item_name</label>
 
-                <div class="input-group-btn" data-channel="dropdown_val(this.itemUnit)" >
-                  <button id="btn-unit" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span id="txt-unit"></span>
-                    <span class="caret"></span>
-                  </button>
-                  <input type="hidden" id="val-unit" />
-                  <ul class="dropdown-menu pull-right align-right" data-val-fld="val-unit" data-txt-fld="txt-unit">
-                    <li><a href="javascript:;" data-value="DISK" data-i19="def">unit_disk</a></li>
-                    <li><a href="javascript:;" data-value="JIN" data-i19="def">unit_jin</a></li>
-                    <li><a href="javascript:;" data-value="KILOGRAM" data-i19="def">unit_kg</a></li>
-                    <li><a href="javascript:;" data-value="BOTTLE" data-i19="def">unit_bottle</a></li>
-                    <li><a href="javascript:;" data-value="CUP" data-i19="def">unit_cup</a></li>
-                  </ul>
-                </div>
-                
+            <div class="row-layout clearboth">
+              <div>
+	            <div class="form-group">
+	              <div class="input-group">
+	                <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(this.name)" tabindex="1" />
+	                <label for="val-name" class="control-label" data-i19="def">item_name</label>
+	              
+	                <div class="input-group-btn" data-channel="dropdown_val(this.type)" >
+	                  <button id="btn-type" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	                    <span id="txt-type"></span>
+	                    <span class="caret"></span>
+	                  </button>
+	                  <input type="hidden" id="val-type" />
+	                  <ul class="dropdown-menu pull-right align-right" data-val-fld="val-type" data-txt-fld="txt-type">
+	                    <li><a href="javascript:;" data-value="FOOD" data-i19="def">type_foods</a></li>
+	                    <li><a href="javascript:;" data-value="GOOD" data-i19="def">type_goods</a></li>
+	                  </ul>
+	                </div>
+	              </div>
+	            </div>
+	
+	            <div class="form-group" style="display:none;">
+	              <input id="val-code" class="form-control" type="text" placeholder="Enter Code" data-channel="val(this.code)" tabindex="2" />
+	              <label for="val-code" class="control-label" data-i19="def">item_code</label>
+	            </div>
+	
+	            <div class="form-group">
+	              <div class="input-group">
+	                <input type="text" id="val-cap" class="form-control"
+	                  placeholder="Enter Price"
+	                  data-channel="val(this.price)"
+	                  data-constraint="currency"
+	                  tabindex="3"/>
+	                <label for="val-cap" class="control-label" data-i19="def">price</label>
+	                <div class="input-group-btn" data-channel="dropdown_val(this.itemUnit)" >
+	                  <button id="btn-unit" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	                    <span id="txt-unit"></span>
+	                    <span class="caret"></span>
+	                  </button>
+	                  <input type="hidden" id="val-unit" />
+	                  <ul class="dropdown-menu pull-right align-right" data-val-fld="val-unit" data-txt-fld="txt-unit">
+	                    <li><a href="javascript:;" data-value="DISK" data-i19="def">unit_disk</a></li>
+	                    <li><a href="javascript:;" data-value="JIN" data-i19="def">unit_jin</a></li>
+	                    <li><a href="javascript:;" data-value="KILOGRAM" data-i19="def">unit_kg</a></li>
+	                    <li><a href="javascript:;" data-value="BOTTLE" data-i19="def">unit_bottle</a></li>
+	                    <li><a href="javascript:;" data-value="CUP" data-i19="def">unit_cup</a></li>
+	                  </ul>
+	                </div>
+	              </div>
+	            </div>
+	
+	            <div class="form-group">
+	              <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(this.description)" tabindex="3"/>
+	              <label for="val-desc" class="control-label" data-i19="def">item_desc</label>
+	            </div>
+              
               </div>
-            </div>
-
-            <div class="form-group">
-              <div class="input-group">
-                <input id="val-code" class="form-control" type="text" placeholder="Enter Code" data-channel="val(this.code)" tabindex="2" />
-                <label for="val-code" class="control-label" data-i19="def">item_code</label>
-
-                <div class="input-group-btn" data-channel="dropdown_val(this.type)" >
-                  <button id="btn-type" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span id="txt-type"></span>
-                    <span class="caret"></span>
-                  </button>
-                  <input type="hidden" id="val-type" />
-                  <ul class="dropdown-menu pull-right align-right" data-val-fld="val-type" data-txt-fld="txt-type">
-                    <li><a href="javascript:;" data-value="FOOD" data-i19="def">type_foods</a></li>
-                    <li><a href="javascript:;" data-value="GOOD" data-i19="def">type_goods</a></li>
-                  </ul>
-                </div>
+              <div class="menuimage">
+                <div></div>
               </div>
-            </div>
-
-            <div class="form-group">
-              <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(this.description)" tabindex="3"/>
-              <label for="val-desc" class="control-label" data-i19="def">item_desc</label>
             </div>
 
             <div class="form-group" id="tagcloud">
@@ -80,7 +98,9 @@
             <div class="form-group">
               <div class="btn-group">
                 <button type="button" class="btn btn-primary" data-i19="def" id="btnOK">save</button>
+                <%--
                 <button type="button" class="btn btn-default" data-i19="def" id="btnCancel">cancel</button>
+                --%>
               </div>
             </div>
           </div>
@@ -91,56 +111,107 @@
     <script type="text/javascript">
     window.main.push(function(){
 
+        var defaultItem = {
+            "code": "",
+            "createdTime": "2013-09-15 08:09:21 +0800",
+            "changedTime": "2013-11-23 19:44:32 +0800",
+            "createdBy": 0,
+            "name": "",
+            "type": "FOOD",
+            "categories": [],
+            "pictureSet": [],
+            "description": "",
+            "price": 1.0,
+            "currency": "RMB",
+            "itemUnit": "DISK",
+            "enabled": true
+        };
+
+        var editmask = null;
+        var showItemDetails = function(idxStr){
+            var data = defaultItem, idx = parseInt(idxStr,10);
+            if(!isNaN(idx)){
+                data = memoryStorage['items'][idx];
+            }
+
+            $('#edit')
+            .data('editingIdx',idx)
+            .toDataView(data)
+            .addClass('transform0');
+
+            editmask = $('#panel').mask({noIndicator:true}); 
+            editmask.element.click(function(){
+                hideItemDetails();
+            });
+        };
+
+        var hideItemDetails = function(){
+            $('#edit')
+            .removeData('editingIdx')
+            .removeClass('transform0');
+            editmask.dismiss();
+        };
+
+        $('#btnCreate').click(function(ev){
+            showItemDetails('NaN');
+        });
+
     	$('#btnOK').click(function(){
     		$('.tagedit input').keypress();
     		var edit = $('#edit'),idx=parseInt(edit.data('editingIdx')),
     		    data = edit.toViewData();
 
     		if(!isNaN(idx)){
-    			memoryStorage['items'][idx] = $.extend(memoryStorage['items'][idx],data);
+    		    data = $.extend({},memoryStorage['items'][idx],data);
+    		}else{
+    		    var lastCode = "";
+    		    $.each(memoryStorage['items'],function(i,itpl){
+    		        lastCode = lastCode < itpl.code ? itpl.code : lastCode;
+    		    });
+    		    if(lastCode===''){
+    		        lastCode = "I00000";
+    		    }
+
+    		    data = $.extend({},defaultItem,data,{
+    		        code:nextValue(lastCode)
+    		    });
     		}
 
     		var savemask = $('#edit').mask({loadingText:'saving'});
     		$.ajax('{prefix}/tenant/{tenant}/itpl/',{
     			type:isNaN(idx)?'POST':'PUT',
-    			contentType:'application/json',
+    			contentType:'application/json; charset=UTF-8',
     			data:JSON.stringify(data)
-    		}).done(function(){
+    		}).done(function(serverData){
     			savemask.complete({text:'completed',fn:function(){
-    				$('#edit').removeClass('transform0');
+    			    hideItemDetails();
+
+                    if(!isNaN(idx)){
+                        // TODO Update tile
+                        memoryStorage['items'][idx] = data;
+                        $('.text',$('#dishes').children()[idx]).text(data.name);
+                    }else{
+                        memoryStorage['items'].push(serverData);
+
+                        $('<div class="tile"><div data-idx="'+(memoryStorage['items'].length-1)+'"><div class="text">'+serverData.name+'</div></div></div>')
+                        .insertBefore($('#dishes').children().last());
+                    }
     			}});
-    			
     		}).fail(function(){
     			savemask.complete({text:'failure',iconClass:'remove'});
     		});
     	});
 
+        <%--
     	$('#btnCancel').click(function(){
-            $('#edit').removeClass('transform0');
+            hideItemDetails();
     	});
+    	--%>
 
     	// slide in
     	$('#dishes').delegate('.tile > div','click',function(ev){
     	    var dataIdx = parseInt($(ev.currentTarget).attr('data-idx'),10);
-
-    		$('#edit')
-    		.data('editingIdx',dataIdx)
-    		.toDataView(isNaN(dataIdx)?{
-   			    "code": "",
-   			    "createdTime": "2013-09-15 08:09:21 +0800",
-   			    "changedTime": "2013-11-23 19:44:32 +0800",
-   			    "createdBy": 0,
-   			    "name": "",
-   			    "type": "FOOD",
-   			    "categories": [],
-   			    "pictureSet": [],
-   			    "description": "",
-   			    "price": 10.0,
-   			    "currency": "RMB",
-   			    "itemUnit": "CUP",
-   			    "enabled": true
-    		}:memoryStorage['items'][dataIdx])
-    		.addClass('transform0');
+    		showItemDetails(dataIdx);
     	});
 
     	// EOC - slide in
@@ -183,7 +254,7 @@
                 x.push('<div class="text">'+e.name+'</div>');
                 return '<div class="tile"><div data-idx="'+i+'">'+x.join('')+'</div></div>';
             }).join('') +
-            ['<div class="tile"><div data-idx="NaN"></div></div>'].join(''));
+            '<div class="tile"><div data-idx="NaN"></div></div>');
 
             $('#tagcloud .tagselect').empty().append(categoryData.map(function(e){
                 return '<div data-value="'+e.code+'">'+e.name+'</div>'; 

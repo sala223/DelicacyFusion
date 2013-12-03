@@ -14,7 +14,7 @@ import org.codehaus.enunciate.jaxrs.TypeHint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.df.core.rs.TenantResource;
+import com.df.core.rs.TenantLevelResource;
 import com.df.order.entity.Order;
 import com.df.order.exception.OrderException;
 import com.df.order.service.contract.OrderService;
@@ -22,7 +22,7 @@ import com.df.order.service.contract.OrderService;
 @Path("/tenant/{tenantCode}/store/{storeCode}/order")
 @Produces("application/json;charset=UTF-8")
 @Component
-public class OrderResource extends TenantResource {
+public class OrderResource extends TenantLevelResource {
 
 	@Autowired
 	private OrderService orderService;

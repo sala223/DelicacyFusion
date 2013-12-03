@@ -14,14 +14,14 @@ import org.codehaus.enunciate.jaxrs.TypeHint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.df.core.rs.TenantResource;
+import com.df.core.rs.TenantLevelResource;
 import com.df.masterdata.entity.DiningTable;
 import com.df.masterdata.service.contract.DiningTableService;
 
 @Path("/tenant/{tenantCode}/store/{storeCode}/table")
 @Produces("application/json;charset=UTF-8")
 @Component
-public class DiningTableResource extends TenantResource {
+public class DiningTableResource extends TenantLevelResource {
 
 	@Autowired
 	private DiningTableService diningTableService;

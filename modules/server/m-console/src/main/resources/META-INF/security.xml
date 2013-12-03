@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:sec="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security 
+        http://www.springframework.org/schema/security/spring-security.xsd">
+	<import resource="classpath:META-INF/idm-beans.xml" />
+	<sec:debug />
+	<sec:global-method-security
+		secured-annotations="enabled" jsr250-annotations="enabled" />
+	<bean id="secureChannelProcessor"
+		class="org.springframework.security.web.access.channel.SecureChannelProcessor" />
+	<bean id="insecureChannelProcessor"
+		class="org.springframework.security.web.access.channel.InsecureChannelProcessor" />
+	<bean id="channelDecisionManager"
+		class="org.springframework.security.web.access.channel.ChannelDecisionManagerImpl">
+		<property name="channelProcessors">
+			<list>
+				<ref local="secureChannelProcessor" />
+				<ref local="insecureChannelProcessor" />
+			</list>
+		</property>
+	</bean>
+	<bean id="authenticationManager"
+		class="org.springframework.security.authentication.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="authenticationProvider" />
+			</list>
+		</property>
+	</bean>
+	<bean id="webAccessDecisionManager"
+		class="org.springframework.security.access.vote.AffirmativeBased">
+		<constructor-arg>
+			<list>
+				<ref local="webExpressionVoter" />
+				<ref local="jsr250Voter" />
+			</list>
+		</constructor-arg>
+	</bean>
+	<bean id="jsr250Voter"
+		class="org.springframework.security.access.annotation.Jsr250Voter">
+	</bean>
+	<bean id="webExpressionVoter"
+		class="org.springframework.security.web.access.expression.WebExpressionVoter" />
+	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter" />
+	<bean id="FILTER_SECURITY_INTERCEPTOR"
+		class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="accessDecisionManager" ref="webAccessDecisionManager" />
+		<property name="securityMetadataSource" ref="securityInterceptorMetadataSource" />
+	</bean>
+	<bean id="EXCEPTION_TRANSLATION_FILTER"
+		class="org.springframework.security.web.access.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint" ref="authenticationEntryPoint" />
+		<property name="accessDeniedHandler" ref="accessDeniedHandler" />
+	</bean>
+	<bean id="authenticationEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<property name="loginFormUrl" value="/login/login.html" />
+	</bean>
+	<bean id="accessDeniedHandler"
+		class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+		<property name="errorPage" value="/login/accessDenied.html" />
+	</bean>
+	<bean id="mailOrCellPhoneAuthenticationFilter"
+		class="com.df.idm.authentication.MailOrCellPhoneAuthenticationFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="filterProcessesUrl" value="/login/process" />
+		<property name="authenticationFailureHandler" ref="authenticationFailureHandler" />
+		<property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" />
+	</bean>
+	<bean id="authenticationFailureHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+		<property name="defaultFailureUrl" value="/login.html" />
+		<property name="useForward" value="true" />
+	</bean>
+	<bean id="authenticationSuccessHandler"
+		class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+		<property name="defaultTargetUrl" value="/" />
+	</bean>
+	<bean id="LOCALE_CONTEXT_FILTER" class="com.df.core.web.LocaleContextHolderFilter">
+		<property name="localeResolver">
+			<bean class="com.df.core.web.SessionLocaleResolver" />
+		</property>
+	</bean>
+	<bean id="CHANNEL_FILTER"
+		class="org.springframework.security.web.access.channel.ChannelProcessingFilter">
+		<property name="channelDecisionManager" ref="channelDecisionManager" />
+		<property name="securityMetadataSource" ref="channelMetadataSource" />
+	</bean>
+	<bean id="SECURITY_CONTEXT_FILTER"
+		class="org.springframework.security.web.context.SecurityContextPersistenceFilter" />
+	<bean id="CSRF_FILTER" class="org.springframework.security.web.csrf.CsrfFilter">
+		<constructor-arg index="0" ref="csrfTokenRepository" />
+		<property name="accessDeniedHandler" ref="accessDeniedHandler" />
+	</bean>
+	<bean id="csrfTokenRepository"
+		class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository">
+	</bean>
+	<sec:filter-security-metadata-source
+		id="securityInterceptorMetadataSource" use-expressions="true">
+		<sec:intercept-url pattern="/rs/**" access="isAuthenticated()" />
+	</sec:filter-security-metadata-source>
+	<sec:filter-security-metadata-source
+		id="channelMetadataSource">
+		<sec:intercept-url pattern="/secure/**" access="REQUIRES_SECURE_CHANNEL" />
+	</sec:filter-security-metadata-source>
+	<bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+		<sec:filter-chain-map path-type="ant">
+			<sec:filter-chain pattern="/**/*.jpg" filters="none" />
+			<sec:filter-chain pattern="/**/*.gif" filters="none" />
+			<sec:filter-chain pattern="/**/*.tif" filters="none" />
+			<sec:filter-chain pattern="/**/*.png" filters="none" />
+			<sec:filter-chain pattern="/image/**" filters="none" />
+			<sec:filter-chain pattern="/**/*.js" filters="none" />
+			<sec:filter-chain pattern="/**/*.css" filters="none" />
+			<sec:filter-chain pattern="/login/**"
+				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,EXCEPTION_TRANSLATION_FILTER" />
+			<sec:filter-chain pattern="/rs/**"
+				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,EXCEPTION_TRANSLATION_FILTER" />
+		</sec:filter-chain-map>
+	</bean>
+</beans>

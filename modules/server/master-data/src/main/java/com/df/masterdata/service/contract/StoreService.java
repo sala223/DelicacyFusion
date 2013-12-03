@@ -8,9 +8,11 @@ public interface StoreService {
 
 	void newStore(Store store);
 
-	void updateStore(Store storeCode);
+	void updateStore(Store store);
 
- 	List<Store> getStoreList();
+	void deleteStore(String storeCode);
+
+	List<Store> getStoreList();
 
 	Store getStoreByCode(String storeCode);
 

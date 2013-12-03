@@ -32,10 +32,14 @@ public class UserObject implements Serializable {
 		return user.getEmail();
 	}
 
-	public String getTelephone() {
-		return user.getTelephone();
+	public String getCellphone() {
+		return user.getCellPhone();
 	}
-
+	
+	public String getWeiboAccount() {
+		return user.getWeiboAccount();
+	}
+	
 	public boolean isAccountNonExpired() {
 		return true;
 	}

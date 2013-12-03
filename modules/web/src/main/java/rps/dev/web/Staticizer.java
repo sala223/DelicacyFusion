@@ -25,10 +25,9 @@ public class Staticizer {
     }
 
     public void parse(String url) {
-        rsc.add(url);
-
         try {
             StreamedSource ss = new StreamedSource(new URL(this.contextPath + "/" + url));
+            rsc.add(url);
             Segment htmlSegment = null;
             for (Iterator<Segment> is = ss.iterator(); is.hasNext() && (htmlSegment = is.next()) != null;) {
                 if (htmlSegment instanceof StartTag) {
@@ -36,7 +35,13 @@ public class Staticizer {
                         ResourceExtract re = ResourceExtract.valueOf(((StartTag) htmlSegment).getName());
                         String rscUrl = re.url((StartTag) htmlSegment);
                         if (rscUrl != null) {
-                            rsc.add(rscUrl);
+                            if(rscUrl.endsWith(".html") && !rsc.contains(rscUrl)) {
+                            	parse(rscUrl);
+                            }else{
+                            	if( !rscUrl.startsWith("javascript:") && !"#".equals(rscUrl) ){
+                            		rsc.add(rscUrl);
+                            	}
+                            }
                         }
                     } catch (IllegalArgumentException e) {
                     }
@@ -102,9 +107,9 @@ public class Staticizer {
     }
 
     public static void main(String[] args) {
-        Staticizer s = new Staticizer("http://localhost:8080/dfweb/");
+        Staticizer s = new Staticizer("http://localhost:10080/dfweb/");
         // s.parse("dishes.html");
-        s.parse("dishes.html");
-        s.load("r:/tmp/dd");
+        s.parse("items.html");
+        s.load("C:/Users/fumi/git/DFusion/modules/web/build/webroot");
     }
 }

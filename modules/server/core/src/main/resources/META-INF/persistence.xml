@@ -8,6 +8,7 @@
 		<mapping-file>META-INF/master-orm.xml</mapping-file>
 		<mapping-file>META-INF/order-orm.xml</mapping-file>
 		<mapping-file>META-INF/idm-orm.xml</mapping-file>
+		<mapping-file>META-INF/crm-orm.xml</mapping-file>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<validation-mode>NONE</validation-mode>
 		<properties>
