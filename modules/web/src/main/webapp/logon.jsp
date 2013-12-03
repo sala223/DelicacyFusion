@@ -44,7 +44,7 @@
               <div class="form-group">
                 <div class="col-sm-12">
                   <button type="button" class="btn btn-primary" data-i19="def">Logon</button>
-                  <button type="button" class="btn btn-default" data-i19="def">Trial Application</button>
+                  <button type="button" class="btn btn-default" data-i19="def" id="btn-trial">Trial Application</button>
                 </div>
               </div>
             </div>
@@ -53,6 +53,13 @@
       </div>
     </div>
 
+    <script type="text/javascript">
+    window.main.push(function(){
+      $('#btn-trial').click(function(){
+        window.location="tenant-application.html";
+      });
+    });
+    </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />
   </body>
 </html>
