@@ -24,6 +24,8 @@
     <string name="cancel">取消</string>
     <string name="server_addr">服务器地址</string>
     <string name="sync_shop">同步门店数据</string>
+    <string name="clean_cache">清除缓存</string>
+    <string name="logout">退出登录</string>
     <string name="click_to_close">点击关闭</string>
     <string name="init_shop">正在初始化门店，请稍候</string>
     <string name="network_unavailable">当前没有网络连接，部分功能将不可用</string>

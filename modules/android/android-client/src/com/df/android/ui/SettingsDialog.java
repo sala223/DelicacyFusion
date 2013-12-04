@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.df.android.GlobalSettings;
 import com.df.android.R;
 import com.df.android.service.StoreSyncService;
+import com.df.android.utils.CacheMgr;
 
 public class SettingsDialog extends Dialog {
 	SharedPreferences preferences;
@@ -33,7 +34,7 @@ public class SettingsDialog extends Dialog {
 	private void init(final Context cxt) {
 		final EditText etServerAddr = (EditText)findViewById(R.id.serverAddr);
 		preferences = PreferenceManager.getDefaultSharedPreferences(cxt); 
-		etServerAddr.setText(preferences.getString("SERVERURL", "http://www.delicacyfusion.com"));
+		etServerAddr.setText(preferences.getString("SERVER_URL", "http://www.delicacyfusion.com"));
 		((TextView)findViewById(R.id.userCode)).setText(GlobalSettings.instance().getUserCode());
 		((TextView)findViewById(R.id.tenantName)).setText(preferences.getString("TENANT_CODE", ""));
 		((TextView)findViewById(R.id.storeName)).setText(preferences.getString("STORE_CODE", ""));
@@ -61,6 +62,29 @@ public class SettingsDialog extends Dialog {
 				view.getContext().startService(new Intent(view.getContext(), StoreSyncService.class));
 			}
 		});
+
+		findViewById(R.id.btnCleanCache)
+		.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				if(CacheMgr.instance().cleanCache(GlobalSettings.instance().getCurrentTenantCode(), 
+						GlobalSettings.instance().getCurrentStoreCode())) {
+				}
+			}
+		});
+		
+		findViewById(R.id.btnLogout)
+		.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				GlobalSettings.instance().setUserCode(null);
+				GlobalSettings.instance().setCurrentStore(null);
+				GlobalSettings.instance().setCurrentStoreCode(null);
+				GlobalSettings.instance().setCurrentTenantCode(null);
+			}
+		});
 		
 		findViewById(R.id.btnConfirmSettings)
 		.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +102,7 @@ public class SettingsDialog extends Dialog {
 
 		String serverUrl = ((EditText) findViewById(R.id.serverAddr)).getText()
 				.toString();
-		edit.putString("SERVERURL", serverUrl);
+		edit.putString("SERVER_URL", serverUrl);
 		edit.apply();
 
 		GlobalSettings.instance().setServerUrl(serverUrl);

@@ -78,7 +78,7 @@
         android:layout_margin="10dp"
         android:contentDescription="@string/send_order"
         android:padding="20dp"
-        android:src="@drawable/order" />
+        android:src="@drawable/send" />
 
     <TextView
         android:id="@+id/orderTotal"

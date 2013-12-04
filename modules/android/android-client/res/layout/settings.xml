@@ -55,6 +55,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tenantName"
         android:text="@string/sync_shop"/>
+
+    <Button
+        android:id="@+id/btnCleanCache"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnSyncShop"
+        android:text="@string/clean_cache"/>
+    
+    <Button
+        android:id="@+id/btnLogout"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnCleanCache"
+        android:text="@string/logout"/>
     
     <ImageButton
         android:contentDescription="@string/ok"
