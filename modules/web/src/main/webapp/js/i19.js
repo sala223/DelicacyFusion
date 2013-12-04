@@ -36,6 +36,10 @@ var i19={
     "city":"市",
     "district":"区",
     "street address":"街区详细地址",
+    "Sent Intial Password":"初始密码已发送至上面的邮箱或手机",
+    "Progress":"进度",
+    "Creating":"{0} 正在创建",
+    "Created":"{0} 已创建",
 
 	new_item:'新菜品',
 	item_name:'品名',

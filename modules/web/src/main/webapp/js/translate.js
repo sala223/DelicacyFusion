@@ -37,3 +37,9 @@ jQuery.fn.extend({
 		});
 	}
 });
+
+$.fn.extend({
+    iText:function(text){
+        this.text(transStr.apply(null,arguments));
+    }
+});

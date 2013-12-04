@@ -8,6 +8,8 @@
     .docked-center();
     top:@header-height;
 
+    .transition(0.5s);
+
     > div {
 
         position:absolute;
@@ -39,7 +41,7 @@
 
         .form-group {
             margin-bottom:10px;
-            
+
             .col-sm-2 {
                 width:24%;
             }
@@ -49,10 +51,22 @@
             .col-sm-10 {
                 width:74%;
             }
+
+            .progress {
+                margin-bottom:0;
+                position:relative;
+                top:7px;
+            }
         }
 
         .form-group:last-child {
             margin-top:14px;
+        }
+
+        div.form-control {
+            border-color:transparent;
+            box-shadow:none;
+            line-height:1.51;
         }
 
         button {
@@ -87,4 +101,19 @@
     ::-moz-placeholder { color:@placeholder-color; } /* firefox 19+ */
     :-ms-input-placeholder { color:@placeholder-color; } /* ie */
     input:-moz-placeholder { color:@placeholder-color; }
+}
+
+#main2 {
+    .transform(1;0;100%;0;0;0);
+}
+
+#page #panel.step2 {
+    #main1 {
+        .transform(1;0;-100%;0;0;0);
+        opacity:0;
+    }
+    
+    #main2 {
+        .transform(1;0;0;0;0;0);
+    }
 }
