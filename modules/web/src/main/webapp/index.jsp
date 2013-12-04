@@ -16,7 +16,7 @@
             <span class="logo-text">DelicacyFusion</span>
           </div>
           <div class="rtl">
-            <a href="tenant-application.html" data-i19="def">Trial Application</a>
+            <a href="tenant-application.html" class="btn-primary" data-i19="def">Trial Application</a>
             <a href="logon.html" data-i19="def">Logon</a>
           </div>
         </div>
