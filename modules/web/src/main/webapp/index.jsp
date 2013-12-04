@@ -11,7 +11,15 @@
   <body>
     <div id="page">
       <div id="panel">
-        <div class="titlebar"></div>
+        <div class="titlebar">
+          <div class="ltr">
+            <span class="logo-text">DelicacyFusion</span>
+          </div>
+          <div class="rtl">
+            <a href="tenant-application.html" data-i19="def">Trial Application</a>
+            <a href="logon.html" data-i19="def">Logon</a>
+          </div>
+        </div>
         <div class="main">
 
         </div>

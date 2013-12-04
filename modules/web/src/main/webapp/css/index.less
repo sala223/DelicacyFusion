@@ -3,3 +3,38 @@
 #page #panel {
     left:0;
 }
+
+.titlebar {
+    > div.ltr {
+        height:100%;
+        float:left;
+
+        span.logo-text {
+            font-size:2.4em;
+            line-height:@header-height;
+            letter-spacing: -1px;
+        }
+    }
+
+    > div.rtl {
+        float:right;
+        height:100%;
+
+        a {
+            line-height:@header-height;
+            font-size:1.6em;
+            font-weight:bold;
+            color:#555;
+            position:relative;
+            padding:0 18px 0 20px;
+        }
+
+        a:not(:first-child):after {
+            .docked-left();
+            content:'';
+            width:2px;
+            background-color:#CCC;
+            border-right:1px solid white;
+        }
+    }
+}
