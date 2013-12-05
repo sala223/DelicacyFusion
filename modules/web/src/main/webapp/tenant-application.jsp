@@ -9,9 +9,16 @@
     <jsp:include page="WEB-INF/jsptiles/setup.jsp" />
   </head>
   <body>
-    <div id="page">
+    <div id="page" class="standalone">
       <div id="panel" class="step1">
-        <div class="titlebar"></div>
+        <div class="titlebar" id="titlebar">
+          <div class="ltr">
+            <span class="logo-text">DelicacyFusion</span>
+          </div>
+          <div class="rtl">
+            <a href="logon.html" data-i19="def">Logon</a>
+          </div>
+        </div>
         <div class="main" id="main1">
           <div>
             <div class="form-horizontal">
@@ -169,6 +176,8 @@
 
         runProgress();
       });
+
+      window.parent.setTitle($('#titlebar').html());
     });
     </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />

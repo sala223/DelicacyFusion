@@ -13,7 +13,9 @@
     <div id="page" >
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
-        <div class="titlebar"></div>
+        <div class="titlebar" id="titlebar">
+        Tenant Landing
+        </div>
         <div class="tilecontainer">
           <div>
             <div>
@@ -34,7 +36,7 @@
 
     <script type="text/javascript">
     window.main.push(function(){
-
+      window.parent.setTitle($('#titlebar').html());
     });
     </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />

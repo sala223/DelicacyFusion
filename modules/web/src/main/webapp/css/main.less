@@ -35,6 +35,10 @@ html,body {
     font-size:0;
 }
 
+a {
+    cursor:pointer;
+}
+
 ::-webkit-input-placeholder { color:@placeholder-color; }
 ::-moz-placeholder { color:@placeholder-color; } /* firefox 19+ */
 :-ms-input-placeholder { color:@placeholder-color; } /* ie */
@@ -215,6 +219,12 @@ input:-moz-placeholder { color:@placeholder-color; }
     }
 }
 
+#panel.standalone {
+    .tilecontainer {
+        top:0;
+    }
+}
+
 #panel {
     .docked-center();
     left:@shower-width;
@@ -228,14 +238,13 @@ input:-moz-placeholder { color:@placeholder-color; }
         background-color:#F5F6F7;
         -webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
         box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
-
+        z-index:1;
+        display:none;
     }
 
     .tilecontainer {
         @tile-spacing:6px;
-
         .docked-center();
-        top:@header-height;
 
         overflow-y:auto;
         padding-left:@tile-spacing * 2;

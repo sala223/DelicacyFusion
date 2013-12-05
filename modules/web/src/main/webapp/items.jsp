@@ -13,7 +13,13 @@
     <div id="page">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
-        <div class="titlebar">
+        <div class="titlebar" id="titlebar">
+          <div class="ltr">
+            <span class="logo-text">DelicacyFusion</span>
+          </div>
+          <div class="rtl">
+            <a href="logon.html" data-i19="def">Logout</a>
+          </div>
         </div>
         <div id="dishes" class="tilecontainer"></div>
         <div id="edit" class="above-loadmask">
@@ -264,6 +270,8 @@
     	},function(){
     		loadmask.complete({text:'failure',iconClass:'remove'});
     	});
+
+    	window.parent.setTitle($('#titlebar').html());
     });
     </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />

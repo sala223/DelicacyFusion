@@ -13,7 +13,8 @@
     <div id="page">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
-        <div class="titlebar">
+        <div class="titlebar" id="titlebar">
+        Cashier
         </div>
         <div id="tables" class="tilecontainer"></div>
         <div id="edit" class="above-loadmask">
@@ -24,13 +25,13 @@
 		          <td data-i19="def">store</td>
 		          <td data-channel="text(this.storeCode)"></td>
 		        </tr>
-                <tr class="titleline">
-                  <td data-i19="def">table_code</td>
-                  <td></td>
-                  <td data-i19="def" colspan="2">dinner_person_count</td>
-                  <td></td>
-                </tr>
-                <tr><td colspan="5" class="rowspacing"></td></tr>
+            <tr class="titleline">
+              <td data-i19="def">table_code</td>
+              <td></td>
+              <td data-i19="def" colspan="2">dinner_person_count</td>
+              <td></td>
+            </tr>
+            <tr><td colspan="5" class="rowspacing"></td></tr>
 		        <tr class="line">
 		          <td class="ln" data-i19="def">number</td>
 		          <td class="itemname" data-i19="def">item_name</td>
@@ -128,34 +129,34 @@
     	});
 
     	// Payments
-        $('#btnCash').click(function(){
-            $.ajax('{prefix}/tenant/{tenant}/store/{store}/payment/bill/cash/'+$('#edit').data('orderId'),{
-                type:"POST"
-            });
-        });
+      $('#btnCash').click(function(){
+          $.ajax('{prefix}/tenant/{tenant}/store/{store}/payment/bill/cash/'+$('#edit').data('orderId'),{
+              type:"POST"
+          });
+      });
 
-        // Occupation
-        var fetchOccupation=function(){
-            setTimeout(function(){
-                $.ajax('{prefix}/tenant/{tenant}/store/{store}/table/occupation')
-                .done(function(data){
-                    memoryStorage['occupation'] = data;
-                    refreshOccupation();
-                })
-                .always(function(){
-                    fetchOccupation();
-                });
-            },10000);
-        };
+      // Occupation
+      var fetchOccupation=function(){
+          setTimeout(function(){
+              $.ajax('{prefix}/tenant/{tenant}/store/{store}/table/occupation')
+              .done(function(data){
+                  memoryStorage['occupation'] = data;
+                  refreshOccupation();
+              })
+              .always(function(){
+                  fetchOccupation();
+              });
+          },10000);
+      };
 
-        var refreshOccupation = function(){
-            $('#panel .tile').removeClass('occupied');
-            $.each(memoryStorage['occupation'],function(i,o){
-                $.each(o.tables,function(i,t){
-                    $('#'+memoryStorage['tablesIndex'][t]).addClass('occupied');
-                });
-            });
-        };
+      var refreshOccupation = function(){
+          $('#panel .tile').removeClass('occupied');
+          $.each(memoryStorage['occupation'],function(i,o){
+              $.each(o.tables,function(i,t){
+                  $('#'+memoryStorage['tablesIndex'][t]).addClass('occupied');
+              });
+          });
+      };
 
     	// Loading tables
     	var loadmask = $('#panel').mask({loadingText:transStr('loading')});
@@ -183,6 +184,8 @@
     	},function(){
     		loadmask.complete({text:transStr('failure'),iconClass:'remove'});
     	});
+
+    	window.parent.setTitle($('#titlebar').html());
     });
     </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />

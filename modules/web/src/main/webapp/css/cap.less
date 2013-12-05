@@ -1,0 +1,55 @@
+@import "common.less";
+
+#page #panel {
+    left:0;
+}
+
+
+#page #panel .main {
+    .docked-center();
+    top:@header-height;
+
+    iframe {
+        width:100%;
+        height:100%;
+        border:0 none;
+    }
+}
+
+.titlebar {
+    padding:0 10px;
+    display:block !important;
+
+    > div.ltr {
+        height:100%;
+        float:left;
+
+        span.logo-text {
+            font-size:2.4em;
+            line-height:@header-height;
+            letter-spacing: -1px;
+        }
+    }
+
+    > div.rtl {
+        float:right;
+        height:100%;
+
+        a {
+            line-height:@header-height;
+            font-size:1.6em;
+            font-weight:bold;
+            color:#555;
+            position:relative;
+            margin:0 10px 0 12px;
+            padding:4px 14px;
+            text-decoration:none;
+        }
+
+        a.btn-primary {
+            color:white;
+            border-radius:4px;
+            font-weight:normal;
+        }
+    }
+}

@@ -13,7 +13,8 @@
     <div id="page">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
-        <div class="titlebar">
+        <div class="titlebar" id="titlebar">
+        Tables
         </div>
         <div id="tables" class="tilecontainer"></div>
         <div id="edit" class="above-loadmask">
@@ -105,6 +106,8 @@
     	},function(){
     		loadmask.complete({text:transStr('failure'),iconClass:'remove'});
     	});
+
+    	window.parent.setTitle($('#titlebar').html());
     });
     </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />

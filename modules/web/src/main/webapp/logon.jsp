@@ -11,7 +11,14 @@
   <body>
     <div id="page">
       <div id="panel">
-        <div class="titlebar"></div>
+        <div class="titlebar" id="titlebar">
+          <div class="ltr">
+            <span class="logo-text">DelicacyFusion</span>
+          </div>
+          <div class="rtl">
+            <a href="tenant-application.html" class="btn-primary" data-i19="def">Trial Application</a>
+          </div>
+        </div>
         <div class="main">
           <div>
             <div class="form-horizontal">
@@ -53,7 +60,7 @@
 
     <script type="text/javascript">
     window.main.push(function(){
-
+      window.parent.setTitle($('#titlebar').html());
     });
     </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />

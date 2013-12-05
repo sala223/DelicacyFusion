@@ -15,7 +15,8 @@
     <div id="page">
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
-        <div class="titlebar">
+        <div class="titlebar" id="titlebar">
+        Stores
         </div>
         <div id="stores" class="tilecontainer"><div class="clearboth"></div></div>
         <div id="edit" class="above-loadmask">
@@ -71,61 +72,63 @@
     <script type="text/javascript">
     window.main.push(function(){
 
-        var editmask = undefined;
-        var showStoreDetail = function(idx,data){
-            $('#edit')
-            .data('editingIdx',idx)
-            .toDataView(data)
-            .addClass('transform0');
+      var editmask = undefined;
+      var showStoreDetail = function(idx,data){
+          $('#edit')
+          .data('editingIdx',idx)
+          .toDataView(data)
+          .addClass('transform0');
 
-            editmask = $('#panel').mask({noIndicator:true}); 
-            editmask.element.click(function(){
-                hideStoreDetail();
-            });
-        };
+          editmask = $('#panel').mask({noIndicator:true}); 
+          editmask.element.click(function(){
+              hideStoreDetail();
+          });
+      };
 
-        var hideStoreDetail = function(){
-            $('#edit')
-            .removeData('editingIdx')
-            .removeClass('transform0');
-            
-            editmask.dismiss();
-        };
+      var hideStoreDetail = function(){
+          $('#edit')
+          .removeData('editingIdx')
+          .removeClass('transform0');
+          
+          editmask.dismiss();
+      };
 
-        $('#stores').delegate('.tile > div','click',function(ev){
-            var dataIdx = parseInt($(ev.currentTarget).attr('data-idx'),10);
-            if(isNaN(dataIdx)){
-                showStoreDetail(dataIdx,memoryStorage['stores'][dataIdx]);
-            }else{
-                window.location = "store-landing.html"+'?'+
-			    ['tenant='+queryParams.tenant,'store='+memoryStorage['stores'][dataIdx].code].join('&');
-            }
-        });
+      $('#stores').delegate('.tile > div','click',function(ev){
+          var dataIdx = parseInt($(ev.currentTarget).attr('data-idx'),10);
+          if(isNaN(dataIdx)){
+              showStoreDetail(dataIdx,memoryStorage['stores'][dataIdx]);
+          }else{
+              window.location = "store-landing.html"+'?'+
+		    ['tenant='+queryParams.tenant,'store='+memoryStorage['stores'][dataIdx].code].join('&');
+          }
+      });
 
-        <%--
-        $('#btnCancel').click(function(){
-            hideStoreDetail();
-        });
-        --%>
-        
-        var loadmask = $('#page').mask({loadingText:'loading'});
-        $.ajax('{prefix}/tenant/{tenant}/store')
-        .done(function(data){
-            memoryStorage['stores'] = data;
+      <%--
+      $('#btnCancel').click(function(){
+          hideStoreDetail();
+      });
+      --%>
+      
+      var loadmask = $('#page').mask({loadingText:'loading'});
+      $.ajax('{prefix}/tenant/{tenant}/store')
+      .done(function(data){
+          memoryStorage['stores'] = data;
 
-            $('#stores>div').empty().append(memoryStorage['stores'].map(function(s,i){
-                var sb = ['<div class="tile"><div data-idx="'+i+'">'];
-                sb.push(s.name);
-                sb.push('</div></div>');
-                return sb.join('');
-            }).join('') +
-            '<div class="tile"><div data-idx="NaN"></div></div>');
+          $('#stores>div').empty().append(memoryStorage['stores'].map(function(s,i){
+              var sb = ['<div class="tile"><div data-idx="'+i+'">'];
+              sb.push(s.name);
+              sb.push('</div></div>');
+              return sb.join('');
+          }).join('') +
+          '<div class="tile"><div data-idx="NaN"></div></div>');
 
-            loadmask.dismiss();
-        })
-        .fail(function(){
-            loadmask.complete({text:'failure',iconClass:'remove'});
-        });
+          loadmask.dismiss();
+      })
+      .fail(function(){
+          loadmask.complete({text:'failure',iconClass:'remove'});
+      });
+
+      window.parent.setTitle($('#titlebar').html());
     });
     </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />
