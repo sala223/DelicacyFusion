@@ -4,49 +4,8 @@
     left:0;
 }
 
-.titlebar {
-    padding:0 10px;
+#page #panel .main {
+    .docked-center();
 
-    > div.ltr {
-        height:100%;
-        float:left;
-
-        span.logo-text {
-            font-size:2.4em;
-            line-height:@header-height;
-            letter-spacing: -1px;
-        }
-    }
-
-    > div.rtl {
-        float:right;
-        height:100%;
-
-        a {
-            line-height:@header-height;
-            font-size:1.6em;
-            font-weight:bold;
-            color:#555;
-            position:relative;
-            margin:0 10px 0 12px;
-            padding:4px 14px;
-            text-decoration:none;
-        }
-
-        a:first-child {
-            color:white;
-            border-radius:4px;
-            margin:0 24px 0 26px;
-            font-weight:normal;
-        }
-
-        a:not(:first-child):after {
-            .docked-left();
-            left:-14px;
-            content:'';
-            width:2px;
-            background-color:#CCC;
-            border-right:1px solid white;
-        }
-    }
+    background:transparent url(../img/index-background.jpg) no-repeat center center;
 }
