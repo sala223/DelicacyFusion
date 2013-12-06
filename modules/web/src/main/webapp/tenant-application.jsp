@@ -128,6 +128,11 @@
                 </div>
               </div>
 
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <button type="button" id="btn-trial" class="btn btn-primary" data-i19="def">Logon to Trial</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -167,14 +172,19 @@
             }else{
               runComplete();
             }
-          },500);
+          },200);
         };
         function runComplete(){
           $('#label-status').iText('Created',data.tenantName);
           $('#label-password-msg').iText('Sent Intial Password');
+          $('#btn-trial').css('visibility','visible');
         };
 
         runProgress();
+      });
+
+      $('#btn-trial').click(function(){
+        window.parent.go('logon.html');
       });
 
       window.parent.setTitle($('#titlebar').html());

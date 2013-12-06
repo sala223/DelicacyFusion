@@ -11,10 +11,16 @@
   </head>
   <body>
     <div id="page">
-      <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
+      <jsp:include page="WEB-INF/jsptiles/store-nav.jsp" />
       <div id="panel">
         <div class="titlebar" id="titlebar">
-        Tables
+          <div class="ltr">
+            <div class="home"></div>
+            <span class="logo-text">DelicacyFusion</span>
+          </div>
+          <div class="rtl">
+            <a href="logon.html" data-i19="def">Logout</a>
+          </div>
         </div>
         <div id="tables" class="tilecontainer"></div>
         <div id="edit" class="above-loadmask">

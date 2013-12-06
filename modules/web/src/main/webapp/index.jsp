@@ -12,25 +12,39 @@
     <div id="page">
       <div id="panel">
         <div class="titlebar" id="titlebar">
-          <div class="ltr">
-            <span class="logo-text">DelicacyFusion</span>
-          </div>
-          <div class="rtl">
-            <a href="tenant-application.html" class="btn-primary" data-i19="def">Trial Application</a>
-            <a href="logon.html" data-i19="def">Logon</a>
+          <div>
+            <div class="t1"></div>
+            <div class="t2"></div>
           </div>
         </div>
         <div class="main">
-
+          <iframe id="frame-a"></iframe>
         </div>
       </div>
     </div>
 
+    <dev:includeJS src="js/jquery-2.0.3.min.js" />
+    <dev:includeJS src="js/bootstrap.min.js" />
+    <dev:includeJS src="js/jquery-extension.js" />
+    <dev:includeJS src="js/i19.js" />
     <script type="text/javascript">
-    window.main.push(function(){
-      window.parent.setTitle($('#titlebar').html());
+    $(document).ready(function(){
+      $('#frame-a').attr('src',getQueryParams()['url']||'index-content.html');
+
+      $('#titlebar').delegate('.home','click',function(ev){
+        $('#frame-a')[0].contentWindow.toggleMenu();
+      });
     });
+
+    function setTitle(html){
+      var d = $('#titlebar>div');
+      d.children()[d.hasClass('show')?'last':'first']().empty().append(html);
+      d.toggleClass('show');
+    }
+
+    function go(url){
+      $('#frame-a').attr('src',url);
+    }
     </script>
-    <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />
   </body>
 </html>

@@ -11,10 +11,11 @@
   </head>
   <body>
     <div id="page">
-      <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
+      <jsp:include page="WEB-INF/jsptiles/tenant-nav.jsp" />
       <div id="panel">
         <div class="titlebar" id="titlebar">
           <div class="ltr">
+            <div class="home"></div>
             <span class="logo-text">DelicacyFusion</span>
           </div>
           <div class="rtl">

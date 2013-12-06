@@ -79,7 +79,9 @@ $(document).ready(function() {
   });
 });
 
-function setTitle(){
-  
+function setTitle(){}
+
+function toggleMenu(){
+  $('#page').toggleClass('showmenu');
 }
 </script>

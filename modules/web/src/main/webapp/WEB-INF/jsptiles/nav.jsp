@@ -5,25 +5,25 @@
 <%!
 public String menulink(String url,String text, HttpServletRequest req) {
 	final String curr = DevUtil.extJsp2Html(req.getServletPath()).substring(1);
-    return "<a class=\"item"+(url.equals(curr)?" curr":"")+"\" data-i19=\"def\" href=\""+url+"\">"+text+"</a>";
+  return "<a class=\"item"+(url.equals(curr)?" curr":"")+"\" data-i19=\"def\" href=\""+url+"\">"+text+"</a>";
 }
 %>
 
 <div id="nav">
   <div class="content">
-    <div class="header"></div>
     <div class="group">
-      <div class="title" data-i19="def">STORE</div>
-      <%=menulink("cashier.html","CASHIER",request)%>
-      <%=menulink("stores.html","STORE MANAGEMENT",request)%>
-      <%=menulink("#","STAFF MANAGEMENT",request)%>
-      <%=menulink("tables.html","TABLE MANAGEMENT",request)%>
-      <%=menulink("#","STORE LAYOUT DESIGN",request)%>
-    </div>
-    <div class="group">
-      <div class="title" data-i19="def">DISH</div>
-      <%=menulink("items.html","DISH MANAGEMENT",request)%>
-      <%=menulink("#","MENU DESIGN",request)%>
+      <!--<div class="title" data-i19="def">STORE</div>-->
+
+<%
+    	int menuCount = 0;
+    	String value = null;
+    	while( (value = request.getParameter("menu"+(menuCount++))) != null ){
+      	String[] pair = value.split("\\|");
+%>
+      <%=menulink(pair[0],pair[1],request)%>
+<%	
+    	}
+%>
     </div>
   </div>
 
@@ -64,13 +64,6 @@ window.main.push(function(){
 	.click(function(){
         $('#page').removeClass('showmenu');
 	});
-	
-	/*
-	var href = /[^/]+$/.exec(window.location.pathname)[0];
-	$('#nav .item').each(function(i,e){
-		var je=$(e);
-		href === je.attr('href') && je.addClass('curr');
-	});
-	*/
+
 });
 </script>

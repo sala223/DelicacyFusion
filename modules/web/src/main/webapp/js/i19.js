@@ -8,10 +8,12 @@ var i19={
 	"Forgot Password?":"忘记密码了?",
 	"Trial Application":"试用申请",
 	"Auto Sign-In Next Time":"下次自动登录",
+	"Logon to Trial":"登录试用",
 
 	"STORE":'门店',
 	"CASHIER":'收银',
 	"PAYMENT":'结账',
+	"LANDING PAGE":"主管理页面",
 	"STORE MANAGEMENT":'门店管理',
 	"STAFF MANAGEMENT":'人员管理',
 	"TABLE MANAGEMENT":'餐台管理',

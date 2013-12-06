@@ -14,7 +14,13 @@
       <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
       <div id="panel">
         <div class="titlebar" id="titlebar">
-        Store Landing
+          <div class="ltr">
+            <div class="home"></div>
+            <span class="logo-text">DelicacyFusion</span>
+          </div>
+          <div class="rtl">
+            <a href="logon.html" data-i19="def">Logout</a>
+          </div>
         </div>
         <div class="tilecontainer">
           <div>
