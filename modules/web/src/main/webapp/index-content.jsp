@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="main">
-
+			<center><img src="img/bg.jpg"/></center>
         </div>
       </div>
     </div>
