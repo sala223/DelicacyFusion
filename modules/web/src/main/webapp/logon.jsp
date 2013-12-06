@@ -49,7 +49,7 @@
 
               <div class="form-group">
                 <div class="col-sm-12">
-                  <button type="button" class="btn btn-primary" data-i19="def">Logon</button>
+                  <button type="button" class="btn btn-primary" data-i19="def" id="btn-logon">Logon</button>
                 </div>
               </div>
             </div>
@@ -61,6 +61,9 @@
     <script type="text/javascript">
     window.main.push(function(){
       window.parent.setTitle($('#titlebar').html());
+      $('#btn-logon').click(function(){
+        window.parent.go('tenant-landing.html');
+      });
     });
     </script>
     <jsp:include page="WEB-INF/jsptiles/jsmain.jsp" />

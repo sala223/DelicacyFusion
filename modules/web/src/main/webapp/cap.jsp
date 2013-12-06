@@ -12,7 +12,10 @@
     <div id="page">
       <div id="panel">
         <div class="titlebar" id="titlebar">
-
+          <div>
+            <div class="t1"></div>
+            <div class="t2"></div>
+          </div>
         </div>
         <div class="main">
           <iframe id="frame-a"></iframe>
@@ -30,10 +33,13 @@
     });
 
     function setTitle(html){
-      $('#titlebar').empty().append(html);
+      var d = $('#titlebar>div');
+      d.children()[d.hasClass('show')?'last':'first']().empty().append(html);
+      d.toggleClass('show');
     }
 
     function go(url){
+      console.log('asdfasdfasdf');
       $('#frame-a').attr('src',url);
     }
     </script>
