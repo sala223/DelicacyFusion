@@ -1,5 +1,6 @@
 package com.df.masterdata.service.impl;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +10,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.df.blobstore.image.ImageAttributes;
+import com.df.blobstore.image.ImageKey;
+import com.df.blobstore.image.ImageService;
+import com.df.core.common.context.TenantContextHolder;
 import com.df.masterdata.dao.StoreDao;
+import com.df.masterdata.entity.PictureRef;
 import com.df.masterdata.entity.Store;
 import com.df.masterdata.exception.StoreException;
 import com.df.masterdata.service.contract.StoreService;
@@ -20,8 +26,15 @@ public class StoreServiceImpl implements StoreService {
 	@Inject
 	private StoreDao storeDao;
 
+	@Inject
+	private ImageService imageService;
+
 	public void setStoreDao(StoreDao storeDao) {
 		this.storeDao = storeDao;
+	}
+
+	public void setImageService(ImageService imageService) {
+		this.imageService = imageService;
 	}
 
 	@Override
@@ -63,6 +76,7 @@ public class StoreServiceImpl implements StoreService {
 		found.setTelephone1(store.getTelephone1());
 		found.setTelephone2(store.getTelephone2());
 		found.setTrafficInfo(store.getTrafficInfo());
+		found.setImage(store.getImage()); 
 		storeDao.update(found);
 	}
 
@@ -87,5 +101,21 @@ public class StoreServiceImpl implements StoreService {
 			throw StoreException.storeWithCodeNotExist(storeCode);
 		}
 		return found;
+	}
+
+	@Override
+	public PictureRef updateStoreImage(String storeCode, InputStream imageStream) {
+		Store store = this.checkStore(storeCode, true);
+		String tenantCode = TenantContextHolder.getTenant().getTenantCode();
+		ImageKey key = imageService.uploadImage(imageStream, tenantCode);
+		ImageAttributes attribute = imageService.getImageKeyResolver().resolveImageAttributes(key);
+		PictureRef picture = new PictureRef();
+		picture.setImageId(key.getKey());
+		picture.setFormat(attribute.getFormat().name());
+		picture.setWidth(attribute.getWidth());
+		picture.setHeigth(attribute.getHeigth());
+		store.setImage(picture);
+		this.updateStore(store);
+		return picture;
 	}
 }

@@ -1,5 +1,8 @@
 package com.df.http.masterdata.resources;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -8,9 +11,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.jboss.resteasy.util.Base64;
 import org.springframework.stereotype.Component;
 
+import com.df.blobstore.image.http.ImageLinkCreator;
 import com.df.core.rs.TenantLevelResource;
+import com.df.http.masterdata.resources.exception.InputValidationException;
+import com.df.masterdata.entity.PictureRef;
 import com.df.masterdata.entity.Store;
 import com.df.masterdata.service.contract.StoreService;
 
@@ -22,8 +29,15 @@ public class StoreResource extends TenantLevelResource {
 	@Inject
 	private StoreService storeService;
 
+	@Inject
+	private ImageLinkCreator imageLinkCreator;
+
 	public void setStoreService(StoreService storeService) {
 		this.storeService = storeService;
+	}
+
+	public void setImageLinkCreator(ImageLinkCreator imageLinkCreator) {
+		this.imageLinkCreator = imageLinkCreator;
 	}
 
 	/**
@@ -37,7 +51,11 @@ public class StoreResource extends TenantLevelResource {
 	@Path("/")
 	public Store[] getStores(@PathParam("tenantCode") String tenantCode) {
 		injectTenantContext(tenantCode);
-		return storeService.getStoreList().toArray(new Store[0]);
+		Store[] stores = storeService.getStoreList().toArray(new Store[0]);
+		for (Store store : stores) {
+			store.createImageLink(imageLinkCreator);
+		}
+		return stores;
 	}
 
 	/**
@@ -53,7 +71,9 @@ public class StoreResource extends TenantLevelResource {
 	@Path("/{storeCode}")
 	public Store getStoreByCode(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
 		injectTenantContext(tenantCode);
-		return storeService.getStoreByCode(storeCode);
+		Store store = storeService.getStoreByCode(storeCode);
+		store.createImageLink(imageLinkCreator);
+		return store;
 	}
 
 	/**
@@ -84,5 +104,23 @@ public class StoreResource extends TenantLevelResource {
 		injectTenantContext(tenantCode);
 		storeService.updateStore(store);
 		return store;
+	}
+
+	@PUT
+	@Path("/{storeCode}/image")
+	public PictureRef updateStoreImage(@PathParam("tenantCode") String tenantCode,
+	        @PathParam("storeCode") String storeCode, String imageData) {
+		this.injectTenantContext(tenantCode);
+		byte[] imageBytes;
+		try {
+			imageBytes = Base64.decode(imageData);
+		} catch (IOException ex) {
+			int code = InputValidationException.IMAGE_NOT_BASE64_ENCODED;
+			throw new InputValidationException(code, ex.getMessage());
+		}
+		PictureRef pictureRef = storeService.updateStoreImage(storeCode, new ByteArrayInputStream(imageBytes));
+		String link = imageLinkCreator.createImageLink(pictureRef.getImageId());
+		pictureRef.setImageLink(link);
+		return pictureRef;
 	}
 }
