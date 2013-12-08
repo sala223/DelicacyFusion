@@ -221,3 +221,4 @@ create.gen.sql
 drop.gen.sql
 
 modules/web/src/main/webapp/WEB-INF/classes/**/*.class
+**/fmc-*.bat
