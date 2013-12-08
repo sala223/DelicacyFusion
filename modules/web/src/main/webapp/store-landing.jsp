@@ -11,7 +11,7 @@
   </head>
   <body>
     <div id="page" >
-      <jsp:include page="WEB-INF/jsptiles/nav.jsp" />
+      <jsp:include page="WEB-INF/jsptiles/store-nav.jsp" />
       <div id="panel">
         <div class="titlebar" id="titlebar">
           <div class="ltr">

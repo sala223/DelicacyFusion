@@ -27,38 +27,51 @@
         <div id="stores" class="tilecontainer"><div class="clearboth"></div></div>
         <div id="edit" class="above-loadmask">
           <div>
-            <div class="form-group">
-              <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(this.name)" tabindex="1" />
-              <label for="val-name" class="control-label" data-i19="def">store_name</label>
-            </div>
-            
-            <div class="form-group">
-              <input id="val-code" type="text" class="form-control" placeholder="Enter Code" data-channel="val(this.code)" tabindex="2" />
-              <label for="val-code" class="control-label" data-i19="def">store_code</label>
+
+            <div class="row-layout clearboth">
+              <div>
+                <div class="form-group">
+                  <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(this.name)" tabindex="1" />
+                  <label for="val-name" class="control-label" data-i19="def">store_name</label>
+                </div>
+
+                <div class="form-group">
+                  <input id="val-code" type="text" class="form-control" placeholder="Enter Code" data-channel="val(this.code)" />
+                  <label for="val-code" class="control-label" data-i19="def">store_code</label>
+                </div>
+
+                <div class="form-group">
+                  <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(this.description)" tabindex="2"/>
+                  <label for="val-desc" class="control-label" data-i19="def">store_desc</label>
+                </div>
+              </div>
+              <div class="storeimage">
+                <div></div>
+              </div>
             </div>
 
-            <div class="form-group">
-              <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(this.description)" tabindex="3"/>
-              <label for="val-desc" class="control-label" data-i19="def">store_desc</label>
+            <div class="form-group clearboth">
+              <div class="city-input clearboth">
+                <input type="text" class="form-control col-sm-4" id="input-address1" placeholder="Province,AR,MU" data-i19="def" tabindex="3" />
+                <input type="text" class="form-control col-sm-4" id="input-address2" placeholder="city" data-i19="def" tabindex="4" />
+                <input type="text" class="form-control col-sm-4" id="input-address3" placeholder="district" data-i19="def" tabindex="5" />
+              </div>
+              <input type="text" class="form-control" id="input-address4" placeholder="street address" data-i19="def" tabindex="6" />
+              <label for="input-address" class="control-label" data-i19="def">store_address</label>
             </div>
 
-            <div class="form-group">
-              <input type="text" id="val-addr" class="form-control" placeholder="Enter Address" data-channel="val(this.address)" tabindex="3"/>
-              <label for="val-addr" class="control-label" data-i19="def">store_address</label>
-            </div>
-
-            <div class="form-group">
-              <input type="text" id="val-tel1" class="form-control" placeholder="Enter Tel 1" data-channel="val(this.telephone1)" tabindex="4"/>
+            <div class="form-group telephones clearboth">
+              <div class="clearboth">
+                <input type="text" class="form-control col-sm-6" placeholder="Enter Tel 1" data-i19="def" tabindex="7" />
+                <input type="text" class="form-control col-sm-6" placeholder="Enter Tel 2" data-i19="def" tabindex="8" />
+              </div>
               <label for="val-tel1" class="control-label" data-i19="def">telephone_1</label>
             </div>
 
             <div class="form-group">
-              <input type="text" id="val-tel2" class="form-control" placeholder="Enter Tel 2" data-channel="val(this.telephone2)" tabindex="5"/>
-              <label for="val-tel2" class="control-label" data-i19="def">telephone_2</label>
-            </div>
-
-            <div class="form-group">
-              <input type="text" id="val-time" class="form-control" placeholder="Enter Business Time" data-channel="val(this.businessHourFrom+' - '+this.businessHourTo)" tabindex="5"/>
+              <div id="daytime-selector">
+                <div></div>
+              </div>
               <label for="val-time" class="control-label" data-i19="def">business_hours</label>
             </div>
 
@@ -114,6 +127,8 @@
           hideStoreDetail();
       });
       --%>
+
+      $('#daytime-selector>div').numberDragger();
       
       var loadmask = $('#page').mask({loadingText:'loading'});
       $.ajax('{prefix}/tenant/{tenant}/store')

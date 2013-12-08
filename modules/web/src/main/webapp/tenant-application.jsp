@@ -49,7 +49,7 @@
               <div class="form-group">
                 <label for="input-address" class="col-sm-2 control-label" data-i19="def">TENANT ADDRESS</label>
                 <div class="col-sm-10">
-                  <div class="multi-input-group">
+                  <div class="multi-input-group city-input">
                     <input type="text" class="form-control col-sm-4" id="input-address1" placeholder="Province,AR,MU" data-i19="def" data-channel="val(this.address1)" />
                     <input type="text" class="form-control col-sm-4" id="input-address2" placeholder="city" data-i19="def" data-channel="val(this.address2)" />
                     <input type="text" class="form-control col-sm-4" id="input-address3" placeholder="district" data-i19="def" data-channel="val(this.address3)" />

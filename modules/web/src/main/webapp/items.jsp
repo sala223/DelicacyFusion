@@ -28,59 +28,59 @@
 
             <div class="row-layout clearboth">
               <div>
-	            <div class="form-group">
-	              <div class="input-group">
-	                <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(this.name)" tabindex="1" />
-	                <label for="val-name" class="control-label" data-i19="def">item_name</label>
-	              
-	                <div class="input-group-btn" data-channel="dropdown_val(this.type)" >
-	                  <button id="btn-type" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-	                    <span id="txt-type"></span>
-	                    <span class="caret"></span>
-	                  </button>
-	                  <input type="hidden" id="val-type" />
-	                  <ul class="dropdown-menu pull-right align-right" data-val-fld="val-type" data-txt-fld="txt-type">
-	                    <li><a href="javascript:;" data-value="FOOD" data-i19="def">type_foods</a></li>
-	                    <li><a href="javascript:;" data-value="GOOD" data-i19="def">type_goods</a></li>
-	                  </ul>
-	                </div>
-	              </div>
-	            </div>
-	
-	            <div class="form-group" style="display:none;">
-	              <input id="val-code" class="form-control" type="text" placeholder="Enter Code" data-channel="val(this.code)" tabindex="2" />
-	              <label for="val-code" class="control-label" data-i19="def">item_code</label>
-	            </div>
-	
-	            <div class="form-group">
-	              <div class="input-group">
-	                <input type="text" id="val-cap" class="form-control"
-	                  placeholder="Enter Price"
-	                  data-channel="val(this.price)"
-	                  data-constraint="currency"
-	                  tabindex="3"/>
-	                <label for="val-cap" class="control-label" data-i19="def">price</label>
-	                <div class="input-group-btn" data-channel="dropdown_val(this.itemUnit)" >
-	                  <button id="btn-unit" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-	                    <span id="txt-unit"></span>
-	                    <span class="caret"></span>
-	                  </button>
-	                  <input type="hidden" id="val-unit" />
-	                  <ul class="dropdown-menu pull-right align-right" data-val-fld="val-unit" data-txt-fld="txt-unit">
-	                    <li><a href="javascript:;" data-value="DISK" data-i19="def">unit_disk</a></li>
-	                    <li><a href="javascript:;" data-value="JIN" data-i19="def">unit_jin</a></li>
-	                    <li><a href="javascript:;" data-value="KILOGRAM" data-i19="def">unit_kg</a></li>
-	                    <li><a href="javascript:;" data-value="BOTTLE" data-i19="def">unit_bottle</a></li>
-	                    <li><a href="javascript:;" data-value="CUP" data-i19="def">unit_cup</a></li>
-	                  </ul>
-	                </div>
-	              </div>
-	            </div>
-	
-	            <div class="form-group">
-	              <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(this.description)" tabindex="3"/>
-	              <label for="val-desc" class="control-label" data-i19="def">item_desc</label>
-	            </div>
+  	            <div class="form-group">
+  	              <div class="input-group">
+  	                <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(this.name)" tabindex="1" />
+  	                <label for="val-name" class="control-label" data-i19="def">item_name</label>
+  	              
+  	                <div class="input-group-btn" data-channel="dropdown_val(this.type)" >
+  	                  <button id="btn-type" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+  	                    <span id="txt-type"></span>
+  	                    <span class="caret"></span>
+  	                  </button>
+  	                  <input type="hidden" id="val-type" />
+  	                  <ul class="dropdown-menu pull-right align-right" data-val-fld="val-type" data-txt-fld="txt-type">
+  	                    <li><a href="javascript:;" data-value="FOOD" data-i19="def">type_foods</a></li>
+  	                    <li><a href="javascript:;" data-value="GOOD" data-i19="def">type_goods</a></li>
+  	                  </ul>
+  	                </div>
+  	              </div>
+  	            </div>
+
+  	            <div class="form-group" style="display:none;">
+  	              <input id="val-code" class="form-control" type="text" placeholder="Enter Code" data-channel="val(this.code)" tabindex="2" />
+  	              <label for="val-code" class="control-label" data-i19="def">item_code</label>
+  	            </div>
+  	
+  	            <div class="form-group">
+  	              <div class="input-group">
+  	                <input type="text" id="val-cap" class="form-control"
+  	                  placeholder="Enter Price"
+  	                  data-channel="val(this.price)"
+  	                  data-constraint="currency"
+  	                  tabindex="3"/>
+  	                <label for="val-cap" class="control-label" data-i19="def">price</label>
+  	                <div class="input-group-btn" data-channel="dropdown_val(this.itemUnit)" >
+  	                  <button id="btn-unit" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+  	                    <span id="txt-unit"></span>
+  	                    <span class="caret"></span>
+  	                  </button>
+  	                  <input type="hidden" id="val-unit" />
+  	                  <ul class="dropdown-menu pull-right align-right" data-val-fld="val-unit" data-txt-fld="txt-unit">
+  	                    <li><a href="javascript:;" data-value="DISK" data-i19="def">unit_disk</a></li>
+  	                    <li><a href="javascript:;" data-value="JIN" data-i19="def">unit_jin</a></li>
+  	                    <li><a href="javascript:;" data-value="KILOGRAM" data-i19="def">unit_kg</a></li>
+  	                    <li><a href="javascript:;" data-value="BOTTLE" data-i19="def">unit_bottle</a></li>
+  	                    <li><a href="javascript:;" data-value="CUP" data-i19="def">unit_cup</a></li>
+  	                  </ul>
+  	                </div>
+  	              </div>
+  	            </div>
+  	
+  	            <div class="form-group">
+  	              <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(this.description)" tabindex="3"/>
+  	              <label for="val-desc" class="control-label" data-i19="def">item_desc</label>
+  	            </div>
               
               </div>
               <div class="menuimage">
