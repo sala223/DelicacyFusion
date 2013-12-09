@@ -37,11 +37,22 @@
             </div>
           </div>
         </div>
+        <jsp:include page="WEB-INF/jsptiles/store-editor.jsp" />
       </div>
     </div>
 
     <script type="text/javascript">
     window.main.push(function(){
+      $('#action-info').click(function(){
+
+        var editmask = $('#panel').mask({loadingText:transStr('loading')});
+    		$.ajax('{prefix}/tenant/{tenant}/store/{store}')
+    		.done(function(data){
+      	  showStoreDetail();	
+    		});
+        
+      });
+      
       window.parent.setTitle($('#titlebar').html());
     });
     </script>

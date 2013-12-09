@@ -1,4 +1,5 @@
 @import "common.less";
+@import "store-editor.less";
 
 #panel #stores {
 
@@ -64,50 +65,5 @@
             border:0 none;
         }
 
-    }
-}
-
-.row-layout {
-    position:relative;
-
-    > div {
-        float:left;
-        width:50%;
-    }
-
-    > div:first-child {
-        width:55%;
-    }
-
-    > div:last-child {
-        width:45%;
-    }
-}
-
-.telephones .form-control {
-    float:left;
-    width:50%;
-}
-
-#daytime-selector {
-    padding:0 14px 0 14px;
-}
-
-.storeimage {
-    .docked-right();
-
-    > div {
-        .docked-center(10px);
-        bottom:0;
-        right:0;
-        left:20px;
-    }
-
-    > div:after {
-        content:"";
-        .docked-center();
-        border:2px solid #DDD;
-        border-radius:10px;
-        background:transparent url(../img/food.png) no-repeat center center;
     }
 }
