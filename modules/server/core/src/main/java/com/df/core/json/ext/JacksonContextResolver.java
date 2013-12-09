@@ -11,15 +11,15 @@ import org.codehaus.jackson.map.ObjectMapper;
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 public class JacksonContextResolver implements ContextResolver<ObjectMapper> {
-    private ObjectMapper objectMapper;
+	private ObjectMapper objectMapper;
 
-    public JacksonContextResolver() throws Exception {
-	this.objectMapper = new ObjectMapper();
-	this.objectMapper.setDateFormat(SimpleDateSerializer.getDateFormat());
-	this.objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
+	public JacksonContextResolver() throws Exception {
+		this.objectMapper = new ObjectMapper();
+		this.objectMapper.setDateFormat(SimpleDateSerializer.getDateFormat());
+		this.objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	}
 
-    public ObjectMapper getContext(Class<?> objectType) {
-	return objectMapper;
-    }
+	public ObjectMapper getContext(Class<?> objectType) {
+		return objectMapper;
+	}
 }

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -43,8 +42,8 @@ public class Tenant implements Serializable {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@Embedded
-	private Address address = new Address();
+	@Column(name = "ADDRESS", length = 1024, nullable = false)
+	private String address;
 
 	public String getCode() {
 		return code;
@@ -70,11 +69,11 @@ public class Tenant implements Serializable {
 		this.description = description;
 	}
 
-	public Address getAddress() {
+	public String getAddress() {
 		return address;
 	}
 
-	public void setAddress(Address address) {
+	public void setAddress(String address) {
 		this.address = address;
 	}
 

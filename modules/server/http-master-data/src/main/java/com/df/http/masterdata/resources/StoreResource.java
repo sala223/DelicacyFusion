@@ -13,11 +13,13 @@ import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.util.Base64;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import com.df.blobstore.image.http.ImageLinkCreator;
+import com.df.blobstore.image.ImageKey;
+import com.df.blobstore.image.http.ImageReference;
+import com.df.blobstore.image.http.ImageReferenceFactory;
 import com.df.core.rs.TenantLevelResource;
 import com.df.http.masterdata.resources.exception.InputValidationException;
-import com.df.masterdata.entity.PictureRef;
 import com.df.masterdata.entity.Store;
 import com.df.masterdata.service.contract.StoreService;
 
@@ -30,14 +32,14 @@ public class StoreResource extends TenantLevelResource {
 	private StoreService storeService;
 
 	@Inject
-	private ImageLinkCreator imageLinkCreator;
+	private ImageReferenceFactory imageReferenceFactory;
 
 	public void setStoreService(StoreService storeService) {
 		this.storeService = storeService;
 	}
 
-	public void setImageLinkCreator(ImageLinkCreator imageLinkCreator) {
-		this.imageLinkCreator = imageLinkCreator;
+	public void setImageReferenceFactory(ImageReferenceFactory imageReferenceFactory) {
+		this.imageReferenceFactory = imageReferenceFactory;
 	}
 
 	/**
@@ -53,7 +55,10 @@ public class StoreResource extends TenantLevelResource {
 		injectTenantContext(tenantCode);
 		Store[] stores = storeService.getStoreList().toArray(new Store[0]);
 		for (Store store : stores) {
-			store.createImageLink(imageLinkCreator);
+			if (store.getImageId() != null) {
+				ImageKey key = new ImageKey(store.getImageId());
+				store.setImage(imageReferenceFactory.createImageReference(key));
+			}
 		}
 		return stores;
 	}
@@ -67,12 +72,15 @@ public class StoreResource extends TenantLevelResource {
 	 *            the store code
 	 * @return return the found store or return null if it doesn't exist.
 	 */
-	@GET
 	@Path("/{storeCode}")
+	@GET
 	public Store getStoreByCode(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
 		injectTenantContext(tenantCode);
 		Store store = storeService.getStoreByCode(storeCode);
-		store.createImageLink(imageLinkCreator);
+		if (!StringUtils.isEmpty(store.getImageId())) {
+			ImageKey key = new ImageKey(store.getImageId());
+			store.setImage(imageReferenceFactory.createImageReference(key));
+		}
 		return store;
 	}
 
@@ -107,8 +115,8 @@ public class StoreResource extends TenantLevelResource {
 	}
 
 	@PUT
-	@Path("/{storeCode}/image")
-	public PictureRef updateStoreImage(@PathParam("tenantCode") String tenantCode,
+	@Path("{storeCode}/image")
+	public ImageReference updateStoreImage(@PathParam("tenantCode") String tenantCode,
 	        @PathParam("storeCode") String storeCode, String imageData) {
 		this.injectTenantContext(tenantCode);
 		byte[] imageBytes;
@@ -118,9 +126,7 @@ public class StoreResource extends TenantLevelResource {
 			int code = InputValidationException.IMAGE_NOT_BASE64_ENCODED;
 			throw new InputValidationException(code, ex.getMessage());
 		}
-		PictureRef pictureRef = storeService.updateStoreImage(storeCode, new ByteArrayInputStream(imageBytes));
-		String link = imageLinkCreator.createImageLink(pictureRef.getImageId());
-		pictureRef.setImageLink(link);
-		return pictureRef;
+		ImageKey key = storeService.updateStoreImage(storeCode, new ByteArrayInputStream(imageBytes));
+		return imageReferenceFactory.createImageReference(key);
 	}
 }

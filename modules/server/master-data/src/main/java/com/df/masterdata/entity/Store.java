@@ -1,31 +1,17 @@
 package com.df.masterdata.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
+import javax.persistence.Transient;
 
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Indexes;
-import org.eclipse.persistence.annotations.JoinFetch;
-import org.eclipse.persistence.annotations.JoinFetchType;
 
-import com.df.blobstore.image.http.ImageLinkCreator;
+import com.df.blobstore.image.http.ImageReference;
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @Entity
-@SecondaryTable(name = "STORE_IMAGE", pkJoinColumns = { @PrimaryKeyJoinColumn(name = "STORE_ID") })
 @Indexes({
         @Index(name = "IDX_STORE_T_CODE", unique = true, columnNames = { "CODE", MultiTenantSupport.TENANT_COLUMN }),
         @Index(name = "IDX_STORE_T_NAME", unique = true, columnNames = { "NAME", MultiTenantSupport.TENANT_COLUMN }) })
@@ -38,20 +24,14 @@ public class Store extends MasterData {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "STORE_ADDRESS", joinColumns = @JoinColumn(name = "STORE_ID"))
-	@JoinFetch(JoinFetchType.OUTER)
-	private List<Address> addresses;
+	@Column(name = "ADDRESS", length = 1024, nullable = false)
+	private String address;
 
-	@Embedded
-	@AttributeOverrides({
-	        @AttributeOverride(name = "imageId", column = @Column(table = "STORE_IMAGE", name = "IMG_ID")),
-	        @AttributeOverride(name = "width", column = @Column(table = "STORE_IMAGE", name = "WIDTH")),
-	        @AttributeOverride(name = "heigth", column = @Column(table = "STORE_IMAGE", name = "HEIGTH")),
-	        @AttributeOverride(name = "format", column = @Column(table = "STORE_IMAGE", name = "FORMAT"))
-	})
-	@JoinFetch(JoinFetchType.OUTER)
-	private PictureRef image;
+	@Transient
+	private ImageReference image;
+
+	@Column(length = 512, nullable = true, name = "IMG_ID")
+	private String imageId;
 
 	@Column(length = 32, nullable = false, name = "TELEPHONE1")
 	private String telephone1;
@@ -84,18 +64,12 @@ public class Store extends MasterData {
 		this.description = description;
 	}
 
-	public Address getAddress() {
-		if (addresses != null && addresses.size() > 0) {
-			return addresses.get(0);
-		}
-		return null;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAddress(Address address) {
-		if (addresses == null) {
-			addresses = new ArrayList<Address>();
-		}
-		this.addresses.add(address);
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getTelephone1() {
@@ -138,18 +112,20 @@ public class Store extends MasterData {
 		this.trafficInfo = trafficInfo;
 	}
 
-	public PictureRef getImage() {
+	public ImageReference getImage() {
 		return image;
 	}
 
-	public void setImage(PictureRef image) {
+	public void setImage(ImageReference image) {
 		this.image = image;
 	}
 
-	public void createImageLink(ImageLinkCreator creator) {
-		if (this.image != null) {
-			image.setImageLink(creator.createImageLink(image.getImageId()));
-		}
+	public String getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(String imageId) {
+		this.imageId = imageId;
 	}
 
 	@Override
@@ -162,5 +138,4 @@ public class Store extends MasterData {
 			this.businessHourTo = 60 * 22;
 		}
 	}
-
 }

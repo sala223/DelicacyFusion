@@ -33,10 +33,10 @@ import com.df.masterdata.entity.PictureRef;
 import com.df.masterdata.exception.ItemException;
 import com.df.masterdata.service.contract.ItemService;
 
-@Path("/tenant/{tenantCode}/store/{storeCode}")
+@Path("/tenant/{tenantCode}/store/{storeCode}/item")
 @Produces("application/json;charset=UTF-8")
 @Component
-public class ItemResource extends TenantLevelResource { 
+public class ItemResource extends TenantLevelResource {
 	@Inject
 	private ItemService itemService;
 
@@ -64,12 +64,16 @@ public class ItemResource extends TenantLevelResource {
 	 * @return all the food
 	 */
 	@GET
-	@Path("/{categoryCode}/food")
+	@Path("/food")
 	@TypeHint(Item.class)
 	public List<Item> getFoodsByCategory(@PathParam("tenantCode") String tenantCode,
-	        @PathParam("storeCode") String storeCode, @PathParam("categoryCode") String categoryCode) {
+	        @PathParam("storeCode") String storeCode, @QueryParam("categoryCode") String categoryCode) {
 		injectTenantContext(tenantCode);
-		return createItemImageLink(itemService.getFoodsByCategory(storeCode, categoryCode));
+		if (categoryCode == null) {
+			return createItemImageLink(itemService.getAvaliableFoods(storeCode, 0, Integer.MAX_VALUE));
+		} else {
+			return createItemImageLink(itemService.getFoodsByCategory(storeCode, categoryCode));
+		}
 	}
 
 	/**
@@ -89,29 +93,6 @@ public class ItemResource extends TenantLevelResource {
 	}
 
 	/**
-	 * Pagination retrieve foods from a store
-	 * 
-	 * @param tenantCode
-	 *            The tenant code
-	 * @param storeCode
-	 *            The store code
-	 * @param from
-	 *            The offset to begin to retrieve
-	 * @param to
-	 *            The offset to end to retrieve
-	 * @return the foods between <code>from</code> and <code>to</code>.
-	 */
-	@GET
-	@Path("/food")
-	@TypeHint(Item.class)
-	public List<Item> getFoods(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
-	        @QueryParam("from") @DefaultValue("0") int from, @QueryParam("to") @DefaultValue("100") int to) {
-		injectTenantContext(tenantCode);
-		int firstResult = from < 0 ? 0 : from;
-		return createItemImageLink(itemService.getAvaliableFoods(storeCode, firstResult, to));
-	}
-
-	/**
 	 * Pagination retrieve items from a store
 	 * 
 	 * @param tenantCode
@@ -125,7 +106,7 @@ public class ItemResource extends TenantLevelResource {
 	 * @return the items between <code>from</code> and <code>to</code>.
 	 */
 	@GET
-	@Path("/item")
+	@Path("/")
 	@TypeHint(Item.class)
 	public List<Item> getItems(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	        @QueryParam("from") @DefaultValue("0") int from, @QueryParam("to") @DefaultValue("100") int to) {
@@ -135,7 +116,7 @@ public class ItemResource extends TenantLevelResource {
 	}
 
 	@POST
-	@Path("/item")
+	@Path("/")
 	@TypeHint(Item.class)
 	public Item createItem(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	        Item item) {
@@ -145,7 +126,7 @@ public class ItemResource extends TenantLevelResource {
 	}
 
 	@PUT
-	@Path("/item")
+	@Path("/")
 	public void updateItem(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	        Item item) {
 		injectTenantContext(tenantCode);
@@ -153,7 +134,7 @@ public class ItemResource extends TenantLevelResource {
 	}
 
 	@GET
-	@Path("/item/{itemCode}/image/{imageId}")
+	@Path("/{itemCode}/image/{imageId}")
 	/**
 	 * Get item image by image id.
 	 * 

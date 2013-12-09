@@ -14,6 +14,12 @@
 	<bean id="imageLinkCreator" class="com.df.blobstore.image.http.DefaultImageLinkCreator"
 		lazy-init="true">
 		<property name="imageRequestPrefix" value="/image" />
-		<property name="keyResolver" ref="imageKeyResolver"/>
+		<property name="keyResolver" ref="imageKeyResolver" />
 	</bean>
+	<bean id="imageReferenceFactory"
+		class="com.df.blobstore.image.http.DefaultImageReferenceFactory">
+		<constructor-arg index="0" ref="imageLinkCreator" />
+		<constructor-arg index="1" ref="imageKeyResolver" />
+	</bean>
+	<bean id="objectMapper" class="com.df.core.json.ext.ObjectMapperFactoryBean" />
 </beans>
