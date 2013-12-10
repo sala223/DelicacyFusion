@@ -70,6 +70,8 @@ public class ItemTemplateServiceImpl implements ItemTemplateService {
 		itpl.setName(itemTemplate.getName());
 		itpl.setPrice(itemTemplate.getPrice());
 		itpl.setType(itemTemplate.getType());
+		List<PictureRef> pictureSet = itemTemplate.getPictureSet();
+		itpl.setPictureSet(pictureSet); 
 		itemTemplateDao.update(itpl);
 	}
 
