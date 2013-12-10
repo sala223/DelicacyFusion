@@ -43,12 +43,21 @@
 
     <script type="text/javascript">
     window.main.push(function(){
-      $('#action-info').click(function(){
+      var editmask;
 
-        var editmask = $('#panel').mask({loadingText:transStr('loading')});
+      window.storeEditor.ajaxEvent = function(){
+        editmask.dismiss();
+        //TODO Update Current Store Name
+      };
+
+      $('#action-info').click(function(){
+        editmask = $('#panel').mask({loadingText:transStr('loading')});
+
     		$.ajax('{prefix}/tenant/{tenant}/store/{store}')
     		.done(function(data){
-      	  showStoreDetail();	
+      		editmask.clearIndicator();
+      	  storeEditor.loadStoreDetail(data);
+      	  showEditor(editmask);
     		});
         
       });

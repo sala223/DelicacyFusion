@@ -48,6 +48,20 @@ jQuery.fn.extend({
             }
         });
 
-        return {};
+        return {
+            setValues:function(){
+                var args = arguments;
+                $('.marker',that).each(function(i,m){
+                    var number = args[i];
+                    $(m).css('left',(number*width)+'px');
+                    cfg.markers[i] = number;
+                });
+
+                cfg.changeEvent.apply(that,cfg.markers);
+            },
+            getValues:function(){
+                return cfg.markers;
+            }
+        };
     }
 });

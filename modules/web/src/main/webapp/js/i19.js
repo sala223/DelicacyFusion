@@ -89,6 +89,7 @@ var i19={
 	store_address:'门店地址',
 	telephone_1:'联系电话(主要)',
 	telephone_2:'联系电话(备用)',
+	telephone:'联系电话',
 	business_hours:'营业时间',
 
 	completed:'已完成',

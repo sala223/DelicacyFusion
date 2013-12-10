@@ -51,6 +51,7 @@ jQuery.fn.extend({
 			},
 			clearIndicator:function(){
 				loadmask.children().remove();
+				return this;
 			},
 			dismiss:function(fn){
 				loadmask.animate({opacity:0},400,function(){

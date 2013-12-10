@@ -9,12 +9,12 @@
           <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(this.name)" tabindex="1" />
           <label for="val-name" class="control-label" data-i19="def">store_name</label>
         </div>
-
+<%--
         <div class="form-group">
           <input id="val-code" type="text" class="form-control" placeholder="Enter Code" data-channel="val(this.code)" />
           <label for="val-code" class="control-label" data-i19="def">store_code</label>
         </div>
-
+--%>
         <div class="form-group">
           <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(this.description)" tabindex="2"/>
           <label for="val-desc" class="control-label" data-i19="def">store_desc</label>
@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="form-group clearboth">
+    <div class="form-group clearboth" data-channel="addr_val(this.address)">
       <div class="city-input clearboth">
         <input type="text" class="form-control col-sm-4" id="input-address1" placeholder="Province,AR,MU" data-i19="def" tabindex="3" />
         <input type="text" class="form-control col-sm-4" id="input-address2" placeholder="city" data-i19="def" tabindex="4" />
@@ -37,10 +37,10 @@
 
     <div class="form-group telephones clearboth">
       <div class="clearboth">
-        <input type="text" class="form-control col-sm-6" placeholder="Enter Tel 1" data-i19="def" tabindex="7" />
-        <input type="text" class="form-control col-sm-6" placeholder="Enter Tel 2" data-i19="def" tabindex="8" />
+        <input type="text" class="form-control col-sm-6" placeholder="Enter Tel 1" data-channel="val(this.telephone1)" data-i19="def" tabindex="7" />
+        <input type="text" class="form-control col-sm-6" placeholder="Enter Tel 2" data-channel="val(this.telephone2)" data-i19="def" tabindex="8" />
       </div>
-      <label for="val-tel1" class="control-label" data-i19="def">telephone_1</label>
+      <label for="val-tel1" class="control-label" data-i19="def">telephone</label>
     </div>
 
     <div class="form-group">
@@ -65,32 +65,64 @@
 
 window.main.push(function(){
 
-  var editmask = undefined;
-  window.showStoreDetail = function(data){
-      $('#edit')
-      .toDataView(data)
-      .addClass('transform0');
+  var editingData,isNew;
+  window.storeEditor = {
+    loadStoreDetail:function(data){
+      isNew = false;
+      editingData = data;
 
-      editmask = $('#panel').mask({noIndicator:true}); 
-      editmask.element.click(function(){
-          hideStoreDetail();
+      $('#edit')
+      .toDataView(data);
+
+      timeDragger.setValues(Math.floor(editingData.businessHourFrom / 30),Math.floor(editingData.businessHourTo / 30));
+    },
+    newStoreDetail:function(data){
+      this.loadStoreDetail(data);
+      isNew = true;
+    },
+    ajaxEvent:function(){}
+  };
+
+  $('#edit button').click(function(){
+    var savemask = $('#edit').mask({loadingText:'saving'});
+
+    $.extend(editingData,$('#edit').toViewData());
+
+    var numbers = timeDragger.getValues();
+    editingData.businessHourFrom = numbers[0]*30;
+    editingData.businessHourTo = numbers[1]*30;
+
+    $.ajax('{prefix}/tenant/{tenant}/store/',{
+      type:isNew?'POST':'PUT',
+      contentType:'application/json; charset=UTF-8',
+      data:JSON.stringify(editingData)
+    })
+    .done(function(){
+      savemask.complete({
+        text:'completed',
+        fn:function(){
+          hideEditor();
+          window.storeEditor.ajaxEvent(editingData);
+          editingData=undefined;
+        }
       });
-  };
 
-  var hideStoreDetail = function(){
-      $('#edit')
-      .removeClass('transform0');
-      
-      editmask.dismiss();
-  };
+    });
+
+/*
+    hideEditor();
+    window.storeEditor.ajaxEvent(editingData);
+    editingData=undefined;
+*/
+  });
 
   var formatTime=function(i){
     var hh = Math.floor(i*30/60),
         mm = i*30 - hh*60;
     return (hh<10?'0':'')+hh+':'+(mm<10?'0':'')+mm;
   };
-  $('#daytime-label').text( formatTime(0) + '-'+formatTime(48) );
-  $('#daytime-selector>div').numberDragger({
+
+  var timeDragger = $('#daytime-selector>div').numberDragger({
     markers:[0,48],
     unitCount:49,
     unitText:{"0":'00:00',"24":'12:00',"48":'24:00'},
@@ -99,5 +131,6 @@ window.main.push(function(){
     }
   });
 
+  timeDragger.setValues(0,48);
 });
 </script>

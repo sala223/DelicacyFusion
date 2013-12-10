@@ -41,17 +41,17 @@ $(document).ready(function() {
   	.replace(/{store}/,queryParams.store);
 
   	var k = "",urlParams=[];
-      for(k in options.urlParams){
-      	if(options.urlParams.hasOwnProperty(k)){
-              urlParams.push(k+'='+encodeURIComponent(options.urlParams[k]));
-      	}
-      }
+    for(k in options.urlParams){
+    	if(options.urlParams.hasOwnProperty(k)){
+            urlParams.push(k+'='+encodeURIComponent(options.urlParams[k]));
+    	}
+    }
 
-      if(urlParams.length>0){
-          options.url = options.url+'?'+urlParams.join("&");
-      }
+    if(urlParams.length>0){
+        options.url = options.url+'?'+urlParams.join("&");
+    }
 
-  	console.log("ajax",options);
+  	//console.log("ajax",options);
   });
 
   $('#edit').attachConstraint();
@@ -83,5 +83,23 @@ function setTitle(){}
 
 function toggleMenu(){
   $('#page').toggleClass('showmenu');
+}
+
+var editmask;
+function showEditor(mask){
+  editmask = mask;
+
+  editmask===undefined && ( editmask = $('#panel').mask().clearIndicator() );
+  $('#edit').addClass('transform0');
+
+  $(editmask.element).click(function(){
+    hideEditor();
+  });
+}
+
+function hideEditor(){
+  $('#edit').removeClass('transform0');
+  editmask.dismiss();
+  editmask = undefined;
 }
 </script>
