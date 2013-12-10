@@ -25,100 +25,53 @@
           </div>
         </div>
         <div id="stores" class="tilecontainer"><div class="clearboth"></div></div>
-        <div id="edit" class="above-loadmask">
-          <div>
-
-            <div class="row-layout clearboth">
-              <div>
-                <div class="form-group">
-                  <input id="val-name" type="text" class="form-control" placeholder="Enter Name" data-channel="val(this.name)" tabindex="1" />
-                  <label for="val-name" class="control-label" data-i19="def">store_name</label>
-                </div>
-
-                <div class="form-group">
-                  <input id="val-code" type="text" class="form-control" placeholder="Enter Code" data-channel="val(this.code)" />
-                  <label for="val-code" class="control-label" data-i19="def">store_code</label>
-                </div>
-
-                <div class="form-group">
-                  <input type="text" id="val-desc" class="form-control" placeholder="Enter Description" data-channel="val(this.description)" tabindex="2"/>
-                  <label for="val-desc" class="control-label" data-i19="def">store_desc</label>
-                </div>
-              </div>
-              <div class="storeimage">
-                <div></div>
-              </div>
-            </div>
-
-            <div class="form-group clearboth">
-              <div class="city-input clearboth">
-                <input type="text" class="form-control col-sm-4" id="input-address1" placeholder="Province,AR,MU" data-i19="def" tabindex="3" />
-                <input type="text" class="form-control col-sm-4" id="input-address2" placeholder="city" data-i19="def" tabindex="4" />
-                <input type="text" class="form-control col-sm-4" id="input-address3" placeholder="district" data-i19="def" tabindex="5" />
-              </div>
-              <input type="text" class="form-control" id="input-address4" placeholder="street address" data-i19="def" tabindex="6" />
-              <label for="input-address" class="control-label" data-i19="def">store_address</label>
-            </div>
-
-            <div class="form-group telephones clearboth">
-              <div class="clearboth">
-                <input type="text" class="form-control col-sm-6" placeholder="Enter Tel 1" data-i19="def" tabindex="7" />
-                <input type="text" class="form-control col-sm-6" placeholder="Enter Tel 2" data-i19="def" tabindex="8" />
-              </div>
-              <label for="val-tel1" class="control-label" data-i19="def">telephone_1</label>
-            </div>
-
-            <div class="form-group">
-              <div id="daytime-selector">
-                <div></div>
-              </div>
-              <label for="val-time" class="control-label" data-i19="def">business_hours</label>
-            </div>
-
-            <div class="form-group">
-              <div class="btn-group">
-                <button type="button" class="btn btn-primary" data-i19="def" id="btnOK">save</button>
-                <%--
-                <button type="button" class="btn btn-default" data-i19="def" id="btnCancel">cancel</button>
-                --%>
-              </div>
-            </div>
-          </div>
-        </div>
+        <jsp:include page="WEB-INF/jsptiles/store-editor.jsp" />
       </div>
     </div>
 
     <script type="text/javascript">
     window.main.push(function(){
 
-      var editmask = undefined;
-      var showStoreDetail = function(idx,data){
-          $('#edit')
-          .data('editingIdx',idx)
-          .toDataView(data)
-          .addClass('transform0');
-
-          editmask = $('#panel').mask({noIndicator:true}); 
-          editmask.element.click(function(){
-              hideStoreDetail();
-          });
-      };
-
-      var hideStoreDetail = function(){
-          $('#edit')
-          .removeData('editingIdx')
-          .removeClass('transform0');
-          
-          editmask.dismiss();
+      window.storeEditor.ajaxEvent = function(data){
+        console.log(data);
+        memoryStorage['stores'].push(data);
+        $(getTile(memoryStorage['stores'].length - 1,data)).insertBefore($('#stores .tile').last());
       };
 
       $('#stores').delegate('.tile > div','click',function(ev){
           var dataIdx = parseInt($(ev.currentTarget).attr('data-idx'),10);
           if(isNaN(dataIdx)){
-              showStoreDetail(dataIdx,memoryStorage['stores'][dataIdx]);
+
+    		    var lastCode = "";
+    		    $.each(memoryStorage['stores'],function(i,store){
+    		        lastCode = lastCode < store.code ? store.code : lastCode;
+    		    });
+    		    if(lastCode===''){
+    		        lastCode = "S00000";
+    		    }
+
+            window.storeEditor.newStoreDetail({
+              "code":nextValue(lastCode),
+              "createdTime":"2013-01-02 09:22:22 +0800",
+              "changedTime":"2013-12-10 21:18:29 +0800",
+              "createdBy":0,
+              "name": "",
+              "description": "",
+              "address": "",
+              "image": null,
+              "imageId": null,
+              "telephone1": "",
+              "telephone2": "",
+              "businessHourFrom": 600,
+              "businessHourTo": 1380,
+              "trafficInfo": null,
+              "enabled": true
+            });
+
+            showEditor();
           }else{
               window.location = "store-landing.html"+'?'+
-		    ['tenant='+queryParams.tenant,'store='+memoryStorage['stores'][dataIdx].code].join('&');
+		          ['tenant='+queryParams.tenant,'store='+memoryStorage['stores'][dataIdx].code].join('&');
           }
       });
 
@@ -128,18 +81,20 @@
       });
       --%>
 
-      $('#daytime-selector>div').numberDragger();
-      
+      var getTile = function(i,s){
+        var sb = ['<div class="tile"><div data-idx="'+i+'">'];
+        sb.push(s.name);
+        sb.push('</div></div>');
+        return sb.join('');
+      };
+
       var loadmask = $('#page').mask({loadingText:'loading'});
       $.ajax('{prefix}/tenant/{tenant}/store')
       .done(function(data){
           memoryStorage['stores'] = data;
 
           $('#stores>div').empty().append(memoryStorage['stores'].map(function(s,i){
-              var sb = ['<div class="tile"><div data-idx="'+i+'">'];
-              sb.push(s.name);
-              sb.push('</div></div>');
-              return sb.join('');
+            return getTile(i,s);
           }).join('') +
           '<div class="tile"><div data-idx="NaN"></div></div>');
 

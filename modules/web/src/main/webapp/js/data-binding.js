@@ -50,6 +50,12 @@ _jQuery_static_members = {
 					v = parseFloat(v);
 				}
 				this.text(v.toFixed(2));
+			},
+			addr_val:function(v){
+    			var addrParts = v.split(',');
+    			$('input',this).each(function(i,e){
+        			$(e).val( addrParts[i]||'' );
+    			});
 			}
 		},
 		getter:{
@@ -77,6 +83,11 @@ _jQuery_static_members = {
 						width:parseInt(je.attr('data-imagewidth'),10)
 					};
 				}).get();
+			},
+			addr_val:function(){
+    			return $('input',this).map(function(i,e){
+        			return $(e).val();
+    			}).get().join(',');
 			}
 		}
 	}

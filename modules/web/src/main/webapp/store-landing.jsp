@@ -37,11 +37,31 @@
             </div>
           </div>
         </div>
+        <jsp:include page="WEB-INF/jsptiles/store-editor.jsp" />
       </div>
     </div>
 
     <script type="text/javascript">
     window.main.push(function(){
+      var editmask;
+
+      window.storeEditor.ajaxEvent = function(){
+        editmask.dismiss();
+        //TODO Update Current Store Name
+      };
+
+      $('#action-info').click(function(){
+        editmask = $('#panel').mask({loadingText:transStr('loading')});
+
+    		$.ajax('{prefix}/tenant/{tenant}/store/{store}')
+    		.done(function(data){
+      		editmask.clearIndicator();
+      	  storeEditor.loadStoreDetail(data);
+      	  showEditor(editmask);
+    		});
+        
+      });
+      
       window.parent.setTitle($('#titlebar').html());
     });
     </script>

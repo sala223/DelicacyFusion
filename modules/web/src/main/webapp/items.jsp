@@ -193,16 +193,16 @@
     			savemask.complete({text:'completed',fn:function(){
     			    hideItemDetails();
 
-                    if(!isNaN(idx)){
-                        // TODO Update tile
-                        memoryStorage['items'][idx] = data;
-                        $('.text',$('#dishes').children()[idx]).text(data.name);
-                    }else{
-                        memoryStorage['items'].push(serverData);
+              if(!isNaN(idx)){
+                  // TODO Update tile
+                  memoryStorage['items'][idx] = data;
+                  $('.text',$('#dishes').children()[idx]).text(data.name);
+              }else{
+                  memoryStorage['items'].push(serverData);
 
-                        $('<div class="tile"><div data-idx="'+(memoryStorage['items'].length-1)+'"><div class="text">'+serverData.name+'</div></div></div>')
-                        .insertBefore($('#dishes').children().last());
-                    }
+                  $('<div class="tile"><div data-idx="'+(memoryStorage['items'].length-1)+'"><div class="text">'+serverData.name+'</div></div></div>')
+                  .insertBefore($('#dishes').children().last());
+              }
     			}});
     		}).fail(function(){
     			savemask.complete({text:'failure',iconClass:'remove'});
