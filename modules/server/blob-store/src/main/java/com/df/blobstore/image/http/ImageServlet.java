@@ -125,7 +125,6 @@ public abstract class ImageServlet extends HttpServlet {
 			length = in.read(base64, offset, 1024);
 			offset += length;
 		}
-		in.read(base64);
 		byte[] imageData = Base64.decode(base64);
 		ImageKey key = imageService.uploadImage(new ByteArrayInputStream(imageData), getTenantFromRequest(req));
 		ImageReference reference = imageReferenceFactory.createImageReference(key);
