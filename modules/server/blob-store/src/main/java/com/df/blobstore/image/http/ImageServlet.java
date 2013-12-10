@@ -114,6 +114,7 @@ public abstract class ImageServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		if (StringUtils.isEmpty(getTenantFromRequest(req))) {
 			resp.setStatus(400);
+			resp.setContentType("text/html");
 			resp.getWriter().write("Tenant context is not set");
 			return;
 		}
@@ -129,6 +130,7 @@ public abstract class ImageServlet extends HttpServlet {
 		ImageKey key = imageService.uploadImage(new ByteArrayInputStream(imageData), getTenantFromRequest(req));
 		ImageReference reference = imageReferenceFactory.createImageReference(key);
 		objectMapper.writeValue(resp.getOutputStream(), reference);
+		resp.setContentType("application/json");
 	}
 
 	protected abstract ImageKey getImageKeyFromRequest(HttpServletRequest request);
