@@ -129,8 +129,8 @@ public abstract class ImageServlet extends HttpServlet {
 		byte[] imageData = Base64.decode(base64);
 		ImageKey key = imageService.uploadImage(new ByteArrayInputStream(imageData), getTenantFromRequest(req));
 		ImageReference reference = imageReferenceFactory.createImageReference(key);
-		objectMapper.writeValue(resp.getOutputStream(), reference);
 		resp.setContentType("application/json");
+		objectMapper.writeValue(resp.getOutputStream(), reference);
 	}
 
 	protected abstract ImageKey getImageKeyFromRequest(HttpServletRequest request);
