@@ -237,13 +237,13 @@
     	$('.imgcreator').delegate('.glyphicon-ok','click',function(ev){
     		
     		$.ajax({
-    			type:'PUT',
-    			url:'{prefix}/tenant/{tenant}/itpl/'+memoryStorage['items'][$('#edit').data('editingIdx')].code+'/image',
+    			type:'POST',
+    			url:'/m-console/image/{tenant}',
+    			contentType:'text/plain',
     			data:imageDropper.imageContent.replace(/^data:([\w-\.]+\/[\w-\.]+)?;base64,/,'')
     		}).done(function(data){
     			imageDropper.clearImage();
     			$('.imgcreator').after( _jQuery_static_members.bindData.getImageView(data) );
-    			
     		});
     	});
 

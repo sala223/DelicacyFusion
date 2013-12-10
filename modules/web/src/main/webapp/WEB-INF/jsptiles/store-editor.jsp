@@ -74,6 +74,8 @@ window.main.push(function(){
       $('#edit')
       .toDataView(data);
 
+      $('#edit .storeimage > div').css({'backgroundImage':'url(/m-console'+data.image.imageLink+')'});
+
       timeDragger.setValues(Math.floor(editingData.businessHourFrom / 30),Math.floor(editingData.businessHourTo / 30));
     },
     newStoreDetail:function(data){
@@ -106,15 +108,26 @@ window.main.push(function(){
           editingData=undefined;
         }
       });
-
     });
 
-/*
-    hideEditor();
-    window.storeEditor.ajaxEvent(editingData);
-    editingData=undefined;
-*/
   });
+
+  var imageEl= $('#edit .storeimage div'),
+      imageDropper = imageEl.imageDropper();
+
+	imageEl.delegate('.glyphicon-ok','click',function(ev){		
+		$.ajax({
+			type:'POST',
+			url:'/m-console/image/{tenant}',
+			contentType:'text/plain',
+			data:imageDropper.imageContent.replace(/^data:([\w-\.]+\/[\w-\.]+)?;base64,/,'')
+		}).done(function(imageRef){
+			imageDropper.clearImage();
+			editingData.imageId = imageRef.imageId;
+			//editingData.image = imageRef;
+			imageEl.css({'backgroundImage':'url(/m-console'+imageRef.imageLink+')'});
+		});
+	});
 
   var formatTime=function(i){
     var hh = Math.floor(i*30/60),

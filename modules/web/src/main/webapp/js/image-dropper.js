@@ -27,7 +27,6 @@ jQuery.fn.extend({
 			ev.preventDefault();
 		})
 		.on('dragleave',function(ev){
-			console.log('dragleave');
 			$(ev.target).parent().removeClass('dragover');
 			ev.preventDefault();
 		})
