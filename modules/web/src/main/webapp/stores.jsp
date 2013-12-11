@@ -82,8 +82,8 @@
       --%>
 
       var getTile = function(i,s){
-        var sb = ['<div class="tile"><div data-idx="'+i+'">'];
-        sb.push(s.name);
+        var sb = ['<div class="tile"><div data-idx="'+i+'" style="background-image:url(/m-console'+(s.image||{}).imageLink+')">'];
+        sb.push('<div>'+s.name+'</div>');
         sb.push('</div></div>');
         return sb.join('');
       };

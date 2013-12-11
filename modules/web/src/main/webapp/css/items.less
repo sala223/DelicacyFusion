@@ -1,7 +1,12 @@
 @import "common.less";
 
+#dishes .tile > div {
+    background:transparent none no-repeat center center;
+    background-size:contain;
+}
+
 #dishes .tile > div:before {
-    background:transparent url('../img/food.png') no-repeat center center;
+    //background:transparent url('../img/food.png') no-repeat center center;
 }
 
 ul.dropdown-menu.align-right li a {
@@ -36,7 +41,7 @@ ul.dropdown-menu.align-right li a {
     > div:first-child {
         width:55%;
     }
-    
+
     > div:last-child {
         width:45%;
     }
@@ -50,13 +55,9 @@ ul.dropdown-menu.align-right li a {
         bottom:0;
         right:0;
         left:20px;
+
+        background:transparent none no-repeat center center;
+        background-size:contain;
     }
 
-    > div:after {
-        content:"";
-        .docked-center();
-        border:2px solid #DDD;
-        border-radius:10px;
-        background:transparent url(../img/food.png) no-repeat center center;
-    }
 }

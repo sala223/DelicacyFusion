@@ -74,7 +74,7 @@ window.main.push(function(){
       $('#edit')
       .toDataView(data);
 
-      $('#edit .storeimage > div').css({'backgroundImage':'url(/m-console'+data.image.imageLink+')'});
+      $('#edit .storeimage > div').css({'backgroundImage':'url(/m-console'+(data.image||{}).imageLink+')'});
 
       timeDragger.setValues(Math.floor(editingData.businessHourFrom / 30),Math.floor(editingData.businessHourTo / 30));
     },

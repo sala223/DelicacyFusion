@@ -95,19 +95,18 @@
               </div>
             </div>
 
+            <%--
             <div class="form-group">
               <div class="imageview form-control clearboth" data-channel="imgview_val(this.pictureSet)">
                 <div class="imgcreator"></div>
               </div>
               <label class="control-label" data-i19="def">item_image</label>
             </div>
+            --%>
 
             <div class="form-group">
               <div class="btn-group">
                 <button type="button" class="btn btn-primary" data-i19="def" id="btnOK">save</button>
-                <%--
-                <button type="button" class="btn btn-default" data-i19="def" id="btnCancel">cancel</button>
-                --%>
               </div>
             </div>
           </div>
@@ -134,29 +133,22 @@
             "enabled": true
         };
 
-        var editmask = null;
+        var editingData;
         var showItemDetails = function(idxStr){
-            var data = defaultItem, idx = parseInt(idxStr,10);
+            var idx = parseInt(idxStr,10);
+            editingData = defaultItem;
             if(!isNaN(idx)){
-                data = memoryStorage['items'][idx];
+              editingData = memoryStorage['items'][idx];
             }
 
             $('#edit')
             .data('editingIdx',idx)
-            .toDataView(data)
-            .addClass('transform0');
+            .toDataView(editingData);
 
-            editmask = $('#panel').mask({noIndicator:true}); 
-            editmask.element.click(function(){
-                hideItemDetails();
-            });
-        };
+            var imagelink = (editingData.pictureSet[0]||{}).imageLink;
+            imageEl.css({'backgroundImage':imagelink===undefined?'none':'url(/m-console'+imagelink+')'});
 
-        var hideItemDetails = function(){
-            $('#edit')
-            .removeData('editingIdx')
-            .removeClass('transform0');
-            editmask.dismiss();
+            showEditor();
         };
 
         $('#btnCreate').click(function(ev){
@@ -164,12 +156,12 @@
         });
 
     	$('#btnOK').click(function(){
-    		$('.tagedit input').keypress();
-    		var edit = $('#edit'),idx=parseInt(edit.data('editingIdx')),
+
+    		var edit = $('#edit'),idx=parseInt(edit.data('editingIdx'));
     		    data = edit.toViewData();
 
     		if(!isNaN(idx)){
-    		    data = $.extend({},memoryStorage['items'][idx],data);
+    		    $.extend(editingData,data);
     		}else{
     		    var lastCode = "";
     		    $.each(memoryStorage['items'],function(i,itpl){
@@ -179,8 +171,8 @@
     		        lastCode = "I00000";
     		    }
 
-    		    data = $.extend({},defaultItem,data,{
-    		        code:nextValue(lastCode)
+    		    $.extend(editingData,defaultItem,data,{
+    		      code:nextValue(lastCode)
     		    });
     		}
 
@@ -188,32 +180,35 @@
     		$.ajax('{prefix}/tenant/{tenant}/itpl/',{
     			type:isNaN(idx)?'POST':'PUT',
     			contentType:'application/json; charset=UTF-8',
-    			data:JSON.stringify(data)
+    			data:JSON.stringify(editingData)
     		}).done(function(serverData){
     			savemask.complete({text:'completed',fn:function(){
-    			    hideItemDetails();
+    			    hideEditor();
 
               if(!isNaN(idx)){
                   // TODO Update tile
-                  memoryStorage['items'][idx] = data;
-                  $('.text',$('#dishes').children()[idx]).text(data.name);
+                  var t = $('#dishes').children()[idx];
+                  memoryStorage['items'][idx] = editingData;
+                  $('.text',t).text(editingData.name);
+                  $('>div',t).css({'backgroundImage':'url(/m-console/'+(editingData.pictureSet[0]||{}).imageLink+')'});
               }else{
                   memoryStorage['items'].push(serverData);
 
-                  $('<div class="tile"><div data-idx="'+(memoryStorage['items'].length-1)+'"><div class="text">'+serverData.name+'</div></div></div>')
+                  $(['<div class="tile">',
+                  '<div data-idx="'+(memoryStorage['items'].length-1)+'" ',
+                  'style="background-image:url(/m-console'+(serverData.pictureSet[0]||{}).imageLink+')">',
+                  '<div class="text">'+serverData.name+'</div>',
+                  '</div>',
+                  '</div>'].join(''))
                   .insertBefore($('#dishes').children().last());
               }
+
+              editingData = undefined;
     			}});
     		}).fail(function(){
     			savemask.complete({text:'failure',iconClass:'remove'});
     		});
     	});
-
-        <%--
-    	$('#btnCancel').click(function(){
-            hideItemDetails();
-    	});
-    	--%>
 
     	// slide in
     	$('#dishes').delegate('.tile > div','click',function(ev){
@@ -221,18 +216,16 @@
     		showItemDetails(dataIdx);
     	});
 
-    	// EOC - slide in
+      $('.dropdown-menu').delegate('a','click',function(ev){
+          var dt = $(ev.delegateTarget),
+              ct = $(ev.currentTarget),
+              vf = $('#'+dt.attr('data-val-fld')),
+              tf = $('#'+dt.attr('data-txt-fld'));
+          tf.text(ct.text());
+          vf.val(ct.attr('data-value'));
+      });
 
-        $('.dropdown-menu').delegate('a','click',function(ev){
-            var dt = $(ev.delegateTarget),
-                ct = $(ev.currentTarget),
-                vf = $('#'+dt.attr('data-val-fld')),
-                tf = $('#'+dt.attr('data-txt-fld'));
-            tf.text(ct.text());
-            vf.val(ct.attr('data-value'));
-        });
-
-
+      <%--
     	var imageDropper = $('.imgcreator').imageDropper();
     	$('.imgcreator').delegate('.glyphicon-ok','click',function(ev){
     		
@@ -246,6 +239,23 @@
     			$('.imgcreator').after( _jQuery_static_members.bindData.getImageView(data) );
     		});
     	});
+    	--%>
+
+      var imageEl = $('.menuimage > div'),
+    	    imageUploader = imageEl.imageDropper();
+    	$('.menuimage > div').delegate('.glyphicon-ok','click',function(ev){
+    		$.ajax({
+    			type:'POST',
+    			url:'/m-console/image/{tenant}',
+    			contentType:'text/plain',
+    			data:imageUploader.imageContent.replace(/^data:([\w-\.]+\/[\w-\.]+)?;base64,/,'')
+    		}).done(function(imageRef){
+      		imageUploader.clearImage();
+          editingData.pictureSet = [imageRef];
+          imageEl.css({'backgroundImage':'url(/m-console'+imageRef.imageLink+')'});
+    		});
+    	});
+
 
     	$('.tagselect').delegate('>*','click',function(ev){
     		$(ev.target).toggleClass('selected');
@@ -259,7 +269,7 @@
             $('#dishes').empty().append(memoryStorage['items'].map(function(e,i){
                 var x = [];
                 x.push('<div class="text">'+e.name+'</div>');
-                return '<div class="tile"><div data-idx="'+i+'">'+x.join('')+'</div></div>';
+                return '<div class="tile"><div data-idx="'+i+'" style="background-image:url(/m-console'+(e.pictureSet[0]||{}).imageLink+')">'+x.join('')+'</div></div>';
             }).join('') +
             '<div class="tile"><div data-idx="NaN"></div></div>');
 
