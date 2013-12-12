@@ -4,7 +4,9 @@
 
 <%
 String pagename = DevUtil.extJsp2Html(request.getServletPath());
-pagename = pagename.substring(1,pagename.length() - ".html".length());
+String[] paths = pagename.split("/");
+pagename = paths[paths.length - 1];
+pagename = pagename.substring(0,pagename.length() - ".html".length());
 %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />

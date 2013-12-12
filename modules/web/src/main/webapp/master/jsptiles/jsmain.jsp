@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"
   contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="dev" uri="../dev-tags.tld"%>
+<%@ taglib prefix="dev" uri="../../WEB-INF/dev-tags.tld"%>
 
 <dev:includeJS src="js/jquery-2.0.3.min.js" />
 <dev:includeJS src="js/bootstrap.min.js" />
