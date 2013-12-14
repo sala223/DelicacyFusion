@@ -1,17 +1,10 @@
 package com.df.blobstore.image.http;
 
-import javax.servlet.ServletContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.df.blobstore.image.ImageAttributes;
 import com.df.blobstore.image.ImageKey;
 import com.df.blobstore.image.ImageKeyResolver;
 
 public class DefaultImageLinkCreator implements ImageLinkCreator {
-
-	@Autowired
-	private ServletContext servletContext;
 
 	private String imageRequestPrefix;
 
@@ -22,10 +15,6 @@ public class DefaultImageLinkCreator implements ImageLinkCreator {
 
 	public void setImageRequestPrefix(String imageRequestPrefix) {
 		this.imageRequestPrefix = imageRequestPrefix;
-	}
-
-	public void setServletContext(ServletContext servletContext) {
-		this.servletContext = servletContext;
 	}
 
 	public void setKeyResolver(ImageKeyResolver keyResolver) {

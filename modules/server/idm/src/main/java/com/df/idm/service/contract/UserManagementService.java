@@ -4,11 +4,13 @@ import com.df.idm.entity.User;
 
 public interface UserManagementService {
 
-	void createUser(User user);
+	User createUser(User user);
 
-	void updateUser(User user);
+	User updateUser(User user);
 
-	void updatePassword(String code, String newPassword);
+	boolean verifyUserEmail(String token);
+
+	void updatePassword(String code, String oldPassword, String newPassword);
 
 	User getUserByWeiboAccount(String weiboAccount);
 

@@ -1,13 +1,17 @@
 <?xml version="1.0"?>
 <enunciate label="delicacyfusion" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="http://enunciate.codehaus.org/schemas/enunciate-1.27.xsd">
+	<api-import pattern="com.df.masterdata.entity.*" />
+	<api-import pattern="com.df.masterdata.auxiliary.template.*" />
 	<api-import pattern="com.df.order.entity.*" />
+	<api-import pattern="com.df.idm.entity.*" />
+
 	<namespaces>
-		<namespace id="order" uri="http://api.delicacyfusion.com/order" />
+		<namespace id="df" uri="http://api.delicacyfusion.com/df" />
 	</namespaces>
 	<modules>
 		<!-- Docs -->
-		<docs splashPackage="com.df.http.order.resources" title="order-restful-api"
+		<docs splashPackage="com.df.http.masterdata.resources" title="df-restful-api"
 			copyright="www.delicacyfusion.com" includeExampleXml="false">
 		</docs>
 		<basic-app disabled="false" />

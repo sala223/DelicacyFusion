@@ -13,14 +13,14 @@ import com.df.idm.entity.User;
 public class UserDaoTest extends IdmBaseTest {
 
 	@Autowired
-	private UserDao userDAL;
+	private UserDao userDao;
 
 	@Test
 	public void testCreateUser() {
 		User user = new User();
 		user.setEmail("sala223@msn.com");
 		user.setCellPhone("13121992122");
-		userDAL.insert(user);
+		userDao.insert(user);
 	}
 
 	@Test
@@ -30,9 +30,9 @@ public class UserDaoTest extends IdmBaseTest {
 		user.setEmail(email);
 		user.setCellPhone("13121992122");
 		user.setWeiboAccount("sala223");
-		userDAL.insert(user);
-		userDAL.getEntityManager().flush();
-		TestCase.assertNotNull(userDAL.getUserByEmail(email));
+		userDao.insert(user);
+		userDao.getEntityManager().flush();
+		TestCase.assertNotNull(userDao.getUserByEmail(email));
 	}
 
 	@Test
@@ -42,9 +42,9 @@ public class UserDaoTest extends IdmBaseTest {
 		user.setEmail("sala223@msn.com");
 		user.setCellPhone("13121992122");
 		user.setWeiboAccount(weiboAccount);
-		userDAL.insert(user);
-		userDAL.getEntityManager().flush();
-		TestCase.assertNotNull(userDAL.getUserByWeiboAccount(weiboAccount));
+		userDao.insert(user);
+		userDao.getEntityManager().flush();
+		TestCase.assertNotNull(userDao.getUserByWeiboAccount(weiboAccount));
 	}
 
 	@Test
@@ -53,8 +53,8 @@ public class UserDaoTest extends IdmBaseTest {
 		String telephone = "13121992122";
 		user.setEmail("sala223@msn.com");
 		user.setCellPhone(telephone);
-		userDAL.insert(user);
-		userDAL.getEntityManager().flush();
-		TestCase.assertNotNull(userDAL.getUserByTelephone(telephone));
+		userDao.insert(user);
+		userDao.getEntityManager().flush();
+		TestCase.assertNotNull(userDao.getUserByTelephone(telephone));
 	}
 }

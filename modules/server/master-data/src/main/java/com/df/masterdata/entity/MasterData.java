@@ -34,7 +34,7 @@ public abstract class MasterData {
 	@XmlTransient
 	private long id;
 
-	@Column(length = 255, name = "CODE", updatable=false)
+	@Column(length = 255, name = "CODE", updatable = false)
 	@Index
 	private String code;
 
@@ -97,9 +97,7 @@ public abstract class MasterData {
 
 	@PrePersist
 	protected void fillDefaultValue() {
-		if (this.createdTime == null) {
-			this.setCreatedTime(new Date());
-		}
+		this.setCreatedTime(new Date());
 	}
 
 	@PreUpdate

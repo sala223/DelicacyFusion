@@ -12,7 +12,7 @@
 		class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
 		<property name="templateLoaderPaths">
 			<list>
-				<value>classpath:/</value>
+				<value>classpath:/freemarker</value>
 			</list>
 		</property>
 		<property name="freemarkerSettings">
@@ -31,6 +31,9 @@
 			</map>
 		</property>
 	</bean>
+	<bean id="emailContextProvider" class="com.df.core.mail.DefaultEmailContextProvider">
+		<property name="sentFrom" value="delicacy_fusion@163.com" />
+	</bean>
 	<bean id="freeMarkerMailSender" class="com.df.core.mail.FreeMarkerMailSender">
 		<constructor-arg index="0" ref="freemarkerConfiguration" />
 		<constructor-arg index="1" ref="mailSender" />
@@ -47,6 +50,11 @@
 			</props>
 		</property>
 	</bean>
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="validationMessageSource" ref="validatorMessageSource" />
+	</bean>
+	<bean id="validatorMessageSource" class="com.df.core.validation.message.ValidationMessageSource" />
 	<beans profile="test">
 		<bean id="responseSampleLogInterceptor" class="com.df.core.rs.ResponseSampleLogInterceptor">
 			<property name="enabled" value="true" />

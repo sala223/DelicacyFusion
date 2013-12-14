@@ -22,10 +22,23 @@
 		<constructor-arg index="0" ref="userObjectService" />
 		<property name="passwordEncoder" ref="passwordEncoder" />
 	</bean>
-	<bean id="randomTokenRepository" class="com.df.idm.registration.InMemoryRandomTokenRepository" />
+	<bean id="dataMarshaller" class="com.df.core.common.utils.EncryptionDataMarshaller" />
+	<bean id="emailRegistrationTokenRepository" class="com.df.idm.registration.SecuredEmailRegistrationTokenRepository">
+		<constructor-arg index="0" ref="dataMarshaller" />
+		<property name="validDuration" value="2880"/>
+	</bean>
 	<bean id="userRegistrationVerifier" class="com.df.idm.registration.RegistrationMailVerifier">
-		<constructor-arg index="0" ref="freeMarkerMailSender" />
-		<constructor-arg index="1" ref="randomTokenRepository" />
+		<constructor-arg index="0" ref="asyncTaskExecutor" />
+		<constructor-arg index="1" ref="freeMarkerMailSender" />
+		<constructor-arg index="2" ref="emailRegistrationTokenRepository" />
+		<property name="verifyUrlPrefix" value="/rs/verify" />
+		<property name="emailContextProvider" ref="emailContextProvider" />
+	</bean>
+	<bean id="asyncTaskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5" />
+		<property name="maxPoolSize" value="100" />
+		<property name="queueCapacity" value="25" />
 	</bean>
 	<tx:annotation-driven />
 </beans>

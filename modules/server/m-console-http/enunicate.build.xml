@@ -19,11 +19,13 @@
 			buildDir="${enunciate.outputDir}/enunciate/build" scratchDir="${enunciate.outputDir}/enunciate/scratch"
 			packageDir="${enunciate.outputDir}/enunciate/package">
 			<include name="com/df/http/masterdata/**/*.java" />
+			<include name="com/df/http/idm/**/*.java" />
+			<include name="com/df/http/order/**/*.java" />
 			<classpath>
 				<pathelement path="${enunciate.dependencies}" />
 			</classpath>
 			<export artifactId="docs"
-				destination="${enunciate.outputDir}/enunciate/http-master-doc.tar" />
+				destination="${enunciate.outputDir}/enunciate/df-http-doc.tar" />
 		</enunciate>
 	</target>
 </project>
