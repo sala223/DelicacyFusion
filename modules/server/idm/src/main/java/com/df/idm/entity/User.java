@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -18,6 +19,8 @@ import org.eclipse.persistence.annotations.Cache;
 import org.eclipse.persistence.annotations.FetchGroup;
 import org.eclipse.persistence.annotations.FetchAttribute;
 import org.eclipse.persistence.annotations.Index;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Cache
 @Entity
@@ -41,6 +44,7 @@ public class User implements Serializable {
 	private String lastName;
 
 	@Column(length = 256, nullable = false)
+	@NotEmpty
 	private String password;
 
 	@Column(length = 128)
@@ -61,6 +65,8 @@ public class User implements Serializable {
 
 	@Column(length = 128, updatable = false, nullable = false)
 	@Index(unique = true)
+	@Email
+	@NotEmpty
 	private String email;
 
 	@Column(unique = true)
@@ -85,7 +91,7 @@ public class User implements Serializable {
 	private String tenantCode;
 	@Column(name = "IS_EMAIL_VERIFIED")
 	private boolean isEmailVerified;
-	
+
 	@Column(name = "IS_CELL_PHONE_VERIFIED")
 	private boolean isCellphoneVerified;
 
@@ -209,13 +215,6 @@ public class User implements Serializable {
 		this.nickName = nickName;
 	}
 
-	@PrePersist
-	protected void fillDefaultValue() {
-		if (this.createdTime == null) {
-			this.setCreatedTime(new Date());
-		}
-	}
-
 	public boolean isTenantOwner() {
 		return isTenantOwner;
 	}
@@ -232,7 +231,38 @@ public class User implements Serializable {
 		this.tenantCode = tenantCode;
 	}
 
+	public boolean isEmailVerified() {
+		return isEmailVerified;
+	}
+
+	public void setEmailVerified(boolean isEmailVerified) {
+		this.isEmailVerified = isEmailVerified;
+	}
+
+	public boolean isCellphoneVerified() {
+		return isCellphoneVerified;
+	}
+
+	public void setCellphoneVerified(boolean isCellphoneVerified) {
+		this.isCellphoneVerified = isCellphoneVerified;
+	}
+
+	@PrePersist
+	protected void fillDefaultValue() {
+		this.setCreatedTime(new Date());
+	}
+
+	@PreUpdate
+	protected void updateDefaultValue() {
+		this.setChangedTime(new Date());
+	}
+
 	public static enum Gender {
 		MALE, FEMALE
+	}
+
+	public User cleanCredential() {
+		this.password = null;
+		return this;
 	}
 }

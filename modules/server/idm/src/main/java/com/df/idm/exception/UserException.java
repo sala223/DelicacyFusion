@@ -20,6 +20,8 @@ public class UserException extends BusinessException {
 
 	public static final int USER_WEIBO_ACCOUNT_ALREADY_EXIST = 100006;
 
+	public static final int USER_PASSWORD_NOT_MATCH = 100007;
+
 	public UserException(Throwable cause, int errorCode) {
 		super(cause, REALM, errorCode);
 	}
@@ -62,4 +64,8 @@ public class UserException extends BusinessException {
 		return new UserException(USER_WEIBO_ACCOUNT_ALREADY_EXIST, msg, weiboAccount);
 	}
 
+	public static UserException userPasswordNotMatch(String account) {
+		String msg = "User %s password not match";
+		return new UserException(USER_PASSWORD_NOT_MATCH, msg, account);
+	}
 }

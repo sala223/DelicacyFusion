@@ -21,9 +21,15 @@ dependencies {
 	runtime "org.scannotation:scannotation:1.0.2"
 	compile "org.codehaus.jackson:jackson-core-asl:1.9.12"
     compile "org.codehaus.jackson:jackson-mapper-asl:1.9.12"
-    compile ":enunciate-core-annotations:1.27"
+	compile ":enunciate-core-annotations:1.27"
+	runtime ":hibernate-validator:5.0.2.Final"
+    compile ":validation-api:1.1.0.Final"
     runtime "commons-codec:commons-codec:1.4" 
     runtime ":mysql-connector-java:5.1.26-bin"
+    runtime ":jboss-logging:3.1.0.GA"
+    runtime ":classmate:1.0.0"
+    runtime ":javax.el:2.2.4"
+    runtime ":javax.el-api:2.2.4"
 }
 
 jar {

@@ -17,7 +17,6 @@ public class MailTest extends IdmBaseTest {
 	public void testSendUserVerificationMail() {
 		User user = new User();
 		user.setEmail("sala223@msn.com");
-		verifier.sentRegistrationMesage(user);
-
+		verifier.sentRegistrationMesage(user, null);
 	}
 }

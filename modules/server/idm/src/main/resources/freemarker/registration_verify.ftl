@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ch">
+<html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>DelicacyFusion用户邮箱认证</title>
+    <title>DelicacyFusion鐢ㄦ埛娉ㄥ唽閭楠岃瘉</title>
   </head>
   <body>
-  	 Dear user, please click the following link to complete the email verification.
+  	 Dear ${user.email}, 
+  	 <br>
+  	 <br>
+  	 this is a confirmation mail from delicacy fusion, please click the following link to complete the email verification.
   	 <br>
  	 <a href="${link}">${link}</a>
 	</body>

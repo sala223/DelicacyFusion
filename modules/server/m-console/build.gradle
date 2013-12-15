@@ -6,9 +6,8 @@ dependencies {
     compile project(':blob-store')
     compile project(':idm')
     compile project(':master-data')
-    compile project(':http-master-data')
+    compile project(':m-console-http')
     compile project(':order') 
-    compile project(':http-order')
     compile "org.jboss.resteasy:resteasy-jaxrs:3.0.4.Final"
     compile ":jboss-servlet-api_3.0_spec-1.0.0.Final:"
     runtime ":slf4j-jboss-logmanager:1.0.0.GA"
