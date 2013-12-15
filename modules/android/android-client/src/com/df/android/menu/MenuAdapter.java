@@ -28,6 +28,7 @@ import com.df.android.R;
 import com.df.android.entity.Item;
 import com.df.android.entity.ItemCategory;
 import com.df.android.entity.Store;
+import com.df.android.utils.CacheMgr;
 
 public class MenuAdapter extends BaseAdapter {
 	// private Store store;
@@ -104,17 +105,13 @@ public class MenuAdapter extends BaseAdapter {
 
 		String imageFile = item.getImage();
 		if (imageFile != null && !"".equals(imageFile)) {
-			String tmp = context.getExternalCacheDir() + "/"
-					+ GlobalSettings.instance().getCurrentStore().getCode()
+			String tmp = CacheMgr.instance().getCacheDir(
+					GlobalSettings.instance().getCurrentTenantCode(),
+					GlobalSettings.instance().getCurrentStoreCode())
 					+ "/image/" + imageFile;
 			Log.d(getClass().getName(), "image of " + item.getCode() + ": "
 					+ tmp);
 
-			// ivImage.setImageURI(Uri.parse("file:/" + context
-			// .getExternalCacheDir()
-			// + "/"
-			// + GlobalSettings.instance().getCurrentStore().getCode()
-			// + "/" + imageFile));
 			ivImage.setImageBitmap(BitmapFactory.decodeFile(tmp));
 		} else
 			ivImage.setImageResource(R.drawable.no_pic);
@@ -164,14 +161,14 @@ public class MenuAdapter extends BaseAdapter {
 		String imageFile = item.getImage();
 		if (imageFile != null && !"".equals(imageFile)) {
 			try {
-				expandedImageView.setImageBitmap(BitmapFactory
-						.decodeFile(context.getExternalCacheDir()
-								+ "/"
-								+ GlobalSettings.instance().getCurrentStore()
-										.getCode() + "/image/" + imageFile));
+				String tmp = CacheMgr.instance().getCacheDir(
+						GlobalSettings.instance().getCurrentTenantCode(),
+						GlobalSettings.instance().getCurrentStoreCode())
+						+ "/image/" + imageFile;
+				expandedImageView.setImageBitmap(BitmapFactory.decodeFile(tmp));
 			} catch (Exception e) {
 				Log.e(getClass().getName(), "Fail to load image file '"
-						+ imageFile + "'");
+						+ imageFile + "' due to " + e);
 			}
 		} else
 			expandedImageView.setImageResource(R.drawable.no_pic);
