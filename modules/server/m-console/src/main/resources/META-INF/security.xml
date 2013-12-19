@@ -74,10 +74,15 @@
 		class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
 		<property name="errorPage" value="/login/accessDenied.html" />
 	</bean>
+	<bean id="ANONYMOUS_AUTHENTICATION_FILTER"  
+     class="org.springframework.security.web.authentication.AnonymousAuthenticationFilter">
+		<property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS" />
+		<property name="key" value="BF93JFJ091N00Q7HF" />
+	</bean>
 	<bean id="ANTHENTICATION_FILTER"
 		class="com.df.idm.authentication.MailOrCellPhoneAuthenticationFilter">
 		<property name="authenticationManager" ref="authenticationManager" />
-		<property name="filterProcessesUrl" value="/auth" />
+		<property name="filterProcessesUrl" value="/auth/basic" />
 		<property name="authenticationFailureHandler" ref="authenticationFailureHandler" />
 		<property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" />
 		<property name="rememberMeServices" ref="rememberMeServices" />
@@ -126,6 +131,7 @@
 	</bean>
 	<sec:filter-security-metadata-source
 		id="securityInterceptorMetadataSource" use-expressions="true">
+		<sec:intercept-url pattern="/rs/user" access="isAnonymous()" />
 		<sec:intercept-url pattern="/rs/**" access="isAuthenticated()" />
 	</sec:filter-security-metadata-source>
 	<sec:filter-security-metadata-source
@@ -142,11 +148,10 @@
 			<sec:filter-chain pattern="/**/*.js" filters="none" />
 			<sec:filter-chain pattern="/**/*.css" filters="none" />
 			<sec:filter-chain pattern="/auth/*.html" filters="none" />
-			<sec:filter-chain pattern="/auth/**"
-				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,ANTHENTICATION_FILTER, DIRECT_AUTHENTICATION_FILTER, REMEMBER_ME_FILTER,EXCEPTION_TRANSLATION_FILTER,TENANT_CONTEXT_CLEAR_FILTER"
-				/>
+			<sec:filter-chain pattern="/auth/**" filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,ANTHENTICATION_FILTER, DIRECT_AUTHENTICATION_FILTER, REMEMBER_ME_FILTER,EXCEPTION_TRANSLATION_FILTER,TENANT_CONTEXT_CLEAR_FILTER"/>
+			<sec:filter-chain pattern="/rs/user" filters="CHANNEL_FILTER,LOCALE_CONTEXT_FILTER"/>
 			<sec:filter-chain pattern="/rs/**"
-				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER, FILTER_SECURITY_INTERCEPTOR,EXCEPTION_TRANSLATION_FILTER,TENANT_CONTEXT_CLEAR_FILTER" />
+				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER, FILTER_SECURITY_INTERCEPTOR,TENANT_CONTEXT_CLEAR_FILTER"/>
 		</sec:filter-chain-map>
 	</bean>
 </beans>
