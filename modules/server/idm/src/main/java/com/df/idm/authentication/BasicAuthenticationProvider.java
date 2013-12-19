@@ -8,13 +8,13 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 import com.df.idm.exception.UserNotFoundException;
 
-public class InternalAuthenticationProvider extends UserObjectAuthenticationProvider {
+public class BasicAuthenticationProvider extends UserObjectAuthenticationProvider {
 
 	private PasswordEncoder passwordEncoder = new StandardPasswordEncoder();
 
 	private UserObjectService userObjectService;
 
-	public InternalAuthenticationProvider(UserObjectService userObjectService) {
+	public BasicAuthenticationProvider(UserObjectService userObjectService) {
 		this.userObjectService = userObjectService;
 	}
 
@@ -25,7 +25,7 @@ public class InternalAuthenticationProvider extends UserObjectAuthenticationProv
 		try {
 			found = this.getUserObjectService().getUserByEmail(mail);
 			if (found == null) {
-				throw new UserNotFoundException("Unknow user from email " + mail);
+				throw new UserNotFoundException("Unknown user from email " + mail);
 			}
 		} catch (Exception repositoryProblem) {
 			throw new AuthenticationServiceException(repositoryProblem.getMessage(), repositoryProblem);

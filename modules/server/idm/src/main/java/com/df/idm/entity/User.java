@@ -69,7 +69,7 @@ public class User implements Serializable {
 	@NotEmpty
 	private String email;
 
-	@Column(unique = true)
+	@Column(unique = true, name="WEIBO_ACCOUNT")
 	@Index(unique = true)
 	private String weiboAccount;
 

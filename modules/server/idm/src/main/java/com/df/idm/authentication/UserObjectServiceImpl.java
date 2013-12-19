@@ -1,6 +1,8 @@
 package com.df.idm.authentication;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.df.idm.entity.User;
 import com.df.idm.exception.UserNotFoundException;
@@ -36,5 +38,10 @@ public class UserObjectServiceImpl implements UserObjectService {
 		}
 		return new UserObject(user);
 
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+		return this.getUserByEmail(userName);
 	}
 }

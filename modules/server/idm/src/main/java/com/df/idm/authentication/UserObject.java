@@ -1,15 +1,15 @@
 package com.df.idm.authentication;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
 import com.df.idm.entity.User;
 
-public class UserObject implements Serializable {
+public class UserObject implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,11 +35,11 @@ public class UserObject implements Serializable {
 	public String getCellphone() {
 		return user.getCellPhone();
 	}
-	
+
 	public String getWeiboAccount() {
 		return user.getWeiboAccount();
 	}
-	
+
 	public boolean isAccountNonExpired() {
 		return true;
 	}
@@ -54,5 +54,18 @@ public class UserObject implements Serializable {
 
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.getEmail();
+	}
+
+	public boolean isTenantOwner() {
+		return user.isTenantOwner();
+	}
+
+	public String getTenantCode() {
+		return user.getTenantCode();
 	}
 }

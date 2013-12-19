@@ -54,6 +54,7 @@
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 		<property name="validationMessageSource" ref="validatorMessageSource" />
 	</bean>
+	<bean id="objectMapper" class="com.df.core.json.ext.ObjectMapperFactoryBean" />
 	<bean id="validatorMessageSource" class="com.df.core.validation.message.ValidationMessageSource" />
 	<beans profile="test">
 		<bean id="responseSampleLogInterceptor" class="com.df.core.rs.ResponseSampleLogInterceptor">

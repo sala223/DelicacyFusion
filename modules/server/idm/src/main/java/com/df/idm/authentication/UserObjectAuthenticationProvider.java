@@ -35,7 +35,10 @@ public abstract class UserObjectAuthenticationProvider implements Authentication
 	        UserObjectPropertyAuthenticationToken authentication) throws AuthenticationException;
 
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		String message = "Only UserMailOrPhoneAuthenticationToken is supported";
+		if (!(supports(authentication.getClass()))) {
+			return null;
+		}
+		String message = "Only UserObjectPropertyAuthenticationToken is supported";
 		Assert.isInstanceOf(UserObjectPropertyAuthenticationToken.class, authentication, message);
 		UserObjectPropertyAuthenticationToken mtat = (UserObjectPropertyAuthenticationToken) authentication;
 		String userId = (authentication.getPrincipal() == null) ? "" : authentication.getName();
@@ -69,7 +72,7 @@ public abstract class UserObjectAuthenticationProvider implements Authentication
 		        mapAuthorities);
 		result.setAuthenticated(true);
 		result.setDetails(user);
-		SecurityContextHolder.getContext().setAuthentication(result); 
+		SecurityContextHolder.getContext().setAuthentication(result);
 		return result;
 	}
 

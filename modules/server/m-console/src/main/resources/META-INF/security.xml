@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:sec="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
-        http://www.springframework.org/schema/beans 
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/security 
-        http://www.springframework.org/schema/security/spring-security.xsd">
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security.xsd">
 	<import resource="classpath:META-INF/idm-beans.xml" />
 	<sec:debug />
 	<sec:global-method-security
@@ -23,11 +22,21 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="rememberMeServices"
+		class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+		<property name="userDetailsService" ref="userObjectService" />
+		<property name="key" value="Oba.2247d" />
+	</bean>
+	<bean id="rememberMeAuthenticationProvider"
+		class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<property name="key" value="Oba.2247d" />
+	</bean>
 	<bean id="authenticationManager"
 		class="org.springframework.security.authentication.ProviderManager">
 		<property name="providers">
 			<list>
-				<ref local="authenticationProvider" />
+				<ref local="basicAuthenticationProvider" />
+				<ref local="rememberMeAuthenticationProvider" />
 			</list>
 		</property>
 	</bean>
@@ -59,22 +68,23 @@
 	</bean>
 	<bean id="authenticationEntryPoint"
 		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-		<property name="loginFormUrl" value="/login/login.html" />
+		<property name="loginFormUrl" value="/auth/login.html" />
 	</bean>
 	<bean id="accessDeniedHandler"
 		class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
 		<property name="errorPage" value="/login/accessDenied.html" />
 	</bean>
-	<bean id="mailOrCellPhoneAuthenticationFilter"
+	<bean id="ANTHENTICATION_FILTER"
 		class="com.df.idm.authentication.MailOrCellPhoneAuthenticationFilter">
 		<property name="authenticationManager" ref="authenticationManager" />
-		<property name="filterProcessesUrl" value="/login/process" />
+		<property name="filterProcessesUrl" value="/auth" />
 		<property name="authenticationFailureHandler" ref="authenticationFailureHandler" />
 		<property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" />
+		<property name="rememberMeServices" ref="rememberMeServices" />
 	</bean>
 	<bean id="authenticationFailureHandler"
 		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-		<property name="defaultFailureUrl" value="/login.html" />
+		<property name="defaultFailureUrl" value="/auth/login.html" />
 		<property name="useForward" value="true" />
 	</bean>
 	<bean id="authenticationSuccessHandler"
@@ -86,12 +96,25 @@
 			<bean class="com.df.core.web.SessionLocaleResolver" />
 		</property>
 	</bean>
+	<bean id="REMEMBER_ME_FILTER"
+		class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+		<property name="rememberMeServices" ref="rememberMeServices" />
+		<property name="authenticationManager" ref="authenticationManager" />
+	</bean>
+	<bean id="DIRECT_AUTHENTICATION_FILTER"
+		class="com.df.idm.authentication.DirectAuthenticationFilter">
+		<property name="processUrl" value="/auth/direct" />
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="objectMapper">
+			<bean class="com.df.core.json.ext.ObjectMapperFactoryBean" />
+		</property>
+	</bean>
 	<bean id="CHANNEL_FILTER"
 		class="org.springframework.security.web.access.channel.ChannelProcessingFilter">
 		<property name="channelDecisionManager" ref="channelDecisionManager" />
 		<property name="securityMetadataSource" ref="channelMetadataSource" />
 	</bean>
-	<bean id="TENANT_CONTEXT_CLEAR_FILTER" class="com.df.core.common.context.TenantContextClearFilter"/>
+	<bean id="TENANT_CONTEXT_CLEAR_FILTER" class="com.df.core.common.context.TenantContextClearFilter" />
 	<bean id="SECURITY_CONTEXT_FILTER"
 		class="org.springframework.security.web.context.SecurityContextPersistenceFilter" />
 	<bean id="CSRF_FILTER" class="org.springframework.security.web.csrf.CsrfFilter">
@@ -118,10 +141,12 @@
 			<sec:filter-chain pattern="/image/**" filters="none" />
 			<sec:filter-chain pattern="/**/*.js" filters="none" />
 			<sec:filter-chain pattern="/**/*.css" filters="none" />
-			<sec:filter-chain pattern="/login/**"
-				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,EXCEPTION_TRANSLATION_FILTER,TENANT_CONTEXT_CLEAR_FILTER" />
+			<sec:filter-chain pattern="/auth/*.html" filters="none" />
+			<sec:filter-chain pattern="/auth/**"
+				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,ANTHENTICATION_FILTER, DIRECT_AUTHENTICATION_FILTER, REMEMBER_ME_FILTER,EXCEPTION_TRANSLATION_FILTER,TENANT_CONTEXT_CLEAR_FILTER"
+				/>
 			<sec:filter-chain pattern="/rs/**"
-				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,EXCEPTION_TRANSLATION_FILTER,TENANT_CONTEXT_CLEAR_FILTER" />
+				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER, FILTER_SECURITY_INTERCEPTOR,EXCEPTION_TRANSLATION_FILTER,TENANT_CONTEXT_CLEAR_FILTER" />
 		</sec:filter-chain-map>
 	</bean>
 </beans>

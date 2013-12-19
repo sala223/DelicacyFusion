@@ -1,6 +1,8 @@
 package com.df.idm.authentication;
 
-public interface UserObjectService {
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+public interface UserObjectService extends UserDetailsService {
 
 	UserObject getUserByEmail(String email);
 

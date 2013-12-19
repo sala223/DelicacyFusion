@@ -17,20 +17,22 @@
 	<bean id="userObjectService" class="com.df.idm.authentication.UserObjectServiceImpl">
 		<constructor-arg index="0" ref="userManagementService" />
 	</bean>
-	<bean id="authenticationProvider"
-		class="com.df.idm.authentication.InternalAuthenticationProvider">
+	<bean id="basicAuthenticationProvider"
+		class="com.df.idm.authentication.BasicAuthenticationProvider">
 		<constructor-arg index="0" ref="userObjectService" />
 		<property name="passwordEncoder" ref="passwordEncoder" />
 	</bean>
 	<bean id="dataMarshaller" class="com.df.core.common.utils.EncryptionDataMarshaller" />
-	<bean id="emailRegistrationTokenRepository" class="com.df.idm.registration.SecuredEmailRegistrationTokenRepository">
+	<bean id="emailRegistrationTokenRepository"
+		class="com.df.idm.registration.SecuredEmailRegistrationTokenRepository">
 		<constructor-arg index="0" ref="dataMarshaller" />
-		<property name="validDuration" value="2880"/>
+		<property name="validDuration" value="2880" />
 	</bean>
 	<bean id="userRegistrationVerifier" class="com.df.idm.registration.RegistrationMailVerifier">
 		<constructor-arg index="0" ref="asyncTaskExecutor" />
 		<constructor-arg index="1" ref="freeMarkerMailSender" />
-		<constructor-arg index="2" ref="emailRegistrationTokenRepository" />
+		<constructor-arg index="2"
+			ref="emailRegistrationTokenRepository" />
 		<property name="verifyUrlPrefix" value="/rs/verify" />
 		<property name="emailContextProvider" ref="emailContextProvider" />
 	</bean>

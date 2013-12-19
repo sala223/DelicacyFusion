@@ -15,7 +15,7 @@ public class MailOrCellPhoneAuthenticationFilter extends AbstractAuthenticationP
 
 	public static final String DEFAULT_FILTER_PROCESS_URL = "/login";
 
-	public static final String SECURITY_AUTH_ACCOUNT_KEY = "df_id";
+	public static final String SECURITY_AUTH_ACCOUNT_KEY = "df_account";
 
 	public static final String SECURITY_AUTH_PASSWORD_KEY = "df_password";
 
