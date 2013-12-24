@@ -19,4 +19,5 @@
 	<context:component-scan base-package="com.df.web.idm.registration" />
 	<bean
 		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	<bean class="com.df.core.provision.ProvisioningService" />
 </beans>

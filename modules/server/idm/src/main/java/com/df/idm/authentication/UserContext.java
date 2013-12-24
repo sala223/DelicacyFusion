@@ -1,6 +1,7 @@
 package com.df.idm.authentication;
 
 import java.io.Serializable;
+import org.springframework.util.StringUtils;
 
 public class UserContext implements Serializable {
 
@@ -29,6 +30,11 @@ public class UserContext implements Serializable {
 
 	public String getTenantCode() {
 		return this.user.getTenantCode();
+	}
+
+	public String[] getAuthorities() {
+		String authorities = StringUtils.collectionToCommaDelimitedString(user.getAuthorities());
+		return StringUtils.commaDelimitedListToStringArray(authorities);
 	}
 
 }

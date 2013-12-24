@@ -28,8 +28,8 @@ dependencies {
     runtime ":mysql-connector-java:5.1.26-bin"
     runtime ":jboss-logging:3.1.0.GA"
     runtime ":classmate:1.0.0"
-    runtime ":javax.el:2.2.4"
-    runtime ":javax.el-api:2.2.4"
+    runtime ":slf4j-log4j12:1.7.5"
+    compile ":spring-tx:4.0.0.M2"
 }
 
 jar {

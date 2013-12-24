@@ -1,4 +1,4 @@
-package com.df.idm.dal;
+package com.df.idm.dao;
 
 import javax.persistence.Query;
 

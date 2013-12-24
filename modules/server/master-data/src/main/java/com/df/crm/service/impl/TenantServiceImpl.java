@@ -15,7 +15,7 @@ public class TenantServiceImpl implements TenantService {
 
 	@Autowired
 	private TenantDao tenantDao;
-
+	
 	@Override
 	public Tenant createTenant(Tenant tenant) {
 		return tenantDao.newTenant(tenant);

@@ -1,6 +1,6 @@
 package com.df.core.common.exception;
 
-public class BusinessException extends RuntimeException {
+public class BusinessException extends BaseException {
 
 	private static final long serialVersionUID = 1L;
 
@@ -13,7 +13,7 @@ public class BusinessException extends RuntimeException {
 	}
 
 	public BusinessException(Throwable throwable, String messageFormat, Object... args) {
-		super(String.format(messageFormat, args), throwable);
+		super(throwable, messageFormat, args);
 	}
 
 	public BusinessException(Throwable cause, String realm, int errorCode) {
@@ -23,7 +23,7 @@ public class BusinessException extends RuntimeException {
 	}
 
 	public BusinessException(Throwable throwable, String realm, int errorCode, String messageFormat, Object... args) {
-		super(String.format(messageFormat, args), throwable);
+		super(throwable, messageFormat, args);
 		this.errorCode = errorCode;
 		this.realm = realm;
 	}

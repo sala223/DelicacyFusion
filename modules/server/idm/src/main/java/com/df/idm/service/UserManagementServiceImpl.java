@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.df.core.validation.exception.ValidationException;
-import com.df.idm.dal.UserDao;
+import com.df.idm.dao.UserDao;
 import com.df.idm.entity.User;
 import com.df.idm.exception.UserException;
 import com.df.idm.registration.UserRegistrationVerfier;
@@ -86,6 +86,18 @@ public class UserManagementServiceImpl implements UserManagementService {
 		}
 		user.setChangedTime(found.getChangedTime());
 		return user;
+	}
+	
+	public User setUserAsTenantOwner(String userEmail,String tenantCode){
+		User found = userDao.getUserByEmail(userEmail);
+		if (found != null) {
+			found.setTenantOwner(true);
+			found.setTenantCode(tenantCode); 
+			userDao.update(found);
+		} else {
+			throw UserException.userEmailNotFound(userEmail);
+		}
+		return found;
 	}
 
 	public void updatePassword(String emailOrTelephone, String oldPassword, String newPassword) {

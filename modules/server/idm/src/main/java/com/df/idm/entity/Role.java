@@ -3,18 +3,13 @@ package com.df.idm.entity;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.eclipse.persistence.annotations.Indexes;
-import org.eclipse.persistence.annotations.Index;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.eclipse.persistence.annotations.JoinFetch;
 import org.eclipse.persistence.annotations.JoinFetchType;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,42 +20,39 @@ public class Role implements GrantedAuthority {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String SYS_DOMAIN = "";
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(initialValue = 5000, allocationSize = 1, name = "ROLE_SEQ")
-	@Column(name = "ID")
-	private long id;
-
-	@Column(name = "NAME", length = 256)
-	private String name;
-
-	@Column(name = "DOMAIN", length = 64)
-	private String domain;
+	@EmbeddedId
+	private RoleId id;
 
 	@Column(length = 1025)
 	private String description;
 
 	@OneToMany
-	@JoinFetch(value = JoinFetchType.INNER)
-	@JoinTable(name = "ROLE_PERMISSION", joinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "PERMISSION_ID", referencedColumnName = "ID"))
+	@JoinFetch(value = JoinFetchType.OUTER)
+	@JoinTable(name = "ROLE_PERMISSION")
 	private List<Permission> permissions;
 
-	public long getId() {
-		return id;
+	Role() {
 	}
 
-	public void setId(long id) {
+	public Role(RoleId id) {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public RoleId getId() {
+		return id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	void setId(RoleId id) {
+		this.id = id;
+	}
+
+	public Role(String domain, String name) {
+		this.id = new RoleId(domain, name);
+	}
+
+	@JsonIgnore
+	public String getName() {
+		return id.getName();
 	}
 
 	public String getDescription() {
@@ -79,17 +71,15 @@ public class Role implements GrantedAuthority {
 		this.permissions = permissions;
 	}
 
+	@JsonIgnore
 	public String getDomain() {
-		return domain;
-	}
-
-	public void setDomain(String domain) {
-		this.domain = domain;
+		return id.getDomain();
 	}
 
 	@Override
+	@JsonIgnore
 	public String getAuthority() {
-		return name;
+		return this.getName();
 	}
 
 	public boolean equals(Object obj) {
@@ -114,6 +104,6 @@ public class Role implements GrantedAuthority {
 	}
 
 	public String toString() {
-		return "Role [domain=" + this.getDomain() + ", name=" + this.getName() + "]";
+		return this.getName();
 	}
 }

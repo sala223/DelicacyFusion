@@ -1,10 +1,16 @@
 package com.df.idm.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +25,8 @@ import org.eclipse.persistence.annotations.Cache;
 import org.eclipse.persistence.annotations.FetchGroup;
 import org.eclipse.persistence.annotations.FetchAttribute;
 import org.eclipse.persistence.annotations.Index;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -69,7 +77,7 @@ public class User implements Serializable {
 	@NotEmpty
 	private String email;
 
-	@Column(unique = true, name="WEIBO_ACCOUNT")
+	@Column(unique = true, name = "WEIBO_ACCOUNT")
 	@Index(unique = true)
 	private String weiboAccount;
 
@@ -94,6 +102,11 @@ public class User implements Serializable {
 
 	@Column(name = "IS_CELL_PHONE_VERIFIED")
 	private boolean isCellphoneVerified;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"))
+	@JoinFetch(value = JoinFetchType.OUTER)
+	private List<RoleId> roles = new ArrayList<RoleId>();
 
 	public long getId() {
 		return Id;
@@ -264,5 +277,19 @@ public class User implements Serializable {
 	public User cleanCredential() {
 		this.password = null;
 		return this;
+	}
+
+	public void addRole(RoleId roleId) {
+		if (!this.roles.contains(roleId)) {
+			this.roles.add(roleId);
+		}
+	}
+	
+	public void removeRole(RoleId roleId) {
+		this.roles.remove(roleId);
+	}
+
+	public List<RoleId> getRoles() {
+		return this.roles;
 	}
 }

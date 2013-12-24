@@ -13,7 +13,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.Assert;
 
 import com.df.idm.exception.UserNotFoundException;
 
@@ -38,8 +37,6 @@ public abstract class UserObjectAuthenticationProvider implements Authentication
 		if (!(supports(authentication.getClass()))) {
 			return null;
 		}
-		String message = "Only UserObjectPropertyAuthenticationToken is supported";
-		Assert.isInstanceOf(UserObjectPropertyAuthenticationToken.class, authentication, message);
 		UserObjectPropertyAuthenticationToken mtat = (UserObjectPropertyAuthenticationToken) authentication;
 		String userId = (authentication.getPrincipal() == null) ? "" : authentication.getName();
 		UserObject user = null;

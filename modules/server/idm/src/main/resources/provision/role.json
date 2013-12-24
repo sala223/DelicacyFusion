@@ -1,0 +1,34 @@
+[
+{
+  "id":
+  	{
+  		"domain" : "SYSTEM",
+   		"name" : "TENANT_ADMIN"
+  	},
+  "description" : ""
+},  
+{
+   "id":
+  	{
+  		"domain" : "SYSTEM",
+   		"name" : "STORE_ADMIN"
+  	},
+  "description" : ""
+},  
+{
+   "id":
+  	{
+  		"domain" : "SYSTEM",
+   		"name" : "STORE_SERVICE"
+  	},
+  "description" : ""
+}, 
+{
+   "id":
+  	{
+  		"domain" : "SYSTEM",
+   		"name" : "STORE_CASHIER"
+  	},
+  "description" : ""
+}
+]

@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.df.idm.dal.UserDao;
+import com.df.idm.dao.UserDao;
 import com.df.idm.entity.User;
 
 @Transactional

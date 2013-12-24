@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.jboss.resteasy.util.Base64;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -93,6 +94,7 @@ public class StoreResource extends TenantLevelResource {
 	 */
 	@POST
 	@Path("/")
+	@PreAuthorize("hasAnyRole('TENANT_ADMIN')")
 	public Store createStore(@PathParam("tenantCode") String tenantCode, Store store) {
 		injectTenantContext(tenantCode);
 		storeService.newStore(store);
@@ -108,6 +110,7 @@ public class StoreResource extends TenantLevelResource {
 	 */
 	@PUT
 	@Path("/")
+	@PreAuthorize("hasAnyRole('TENANT_ADMIN')")
 	public Store updateStore(@PathParam("tenantCode") String tenantCode, Store store) {
 		injectTenantContext(tenantCode);
 		storeService.updateStore(store);
@@ -116,6 +119,7 @@ public class StoreResource extends TenantLevelResource {
 
 	@PUT
 	@Path("{storeCode}/image")
+	@PreAuthorize("hasAnyRole('STORE_ADMIN')")
 	public ImageReference updateStoreImage(@PathParam("tenantCode") String tenantCode,
 	        @PathParam("storeCode") String storeCode, String imageData) {
 		this.injectTenantContext(tenantCode);

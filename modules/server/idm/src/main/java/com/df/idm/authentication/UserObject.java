@@ -2,11 +2,14 @@ package com.df.idm.authentication;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
+import com.df.idm.entity.Role;
+import com.df.idm.entity.RoleId;
 import com.df.idm.entity.User;
 
 public class UserObject implements UserDetails {
@@ -21,7 +24,12 @@ public class UserObject implements UserDetails {
 	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new ArrayList<GrantedAuthority>();
+		List<RoleId> roleIds = this.user.getRoles();
+		List<Role> roles = new ArrayList<Role>();
+		for (RoleId id : roleIds) {
+			roles.add(new Role(id));
+		}
+		return roles;
 	}
 
 	public String getPassword() {
@@ -67,5 +75,9 @@ public class UserObject implements UserDetails {
 
 	public String getTenantCode() {
 		return user.getTenantCode();
+	}
+
+	public long getUserId() {
+		return user.getId();
 	}
 }
