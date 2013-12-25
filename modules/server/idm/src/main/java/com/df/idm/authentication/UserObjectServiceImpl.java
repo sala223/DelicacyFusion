@@ -31,10 +31,10 @@ public class UserObjectServiceImpl implements UserObjectService {
 	}
 
 	@Override
-	public UserObject getUserByCellPhone(String weiboAccount) {
-		User user = userManagementService.getUserByWeiboAccount(weiboAccount);
+	public UserObject getUserByCellPhone(String cellPhone) {
+		User user = userManagementService.getUserByCellPhone(cellPhone);
 		if (user == null) {
-			throw new UserNotFoundException(String.format("User with cell phone %s is not found", weiboAccount));
+			throw new UserNotFoundException(String.format("User with cell phone %s is not found", cellPhone));
 		}
 		return new UserObject(user);
 

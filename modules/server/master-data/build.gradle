@@ -5,6 +5,7 @@ configurations{
 dependencies {
     compile project(':core')
     compile project(':blob-store')
+    compile project(':idm')
     coreTest project(':core').sourceSets.test.output
     testRuntime project(':core').sourceSets.test.output
     compile ":javax.inject:1"

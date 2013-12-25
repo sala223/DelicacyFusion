@@ -7,7 +7,7 @@ public interface Constants {
 
 		public static final String EMAIL_PROPERTY = "email";
 
-		public static final String TELEPHONE_PROPERTY = "telephone";
+		public static final String TELEPHONE_PROPERTY = "cellPhone";
 
 		public static final String WEIBO_ACCOUNT_PROPERTY = "weiboAccount";
 

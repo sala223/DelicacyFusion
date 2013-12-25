@@ -74,7 +74,8 @@ public class AuthenticationServiceTest extends IdmBaseTest {
 		user.setCellPhone(telephone);
 		user.setPassword(password);
 		userManagementService.createUser(user);
-		UserObjectPropertyAuthenticationToken authToken = new UserObjectPropertyAuthenticationToken("errorAccount", password);
+		UserObjectPropertyAuthenticationToken authToken = new UserObjectPropertyAuthenticationToken("errorAccount",
+		        password);
 		try {
 			authProvider.authenticate(authToken);
 			TestCase.fail();

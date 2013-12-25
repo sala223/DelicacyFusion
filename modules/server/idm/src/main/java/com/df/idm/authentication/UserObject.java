@@ -1,6 +1,5 @@
 package com.df.idm.authentication;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -8,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
-import com.df.idm.entity.Role;
 import com.df.idm.entity.RoleId;
 import com.df.idm.entity.User;
 
@@ -16,36 +14,57 @@ public class UserObject implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
-	private User user;
+	private String email;
+
+	private String cellPhone;
+
+	private String weiboAccount;
+
+	private boolean isLocked;
+
+	private String password;
+
+	private List<RoleId> roles;
+
+	private long userId;
+
+	private boolean isTenantUser;
+
+	private String tenant;
 
 	public UserObject(User user) {
 		Assert.notNull(user);
-		this.user = user;
+		this.email = user.getEmail();
+		this.cellPhone = user.getCellPhone();
+		this.weiboAccount = user.getWeiboAccount();
+		this.isLocked = user.isLocked();
+		this.password = user.getPassword();
+		this.roles = user.getRoles();
+		this.userId = user.getId();
+		this.isTenantUser = user.isTenantUser();
+		if (user.getTenants().size() > 0) {
+			this.tenant = user.getTenants().get(0);
+		}
 	}
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<RoleId> roleIds = this.user.getRoles();
-		List<Role> roles = new ArrayList<Role>();
-		for (RoleId id : roleIds) {
-			roles.add(new Role(id));
-		}
 		return roles;
 	}
 
 	public String getPassword() {
-		return user.getPassword();
+		return this.password;
 	}
 
 	public String getEmail() {
-		return user.getEmail();
+		return this.email;
 	}
 
 	public String getCellphone() {
-		return user.getCellPhone();
+		return this.cellPhone;
 	}
 
 	public String getWeiboAccount() {
-		return user.getWeiboAccount();
+		return this.weiboAccount;
 	}
 
 	public boolean isAccountNonExpired() {
@@ -53,7 +72,7 @@ public class UserObject implements UserDetails {
 	}
 
 	public boolean isAccountNonLocked() {
-		return !user.isLocked();
+		return !this.isLocked;
 	}
 
 	public boolean isCredentialsNonExpired() {
@@ -69,15 +88,20 @@ public class UserObject implements UserDetails {
 		return this.getEmail();
 	}
 
-	public boolean isTenantOwner() {
-		return user.isTenantOwner();
+	public boolean isTenantUser() {
+		return this.isTenantUser;
 	}
 
-	public String getTenantCode() {
-		return user.getTenantCode();
+	public String getTenant() {
+		return this.tenant;
 	}
 
 	public long getUserId() {
-		return user.getId();
+		return this.userId;
+	}
+
+	public UserObject eraseCredential() {
+		this.password = null;
+		return this;
 	}
 }

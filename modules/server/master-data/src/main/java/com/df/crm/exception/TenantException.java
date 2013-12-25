@@ -16,6 +16,10 @@ public class TenantException extends BusinessException {
 
 	public static final int TENANT_WITH_NAME_NOT_FOUND = 100003;
 
+	public static final int TENANT_OWNER_NOT_FOUND = 100004;
+
+	public static final int EXCEED_TENANT_CREATE_LIMITATION = 100005;
+
 	public TenantException(Throwable cause, int errorCode) {
 		super(cause, REALM, errorCode);
 	}
@@ -42,5 +46,13 @@ public class TenantException extends BusinessException {
 
 	public static TenantException tenantWithNameNotFound(String name) {
 		return new TenantException(TENANT_WITH_NAME_NOT_FOUND, "Tenant with name=%s is not found", name);
+	}
+
+	public static TenantException tenantOwnerNotFound(long ownerId) {
+		return new TenantException(TENANT_OWNER_NOT_FOUND, "Tenant with owner = %s is not found", ownerId);
+	}
+
+	public static TenantException exceedTenantCreateLimitation() {
+		return new TenantException(EXCEED_TENANT_CREATE_LIMITATION, "Exceed tenant creation limitation");
 	}
 }

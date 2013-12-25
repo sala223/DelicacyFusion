@@ -19,19 +19,20 @@ public class UserManagementServiceTest extends IdmBaseTest {
 		user.setCellPhone("13121992122");
 		ums.createUser(user);
 	}
-	
-	@Test()
+
+	@Test(expected = ValidationException.class)
 	public void testNewUserWithoutEmail() {
 		User user = new User();
-		user.setPassword("343433"); 
+		user.setPassword("343433");
 		user.setCellPhone("13121992122");
+		user.setPassword("123456");
 		ums.createUser(user);
 	}
-	
+
 	@Test(expected = ValidationException.class)
 	public void testNewUserErrorEmailFormat() {
 		User user = new User();
-		user.setPassword("343433"); 
+		user.setPassword("343433");
 		user.setEmail("dfdf");
 		user.setCellPhone("13121992122");
 		ums.createUser(user);

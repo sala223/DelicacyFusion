@@ -16,6 +16,10 @@ public class UserContext implements Serializable {
 		this.user = user;
 	}
 
+	public long getUserId() {
+		return user.getUserId();
+	}
+
 	public String getEmail() {
 		return this.user.getEmail();
 	}
@@ -24,12 +28,12 @@ public class UserContext implements Serializable {
 		return this.user.getCellphone();
 	}
 
-	public boolean isTenantOwner() {
-		return this.user.isTenantOwner();
+	public boolean isTenantUser() {
+		return this.user.isTenantUser();
 	}
 
-	public String getTenantCode() {
-		return this.user.getTenantCode();
+	public String getTenant() {
+		return this.user.getTenant();
 	}
 
 	public String[] getAuthorities() {

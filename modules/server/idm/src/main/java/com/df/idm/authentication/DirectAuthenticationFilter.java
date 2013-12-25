@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.util.RequestMatcher;
 import org.springframework.util.Assert;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
 public class DirectAuthenticationFilter extends GenericFilterBean {
@@ -54,8 +56,10 @@ public class DirectAuthenticationFilter extends GenericFilterBean {
 				if (details != null && details instanceof UserObject) {
 					UserContext userContext = new UserContext((UserObject) details);
 					response.setUserContext(userContext);
+					RequestAttributes attrs = RequestContextHolder.currentRequestAttributes();
+					int scope = RequestAttributes.SCOPE_SESSION;
+					attrs.setAttribute(Constants.USER_CONTEXT_SESSION_ATTR, userContext, scope);
 				}
-
 			} catch (AuthenticationException ex) {
 				response.setAuthenticated(false);
 				response.setErrorMessage(ex.getMessage());

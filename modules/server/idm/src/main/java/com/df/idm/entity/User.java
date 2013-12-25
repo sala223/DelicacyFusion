@@ -92,11 +92,6 @@ public class User implements Serializable {
 	@Column(name = "CHANGED_TIME")
 	private Date changedTime;
 
-	@Column(name = "IS_TENANT_OWNER")
-	private boolean isTenantOwner;
-
-	@Column(name = "TENANT_CODE")
-	private String tenantCode;
 	@Column(name = "IS_EMAIL_VERIFIED")
 	private boolean isEmailVerified;
 
@@ -107,6 +102,12 @@ public class User implements Serializable {
 	@CollectionTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"))
 	@JoinFetch(value = JoinFetchType.OUTER)
 	private List<RoleId> roles = new ArrayList<RoleId>();
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "USER_TENANT", joinColumns = @JoinColumn(name = "USER_ID"))
+	@JoinFetch(value = JoinFetchType.OUTER)
+	@Column(name = "TENANT_CODE")
+	private List<String> tenants = new ArrayList<String>();
 
 	public long getId() {
 		return Id;
@@ -228,22 +229,6 @@ public class User implements Serializable {
 		this.nickName = nickName;
 	}
 
-	public boolean isTenantOwner() {
-		return isTenantOwner;
-	}
-
-	public void setTenantOwner(boolean isTenantOwner) {
-		this.isTenantOwner = isTenantOwner;
-	}
-
-	public String getTenantCode() {
-		return tenantCode;
-	}
-
-	public void setTenantCode(String tenantCode) {
-		this.tenantCode = tenantCode;
-	}
-
 	public boolean isEmailVerified() {
 		return isEmailVerified;
 	}
@@ -284,12 +269,31 @@ public class User implements Serializable {
 			this.roles.add(roleId);
 		}
 	}
-	
+
 	public void removeRole(RoleId roleId) {
 		this.roles.remove(roleId);
 	}
 
 	public List<RoleId> getRoles() {
 		return this.roles;
+	}
+
+	public boolean isTenantUser() {
+		return tenants.size() > 0;
+
+	}
+
+	public void addToTenantUser(String tenantCode) {
+		if (!tenants.contains(tenantCode)) {
+			tenants.add(tenantCode);
+		}
+	}
+
+	public void removeFromTenantUser(String tenantCode) {
+		tenants.remove(tenantCode);
+	}
+
+	public List<String> getTenants() {
+		return tenants;
 	}
 }

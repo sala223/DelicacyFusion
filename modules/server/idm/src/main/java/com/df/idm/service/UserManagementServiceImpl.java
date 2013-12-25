@@ -87,18 +87,6 @@ public class UserManagementServiceImpl implements UserManagementService {
 		user.setChangedTime(found.getChangedTime());
 		return user;
 	}
-	
-	public User setUserAsTenantOwner(String userEmail,String tenantCode){
-		User found = userDao.getUserByEmail(userEmail);
-		if (found != null) {
-			found.setTenantOwner(true);
-			found.setTenantCode(tenantCode); 
-			userDao.update(found);
-		} else {
-			throw UserException.userEmailNotFound(userEmail);
-		}
-		return found;
-	}
 
 	public void updatePassword(String emailOrTelephone, String oldPassword, String newPassword) {
 		User user = userDao.getUserByEmail(emailOrTelephone);
@@ -127,8 +115,8 @@ public class UserManagementServiceImpl implements UserManagementService {
 	}
 
 	@Override
-	public User getUserByTelephone(String telephone) {
-		return userDao.getUserByTelephone(telephone);
+	public User getUserByCellPhone(String cellPhone) {
+		return userDao.getUserByTelephone(cellPhone);
 	}
 
 	public void deleteUser(long userId) {
@@ -152,5 +140,35 @@ public class UserManagementServiceImpl implements UserManagementService {
 		found.setEmailVerified(true);
 		userDao.update(found);
 		return true;
+	}
+
+	@Override
+	public User getUserById(long userId) {
+		return userDao.getUserById(userId);
+	}
+
+	@Override
+	public User addUserToTenant(long userId, String tenantCode) {
+		User found = userDao.getUserById(userId);
+		if (found != null) {
+			found.addToTenantUser(tenantCode);
+			userDao.update(found);
+		} else {
+			throw UserException.userIdNotFound(userId);
+		}
+		return found;
+	}
+
+	@Override
+	public User removeUserFromTenant(long userId, String tenantCode) {
+		User found = userDao.getUserById(userId);
+		if (found != null) {
+			found.removeFromTenantUser(tenantCode);
+			userDao.update(found);
+		} else {
+			throw UserException.userIdNotFound(userId);
+		}
+		return found;
+
 	}
 }

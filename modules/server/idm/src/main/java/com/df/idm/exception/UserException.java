@@ -22,6 +22,8 @@ public class UserException extends BusinessException {
 
 	public static final int USER_PASSWORD_NOT_MATCH = 100007;
 
+	public static final int USER_ID_NOT_FOUND = 100008;
+
 	public UserException(Throwable cause, int errorCode) {
 		super(cause, REALM, errorCode);
 	}
@@ -37,6 +39,11 @@ public class UserException extends BusinessException {
 	public static UserException userEmailNotFound(String email) {
 		String msg = "User wtih email %s is not found.";
 		return new UserException(USER_EMAIL_NOT_FOUND, msg, email);
+	}
+
+	public static UserException userIdNotFound(long userId) {
+		String msg = "User wtih id %s is not found.";
+		return new UserException(USER_ID_NOT_FOUND, msg, userId);
 	}
 
 	public static UserException userTelephoneNotFound(String telephone) {

@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 
 import org.codehaus.enunciate.jaxrs.TypeHint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import com.df.core.rs.TenantLevelResource;
@@ -60,6 +61,7 @@ public class DiningTableResource extends TenantLevelResource {
 	 */
 	@POST
 	@Path("/")
+	@PreAuthorize("hasTenantAnyRole(#tenantCode,'TENANT_ADMIN','STORE_ADMIN')")
 	public void createDiningTable(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	        DiningTable table) {
 		this.injectTenantContext(tenantCode);
@@ -78,6 +80,7 @@ public class DiningTableResource extends TenantLevelResource {
 	 */
 	@PUT
 	@Path("/")
+	@PreAuthorize("hasTenantAnyRole(#tenantCode,'TENANT_ADMIN','STORE_ADMIN')")
 	public void updateDiningTale(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	        DiningTable table) {
 		this.injectTenantContext(tenantCode);
@@ -96,6 +99,7 @@ public class DiningTableResource extends TenantLevelResource {
 	 */
 	@DELETE
 	@Path("/{tableCode}")
+	@PreAuthorize("hasTenantAnyRole(#tenantCode,'TENANT_ADMIN','STORE_ADMIN')")
 	public void deleteDiningTable(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	        String tableCode) {
 		this.injectTenantContext(tenantCode);

@@ -13,7 +13,7 @@ dependencies {
     compile ":spring-aop:4.0.0.M2"
     runtime ":spring-expression:4.0.0.M2"
     runtime ":spring-jdbc:4.0.0.M2"
-    runtime ":com.springsource.org.aopalliance:1.0.0"
+    compile ":com.springsource.org.aopalliance:1.0.0"
 }
 
 sourceSets {

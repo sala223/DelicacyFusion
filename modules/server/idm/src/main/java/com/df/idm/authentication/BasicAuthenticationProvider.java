@@ -27,6 +27,8 @@ public class BasicAuthenticationProvider extends UserObjectAuthenticationProvide
 			if (found == null) {
 				throw new UserNotFoundException("Unknown user from email " + mail);
 			}
+		} catch (UserNotFoundException userNotFound) {
+			throw userNotFound;
 		} catch (Exception repositoryProblem) {
 			throw new AuthenticationServiceException(repositoryProblem.getMessage(), repositoryProblem);
 		}
@@ -42,6 +44,8 @@ public class BasicAuthenticationProvider extends UserObjectAuthenticationProvide
 			if (found == null) {
 				throw new UserNotFoundException("Unknow user from cellphone " + cellPhone);
 			}
+		} catch (UserNotFoundException userNotFound) {
+			throw userNotFound;
 		} catch (Exception repositoryProblem) {
 			throw new AuthenticationServiceException(repositoryProblem.getMessage(), repositoryProblem);
 		}

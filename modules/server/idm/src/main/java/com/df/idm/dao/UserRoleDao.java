@@ -7,7 +7,6 @@ import com.df.idm.entity.Constants;
 import com.df.idm.entity.Role;
 import com.df.idm.entity.RoleId;
 import com.df.idm.entity.User;
-import com.df.idm.exception.RoleException;
 
 public class UserRoleDao extends EclipseLinkDataAccessFoundation implements Constants {
 
@@ -26,13 +25,12 @@ public class UserRoleDao extends EclipseLinkDataAccessFoundation implements Cons
 	}
 
 	public void setUserRole(User user, RoleId id) {
-		Role role = this.findRole(id);
-		if (role == null) {
-			throw RoleException.roleNotExist(id);
-		} else {
-			user.addRole(id);
-			userDao.update(user);
-		}
+		//Role role = this.findRole(id);
+		//if (role == null) {
+			//throw RoleException.roleNotExist(id);
+		//} 
+		user.addRole(id);
+		userDao.update(user);
 	}
 
 	public void removeUserRole(User user, RoleId id) {

@@ -27,7 +27,7 @@ public class TenantServiceTest extends CRMJPABaseTest {
 		Tenant tenant = new Tenant();
 		tenant.setCode("TestCode");
 		tenant.setName("WangXiangYuan Limit");
-		tenantService.createTenant(tenant);
+		tenantService.createTenant(tenant, 1);
 	}
 
 	@Test(expected = TenantException.class)
@@ -35,23 +35,23 @@ public class TenantServiceTest extends CRMJPABaseTest {
 		Tenant tenant = new Tenant();
 		tenant.setCode("TestCode");
 		tenant.setName("WangXiangYuan Limit");
-		tenantService.createTenant(tenant);
+		tenantService.createTenant(tenant, 1);
 		tenant = new Tenant();
 		tenant.setCode("TestCode2");
 		tenant.setName("WangXiangYuan Limit");
-		tenantService.createTenant(tenant);
+		tenantService.createTenant(tenant, 1);
 	}
-	
+
 	@Test(expected = TenantException.class)
 	public void newTenantWithSameCode() {
 		Tenant tenant = new Tenant();
 		tenant.setCode("TestCode");
 		tenant.setName("WangXiangYuan Limit");
-		tenantService.createTenant(tenant);
+		tenantService.createTenant(tenant, 1);
 		tenant = new Tenant();
 		tenant.setCode("TestCode");
 		tenant.setName("WangXiangYuan2 Limit");
-		tenantService.createTenant(tenant);
+		tenantService.createTenant(tenant, 1);
 	}
 
 	@Test
@@ -60,11 +60,11 @@ public class TenantServiceTest extends CRMJPABaseTest {
 		Tenant tenant = new Tenant();
 		tenant.setCode("TestCode");
 		tenant.setName("WangXiangYuan Limit");
-		tenantService.createTenant(tenant);
+		tenantService.createTenant(tenant, 1);
 		Tenant tenant2 = new Tenant();
 		tenant2.setCode("TestCode2");
 		tenant2.setName("WangXiangYuan2 Limit");
-		tenantService.createTenant(tenant2);
+		tenantService.createTenant(tenant2, 1);
 		entityManager.flush();
 		TestCase.assertTrue(tenantService.getTenants(0, 100).size() == 2 + previous);
 	}
@@ -75,7 +75,7 @@ public class TenantServiceTest extends CRMJPABaseTest {
 		Tenant tenant = new Tenant();
 		tenant.setCode("TestCode");
 		tenant.setName("WangXiangYuan Limit");
-		tenantService.createTenant(tenant);
+		tenantService.createTenant(tenant, 1);
 		tenantService.deleteTenant(tenant.getCode());
 		TestCase.assertTrue(tenantService.getTenants(0, Integer.MAX_VALUE).size() == previous);
 	}

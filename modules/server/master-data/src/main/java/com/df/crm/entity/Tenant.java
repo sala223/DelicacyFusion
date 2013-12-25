@@ -45,6 +45,8 @@ public class Tenant implements Serializable {
 	@Column(name = "ADDRESS", length = 1024, nullable = false)
 	private String address;
 
+	private long owner;
+
 	public String getCode() {
 		return code;
 	}
@@ -114,6 +116,14 @@ public class Tenant implements Serializable {
 		if (this.createdTime == null) {
 			this.setCreatedTime(new Date());
 		}
+	}
+
+	public long getOwner() {
+		return owner;
+	}
+
+	public void setOwner(long owner) {
+		this.owner = owner;
 	}
 
 	@PreUpdate

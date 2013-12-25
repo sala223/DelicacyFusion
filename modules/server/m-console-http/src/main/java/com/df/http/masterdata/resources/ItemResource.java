@@ -20,6 +20,7 @@ import org.codehaus.enunciate.jaxrs.TypeHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import com.df.blobstore.image.Image;
@@ -118,6 +119,7 @@ public class ItemResource extends TenantLevelResource {
 	@POST
 	@Path("/")
 	@TypeHint(Item.class)
+	@PreAuthorize("hasTenantRole(#tenantCode,'STORE_ADMIN')")
 	public Item createItem(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	        Item item) {
 		injectTenantContext(tenantCode);
@@ -127,14 +129,13 @@ public class ItemResource extends TenantLevelResource {
 
 	@PUT
 	@Path("/")
+	@PreAuthorize("hasTenantRole(#tenantCode,'STORE_ADMIN')")
 	public void updateItem(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	        Item item) {
 		injectTenantContext(tenantCode);
 		itemService.updateItem(storeCode, item);
 	}
 
-	@GET
-	@Path("/{itemCode}/image/{imageId}")
 	/**
 	 * Get item image by image id.
 	 * 
@@ -148,6 +149,8 @@ public class ItemResource extends TenantLevelResource {
 	 *            The id of the image to be retrieved.
 	 * @return the items between <code>from</code> and <code>to</code>.
 	 */
+	@GET
+	@Path("/{itemCode}/image/{imageId}")
 	public Response getItemImage(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode,
 	        @PathParam("itemCode") String itemCode, @PathParam("imageId") String imageId) {
 		injectTenantContext(tenantCode);

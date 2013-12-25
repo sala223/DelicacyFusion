@@ -9,16 +9,58 @@ import com.df.crm.dao.TenantDao;
 import com.df.crm.entity.Tenant;
 import com.df.crm.exception.TenantException;
 import com.df.crm.service.contract.TenantService;
+import com.df.idm.entity.RoleId;
+import com.df.idm.entity.User;
+import com.df.idm.service.contract.UserAuthorityService;
+import com.df.idm.service.contract.UserManagementService;
 
 @Transactional
 public class TenantServiceImpl implements TenantService {
 
 	@Autowired
 	private TenantDao tenantDao;
-	
+
+	@Autowired
+	private UserManagementService userManagementService;
+
+	@Autowired
+	private UserAuthorityService userAuthorityService;
+
+	public void setTenantDao(TenantDao tenantDao) {
+		this.tenantDao = tenantDao;
+	}
+
+	public UserManagementService getUserManagementService() {
+		return userManagementService;
+	}
+
+	public void setUserManagementService(UserManagementService userManagementService) {
+		this.userManagementService = userManagementService;
+	}
+
+	public UserAuthorityService getUserAuthorityService() {
+		return userAuthorityService;
+	}
+
+	public void setUserAuthorityService(UserAuthorityService userAuthorityService) {
+		this.userAuthorityService = userAuthorityService;
+	}
+
 	@Override
-	public Tenant createTenant(Tenant tenant) {
-		return tenantDao.newTenant(tenant);
+	public Tenant createTenant(Tenant tenant, long ownerId) {
+		User owner = userManagementService.getUserById(ownerId);
+		if (owner == null) {
+			throw TenantException.tenantOwnerNotFound(ownerId);
+		}
+		List<Tenant> tenants = tenantDao.getOwnerTenants(ownerId);
+		if (tenants.size() > 0) {
+			throw TenantException.exceedTenantCreateLimitation();
+		}
+		tenant.setOwner(ownerId);
+		Tenant newTenant = tenantDao.newTenant(tenant);
+		userManagementService.addUserToTenant(owner.getId(), tenant.getCode());
+		userAuthorityService.assign(owner, new RoleId(tenant.getCode(), RoleId.TENANT_ADMIN_NAME));
+		return newTenant;
 	}
 
 	@Override

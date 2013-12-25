@@ -14,7 +14,7 @@
 		</filter>
 	</appender>
 	<appender name="fileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="{user.home}/df.log" />
+		<param name="File" value="${user.home}/df.log" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<param name="encoding" value="UTF-8" />
 		<param name="Append" value="true" />

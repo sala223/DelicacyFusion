@@ -5,8 +5,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import org.springframework.security.core.GrantedAuthority;
+
 @Embeddable
-public class RoleId implements Serializable {
+public class RoleId implements GrantedAuthority, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,19 +22,9 @@ public class RoleId implements Serializable {
 
 	public static final String TENANT_ADMIN_NAME = "TENANT_ADMIN";
 
-	public static final RoleId TENANT_ADMIN = new RoleId(SYS_DOMIAN, TENANT_ADMIN_NAME);
-
-	public static final String STORE_ADMIN_NAME = "STORE_ADMIN";
-
-	public static final RoleId STORE_ADMIN = new RoleId(SYS_DOMIAN, STORE_ADMIN_NAME);
-
 	public static final String STORE_SERVICE_NAME = "STORE_SERVICE";
 
-	public static final RoleId STORE_SERVICE = new RoleId(SYS_DOMIAN, STORE_SERVICE_NAME);
-
 	public static final String STORE_CASHIER_NAME = "STORE_CASHIER";
-
-	public static final RoleId STORE_CASHIER = new RoleId(SYS_DOMIAN, STORE_CASHIER_NAME);
 
 	RoleId() {
 	}
@@ -90,6 +82,11 @@ public class RoleId implements Serializable {
 	@Override
 	public String toString() {
 		return "RoleId [name=" + name + ", domain=" + domain + "]";
+	}
+
+	@Override
+	public String getAuthority() {
+		return name;
 	}
 
 }

@@ -16,7 +16,13 @@ public interface UserManagementService {
 
 	User getUserByEmail(String mail);
 
-	User getUserByTelephone(String telephone);
+	User getUserById(long userId);
+
+	User getUserByCellPhone(String cellPhone);
 
 	void deleteUser(long userId);
+
+	User addUserToTenant(long userId, String tenantCode);
+
+	User removeUserFromTenant(long userId, String tenantCode);
 }

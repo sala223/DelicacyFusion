@@ -68,6 +68,7 @@ public abstract class UserObjectAuthenticationProvider implements Authentication
 		UserObjectPropertyAuthenticationToken result = new UserObjectPropertyAuthenticationToken(principal,
 		        mapAuthorities);
 		result.setAuthenticated(true);
+		user.eraseCredential();
 		result.setDetails(user);
 		SecurityContextHolder.getContext().setAuthentication(result);
 		return result;

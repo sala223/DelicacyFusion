@@ -36,6 +36,10 @@ public class TenantDao extends EclipseLinkDataAccessFoundation {
 		return tenant;
 	}
 
+	public List<Tenant> getOwnerTenants(long ownerId) {
+		return this.findEntityListByProperty(Tenant.class, Constants.TENANT.OWNER_PROPERTY, ownerId);
+	}
+
 	public Tenant findTenantByCode(String tenantCode) {
 		return this.find(Tenant.class, tenantCode);
 	}

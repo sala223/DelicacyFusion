@@ -15,6 +15,7 @@ import javax.ws.rs.Produces;
 
 import org.codehaus.enunciate.jaxrs.TypeHint;
 import org.jboss.resteasy.util.Base64;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import com.df.blobstore.image.http.ImageLinkCreator;
@@ -47,6 +48,7 @@ public class ItemTemplateResource extends TenantLevelResource {
 	 */
 	@POST
 	@Path("/")
+	@PreAuthorize("hasTenantRole(#tenantCode,'TENANT_ADMIN')")
 	public ItemTemplate createItemTemplate(@PathParam("tenantCode") String tenantCode, ItemTemplate itpl) {
 		this.injectTenantContext(tenantCode);
 		return itplService.createItemTemplate(itpl);
@@ -60,6 +62,7 @@ public class ItemTemplateResource extends TenantLevelResource {
 	 */
 	@PUT
 	@Path("/")
+	@PreAuthorize("hasTenantRole(#tenantCode,'TENANT_ADMIN')")
 	public void updateItemTemplate(@PathParam("tenantCode") String tenantCode, ItemTemplate itemTemplate) {
 		this.injectTenantContext(tenantCode);
 		itplService.updateItemTemplate(itemTemplate);
@@ -86,6 +89,7 @@ public class ItemTemplateResource extends TenantLevelResource {
 
 	@PUT
 	@Path("/{itplCode}/image")
+	@PreAuthorize("hasTenantRole(#tenantCode,'TENANT_ADMIN')")
 	public PictureRef updateItemImage(@PathParam("tenantCode") String tenantCode,
 	        @PathParam("itplCode") String itplCode, String imageData) {
 		this.injectTenantContext(tenantCode);
@@ -104,6 +108,7 @@ public class ItemTemplateResource extends TenantLevelResource {
 
 	@DELETE
 	@Path("/{itplCode}/image/{imageId}")
+	@PreAuthorize("hasTenantRole(#tenantCode,'TENANT_ADMIN')")
 	public void deleteItemImage(@PathParam("tenantCode") String tenantCode, @PathParam("itplCode") String itplCode,
 	        @PathParam("imageId") String imageId) {
 		this.injectTenantContext(tenantCode);

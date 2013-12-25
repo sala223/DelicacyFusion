@@ -2,6 +2,7 @@ package com.df.idm.authentication;
 
 import java.io.IOException;
 
+import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +11,8 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 public class MailOrCellPhoneAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -60,5 +63,18 @@ public class MailOrCellPhoneAuthenticationFilter extends AbstractAuthenticationP
 
 	protected String obtainUserPassword(HttpServletRequest request) {
 		return request.getParameter(SECURITY_AUTH_PASSWORD_KEY);
+	}
+
+	@Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+	        FilterChain chain, Authentication auth) throws IOException, ServletException {
+		super.successfulAuthentication(request, response, chain, auth);
+		Object details = auth.getDetails();
+		if (details instanceof UserObject) {
+			UserContext userContext = new UserContext((UserObject) auth.getDetails());
+			RequestAttributes attrs = RequestContextHolder.currentRequestAttributes();
+			int scope = RequestAttributes.SCOPE_SESSION;
+			attrs.setAttribute(Constants.USER_CONTEXT_SESSION_ATTR, userContext, scope);
+		}
 	}
 }

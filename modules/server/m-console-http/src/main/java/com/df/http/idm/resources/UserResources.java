@@ -42,5 +42,4 @@ public class UserResources {
 	public User getUserByEmail(@QueryParam("email") String email) {
 		return userManagementService.getUserByEmail(email).cleanCredential();
 	}
-
 }

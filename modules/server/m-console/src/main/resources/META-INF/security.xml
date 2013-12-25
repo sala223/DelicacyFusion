@@ -8,7 +8,9 @@
 	<import resource="classpath:META-INF/idm-beans.xml" />
 	<sec:debug />
 	<sec:global-method-security
-		secured-annotations="enabled" jsr250-annotations="enabled" pre-post-annotations="enabled"/>
+		pre-post-annotations="enabled">
+		<sec:expression-handler ref="tenantWideSecurityExpressionHandler" />
+	</sec:global-method-security>
 	<bean id="secureChannelProcessor"
 		class="org.springframework.security.web.access.channel.SecureChannelProcessor" />
 	<bean id="insecureChannelProcessor"
@@ -45,24 +47,22 @@
 		<constructor-arg>
 			<list>
 				<ref bean="webExpressionVoter" />
-				<ref bean="jsr250Voter" />
-				<ref bean="roleVoter" />
 			</list>
 		</constructor-arg>
 	</bean>
-	<bean id="jsr250Voter"
-		class="org.springframework.security.access.annotation.Jsr250Voter">
-	</bean>
 	<bean id="webExpressionVoter"
 		class="org.springframework.security.web.access.expression.WebExpressionVoter">
-		<property name="expressionHandler" ref="securityExpressionHandler"/>
+		<property name="expressionHandler" ref="webSecurityExpressionHandler" />
 	</bean>
-	<bean id="securityExpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
-		<property name="permissionEvaluator">
-			<bean id="permissionEvaluator" class="com.df.idm.authorization.RoleBasePermissionEvaluator" />
-		</property>
+	<bean id="webSecurityExpressionHandler"
+		class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
+		<property name="permissionEvaluator" ref="permissionEvaluator" />
 	</bean>
-	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter" />
+	<bean id="permissionEvaluator" class="com.df.idm.authorization.RoleBasePermissionEvaluator" />
+	<bean id="tenantWideSecurityExpressionHandler"
+		class="com.df.idm.authorization.TenantWideMethodSecurityExpressionHandler">
+		<property name="permissionEvaluator" ref="permissionEvaluator" />
+	</bean>
 	<bean id="FILTER_SECURITY_INTERCEPTOR"
 		class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
 		<property name="authenticationManager" ref="authenticationManager" />
@@ -82,10 +82,10 @@
 		class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
 		<property name="errorPage" value="/auth/accessDenied.html" />
 	</bean>
-	<bean id="ANONYMOUS_AUTHENTICATION_FILTER"  
-     class="org.springframework.security.web.authentication.AnonymousAuthenticationFilter">
+	<bean id="ANONYMOUS_AUTHENTICATION_FILTER"
+		class="org.springframework.security.web.authentication.AnonymousAuthenticationFilter">
 		<constructor-arg index="0" value="test" />
-		<property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS"/>
+		<property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS" />
 	</bean>
 	<bean id="ANTHENTICATION_FILTER"
 		class="com.df.idm.authentication.MailOrCellPhoneAuthenticationFilter">
@@ -114,8 +114,7 @@
 		<property name="rememberMeServices" ref="rememberMeServices" />
 		<property name="authenticationManager" ref="authenticationManager" />
 	</bean>
-	<bean id="DIRECT_AUTHENTICATION_FILTER"
-		class="com.df.idm.authentication.DirectAuthenticationFilter">
+	<bean id="DIRECT_AUTHENTICATION_FILTER" class="com.df.idm.authentication.DirectAuthenticationFilter">
 		<property name="processUrl" value="/auth/direct" />
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="objectMapper">
@@ -139,8 +138,10 @@
 	</bean>
 	<sec:filter-security-metadata-source
 		id="securityInterceptorMetadataSource" use-expressions="true">
-		<sec:intercept-url pattern="/rs/user" method="POST" access="isAnonymous()" />
-		<sec:intercept-url pattern="/rs/**" method="GET" access="permitAll" />
+		<sec:intercept-url pattern="/rs/user" method="POST"
+			access="isAnonymous()" />
+		<sec:intercept-url pattern="/rs/**" method="GET"
+			access="permitAll" />
 		<sec:intercept-url pattern="/rs/**" access="isAuthenticated()" />
 	</sec:filter-security-metadata-source>
 	<sec:filter-security-metadata-source
@@ -157,9 +158,11 @@
 			<sec:filter-chain pattern="/**/*.js" filters="none" />
 			<sec:filter-chain pattern="/**/*.css" filters="none" />
 			<sec:filter-chain pattern="/auth/*.html" filters="none" />
-			<sec:filter-chain pattern="/auth/**" filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,ANTHENTICATION_FILTER, DIRECT_AUTHENTICATION_FILTER, REMEMBER_ME_FILTER,EXCEPTION_TRANSLATION_FILTER,TENANT_CONTEXT_CLEAR_FILTER"/>
-			<sec:filter-chain pattern="/rs/**" filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER, REMEMBER_ME_FILTER, ANONYMOUS_AUTHENTICATION_FILTER,FILTER_SECURITY_INTERCEPTOR, EXCEPTION_TRANSLATION_FILTER,
-				TENANT_CONTEXT_CLEAR_FILTER"/>
+			<sec:filter-chain pattern="/auth/**"
+				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,ANTHENTICATION_FILTER, DIRECT_AUTHENTICATION_FILTER, REMEMBER_ME_FILTER,EXCEPTION_TRANSLATION_FILTER,TENANT_CONTEXT_CLEAR_FILTER" />
+			<sec:filter-chain pattern="/rs/**"
+				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER, REMEMBER_ME_FILTER, ANONYMOUS_AUTHENTICATION_FILTER,FILTER_SECURITY_INTERCEPTOR, EXCEPTION_TRANSLATION_FILTER,
+				TENANT_CONTEXT_CLEAR_FILTER" />
 		</sec:filter-chain-map>
 	</bean>
 </beans>
