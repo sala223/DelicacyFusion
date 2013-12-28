@@ -11,6 +11,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -19,6 +20,7 @@ import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.MultitenantType;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
@@ -34,6 +36,8 @@ public abstract class MasterData {
 	@XmlTransient
 	private long id;
 
+	@NotEmpty(message = "{masterdata.code.NotEmpty}")
+	@Size(message = "{masterdata.code.Size}", max = 255)
 	@Column(length = 255, name = "CODE", updatable = false)
 	@Index
 	private String code;

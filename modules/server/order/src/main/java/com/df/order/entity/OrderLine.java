@@ -7,6 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.entity.ItemUnit;
@@ -19,6 +24,7 @@ public class OrderLine implements Serializable {
 	@Column(nullable = false, name = "LINE_NUMBER")
 	private int lineNumber;
 
+	@NotEmpty(message = "{orderline.itemCode.NotEmpty}")
 	@Column(nullable = false, name = "ITEM_CODE", length = 255)
 	private String itemCode;
 
@@ -42,6 +48,7 @@ public class OrderLine implements Serializable {
 	private BigDecimal discount;
 
 	@Column(name = "QUANTITY")
+	@Range(message = "{orderline.quantity.Range}", min = 1)
 	private int quantity;
 
 	@Column(name = "TOTAL_PAYMENT", scale = 2)
@@ -50,7 +57,8 @@ public class OrderLine implements Serializable {
 	@Column(name = "TOTAL_PAYMENT_AFTER_DISCOUNT", scale = 2)
 	private BigDecimal totalPaymentAfterDiscount;
 
-	@Column(name = "COMMENT")
+	@Column(length = 256, name = "COMMENT")
+	@Length(message = "{orderline.comment.Length}", max = 256)
 	private String comment;
 
 	@Column(name = "PROMOTION_NAME")

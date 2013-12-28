@@ -3,10 +3,12 @@ package com.df.masterdata.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Indexes;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "DINING_TABLE")
@@ -15,7 +17,8 @@ import org.eclipse.persistence.annotations.Indexes;
         @Index(name = "IDX_DT_CODE", unique = false, columnNames = { "STORE_CODE", "CODE" }) })
 public class DiningTable extends StoreAwareMasterData {
 
-	@Column(nullable = false, length = 128, name = "BAR_CODE")
+	@Size(message = "{diningTable.barCode.Size}", max = 128)
+	@Column(nullable = true, length = 128, name = "BAR_CODE")
 	private String barCode;
 
 	@Column(name = "CAPACITY")

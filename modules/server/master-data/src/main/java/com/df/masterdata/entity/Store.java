@@ -4,9 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Indexes;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 import com.df.blobstore.image.http.ImageReference;
 import com.df.core.persist.eclipselink.MultiTenantSupport;
@@ -17,6 +20,8 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
         @Index(name = "IDX_STORE_T_NAME", unique = true, columnNames = { "NAME", MultiTenantSupport.TENANT_COLUMN }) })
 public class Store extends MasterData {
 
+	@NotEmpty(message = "{store.name.NotEmpty}")
+	@Size(message = "{store.name.Size}", max = 255)
 	@Column(nullable = false, name = "NAME", length = 255)
 	private String name;
 
@@ -24,6 +29,7 @@ public class Store extends MasterData {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
+	@Size(message = "{store.address.Size}", max = 255)
 	@Column(name = "ADDRESS", length = 1024, nullable = false)
 	private String address;
 
@@ -34,18 +40,23 @@ public class Store extends MasterData {
 	private String imageId;
 
 	@Column(length = 32, nullable = false, name = "TELEPHONE1")
+	@Size(message = "{store.telephone.Size}", max = 32)
 	private String telephone1;
 
 	@Column(length = 32, name = "TELEPHONE2")
+	@Size(message = "{store.telephone.Size}", max = 32)
 	private String telephone2;
 
+	@Range(message = "{store.businessHourFrom.Range}", min = 0, max = 1440)
 	@Column(nullable = false, name = "BUSINESS_HOUR_FROM")
-	private int businessHourFrom = -1;
+	private int businessHourFrom = 0;
 
+	@Range(message = "{store.businessHourTo.Range}", min = 0, max = 1440)
 	@Column(nullable = false, name = "BUSINESS_HOUR_TO")
-	private int businessHourTo = -1;
+	private int businessHourTo = 0;
 
-	@Column(length = 512, name = "TRAFFIC_INFO")
+	@Column(length = 1024, name = "TRAFFIC_INFO")
+	@Size(message = "{store.trafficInfo.Size}", max = 1024)
 	private String trafficInfo;
 
 	public String getName() {

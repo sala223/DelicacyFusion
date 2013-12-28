@@ -5,6 +5,9 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<import resource="classpath:META-INF/datasource.xml" />
 	<bean id="businessExceptionMapper" class="com.df.core.rs.BusinessExceptionMapper" />
+	<bean id="validationExceptionMapper" class="com.df.core.rs.ValidationExceptionMapper">
+		<constructor-arg ref="objectMapper" />
+	</bean>
 	<bean id="jacksonContextResolver" class="com.df.core.json.ext.JacksonContextResolver" />
 	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />
 	<bean id="fmHtmlEscape" class="freemarker.template.utility.HtmlEscape" />
@@ -52,10 +55,17 @@
 	</bean>
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-		<property name="validationMessageSource" ref="validatorMessageSource" />
+		<property name="validationMessageSource" ref="validationMessageSource" />
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
 	</bean>
 	<bean id="objectMapper" class="com.df.core.json.ext.ObjectMapperFactoryBean" />
-	<bean id="validatorMessageSource" class="com.df.core.validation.message.ValidationMessageSource" />
+	<bean id="validationMessageSource" class="com.df.core.validation.message.ValidationMessageSource">
+		<constructor-arg>
+			<array>
+				<value>classpath*:messages/ValidationMessages</value>
+			</array>
+		</constructor-arg>
+	</bean>
 	<beans profile="test">
 		<bean id="responseSampleLogInterceptor" class="com.df.core.rs.ResponseSampleLogInterceptor">
 			<property name="enabled" value="true" />

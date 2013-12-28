@@ -71,6 +71,10 @@ public class UserManagementServiceImpl implements UserManagementService {
 	}
 
 	public User updateUser(User user) {
+		Set<ConstraintViolation<User>> violations = validator.validate(user);
+		if (violations.size() != 0) {
+			throw new ValidationException(violations.toArray(new ConstraintViolation[0]));
+		}
 		User found = userDao.getUserByEmail(user.getEmail());
 		if (found != null) {
 			found.setAge(user.getAge());

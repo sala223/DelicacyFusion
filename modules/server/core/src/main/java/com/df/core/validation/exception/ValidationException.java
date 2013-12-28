@@ -4,7 +4,9 @@ import java.io.StringWriter;
 
 import javax.validation.ConstraintViolation;
 
-public class ValidationException extends RuntimeException {
+import com.df.core.common.exception.BusinessException;
+
+public class ValidationException extends BusinessException {
 
 	private static final long serialVersionUID = 1L;
 
@@ -12,8 +14,17 @@ public class ValidationException extends RuntimeException {
 
 	protected static final String CR = System.getProperty("line.separator");
 
-	public ValidationException(ConstraintViolation<?>[] violations) {
+	private static final String REALM = "Validation";
+
+	private static final int ERROR_CODE = 99999999;
+
+	public ValidationException(Throwable ex, ConstraintViolation<?>[] violations) {
+		super(ex, REALM, ERROR_CODE);
 		this.violations = violations;
+	}
+
+	public ValidationException(ConstraintViolation<?>[] violations) {
+		this(null, violations);
 	}
 
 	public ConstraintViolation<?>[] getViolations() {

@@ -1,20 +1,23 @@
 package com.df.core.validation.message;
 
 import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
-class ValidationMessageSource extends ReloadableResourceBundleMessageSource {
+class ValidationMessageSource extends MultipleResourceMessageSource {
 
-	private static final String VALIDATION_DEFAULT_BASE_NAME = "classpath:message/ValidationMessages";
+	private static final String VALIDATION_DEFAULT_BASE_NAME = "classpath:messages/ValidationMessages";
 
 	public ValidationMessageSource() {
+		this(new String[] { VALIDATION_DEFAULT_BASE_NAME });
+	}
+
+	public ValidationMessageSource(String[] baseNames) {
 		this.setUseCodeAsDefaultMessage(true);
 		this.setAlwaysUseMessageFormat(false);
 		this.setCacheSeconds(-1);
-		setBasename(VALIDATION_DEFAULT_BASE_NAME);
+		this.setBasenames(baseNames);
 	}
 
-	public static MessageSourceAccessor getAccessor() {
-		return new MessageSourceAccessor(new ValidationMessageSource());
+	public MessageSourceAccessor getAccessor() {
+		return new MessageSourceAccessor(this);
 	}
 }

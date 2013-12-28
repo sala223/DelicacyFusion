@@ -13,10 +13,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Indexes;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.df.blobstore.image.http.ImageLinkCreator;
 import com.df.core.persist.eclipselink.MultiTenantSupport;
@@ -29,6 +31,8 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
 @Table(name = "ITEM_TEMPLATE")
 public class ItemTemplate extends MasterData {
 
+	@NotEmpty(message = "{item.name.NotEmpty}")
+	@Size(message = "{item.name.Size}", max = 128)
 	@Column(length = 128, name = "NAME")
 	private String name;
 

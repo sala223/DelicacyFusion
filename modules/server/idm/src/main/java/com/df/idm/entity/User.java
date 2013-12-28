@@ -20,6 +20,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 import org.eclipse.persistence.annotations.Cache;
 import org.eclipse.persistence.annotations.FetchGroup;
@@ -45,17 +46,21 @@ public class User implements Serializable {
 	@Column
 	private long Id;
 
-	@Column(length = 32)
+	@Column(length = 128)
+	@Size(message = "{user.firstName.Size}", max = 128)
 	private String firstName;
 
-	@Column(length = 56)
+	@Column(length = 128)
+	@Size(message = "{user.lastName.Size}", max = 128)
 	private String lastName;
 
+	@NotEmpty(message = "{user.password.NotEmpty}")
+	@Size(message = "{user.password.Size}", min = 6, max = 30)
 	@Column(length = 256, nullable = false)
-	@NotEmpty
 	private String password;
 
 	@Column(length = 128)
+	@Size(message = "{user.nickName.Size}", max = 128)
 	private String nickName;
 
 	@Column
@@ -63,6 +68,7 @@ public class User implements Serializable {
 
 	@Column(length = 20)
 	@Index(unique = true)
+	@Size(message = "{user.cellPhone.Size}", max = 20)
 	private String cellPhone;
 
 	@Column(length = 512)
@@ -73,12 +79,14 @@ public class User implements Serializable {
 
 	@Column(length = 128, updatable = false, nullable = false)
 	@Index(unique = true)
-	@Email
-	@NotEmpty
+	@Email(message = "{user.email.Email}")
+	@NotEmpty(message = "{user.email.NotEmpty}")
+	@Size(message = "{user.email.Size}", max = 128)
 	private String email;
 
-	@Column(unique = true, name = "WEIBO_ACCOUNT")
+	@Column(length = 128, unique = true, name = "WEIBO_ACCOUNT")
 	@Index(unique = true)
+	@Size(message = "{user.weiboAccount.Size}", max = 128)
 	private String weiboAccount;
 
 	@Column
@@ -108,6 +116,14 @@ public class User implements Serializable {
 	@JoinFetch(value = JoinFetchType.OUTER)
 	@Column(name = "TENANT_CODE")
 	private List<String> tenants = new ArrayList<String>();
+
+	public User() {
+	}
+
+	public User(String email, String password) {
+		this.password = password;
+		this.email = email;
+	}
 
 	public long getId() {
 		return Id;

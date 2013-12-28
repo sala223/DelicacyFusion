@@ -3,8 +3,11 @@ package com.df.masterdata.service.impl;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +16,7 @@ import org.springframework.util.StringUtils;
 import com.df.blobstore.image.ImageKey;
 import com.df.blobstore.image.ImageService;
 import com.df.core.common.context.TenantContextHolder;
+import com.df.core.validation.exception.ValidationException;
 import com.df.masterdata.dao.StoreDao;
 import com.df.masterdata.entity.Store;
 import com.df.masterdata.exception.StoreException;
@@ -27,6 +31,9 @@ public class StoreServiceImpl implements StoreService {
 	@Inject
 	private ImageService imageService;
 
+	@Inject
+	private Validator validator;
+
 	public void setStoreDao(StoreDao storeDao) {
 		this.storeDao = storeDao;
 	}
@@ -35,8 +42,16 @@ public class StoreServiceImpl implements StoreService {
 		this.imageService = imageService;
 	}
 
+	public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
+
 	@Override
 	public void newStore(Store store) {
+		Set<ConstraintViolation<Store>> violations = validator.validate(store);
+		if (!violations.isEmpty()) {
+			throw new ValidationException(violations.toArray(new ConstraintViolation[0]));
+		}
 		if (StringUtils.isEmpty(store.getCode())) {
 			throw StoreException.valiationError("Store code must not be empty");
 		}
@@ -58,6 +73,10 @@ public class StoreServiceImpl implements StoreService {
 
 	@Override
 	public void updateStore(Store store) {
+		Set<ConstraintViolation<Store>> violations = validator.validate(store);
+		if (!violations.isEmpty()) {
+			throw new ValidationException(violations.toArray(new ConstraintViolation[0]));
+		}
 		Store found = this.checkStore(store.getCode(), true);
 		if (!found.getName().equals(store.getName())) {
 			if (storeDao.getStoreByName(store.getName()) != null) {

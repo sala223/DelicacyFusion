@@ -8,10 +8,12 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Indexes;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.df.core.persist.eclipselink.MultiTenantSupport;
 
@@ -24,10 +26,13 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
                 MultiTenantSupport.TENANT_COLUMN }) })
 public class Room extends StoreAwareMasterData {
 
-	@Column(nullable = false, name = "NAME")
+	@NotEmpty(message = "{room.name.NotEmpty}")
+	@Size(message = "{room.name.Size}", max = 255)
+	@Column(length = 255, nullable = false, name = "NAME")
 	private String name;
 
-	@Column(length = 255, name = "DESCRIPTION")
+	@Size(message = "{room.description.Size}", max = 255)
+	@Column(length = 1024, name = "DESCRIPTION")
 	private String description;
 
 	@Column(scale = 2, name = "MINIMUM_COST")

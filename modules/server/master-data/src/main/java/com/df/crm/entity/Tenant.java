@@ -11,16 +11,23 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 public class Tenant implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@NotEmpty(message = "{tenant.code.NotEmpty}")
+	@Size(message = "{tenant.code.Size}", max = 64)
 	@Id
 	@Column(name = "CODE", length = 64, nullable = false)
 	private String code;
 
+	@NotEmpty(message = "{tenant.name.NotEmpty}")
+	@Size(message = "{tenant.name.Size}", max = 128)
 	@Column(name = "NAME", unique = true, length = 128, nullable = false)
 	private String name;
 
@@ -42,9 +49,12 @@ public class Tenant implements Serializable {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
+	@NotEmpty(message = "{tenant.address.NotEmpty}")
+	@Size(message = "{tenant.address.Size}", max = 1024)
 	@Column(name = "ADDRESS", length = 1024, nullable = false)
 	private String address;
 
+	@Column(name = "OWNER")
 	private long owner;
 
 	public String getCode() {

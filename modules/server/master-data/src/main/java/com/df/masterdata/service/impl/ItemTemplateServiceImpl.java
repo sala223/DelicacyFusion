@@ -3,6 +3,10 @@ package com.df.masterdata.service.impl;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +18,7 @@ import com.df.blobstore.image.ImageKey;
 import com.df.blobstore.image.ImageService;
 import com.df.blobstore.image.ImageStoreException;
 import com.df.core.common.context.TenantContextHolder;
+import com.df.core.validation.exception.ValidationException;
 import com.df.masterdata.dao.ItemTemplateDao;
 import com.df.masterdata.entity.ItemTemplate;
 import com.df.masterdata.entity.PictureRef;
@@ -29,6 +34,9 @@ public class ItemTemplateServiceImpl implements ItemTemplateService {
 	@Autowired
 	private ImageService imageService;
 
+	@Autowired
+	private Validator validator;
+
 	private static final Logger log = LoggerFactory.getLogger(ItemTemplateServiceImpl.class);
 
 	public void setItemTemplateDao(ItemTemplateDao itemTemplateDao) {
@@ -37,6 +45,10 @@ public class ItemTemplateServiceImpl implements ItemTemplateService {
 
 	public void setImageService(ImageService imageService) {
 		this.imageService = imageService;
+	}
+
+	public void setValidator(Validator validator) {
+		this.validator = validator;
 	}
 
 	@Override
@@ -51,12 +63,20 @@ public class ItemTemplateServiceImpl implements ItemTemplateService {
 
 	@Override
 	public ItemTemplate createItemTemplate(ItemTemplate itemTemplate) {
+		Set<ConstraintViolation<ItemTemplate>> violations = validator.validate(itemTemplate);
+		if (violations.size() != 0) {
+			throw new ValidationException(violations.toArray(new ConstraintViolation[0]));
+		}
 		itemTemplateDao.newItemTemplate(itemTemplate);
 		return itemTemplate;
 	}
 
 	@Override
 	public void updateItemTemplate(ItemTemplate itemTemplate) {
+		Set<ConstraintViolation<ItemTemplate>> violations = validator.validate(itemTemplate);
+		if (violations.size() != 0) {
+			throw new ValidationException(violations.toArray(new ConstraintViolation[0]));
+		}
 		ItemTemplate itpl = itemTemplateDao.getItemTemplateByCode(itemTemplate.getCode());
 		if (itpl == null) {
 			throw ItemTemplateException.itemTemplateWithCodeDoesNotExist(itemTemplate.getCode());
@@ -71,7 +91,7 @@ public class ItemTemplateServiceImpl implements ItemTemplateService {
 		itpl.setPrice(itemTemplate.getPrice());
 		itpl.setType(itemTemplate.getType());
 		List<PictureRef> pictureSet = itemTemplate.getPictureSet();
-		itpl.setPictureSet(pictureSet); 
+		itpl.setPictureSet(pictureSet);
 		itemTemplateDao.update(itpl);
 	}
 
@@ -114,9 +134,9 @@ public class ItemTemplateServiceImpl implements ItemTemplateService {
 	@Override
 	public List<ItemTemplate> all(boolean includeDisabled) {
 		if (includeDisabled) {
-			return itemTemplateDao.all(ItemTemplate.class, 0, Integer.MAX_VALUE, true,true);
+			return itemTemplateDao.all(ItemTemplate.class, 0, Integer.MAX_VALUE, true, true);
 		} else {
-			return itemTemplateDao.all(ItemTemplate.class, 0, Integer.MAX_VALUE, false,true);
+			return itemTemplateDao.all(ItemTemplate.class, 0, Integer.MAX_VALUE, false, true);
 		}
 	}
 

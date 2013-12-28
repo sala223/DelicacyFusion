@@ -22,6 +22,7 @@ import com.df.blobstore.image.http.ImageReferenceFactory;
 import com.df.core.rs.TenantLevelResource;
 import com.df.http.masterdata.resources.exception.InputValidationException;
 import com.df.masterdata.entity.Store;
+import com.df.masterdata.exception.StoreException;
 import com.df.masterdata.service.contract.StoreService;
 
 @Path("/tenant/{tenantCode}/store")
@@ -78,6 +79,9 @@ public class StoreResource extends TenantLevelResource {
 	public Store getStoreByCode(@PathParam("tenantCode") String tenantCode, @PathParam("storeCode") String storeCode) {
 		injectTenantContext(tenantCode);
 		Store store = storeService.getStoreByCode(storeCode);
+		if (store == null) {
+			throw StoreException.storeWithCodeNotExist(storeCode);
+		}
 		if (!StringUtils.isEmpty(store.getImageId())) {
 			ImageKey key = new ImageKey(store.getImageId());
 			store.setImage(imageReferenceFactory.createImageReference(key));

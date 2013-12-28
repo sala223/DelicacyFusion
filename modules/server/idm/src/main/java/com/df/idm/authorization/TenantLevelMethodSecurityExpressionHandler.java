@@ -6,11 +6,11 @@ import org.springframework.security.access.expression.method.MethodSecurityExpre
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
 
-public class TenantWideMethodSecurityExpressionHandler extends DefaultMethodSecurityExpressionHandler {
+public class TenantLevelMethodSecurityExpressionHandler extends DefaultMethodSecurityExpressionHandler {
 
 	protected MethodSecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication,
 	        MethodInvocation invocation) {
-		TenantWideMethodSecurityExpressionRoot root = new TenantWideMethodSecurityExpressionRoot(authentication);
+		TenantLevelMethodSecurityExpressionRoot root = new TenantLevelMethodSecurityExpressionRoot(authentication);
 		root.setThis(invocation.getThis());
 		root.setPermissionEvaluator(getPermissionEvaluator());
 		root.setTrustResolver(new AuthenticationTrustResolverImpl());

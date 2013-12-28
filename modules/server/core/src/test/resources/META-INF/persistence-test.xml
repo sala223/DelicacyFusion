@@ -37,7 +37,6 @@
 			<property name="eclipselink.multitenant.tenants-share-cache" value="true" />
 			<property name="eclipselink.multitenant.tenants-share-emf" value="true" />
 			<property name="eclipselink.deploy-on-startup" value="true" />
-			<property name="clipselink.jpa.uppercase-column-names" value="false"/>
-		</properties>
+ 		</properties>
 	</persistence-unit>
 </persistence>

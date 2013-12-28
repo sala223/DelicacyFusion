@@ -12,8 +12,8 @@ import org.springframework.util.StringUtils;
 import com.df.idm.authentication.UserObject;
 import com.df.idm.entity.RoleId;
 
-public class TenantWideMethodSecurityExpressionRoot extends SecurityExpressionRoot implements
-        TenantWideSecurityExpressionOperations {
+public class TenantLevelMethodSecurityExpressionRoot extends SecurityExpressionRoot implements
+        TenantLevelSecurityExpressionOperations {
 
 	private List<RoleId> roles;
 
@@ -23,7 +23,7 @@ public class TenantWideMethodSecurityExpressionRoot extends SecurityExpressionRo
 
 	private Object returnObject;
 
-	public TenantWideMethodSecurityExpressionRoot(Authentication authentication) {
+	public TenantLevelMethodSecurityExpressionRoot(Authentication authentication) {
 		super(authentication);
 	}
 

@@ -1,10 +1,15 @@
 package com.df.crm.service.impl;
 
 import java.util.List;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.df.core.validation.exception.ValidationException;
 import com.df.crm.dao.TenantDao;
 import com.df.crm.entity.Tenant;
 import com.df.crm.exception.TenantException;
@@ -26,12 +31,19 @@ public class TenantServiceImpl implements TenantService {
 	@Autowired
 	private UserAuthorityService userAuthorityService;
 
+	@Autowired
+	private Validator validator;
+
 	public void setTenantDao(TenantDao tenantDao) {
 		this.tenantDao = tenantDao;
 	}
 
 	public UserManagementService getUserManagementService() {
 		return userManagementService;
+	}
+
+	public void setValidator(Validator validator) {
+		this.validator = validator;
 	}
 
 	public void setUserManagementService(UserManagementService userManagementService) {
@@ -48,6 +60,10 @@ public class TenantServiceImpl implements TenantService {
 
 	@Override
 	public Tenant createTenant(Tenant tenant, long ownerId) {
+		Set<ConstraintViolation<Tenant>> violations = validator.validate(tenant);
+		if (violations.size() != 0) {
+			throw new ValidationException(violations.toArray(new ConstraintViolation[0]));
+		}
 		User owner = userManagementService.getUserById(ownerId);
 		if (owner == null) {
 			throw TenantException.tenantOwnerNotFound(ownerId);
@@ -83,6 +99,10 @@ public class TenantServiceImpl implements TenantService {
 
 	@Override
 	public Tenant updateTenant(Tenant tenant) {
+		Set<ConstraintViolation<Tenant>> violations = validator.validate(tenant);
+		if (violations.size() != 0) {
+			throw new ValidationException(violations.toArray(new ConstraintViolation[0]));
+		}
 		Tenant found = tenantDao.findTenantByCode(tenant.getCode());
 		if (found == null || !found.isEnabled()) {
 			throw TenantException.tenantWithCodeNotFound(tenant.getCode());

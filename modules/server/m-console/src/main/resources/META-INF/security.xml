@@ -9,7 +9,7 @@
 	<sec:debug />
 	<sec:global-method-security
 		pre-post-annotations="enabled">
-		<sec:expression-handler ref="tenantWideSecurityExpressionHandler" />
+		<sec:expression-handler ref="tenantLevelSecurityExpressionHandler" />
 	</sec:global-method-security>
 	<bean id="secureChannelProcessor"
 		class="org.springframework.security.web.access.channel.SecureChannelProcessor" />
@@ -59,8 +59,8 @@
 		<property name="permissionEvaluator" ref="permissionEvaluator" />
 	</bean>
 	<bean id="permissionEvaluator" class="com.df.idm.authorization.RoleBasePermissionEvaluator" />
-	<bean id="tenantWideSecurityExpressionHandler"
-		class="com.df.idm.authorization.TenantWideMethodSecurityExpressionHandler">
+	<bean id="tenantLevelSecurityExpressionHandler"
+		class="com.df.idm.authorization.TenantLevelMethodSecurityExpressionHandler">
 		<property name="permissionEvaluator" ref="permissionEvaluator" />
 	</bean>
 	<bean id="FILTER_SECURITY_INTERCEPTOR"
