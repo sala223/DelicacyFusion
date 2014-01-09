@@ -5,8 +5,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,7 +44,8 @@ public class Room extends StoreAwareMasterData {
 	@Column(name = "CURRENCY")
 	private String currency;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.REFRESH)
+	@JoinTable(name = "ROOM_TABLE", joinColumns = { @JoinColumn(name = "ROOM_CODE", referencedColumnName = "CODE") }, inverseJoinColumns = { @JoinColumn(name = "TABLE_CODE", referencedColumnName = "CODE", unique = true) })
 	private List<DiningTable> tables;
 
 	public String getName() {

@@ -5,6 +5,7 @@ import javax.persistence.PersistenceContext;
 
 import junit.framework.TestCase;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ public class TenantServiceTest extends CRMJPABaseTest {
 
 	@Test
 	public void newTenant() {
-		User user = new User("testUser@test.com","123456");
+		User user = new User("testUser1@test.com","123456");
 		user = userManagementService.createUser(user);
 		entityManager.flush();
 		Tenant tenant = new Tenant();
@@ -47,13 +48,18 @@ public class TenantServiceTest extends CRMJPABaseTest {
 
 	@Test(expected = TenantException.class)
 	public void newTenantWithSameName() {
+		User user = new User("testUser2@test.com","123456");
+		user = userManagementService.createUser(user);
+		entityManager.flush();
 		Tenant tenant = new Tenant();
 		tenant.setCode("TestCode");
 		tenant.setName("WangXiangYuan Limit");
-		tenantService.createTenant(tenant, 1);
+		tenant.setAddress("PuDong Area");
+		tenantService.createTenant(tenant, user.getId());
 		tenant = new Tenant();
 		tenant.setCode("TestCode2");
 		tenant.setName("WangXiangYuan Limit");
+		tenant.setAddress("PuDong Area");
 		tenantService.createTenant(tenant, 1);
 	}
 
@@ -62,35 +68,49 @@ public class TenantServiceTest extends CRMJPABaseTest {
 		Tenant tenant = new Tenant();
 		tenant.setCode("TestCode");
 		tenant.setName("WangXiangYuan Limit");
+		tenant.setAddress("PuDong Area");
 		tenantService.createTenant(tenant, 1);
 		tenant = new Tenant();
 		tenant.setCode("TestCode");
 		tenant.setName("WangXiangYuan2 Limit");
+		tenant.setAddress("PuDong Area");
 		tenantService.createTenant(tenant, 1);
 	}
 
 	@Test
 	public void getTenants() {
+		User user = new User("testUser3@test.com","123456");
+		user = userManagementService.createUser(user);
+		entityManager.flush();
 		int previous = tenantService.getTenants(0, Integer.MAX_VALUE).size();
 		Tenant tenant = new Tenant();
 		tenant.setCode("TestCode");
+		tenant.setAddress("PuDong Area");
 		tenant.setName("WangXiangYuan Limit");
-		tenantService.createTenant(tenant, 1);
+		tenantService.createTenant(tenant, user.getId());
+		user = new User("testUser4@test.com","123456");
+		user = userManagementService.createUser(user);
+		entityManager.flush();
 		Tenant tenant2 = new Tenant();
 		tenant2.setCode("TestCode2");
+		tenant2.setAddress("PuDong Area");
 		tenant2.setName("WangXiangYuan2 Limit");
-		tenantService.createTenant(tenant2, 1);
+		tenantService.createTenant(tenant2, user.getId());
 		entityManager.flush();
 		TestCase.assertTrue(tenantService.getTenants(0, 100).size() == 2 + previous);
 	}
 
 	@Test
 	public void removeTenants() {
+		User user = new User("testUser3@test.com","123456");
+		user = userManagementService.createUser(user);
+		entityManager.flush();
 		int previous = tenantService.getTenants(0, Integer.MAX_VALUE).size();
 		Tenant tenant = new Tenant();
 		tenant.setCode("TestCode");
+		tenant.setAddress("Pudong Area"); 
 		tenant.setName("WangXiangYuan Limit");
-		tenantService.createTenant(tenant, 1);
+		tenantService.createTenant(tenant, user.getId());
 		tenantService.deleteTenant(tenant.getCode());
 		TestCase.assertTrue(tenantService.getTenants(0, Integer.MAX_VALUE).size() == previous);
 	}

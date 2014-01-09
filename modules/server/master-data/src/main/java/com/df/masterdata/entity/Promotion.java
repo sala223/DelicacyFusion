@@ -34,13 +34,13 @@ public class Promotion extends StoreAwareMasterData {
 	@ElementCollection(targetClass = String.class)
 	@Column(name = "ITEM_CODE", length = 255)
 	@JoinFetch(JoinFetchType.OUTER)
-	@CollectionTable(name = "PROMOTION_ITEM", joinColumns = @JoinColumn(name = "PROMOTION_ID"))
+	@CollectionTable(name = "PROMOTION_ITEM", joinColumns = { @JoinColumn(name = "PROMOTION_CODE", referencedColumnName = "CODE") })
 	private List<String> items;
 
 	@ElementCollection(targetClass = String.class)
 	@Column(name = "CATEGORY_CODE", length = 255)
 	@JoinFetch(JoinFetchType.OUTER)
-	@CollectionTable(name = "PROMOTION_CATEGORY", joinColumns = @JoinColumn(name = "PROMOTION_ID"))
+	@CollectionTable(name = "PROMOTION_CATEGORY", joinColumns = { @JoinColumn(name = "PROMOTION_CODE", referencedColumnName = "CODE") })
 	private List<String> categories;
 
 	@Column(nullable = false, name = "PROMOTION_TYPE")
@@ -61,7 +61,7 @@ public class Promotion extends StoreAwareMasterData {
 	private String ruleQualifier;
 
 	@ElementCollection
-	@CollectionTable(name = "RULE_PARAMETER", joinColumns = @JoinColumn(name = "PROMOTION_ID"))
+	@CollectionTable(name = "RULE_PARAMETER", joinColumns = { @JoinColumn(name = "PROMOTION_CODE", referencedColumnName = "CODE") })
 	@MapKey(name = "name")
 	private Map<String, RuleParameter> ruleParameters = new HashMap<String, RuleParameter>();
 
@@ -159,6 +159,15 @@ public class Promotion extends StoreAwareMasterData {
 	@Override
 	protected void fillDefaultValue() {
 		super.fillDefaultValue();
-		this.validFrom = new Date();
+		if (this.validFrom == null) {
+			this.validFrom = new Date();
+		}
+		if (this.getType() == null) {
+			if (this.items != null && items.size() > 0) {
+				this.type = PromotionType.ITEM;
+			} else if (this.categories != null && this.categories.size() > 0) {
+				this.type = PromotionType.CATEGORY;
+			}
+		}
 	}
 }

@@ -19,35 +19,36 @@ import org.eclipse.persistence.annotations.JoinFetchType;
 @XmlRootElement
 @Entity
 public class Delivery extends TransactionEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "delivery_id_sequence")
-    @SequenceGenerator(name = "delivery_id_sequence", sequenceName = "delivery_id_sequence")
-    private long deliveryId;
+	@Id
+	@Column(name = "DELIVERY_ID", nullable = false)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "delivery_id_sequence")
+	@SequenceGenerator(name = "delivery_id_sequence", sequenceName = "delivery_id_sequence")
+	private long deliveryId;
 
-    @Column(name = "ORDER_ID", nullable = false)
-    private long orderId;
+	@Column(name = "ORDER_ID", nullable = false)
+	private long orderId;
 
-    @ElementCollection
-    @CollectionTable(name = "DELIVERY_LINE", joinColumns = @JoinColumn(name = "order_id"))
-    @JoinFetch(JoinFetchType.OUTER)
-    private List<DeliveryLine> lines;
+	@ElementCollection
+	@CollectionTable(name = "DELIVERY_LINE", joinColumns = @JoinColumn(name = "DELIVERY_ID"))
+	@JoinFetch(JoinFetchType.OUTER)
+	private List<DeliveryLine> lines;
 
-    @Override
-    public long getTransactionId() {
-	return deliveryId;
-    }
+	@Override
+	public long getTransactionId() {
+		return deliveryId;
+	}
 
-    @Override
-    public void setTransactionId(long transactionId) {
-	this.deliveryId = transactionId;
-    }
+	@Override
+	public void setTransactionId(long transactionId) {
+		this.deliveryId = transactionId;
+	}
 
-    public long getOrderId() {
-	return orderId;
-    }
+	public long getOrderId() {
+		return orderId;
+	}
 
-    public void setOrderId(long orderId) {
-	this.orderId = orderId;
-    }
+	public void setOrderId(long orderId) {
+		this.orderId = orderId;
+	}
 
 }

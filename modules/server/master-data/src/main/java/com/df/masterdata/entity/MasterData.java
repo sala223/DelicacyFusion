@@ -3,8 +3,6 @@ package com.df.masterdata.entity;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
@@ -13,7 +11,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.eclipse.persistence.annotations.Index;
@@ -27,19 +24,18 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
 @XmlRootElement
 @MappedSuperclass
 @Multitenant(MultitenantType.SINGLE_TABLE)
-@TenantDiscriminatorColumn(name = MultiTenantSupport.TENANT_COLUMN, length = 12, contextProperty = MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY)
+@TenantDiscriminatorColumn(primaryKey = true, name = MultiTenantSupport.TENANT_COLUMN, length = 12, contextProperty = MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY)
 public abstract class MasterData {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "ID")
+
 	@JsonIgnore
-	@XmlTransient
-	private long id;
+	@Column(name = MultiTenantSupport.TENANT_COLUMN, insertable = false, updatable = false)
+	private String tenantCode;
 
 	@NotEmpty(message = "{masterdata.code.NotEmpty}")
 	@Size(message = "{masterdata.code.Size}", max = 255)
 	@Column(length = 255, name = "CODE", updatable = false)
 	@Index
+	@Id
 	private String code;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
@@ -107,5 +103,10 @@ public abstract class MasterData {
 	@PreUpdate
 	protected void updateDefaultValue() {
 		this.setChangedTime(new Date());
+	}
+
+	@JsonIgnore
+	public String getTenantCode() {
+		return tenantCode;
 	}
 }

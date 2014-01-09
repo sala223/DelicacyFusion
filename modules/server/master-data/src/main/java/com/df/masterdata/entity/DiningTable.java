@@ -8,11 +8,10 @@ import javax.validation.constraints.Size;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Indexes;
-import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "DINING_TABLE")
-@JsonIgnoreProperties({ "id", "isEnabled" })
+@JsonIgnoreProperties({ "isEnabled" })
 @Indexes({ @Index(name = "IDX_DT_BAR_CODE", unique = true, columnNames = { "BAR_CODE" }),
         @Index(name = "IDX_DT_CODE", unique = false, columnNames = { "STORE_CODE", "CODE" }) })
 public class DiningTable extends StoreAwareMasterData {

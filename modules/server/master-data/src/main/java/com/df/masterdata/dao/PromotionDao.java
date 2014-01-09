@@ -24,7 +24,7 @@ public class PromotionDao extends StoreAwareMasterDataAccessFoundation {
 		this.insert(promotion);
 	}
 
-	public List<Promotion> getValidItemsPromotions(String storeCode) {
+	public List<Promotion> getValidPromotions(String storeCode) {
 		CriteriaBuilder builder = createQueryBuilder();
 		CriteriaQuery<Promotion> query = builder.createQuery(Promotion.class);
 		Root<Promotion> root = query.from(Promotion.class);

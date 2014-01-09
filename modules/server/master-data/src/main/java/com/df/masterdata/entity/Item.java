@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.PrimaryKeyJoinColumns;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,6 +20,7 @@ import com.df.blobstore.image.http.ImageLinkCreator;
 public class Item extends StoreAwareMasterData {
 
 	@OneToOne
+	@PrimaryKeyJoinColumns({ @PrimaryKeyJoinColumn(name="CODE",referencedColumnName="CODE") })
 	@JsonIgnore
 	private ItemTemplate itemTemplate;
 

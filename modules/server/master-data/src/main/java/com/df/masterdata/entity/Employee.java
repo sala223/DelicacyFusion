@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
 @Entity
 public class Employee extends MasterData {
 
@@ -37,9 +35,6 @@ public class Employee extends MasterData {
 	@Temporal(value = TemporalType.DATE)
 	@Column(length = 16, name = "BIRTH")
 	private Date birth;
-
-	@Column(name = "IS_LICENSED")
-	private boolean isLicensed;
 
 	@Column(name = "Login_USER_ID")
 	private long loginUserId;
@@ -98,14 +93,6 @@ public class Employee extends MasterData {
 
 	public void setBirth(Date birth) {
 		this.birth = birth;
-	}
-
-	public boolean isLicensed() {
-		return isLicensed;
-	}
-
-	public void setLicensed(boolean isLicensed) {
-		this.isLicensed = isLicensed;
 	}
 
 	public long getLoginUserId() {

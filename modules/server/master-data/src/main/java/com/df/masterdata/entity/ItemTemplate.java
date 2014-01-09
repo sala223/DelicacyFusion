@@ -25,9 +25,8 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @XmlRootElement
 @Entity
-@Indexes({
-        @Index(name = "IDX_ITEM_TPL_T_CODE", unique = true, columnNames = { "CODE", MultiTenantSupport.TENANT_COLUMN }),
-        @Index(name = "IDX_ITEM_TPL_T_NAME", unique = false, columnNames = { "NAME", MultiTenantSupport.TENANT_COLUMN }) })
+@Indexes({ @Index(name = "IDX_ITEM_TPL_T_NAME", unique = false, columnNames = { "NAME",
+        MultiTenantSupport.TENANT_COLUMN }) })
 @Table(name = "ITEM_TEMPLATE")
 public class ItemTemplate extends MasterData {
 
@@ -42,11 +41,11 @@ public class ItemTemplate extends MasterData {
 
 	@ElementCollection(targetClass = String.class)
 	@Column(name = "CATEGORY_CODE", length = 255)
-	@CollectionTable(name = "ITEM_TEMPLATE_CATEGORY", joinColumns = @JoinColumn(name = "ITEM_TEMPLATE_ID"))
+	@CollectionTable(name = "ITEM_TEMPLATE_CATEGORY", joinColumns = { @JoinColumn(name = "ITEM_CODE", referencedColumnName = "CODE") })
 	private List<String> categories;
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "ITEM_TEMPLATE_PICTURE", joinColumns = @JoinColumn(name = "ITEM_TEMPLATE_ID"))
+	@CollectionTable(name = "ITEM_TEMPLATE_PICTURE", joinColumns = { @JoinColumn(name = "ITEM_CODE", referencedColumnName = "CODE") })
 	private List<PictureRef> pictureSet;
 
 	@Lob

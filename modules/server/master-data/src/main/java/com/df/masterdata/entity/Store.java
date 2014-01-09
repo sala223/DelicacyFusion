@@ -29,6 +29,7 @@ public class Store extends MasterData {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
+	@NotEmpty(message = "{store.address.NotEmpty}")
 	@Size(message = "{store.address.Size}", max = 255)
 	@Column(name = "ADDRESS", length = 1024, nullable = false)
 	private String address;

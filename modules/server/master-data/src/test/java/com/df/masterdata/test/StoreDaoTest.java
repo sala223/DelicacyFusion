@@ -68,15 +68,18 @@ public class StoreDaoTest extends MasterDataJPABaseTest {
 		store.setCode("MyCode");
 		store.setName("DanceQueue");
 		store.setTelephone1("0731-34343433");
+		store.setAddress("AAAA");
 		storeDao.newStore(store);
 		Store store2 = new Store();
 		store2.setCode("MyCode2");
 		store2.setName("DanceQueue2");
+		store2.setAddress("AAAA");
 		store2.setTelephone1("0731-34343433");
 		storeDao.newStore(store2);
 		Store store3 = new Store();
 		store3.setCode("MyCode3");
 		store3.setName("DanceQueue3");
+		store3.setAddress("AAAA");
 		store3.setEnabled(false);
 		store3.setTelephone1("0731-34343433");
 		storeDao.newStore(store3);
