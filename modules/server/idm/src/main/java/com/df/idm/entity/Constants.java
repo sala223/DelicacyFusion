@@ -9,9 +9,16 @@ public interface Constants {
 
 		public static final String TELEPHONE_PROPERTY = "cellPhone";
 
-		public static final String WEIBO_ACCOUNT_PROPERTY = "weiboAccount";
-
 		public static final String PASSWORD_PROPERTY = "password";
 
+		public static final String EXTERNAL_USER_REFERENCE_PROPERTY = "externalUserReferences";
+		
+		public static final String EXTERNAL_USER_ID_PROPERTY = "externalId";
+
+		public static final String EXTERNAL_USER_ACCESS_TOKEN_PROPERTY = "accessToken";
+
+		public static final String EXTERNAL_USER_PROVIDER_PROPERTY = "provider";
+
 	}
+
 }

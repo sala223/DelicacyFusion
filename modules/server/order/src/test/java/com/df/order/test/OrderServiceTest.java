@@ -21,10 +21,10 @@ import com.df.masterdata.entity.Promotion;
 import com.df.masterdata.entity.RuleDefinition;
 import com.df.masterdata.entity.RuleParameter;
 import com.df.masterdata.entity.Promotion.PromotionType;
+import com.df.masterdata.promotion.rule.ItemDiscountRule;
 import com.df.order.entity.Order;
 import com.df.order.entity.OrderLine;
 import com.df.order.entity.ServiceCard;
-import com.df.order.promotion.rule.ItemDiscountRule;
 import com.df.order.service.contract.OrderService;
 import com.df.order.service.contract.ServiceCardService;
 

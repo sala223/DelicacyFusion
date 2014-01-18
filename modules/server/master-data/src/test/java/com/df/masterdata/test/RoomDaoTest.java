@@ -12,6 +12,7 @@ import com.df.masterdata.dao.DiningTableDao;
 import com.df.masterdata.dao.RoomDao;
 import com.df.masterdata.entity.DiningTable;
 import com.df.masterdata.entity.Room;
+import com.df.masterdata.entity.StoreObjectId;
 
 @Transactional
 public class RoomDaoTest extends MasterDataJPABaseTest {
@@ -66,6 +67,14 @@ public class RoomDaoTest extends MasterDataJPABaseTest {
 		Room froom = roomDao.findRoomByRoomCode("S2", "ROOM3");
 		TestCase.assertNull(froom);
 		froom = roomDao.findRoomByRoomCode("S1", "ROOM1");
+		TestCase.assertNotNull(froom);
+	}
+
+	@Test
+	public void testFindRoomByStoreObjectId() {
+		Room froom = roomDao.find(Room.class, new StoreObjectId("S2", "ROOM3"));
+		TestCase.assertNull(froom);
+		froom = roomDao.find(Room.class, new StoreObjectId("S1", "ROOM3"));
 		TestCase.assertNotNull(froom);
 	}
 

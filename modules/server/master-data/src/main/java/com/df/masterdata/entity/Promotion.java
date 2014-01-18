@@ -16,10 +16,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKey;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.persistence.annotations.JoinFetch;
 import org.eclipse.persistence.annotations.JoinFetchType;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @XmlRootElement
 @Entity
@@ -34,34 +37,45 @@ public class Promotion extends StoreAwareMasterData {
 	@ElementCollection(targetClass = String.class)
 	@Column(name = "ITEM_CODE", length = 255)
 	@JoinFetch(JoinFetchType.OUTER)
-	@CollectionTable(name = "PROMOTION_ITEM", joinColumns = { @JoinColumn(name = "PROMOTION_CODE", referencedColumnName = "CODE") })
+	@CollectionTable(name = "PROMOTION_ITEM", joinColumns = {
+	        @JoinColumn(name = "STORE_CODE", referencedColumnName = "STORE_CODE"),
+	        @JoinColumn(name = "PROMOTION_CODE", referencedColumnName = "CODE") })
 	private List<String> items;
 
 	@ElementCollection(targetClass = String.class)
 	@Column(name = "CATEGORY_CODE", length = 255)
 	@JoinFetch(JoinFetchType.OUTER)
-	@CollectionTable(name = "PROMOTION_CATEGORY", joinColumns = { @JoinColumn(name = "PROMOTION_CODE", referencedColumnName = "CODE") })
+	@CollectionTable(name = "PROMOTION_CATEGORY", joinColumns = {
+	        @JoinColumn(name = "STORE_CODE", referencedColumnName = "STORE_CODE"),
+	        @JoinColumn(name = "PROMOTION_CODE", referencedColumnName = "CODE") })
 	private List<String> categories;
 
 	@Column(nullable = false, name = "PROMOTION_TYPE")
 	@Enumerated(EnumType.STRING)
+	@NotNull(message = "{promotion.type.NotNull}")
 	private PromotionType type;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(nullable = false, name = "VALID_FROM")
 	private Date validFrom;
+
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(nullable = false, name = "VALID_TO")
+	@NotNull(message = "{promotion.validTo.NotNull}")
 	private Date validTo;
 
 	@Column(nullable = false, name = "DETAILS")
 	private String details;
 
 	@Column(name = "QUALIFIER", length = 128, nullable = false)
+	@NotEmpty(message = "{promotion.ruleQualifier.NotEmpty}")
+	@Size(message = "{promotion.ruleQualifier.Size}", max = 128)
 	private String ruleQualifier;
 
 	@ElementCollection
-	@CollectionTable(name = "RULE_PARAMETER", joinColumns = { @JoinColumn(name = "PROMOTION_CODE", referencedColumnName = "CODE") })
+	@CollectionTable(name = "RULE_PARAMETER", joinColumns = {
+	        @JoinColumn(name = "STORE_CODE", referencedColumnName = "STORE_CODE"),
+	        @JoinColumn(name = "PROMOTION_CODE", referencedColumnName = "CODE") })
 	@MapKey(name = "name")
 	private Map<String, RuleParameter> ruleParameters = new HashMap<String, RuleParameter>();
 
@@ -156,6 +170,14 @@ public class Promotion extends StoreAwareMasterData {
 		}
 	}
 
+	public List<String> getItems() {
+		return items;
+	}
+
+	public List<String> getCategories() {
+		return categories;
+	}
+
 	@Override
 	protected void fillDefaultValue() {
 		super.fillDefaultValue();
@@ -169,5 +191,9 @@ public class Promotion extends StoreAwareMasterData {
 				this.type = PromotionType.CATEGORY;
 			}
 		}
+	}
+
+	public boolean isValid() {
+		return new Date().after(validFrom) && new Date().before(validTo);
 	}
 }

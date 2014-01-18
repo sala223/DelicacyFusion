@@ -13,7 +13,6 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.MultitenantType;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
@@ -34,7 +33,6 @@ public abstract class MasterData {
 	@NotEmpty(message = "{masterdata.code.NotEmpty}")
 	@Size(message = "{masterdata.code.Size}", max = 255)
 	@Column(length = 255, name = "CODE", updatable = false)
-	@Index
 	@Id
 	private String code;
 

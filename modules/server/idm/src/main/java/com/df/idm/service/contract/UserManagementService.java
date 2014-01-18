@@ -1,6 +1,8 @@
 package com.df.idm.service.contract;
 
+import com.df.idm.entity.ExternalUserReference;
 import com.df.idm.entity.User;
+import com.df.idm.entity.ExternalUserReference.Provider;
 
 public interface UserManagementService {
 
@@ -12,7 +14,9 @@ public interface UserManagementService {
 
 	void updatePassword(String code, String oldPassword, String newPassword);
 
-	User getUserByWeiboAccount(String weiboAccount);
+	User getUserByExternalId(String externalId, Provider provider);
+	
+	User createOrUpdateExternalUser(ExternalUserReference externalUser);
 
 	User getUserByEmail(String mail);
 

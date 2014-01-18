@@ -18,7 +18,7 @@ import org.codehaus.jackson.map.SerializationConfig;
 
 public class JsonUtils {
 
-	private static ObjectMapper objectMapper = new ObjectMapper();
+	public static ObjectMapper objectMapper = new ObjectMapper();
 	static {
 		objectMapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		objectMapper.configure(DeserializationConfig.Feature.USE_ANNOTATIONS, true);

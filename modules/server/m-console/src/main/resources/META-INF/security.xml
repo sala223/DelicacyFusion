@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:sec="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation=" http://www.springframework.org/schema/beans
+	xmlns:sec="http://www.springframework.org/schema/security" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security.xsd">
 	<import resource="classpath:META-INF/idm-beans.xml" />
@@ -109,6 +113,21 @@
 			<bean class="com.df.core.web.SessionLocaleResolver" />
 		</property>
 	</bean>
+	<bean id="LOGUT_FILTER"
+		class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<constructor-arg index="0" value="/" />
+		<constructor-arg index="1">
+			<list>
+				<bean
+					class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+			</list>
+		</constructor-arg>
+		<property name="logoutRequestMatcher">
+			<bean class="org.springframework.security.web.util.AntPathRequestMatcher">
+				<constructor-arg index="0" value="/auth/logout" />
+			</bean>
+		</property>
+	</bean>
 	<bean id="REMEMBER_ME_FILTER"
 		class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
 		<property name="rememberMeServices" ref="rememberMeServices" />
@@ -127,6 +146,40 @@
 		<property name="securityMetadataSource" ref="channelMetadataSource" />
 	</bean>
 	<bean id="TENANT_CONTEXT_CLEAR_FILTER" class="com.df.core.common.context.TenantContextClearFilter" />
+	<bean id="OAUTH2_CLIENT_CONTEXT_FILTER"
+		class="org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter" />
+	<bean id="SINA_OAUTH2_CLIENT_AUTHENTICATION_FILTER"
+		class="com.df.idm.authentication.oauth2.DefaultOAuth2ClientAuthenticationFilter">
+		<constructor-arg index="0" value="/sina/oauth2" />
+		<property name="resourceInterface" ref="sinaOAuth2ResourceInterface" />
+		<property name="userManagementService" ref="userManagementService" />
+	</bean>
+	<bean id="sinaOAuth2ResourceInterface"
+		class="com.df.idm.authentication.oauth2.sina.SinaOAuth2ResourceInterface">
+		<constructor-arg index="0" ref="sinaOAuthResource" />
+		<constructor-arg index="1" ref="sinaOAuthClientContext" />
+	</bean>
+	<bean id="sinaOAuthClientContext"
+		class="org.springframework.security.oauth2.client.DefaultOAuth2ClientContext"
+		scope="session">
+		<constructor-arg index="0" ref="accessTokenRequest" />
+		<aop:scoped-proxy />
+	</bean>
+	<bean id="accessTokenRequest"
+		class="org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest"
+		scope="request">
+		<aop:scoped-proxy />
+	</bean>
+	<bean id="sinaOAuthResource"
+		class="org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails">
+		<property name="clientId" value="1318036310" />
+		<property name="clientSecret" value="1bd12cbd47c392ebf8e49fbe88782d1a" />
+		<property name="accessTokenUri" value="https://api.weibo.com/oauth2/access_token" />
+		<property name="userAuthorizationUri" value="https://api.weibo.com/oauth2/authorize" />
+		<property name="grantType" value="authorization_code" />
+		<property name="clientAuthenticationScheme" value="query" />
+		<property name="preEstablishedRedirectUri" value="http://www.longertec.com/m-console/sina/oauth2" />
+	</bean>
 	<bean id="SECURITY_CONTEXT_FILTER"
 		class="org.springframework.security.web.context.SecurityContextPersistenceFilter" />
 	<bean id="CSRF_FILTER" class="org.springframework.security.web.csrf.CsrfFilter">
@@ -159,10 +212,13 @@
 			<sec:filter-chain pattern="/**/*.css" filters="none" />
 			<sec:filter-chain pattern="/auth/*.html" filters="none" />
 			<sec:filter-chain pattern="/auth/**"
-				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,ANTHENTICATION_FILTER, DIRECT_AUTHENTICATION_FILTER, REMEMBER_ME_FILTER,EXCEPTION_TRANSLATION_FILTER,TENANT_CONTEXT_CLEAR_FILTER" />
+				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,LOGUT_FILTER,DIRECT_AUTHENTICATION_FILTER,TENANT_CONTEXT_CLEAR_FILTER" />
+			<sec:filter-chain pattern="/sina/oauth2"
+				filters="SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER,OAUTH2_CLIENT_CONTEXT_FILTER,SINA_OAUTH2_CLIENT_AUTHENTICATION_FILTER,TENANT_CONTEXT_CLEAR_FILTER" />
 			<sec:filter-chain pattern="/rs/**"
 				filters="CHANNEL_FILTER,SECURITY_CONTEXT_FILTER,LOCALE_CONTEXT_FILTER, REMEMBER_ME_FILTER, ANONYMOUS_AUTHENTICATION_FILTER,FILTER_SECURITY_INTERCEPTOR, EXCEPTION_TRANSLATION_FILTER,
-				TENANT_CONTEXT_CLEAR_FILTER" />
+				TENANT_CONTEXT_CLEAR_FILTER"
+				/>
 		</sec:filter-chain-map>
 	</bean>
 </beans>

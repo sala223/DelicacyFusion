@@ -9,6 +9,8 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,19 +25,18 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
 import org.eclipse.persistence.annotations.Cache;
-import org.eclipse.persistence.annotations.FetchGroup;
-import org.eclipse.persistence.annotations.FetchAttribute;
 import org.eclipse.persistence.annotations.Index;
 import org.eclipse.persistence.annotations.JoinFetch;
 import org.eclipse.persistence.annotations.JoinFetchType;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.df.idm.entity.ExternalUserReference.Provider;
+import com.df.idm.validation.group.InternalUserCreation;
+
 @Cache
 @Entity
 @Table(name = "USERS")
-@FetchGroup(name = "AuthenticationInfo", attributes = { @FetchAttribute(name = "password"),
-        @FetchAttribute(name = "weiboAccount"), @FetchAttribute(name = "email"), @FetchAttribute(name = "cellPhone"), })
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -43,51 +44,51 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_ID_SEQUENCE")
 	@SequenceGenerator(initialValue = 10000, name = "USER_ID_SEQUENCE", sequenceName = "USER_ID_SEQUENCE")
-	@Column
+	@Column(name = "ID")
 	private long Id;
 
-	@Column(length = 128)
+	@Column(length = 128, name = "FIRST_NAME")
 	@Size(message = "{user.firstName.Size}", max = 128)
 	private String firstName;
 
-	@Column(length = 128)
+	@Column(length = 128, name = "LAST_NAME")
 	@Size(message = "{user.lastName.Size}", max = 128)
 	private String lastName;
 
-	@NotEmpty(message = "{user.password.NotEmpty}")
+	@NotEmpty(message = "{user.password.NotEmpty}", groups = { InternalUserCreation.class })
 	@Size(message = "{user.password.Size}", min = 6, max = 30)
-	@Column(length = 256, nullable = false)
+	@Column(length = 256, nullable = false, name = "PASSWORD")
 	private String password;
 
-	@Column(length = 128)
+	@Column(length = 128, name = "NICK_NAME")
 	@Size(message = "{user.nickName.Size}", max = 128)
 	private String nickName;
 
-	@Column
+	@Column(name = "AGE")
 	private int age;
 
-	@Column(length = 20)
+	@Column(length = 20, name = "CELL_PHONE")
 	@Index(unique = true)
 	@Size(message = "{user.cellPhone.Size}", max = 20)
 	private String cellPhone;
 
-	@Column(length = 512)
+	@Column(length = 512, name = "IMAGE_ID")
 	private String imageId;
 
-	@Column(length = 8)
+	@Column(length = 8, name = "GENDER")
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
-	@Column(length = 128, updatable = false, nullable = false)
+	@Column(length = 128, updatable = false, nullable = false, name = "EMAIL")
 	@Index(unique = true)
 	@Email(message = "{user.email.Email}")
-	@NotEmpty(message = "{user.email.NotEmpty}")
+	@NotEmpty(message = "{user.email.NotEmpty}", groups = { InternalUserCreation.class })
 	@Size(message = "{user.email.Size}", max = 128)
 	private String email;
 
-	@Column(length = 128, unique = true, name = "WEIBO_ACCOUNT")
-	@Index(unique = true)
-	@Size(message = "{user.weiboAccount.Size}", max = 128)
-	private String weiboAccount;
+	@ElementCollection(fetch = FetchType.LAZY)
+	@CollectionTable(name = "EXTERNAL_USER_REFERENCE", joinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID") })
+	private List<ExternalUserReference> externalUserReferences = new ArrayList<ExternalUserReference>();
 
 	@Column
 	private boolean locked;
@@ -123,6 +124,29 @@ public class User implements Serializable {
 	public User(String email, String password) {
 		this.password = password;
 		this.email = email;
+	}
+
+	public void addOrUpdateExternalReference(ExternalUserReference externalReference) {
+		for (ExternalUserReference reference : externalUserReferences) {
+			if (reference.getProvider().equals(externalReference.getProvider())) {
+				reference.setExternalId(externalReference.getExternalId());
+				return;
+			}
+		}
+		externalUserReferences.add(externalReference);
+	}
+
+	public List<ExternalUserReference> getExternalUserReferences() {
+		return externalUserReferences;
+	}
+
+	public String getExternalUserId(Provider provider) {
+		for (ExternalUserReference reference : externalUserReferences) {
+			if (reference.getProvider().equals(provider)) {
+				return reference.getExternalId();
+			}
+		}
+		return null;
 	}
 
 	public long getId() {
@@ -211,14 +235,6 @@ public class User implements Serializable {
 
 	public void setImageId(String imageId) {
 		this.imageId = imageId;
-	}
-
-	public String getWeiboAccount() {
-		return weiboAccount;
-	}
-
-	public void setWeiboAccount(String weiboAccount) {
-		this.weiboAccount = weiboAccount;
 	}
 
 	public Date getCreatedTime() {

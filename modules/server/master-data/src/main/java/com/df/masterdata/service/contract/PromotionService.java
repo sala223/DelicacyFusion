@@ -3,10 +3,20 @@ package com.df.masterdata.service.contract;
 import java.util.List;
 
 import com.df.masterdata.entity.Promotion;
+import com.df.masterdata.entity.Promotion.PromotionType;
 
 public interface PromotionService {
 
-    void createPromotion(Promotion promotion);
+	Promotion createPromotion(String storeCode, Promotion promotion);
 
-    List<Promotion> getItemValidPromotions();
+	Promotion updatePromotion(String storeCode, Promotion promotion);
+
+	int deletePromotion(String storeCode, String promotionCode);
+
+	List<Promotion> getPromotionsByType(String storeCode, PromotionType type);
+
+	List<Promotion> getValidPromotionsByType(String storeCode, PromotionType type);
+
+	Promotion getPromotionByCode(String storeCode, String code);
+
 }

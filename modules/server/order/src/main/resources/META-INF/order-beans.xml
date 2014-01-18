@@ -23,6 +23,5 @@
 	<bean id="promotionExecutor" class="com.df.order.promotion.DefaultPromotionExecutor">
 		<constructor-arg index="0" ref="ruleRepository" />
 	</bean>
-	<bean id="ruleRepository" class="com.df.order.promotion.rule.DefaultRuleRepository" />
 	<tx:annotation-driven />
 </beans>

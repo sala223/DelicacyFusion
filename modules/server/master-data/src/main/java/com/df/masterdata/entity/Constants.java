@@ -3,7 +3,6 @@ package com.df.masterdata.entity;
 public interface Constants {
 
 	public static interface MASTERDATA {
-		public static final String ID_PROPERTY = "id";
 		public static final String CODE_PROPERTY = "code";
 		public static final String IS_ENABLED_PROPERTY = "isEnabled";
 	}

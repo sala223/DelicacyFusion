@@ -11,48 +11,51 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKey;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Embeddable
 public class RuleDefinition implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Column(name = "QUALIFIER", length = 128, nullable = false)
-    private String qualifier;
+	@Column(name = "QUALIFIER", length = 128, nullable = false)
+	private String qualifier;
 
-    @ElementCollection
-    @CollectionTable(name = "RULE_PARAMETER", joinColumns = @JoinColumn(name = "RULE_ID"))
-    @MapKey(name = "name")
-    private Map<String, RuleParameter> parameters = new HashMap<String, RuleParameter>();
+	@ElementCollection
+	@CollectionTable(name = "RULE_PARAMETER", joinColumns = @JoinColumn(name = "RULE_ID"))
+	@MapKey(name = "name")
+	private Map<String, RuleParameter> parameters = new HashMap<String, RuleParameter>();
 
-    RuleDefinition() {
-    }
+	RuleDefinition() {
+	}
 
-    void setParameters(Map<String, RuleParameter> parameters) {
-	this.parameters = parameters;
-    }
+	public RuleDefinition(String qualifier) {
+		this.qualifier = qualifier;
+	}
 
-    public RuleDefinition(String qualifier) {
-	this.qualifier = qualifier;
-    }
+	void setParameters(Map<String, RuleParameter> parameters) {
+		this.parameters = parameters;
+	}
 
-    public void addParameter(RuleParameter parameter) {
-	parameters.put(parameter.getName(), parameter);
-    }
+	public void addParameter(RuleParameter parameter) {
+		parameters.put(parameter.getName(), parameter);
+	}
 
-    public RuleParameter getParameter(String parameter) {
-	return parameters.get(parameter);
-    }
+	public RuleParameter getParameter(String parameter) {
+		return parameters.get(parameter);
+	}
 
-    public String[] getParameterNames() {
-	return parameters.keySet().toArray(new String[0]);
-    }
+	@JsonIgnore
+	public String[] getParameterNames() {
+		return parameters.keySet().toArray(new String[0]);
+	}
 
-    public Map<String, RuleParameter> getParameters() {
-	return parameters;
-    }
+	public Map<String, RuleParameter> getParameters() {
+		return parameters;
+	}
 
-    public String getQualifier() {
-	return this.qualifier;
-    }
+	public String getQualifier() {
+		return this.qualifier;
+	}
 
 }

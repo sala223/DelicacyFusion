@@ -1,32 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx.xsd
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
-	<bean id="itemTemplateDao" class="com.df.masterdata.dao.ItemTemplateDao" autowire="default"/>
-	<bean id="roomDao" class="com.df.masterdata.dao.RoomDao" autowire="default"/>
-	<bean id="diningTableDao" class="com.df.masterdata.dao.DiningTableDao" autowire="default"/>
-	<bean id="storeDao" class="com.df.masterdata.dao.StoreDao" autowire="default"/>
-	<bean id="itemDao" class="com.df.masterdata.dao.ItemDao" autowire="default"/>
-	<bean id="promotionDao" class="com.df.masterdata.dao.PromotionDao" autowire="default"/>
-	<bean id="storeServive" class="com.df.masterdata.service.impl.StoreServiceImpl" autowire="default"/>
-	<bean id="itemServive" class="com.df.masterdata.service.impl.ItemServiceImpl" autowire="default"/>
-	<bean id="itemTemplateServive" class="com.df.masterdata.service.impl.ItemTemplateServiceImpl" autowire="default"/>
-	<bean id="roomServive" class="com.df.masterdata.service.impl.RoomServiceImpl" autowire="default"/>
-	<bean id="tableServive" class="com.df.masterdata.service.impl.DiningTableServiceImpl" autowire="default"/>
-	<bean id="categoryLoader" class="com.df.masterdata.auxiliary.ResourceBundleCategoryLoader">
+	<bean id="itemTemplateDao" class="com.df.masterdata.dao.ItemTemplateDao" />
+	<bean id="roomDao" class="com.df.masterdata.dao.RoomDao" />
+	<bean id="diningTableDao" class="com.df.masterdata.dao.DiningTableDao" />
+	<bean id="storeDao" class="com.df.masterdata.dao.StoreDao" />
+	<bean id="itemDao" class="com.df.masterdata.dao.ItemDao" />
+	<bean id="promotionDao" class="com.df.masterdata.dao.PromotionDao" />
+	<bean id="storeServive" class="com.df.masterdata.service.impl.StoreServiceImpl" />
+	<bean id="itemServive" class="com.df.masterdata.service.impl.ItemServiceImpl" />
+	<bean id="itemTemplateServive" class="com.df.masterdata.service.impl.ItemTemplateServiceImpl" />
+	<bean id="roomServive" class="com.df.masterdata.service.impl.RoomServiceImpl" />
+	<bean id="tableServive" class="com.df.masterdata.service.impl.DiningTableServiceImpl" />
+	<bean id="categoryLoader"
+		class="com.df.masterdata.auxiliary.ResourceBundleCategoryLoader">
 		<constructor-arg index="0">
-					<bean class="com.df.masterdata.auxiliary.JsonResourceBundleParser"/>
+			<bean class="com.df.masterdata.auxiliary.JsonResourceBundleParser" />
 		</constructor-arg>
 		<property name="resourceBaseSuffix" value="json" />
 	</bean>
-	<bean id="configurator" class="com.df.management.configuration.DefaultConfigurator" autowire="default"/>
+	<bean id="configurator" class="com.df.management.configuration.DefaultConfigurator"
+		autowire="default" />
 	<tx:annotation-driven />
 	<bean id="tenantDao" class="com.df.crm.dao.TenantDao" />
 	<bean id="tenantService" class="com.df.crm.service.impl.TenantServiceImpl" />
-	<tx:annotation-driven/>
+	<bean id="promotionService" class="com.df.masterdata.service.impl.PromotionServiceImpl">
+		<property name="promotionDao" ref="promotionDao" />
+		<property name="ruleRepository" ref="ruleRepository" />
+		<property name="ruleValidator" ref="ruleValidator" />
+		<property name="itemService" ref="itemServive" />
+
+	</bean>
+	<bean id="ruleValidator" class="com.df.masterdata.promotion.rule.DefaultRuleValidator">
+		<property name="ruleRepository" ref="ruleRepository" />
+	</bean>
+	<bean id="ruleRepository"
+		class="com.df.masterdata.promotion.rule.descriptor.ConfigurableRuleRepository" />
+
+	<tx:annotation-driven />
 </beans>

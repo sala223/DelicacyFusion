@@ -29,7 +29,7 @@ public class Delivery extends TransactionEntity {
 	private long orderId;
 
 	@ElementCollection
-	@CollectionTable(name = "DELIVERY_LINE", joinColumns = @JoinColumn(name = "DELIVERY_ID"))
+	@CollectionTable(name = "DELIVERY_LINE", joinColumns = @JoinColumn(name = "DELIVERY_ID",referencedColumnName="DELIVERY_ID"))
 	@JoinFetch(JoinFetchType.OUTER)
 	private List<DeliveryLine> lines;
 

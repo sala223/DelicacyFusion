@@ -14,6 +14,8 @@ import com.df.masterdata.entity.Constants.PROMOTION;
 import com.df.masterdata.entity.Item;
 import com.df.masterdata.entity.Promotion.PromotionType;
 import com.df.masterdata.entity.Promotion;
+import com.df.masterdata.entity.StoreObjectId;
+import com.df.masterdata.exception.PromotionException;
 
 public class PromotionDao extends StoreAwareMasterDataAccessFoundation {
 
@@ -21,7 +23,15 @@ public class PromotionDao extends StoreAwareMasterDataAccessFoundation {
 		if (promotion.getRule() == null) {
 			throw new NullPointerException("Rule property must not be null");
 		}
+		Promotion found = this.find(Promotion.class, new StoreObjectId(promotion.getStoreCode(), promotion.getCode()));
+		if (found != null) {
+			throw PromotionException.promitionWithCodeAlreadyExist(promotion.getCode());
+		}
 		this.insert(promotion);
+	}
+
+	public Promotion getPromotionByCode(String storeCode, String code) {
+		return this.find(Promotion.class, new StoreObjectId(storeCode, code));
 	}
 
 	public List<Promotion> getValidPromotions(String storeCode) {
@@ -50,6 +60,20 @@ public class PromotionDao extends StoreAwareMasterDataAccessFoundation {
 		Predicate timeBetween = builder.between(now, validFromPath, validToPath);
 		Predicate typeEqual = builder.equal(root.get(PROMOTION.TYPE_PROPERTY), type);
 		query.where(equalStore, timeBetween, typeEqual);
+		return executeQuery(query);
+	}
+
+	public List<Promotion> getPromotionsByType(String storeCode, PromotionType type) {
+		CriteriaBuilder builder = createQueryBuilder();
+		CriteriaQuery<Promotion> query = builder.createQuery(Promotion.class);
+		Root<Promotion> root = query.from(Promotion.class);
+		Predicate equalStore = builder.equal(root.get(PROMOTION.STORE_CODE_PROPERTY), storeCode);
+		if (type != null) {
+			Predicate typeEqual = builder.equal(root.get(PROMOTION.TYPE_PROPERTY), type);
+			query.where(equalStore, typeEqual);
+		} else {
+			query.where(equalStore);
+		}
 		return executeQuery(query);
 	}
 

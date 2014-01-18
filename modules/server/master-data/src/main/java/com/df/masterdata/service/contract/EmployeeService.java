@@ -4,7 +4,9 @@ import com.df.masterdata.entity.Employee;
 
 public interface EmployeeService {
 
-	Employee createEmployee();
+	Employee newEmployee(Employee employee);
 
-	void upateEmployee(Employee employee);
+	Employee upateEmployee(Employee employee);
+	
+	void associateLoginUser();
 }

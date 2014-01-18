@@ -1,0 +1,33 @@
+[
+	{
+		"ruleQualifier":"itemDiscount",
+		"type":"ITEM",
+		"description":"specify a discount for item or category to prmote items",
+		"ruleClass":"com.df.masterdata.promotion.rule.ItemDiscountRule",
+		"parameters":{
+			"DISCOUNT":{
+				"name":"DISCOUNT",
+				"description":"discount value, this value must be between 0 to 10",
+				"defaultValue":"",
+				"isMandatory":true,
+				"type":"NUMERIC"
+			}
+		}
+	},
+	
+		{
+		"ruleQualifier":"tastePrice",
+		"type":"ITEM",
+		"description":"specify a fix and very cheap price to promote a new item",
+		"ruleClass":"com.df.masterdata.promotion.rule.TastePriceRule",
+		"parameters":{
+			"DISCOUNT":{
+				"name":"TASTE_PRICE",
+				"description":"",
+				"defaultValue":"",
+				"isMandatory":true,
+				"type":"NUMERIC"
+			}
+		}
+	}
+]

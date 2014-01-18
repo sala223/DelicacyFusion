@@ -32,7 +32,7 @@ public class MasterDataAccessFoundation extends EclipseLinkDataAccessFoundation 
 		ClassDescriptor cd = this.getClassDescrptor(masterDataType);
 		if (cd != null) {
 			String isEnabledProperty = Constants.MASTERDATA.IS_ENABLED_PROPERTY;
-			String eql = String.format(eqlFormat, cd.getAlias(), isEnabledProperty, Constants.MASTERDATA.ID_PROPERTY);
+			String eql = String.format(eqlFormat, cd.getAlias(), isEnabledProperty, Constants.MASTERDATA.CODE_PROPERTY);
 			Query query = this.getEntityManager().createQuery(String.format(eql, cd.getAlias()));
 			query.setParameter("CODE", code);
 			query.setParameter("ISENABLED", true);
@@ -44,11 +44,11 @@ public class MasterDataAccessFoundation extends EclipseLinkDataAccessFoundation 
 	}
 
 	public <T extends MasterData> int disableMasterData(Class<T> masterDataType, String code) {
-		String eqlFormat = "UPDATE FROM %s t SET t.%s=:ISENABLED WHERE t.%s=:ID";
+		String eqlFormat = "UPDATE FROM %s t SET t.%s=:ISENABLED WHERE t.%s=:CODE";
 		ClassDescriptor cd = this.getClassDescrptor(masterDataType);
 		if (cd != null) {
 			String isEnabledProperty = Constants.MASTERDATA.IS_ENABLED_PROPERTY;
-			String eql = String.format(eqlFormat, cd.getAlias(), isEnabledProperty, Constants.MASTERDATA.ID_PROPERTY);
+			String eql = String.format(eqlFormat, cd.getAlias(), isEnabledProperty, Constants.MASTERDATA.CODE_PROPERTY);
 			Query query = this.getEntityManager().createQuery(String.format(eql, cd.getAlias()));
 			query.setParameter("CODE", code);
 			query.setParameter("ISENABLED", false);

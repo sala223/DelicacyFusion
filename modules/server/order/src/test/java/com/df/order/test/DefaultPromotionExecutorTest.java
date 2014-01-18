@@ -15,18 +15,20 @@ import com.df.masterdata.entity.Promotion;
 import com.df.masterdata.entity.RuleDefinition;
 import com.df.masterdata.entity.RuleParameter;
 import com.df.masterdata.entity.Promotion.PromotionType;
+import com.df.masterdata.promotion.rule.ItemDiscountRule;
+import com.df.masterdata.promotion.rule.TastePriceRule;
+import com.df.masterdata.promotion.rule.descriptor.ConfigurableRuleRepository;
 import com.df.order.promotion.DefaultPromotionExecutor;
 import com.df.order.promotion.PromotionExecutor;
-import com.df.order.promotion.rule.DefaultRuleRepository;
-import com.df.order.promotion.rule.ItemDiscountRule;
-import com.df.order.promotion.rule.TastePriceRule;
 
 public class DefaultPromotionExecutorTest {
 
 	private static PromotionExecutor promotionExecutor;
 
 	static {
-		promotionExecutor = new DefaultPromotionExecutor(new DefaultRuleRepository());
+		ConfigurableRuleRepository ruleRepository = new ConfigurableRuleRepository();
+		ruleRepository.afterPropertiesSet();
+		promotionExecutor = new DefaultPromotionExecutor(ruleRepository);
 	}
 
 	@Test

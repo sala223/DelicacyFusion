@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 
 import com.df.idm.entity.RoleId;
 import com.df.idm.entity.User;
+import com.df.idm.entity.ExternalUserReference.Provider;
 
 public class UserObject implements UserDetails {
 
@@ -36,7 +37,7 @@ public class UserObject implements UserDetails {
 		Assert.notNull(user);
 		this.email = user.getEmail();
 		this.cellPhone = user.getCellPhone();
-		this.weiboAccount = user.getWeiboAccount();
+		this.weiboAccount = user.getExternalUserId(Provider.SINA);
 		this.isLocked = user.isLocked();
 		this.password = user.getPassword();
 		this.roles = user.getRoles();

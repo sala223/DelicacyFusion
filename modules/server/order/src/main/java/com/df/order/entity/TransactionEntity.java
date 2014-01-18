@@ -18,7 +18,7 @@ import com.df.core.persist.eclipselink.MultiTenantSupport;
 
 @MappedSuperclass
 @Multitenant(MultitenantType.SINGLE_TABLE)
-@TenantDiscriminatorColumn(name = MultiTenantSupport.TENANT_COLUMN, length = 12, contextProperty = MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY)
+@TenantDiscriminatorColumn(primaryKey=false,name = MultiTenantSupport.TENANT_COLUMN, length = 12, contextProperty = MultiTenantSupport.MULTITENANT_CONTEXT_PROPERTY)
 public abstract class TransactionEntity {
 
 	@Column(nullable = false, name = "OWNER_ID")

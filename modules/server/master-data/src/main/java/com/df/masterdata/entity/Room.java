@@ -45,7 +45,11 @@ public class Room extends StoreAwareMasterData {
 	private String currency;
 
 	@OneToMany(cascade = CascadeType.REFRESH)
-	@JoinTable(name = "ROOM_TABLE", joinColumns = { @JoinColumn(name = "ROOM_CODE", referencedColumnName = "CODE") }, inverseJoinColumns = { @JoinColumn(name = "TABLE_CODE", referencedColumnName = "CODE", unique = true) })
+	@JoinTable(name = "ROOM_TABLE", joinColumns = {
+	        @JoinColumn(name = "STORE_CODE", referencedColumnName = "STORE_CODE"),
+	        @JoinColumn(name = "ROOM_CODE", referencedColumnName = "CODE") }, inverseJoinColumns = {
+	        @JoinColumn(name = "STORE_CODE", referencedColumnName = "STORE_CODE"),
+	        @JoinColumn(name = "TABLE_CODE", referencedColumnName = "CODE", unique = true) })
 	private List<DiningTable> tables;
 
 	public String getName() {

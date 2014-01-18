@@ -15,7 +15,7 @@ public class UserManagementServiceTest extends IdmBaseTest {
 	@Autowired
 	private UserManagementService ums;
 
-	@Test( )
+	@Test(expected = ValidationException.class)
 	public void testNewUserWithoutPassword() {
 		LocaleContextHolder.setLocale(Locale.CHINESE); 
 		User user = new User();

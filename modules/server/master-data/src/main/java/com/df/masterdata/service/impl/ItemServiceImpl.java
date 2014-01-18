@@ -20,10 +20,15 @@ public class ItemServiceImpl implements ItemService {
 	@Inject
 	private ItemDao itemDao;
 
+	@Inject
 	private ItemTemplateDao itemTemplateDao;
 
 	public void setItemDao(ItemDao itemDao) {
 		this.itemDao = itemDao;
+	}
+
+	public void setItemTemplateDao(ItemTemplateDao itemTemplateDao) {
+		this.itemTemplateDao = itemTemplateDao;
 	}
 
 	@Override

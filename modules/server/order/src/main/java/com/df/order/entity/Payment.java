@@ -40,7 +40,7 @@ public class Payment extends TransactionEntity {
 	private BigDecimal specialDiscount;
 
 	@ElementCollection
-	@CollectionTable(name = "PAYMENT_LINE", joinColumns = @JoinColumn(name = "PAYMENT_ID"))
+	@CollectionTable(name = "PAYMENT_LINE", joinColumns = @JoinColumn(name = "PAYMENT_ID",referencedColumnName="PAYMENT_ID"))
 	@JoinFetch(JoinFetchType.OUTER)
 	private List<PaymentLine> lines;
 

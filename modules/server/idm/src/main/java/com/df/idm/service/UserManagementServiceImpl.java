@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.validation.groups.Default;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,10 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.df.core.validation.exception.ValidationException;
 import com.df.idm.dao.UserDao;
+import com.df.idm.entity.ExternalUserReference;
+import com.df.idm.entity.ExternalUserReference.Provider;
 import com.df.idm.entity.User;
 import com.df.idm.exception.UserException;
 import com.df.idm.registration.UserRegistrationVerfier;
 import com.df.idm.service.contract.UserManagementService;
+import com.df.idm.validation.group.InternalUserCreation;
 
 @Transactional
 public class UserManagementServiceImpl implements UserManagementService {
@@ -54,7 +58,7 @@ public class UserManagementServiceImpl implements UserManagementService {
 	}
 
 	public User createUser(User user) {
-		Set<ConstraintViolation<User>> violations = validator.validate(user);
+		Set<ConstraintViolation<User>> violations = validator.validate(user, Default.class, InternalUserCreation.class);
 		if (violations.size() != 0) {
 			throw new ValidationException(violations.toArray(new ConstraintViolation[0]));
 		}
@@ -71,7 +75,7 @@ public class UserManagementServiceImpl implements UserManagementService {
 	}
 
 	public User updateUser(User user) {
-		Set<ConstraintViolation<User>> violations = validator.validate(user);
+		Set<ConstraintViolation<User>> violations = validator.validate(user,Default.class, InternalUserCreation.class);
 		if (violations.size() != 0) {
 			throw new ValidationException(violations.toArray(new ConstraintViolation[0]));
 		}
@@ -82,7 +86,6 @@ public class UserManagementServiceImpl implements UserManagementService {
 			found.setGender(user.getGender());
 			found.setLastName(user.getLastName());
 			found.setNickName(user.getNickName());
-			found.setWeiboAccount(user.getWeiboAccount());
 			found.setChangedTime(new Date());
 			userDao.update(found);
 		} else {
@@ -109,8 +112,8 @@ public class UserManagementServiceImpl implements UserManagementService {
 	}
 
 	@Override
-	public User getUserByWeiboAccount(String weiboAccount) {
-		return userDao.getUserByWeiboAccount(weiboAccount);
+	public User getUserByExternalId(String externalId, Provider provider) {
+		return userDao.getUserByExternalId(externalId, provider);
 	}
 
 	@Override
@@ -174,5 +177,16 @@ public class UserManagementServiceImpl implements UserManagementService {
 		}
 		return found;
 
+	}
+
+	@Override
+	public User createOrUpdateExternalUser(ExternalUserReference externalUser) {
+		User found = userDao.getUserByExternalId(externalUser.getExternalId(), externalUser.getProvider());
+		if (found == null) {
+			found = new User();
+			found.addOrUpdateExternalReference(externalUser);
+			userDao.insert(found);
+		}
+		return found;
 	}
 }

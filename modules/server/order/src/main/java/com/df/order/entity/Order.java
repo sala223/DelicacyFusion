@@ -41,7 +41,7 @@ public class Order extends TransactionEntity {
 	private boolean isTakeOut;
 
 	@ElementCollection
-	@CollectionTable(name = "ORDER_LINE", joinColumns = @JoinColumn(name = "ORDER_ID"))
+	@CollectionTable(name = "ORDER_LINE", joinColumns = @JoinColumn(name = "ORDER_ID", referencedColumnName = "ORDER_ID"))
 	@JoinFetch(JoinFetchType.OUTER)
 	private List<OrderLine> lines;
 

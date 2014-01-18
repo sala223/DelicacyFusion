@@ -17,11 +17,27 @@ import com.df.core.persist.eclipselink.Property;
 import com.df.masterdata.entity.Constants;
 import com.df.masterdata.entity.Constants.STORE_AWARE_MASTERDATA;
 import com.df.masterdata.entity.StoreAwareMasterData;
+import com.df.masterdata.entity.StoreObjectId;
 
 public class StoreAwareMasterDataAccessFoundation extends MasterDataAccessFoundation {
 
 	public <T extends StoreAwareMasterData> List<T> all(String storeCode, Class<T> storeMasterDataType) {
 		return all(storeCode, storeMasterDataType, 0, Integer.MAX_VALUE, false);
+	}
+
+	public <T extends StoreAwareMasterData> T find(Class<T> type, StoreObjectId id) {
+		return this.getEntityManager().find(type, id);
+	}
+
+	public <T extends StoreAwareMasterData> int remove(Class<T> type, StoreObjectId id) {
+		String eqlFormat = "DELETE FROM %s t WHERE t.%s=:STORE_CODE AND t.%s=:CODE ";
+		String entityName = this.getClassDescrptor(type).getAlias();
+		String eql = String.format(eqlFormat, entityName, Constants.STORE_AWARE_MASTERDATA.STORE_CODE_PROPERTY,
+		        Constants.STORE_AWARE_MASTERDATA.CODE_PROPERTY);
+		Query query = this.getEntityManager().createQuery(eql);
+		query.setParameter("CODE", id.getCode());
+		query.setParameter("STORE_CODE", id.getStoreCode());
+		return query.executeUpdate();
 	}
 
 	public <T extends StoreAwareMasterData> int allCount(String storeCode, Class<T> storeMasterDataType,

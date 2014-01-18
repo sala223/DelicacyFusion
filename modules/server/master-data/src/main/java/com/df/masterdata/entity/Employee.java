@@ -37,7 +37,7 @@ public class Employee extends MasterData {
 	private Date birth;
 
 	@Column(name = "Login_USER_ID")
-	private long loginUserId;
+	private Long loginUserId;
 
 	public String getFirstName() {
 		return firstName;
@@ -95,7 +95,7 @@ public class Employee extends MasterData {
 		this.birth = birth;
 	}
 
-	public long getLoginUserId() {
+	public Long getLoginUserId() {
 		return loginUserId;
 	}
 

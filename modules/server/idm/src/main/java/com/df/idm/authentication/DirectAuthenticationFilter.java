@@ -10,6 +10,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -29,6 +31,8 @@ public class DirectAuthenticationFilter extends GenericFilterBean {
 
 	private static String DEFAULT_PROCESS_URL = "/login/direct";
 
+	private static final Logger logger = LoggerFactory.getLogger(DirectAuthenticationFilter.class);
+
 	public DirectAuthenticationFilter() {
 		this(DEFAULT_PROCESS_URL);
 	}
@@ -46,19 +50,20 @@ public class DirectAuthenticationFilter extends GenericFilterBean {
 			Authentication authentication = this.getAuthenticationToken(request);
 			res.setContentType("application/json;charset=UTF-8");
 			try {
-				authentication = authenticationManager.authenticate(authentication);
 				if (authentication == null) {
 					response.setAuthenticated(false);
 					response.setErrorMessage("Illegal request parameters");
-				}
-				response.setAuthenticated(true);
-				Object details = authentication.getDetails();
-				if (details != null && details instanceof UserObject) {
-					UserContext userContext = new UserContext((UserObject) details);
-					response.setUserContext(userContext);
-					RequestAttributes attrs = RequestContextHolder.currentRequestAttributes();
-					int scope = RequestAttributes.SCOPE_SESSION;
-					attrs.setAttribute(Constants.USER_CONTEXT_SESSION_ATTR, userContext, scope);
+				} else {
+					authentication = authenticationManager.authenticate(authentication);
+					response.setAuthenticated(true);
+					Object details = authentication.getDetails();
+					if (details != null && details instanceof UserObject) {
+						UserContext userContext = new UserContext((UserObject) details);
+						response.setUserContext(userContext);
+						RequestAttributes attrs = RequestContextHolder.currentRequestAttributes();
+						int scope = RequestAttributes.SCOPE_SESSION;
+						attrs.setAttribute(Constants.USER_CONTEXT_SESSION_ATTR, userContext, scope);
+					}
 				}
 			} catch (AuthenticationException ex) {
 				response.setAuthenticated(false);
@@ -77,6 +82,7 @@ public class DirectAuthenticationFilter extends GenericFilterBean {
 			AuthenticationRequest req = objectMapper.readValue(in, AuthenticationRequest.class);
 			return new UserObjectPropertyAuthenticationToken(req.getAccount(), req.getPassword());
 		} catch (Throwable ex) {
+			logger.error("Cannot unmarshall authentication request parameters", ex);
 			return null;
 		}
 	}
