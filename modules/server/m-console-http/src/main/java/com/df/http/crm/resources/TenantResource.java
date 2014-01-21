@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+import com.df.core.common.utils.StringUtils;
 import com.df.crm.entity.Tenant;
 import com.df.crm.service.contract.TenantService;
 import com.df.idm.authentication.UserContext;
@@ -31,6 +32,30 @@ public class TenantResource {
 
 	@Autowired
 	private UserManagementService userManagementService;
+
+	@POST
+	@Path("/sign")
+	public Tenant sign(TenantRegistration registration) {
+		String account = registration.getAdminId();
+		String password = registration.getPassword();
+		User user = new User();
+		if (StringUtils.isValidEmail(account)) {
+			user.setEmail(account);
+		} else {
+			user.setCellPhone(account);
+		}
+		if (StringUtils.isEmpty(password)) {
+			user.setPassword(StringUtils.randomString(10));
+		} else {
+			user.setPassword(password);
+		}
+		User newUser = userManagementService.createUser(user);
+		Tenant tenant = new Tenant();
+		tenant.setCode(registration.getTenantCode());
+		tenant.setAddress(registration.getAddress());
+		tenant.setName(registration.getTenantName());
+		return tenantService.createTenant(tenant, newUser.getId());
+	}
 
 	@POST
 	@Path("/")

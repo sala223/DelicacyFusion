@@ -31,6 +31,12 @@
                   <input type="text" class="form-control" id="input-company" placeholder="Mandatory" data-i19="def" data-channel="val(this.tenantName)"/>
                 </div>
               </div>
+               <div class="form-group">
+                <label for="input-code" class="col-sm-2 control-label" data-i19="def">TENANT CODE</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="input-code" placeholder="Mandatory" data-i19="def" data-channel="val(this.tenantCode)"/>
+                </div>
+              </div>
               <div class="form-group">
                 <label for="input-adminname" class="col-sm-2 control-label" data-i19="def">ADMIN NAME</label>
                 <div class="col-sm-10">
@@ -45,7 +51,6 @@
                     data-channel="val(this.adminId)" />
                 </div>
               </div>
-
               <div class="form-group">
                 <label for="input-address" class="col-sm-2 control-label" data-i19="def">TENANT ADDRESS</label>
                 <div class="col-sm-10">
@@ -100,13 +105,18 @@
                   </div>
                 </div>
               </div>
+               <div class="form-group">
+                <label class="col-sm-2 control-label" data-i19="def">TENANT CODE</label>
+                <div class="col-sm-10">
+                  <div class="form-control" data-channel="text(this.tenantCode)"></div>
+                </div>
+              </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label" data-i19="def">TENANT ADDRESS</label>
                 <div class="col-sm-10">
                   <div class="form-control" data-channel="text([this.address1,this.address2,this.address3,this.streetAddr].join(' '))"></div>
                 </div>
               </div>
-
               <div class="form-group">
                 <label class="col-sm-2 control-label" data-i19="def">ADMIN NAME</label>
                 <div class="col-sm-10">
@@ -122,7 +132,7 @@
               </div>
 
               <div class="form-group">
-                <label class="col-sm-2 control-label" data-i19="def">Password</label>
+                <label class="col-sm-2 control-label" data-i19="def">LOGON PASSWORD</label>
                 <div class="col-sm-10">
                   <div class="form-control" id="label-password-msg" data-i19="def"></div>
                 </div>
@@ -145,6 +155,7 @@
 
       $('#main1').toDataView({
         tenantName:'望湘园上海餐饮有限公司 ',
+        tenantCode:'WXRSH',
         adminName:'张三',
         adminId:'san.zhang@gmail.com',
         address1:'上海市',
@@ -180,6 +191,22 @@
           $('#btn-trial').css('visibility','visible');
         };
 
+        function createTenant(){
+        	data.address=[data.address1,data.address2,data.address3,data.streetAddr].join(' ');
+        	$.ajax('{prefix}/tenant/sign',{
+      			type:'POST',
+      			dataType:'json',
+      	    	contentType:'application/json; charset=UTF-8',
+      	    	data:JSON.stringify(data)
+      	    	})
+              .done(function(data){
+            	   progress = 100;
+              })
+              .fail(function(data){
+            	  progress = 100;
+              });
+        }
+        createTenant();
         runProgress();
       });
 

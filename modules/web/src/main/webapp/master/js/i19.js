@@ -25,6 +25,7 @@ var i19={
 
 	"30-Days Free Trial Application":"30天免费试用申请",
 	"TENANT NAME":"公司名称",
+	"TENANT CODE":"公司代码",
 	"STORE INFO":"门店信息",
 	"ADMIN NAME":"管理员姓名",
 	"ADMIN EMAIL/CP":"管理员邮箱/手机",

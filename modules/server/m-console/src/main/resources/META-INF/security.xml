@@ -191,6 +191,7 @@
 	</bean>
 	<sec:filter-security-metadata-source
 		id="securityInterceptorMetadataSource" use-expressions="true">
+		<sec:intercept-url pattern="/rs/tenant/sign" access="isAnonymous()" />
 		<sec:intercept-url pattern="/rs/user" method="POST"
 			access="isAnonymous()" />
 		<sec:intercept-url pattern="/rs/**" method="GET"

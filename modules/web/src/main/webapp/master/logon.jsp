@@ -61,8 +61,30 @@
     <script type="text/javascript">
     window.main.push(function(){
       window.parent.setTitle($('#titlebar').html());
+      var directAuth = function(){
+    	  var data = {};
+    	  data['account']=$('#input-username').val();
+    	  data['password']=$('#input-password').val();
+    	  $.ajax('/m-console/auth/direct',{
+  			type:'POST',
+  			dataType:'json',
+  	    	contentType:'application/json; charset=UTF-8',
+  	    	data:JSON.stringify(data)
+  	    	})
+          .done(function(data){
+        	  if(data.authenticated){
+        		  window.memoryStorage['userContext']=data.userContext;
+        		  console.log(window.memoryStorage['userContext']);
+        		  window.parent.go('tenant-landing.html');
+              }
+          })
+          .fail(function(data){
+        	  response = data; 
+          });
+      };
+      
       $('#btn-logon').click(function(){
-        window.parent.go('tenant-landing.html');
+    	  directAuth();
       });
     });
     </script>
